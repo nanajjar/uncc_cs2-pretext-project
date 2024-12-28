@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<section xml:id="ch1_intro">
+  <title>Introduction</title>
+
+  <p>
+   This chapter assumes that you are already familiar with a high level programming language. 
+   This includes familiarity with basic programming concepts like variables, loops, conditional statements and functions.
+   While this text will review certain concepts briefly as needed, it is designed to build upon that prior knowledge, allowing us to focus on more advanced topics and techniques. 
+   If you are new to programming, consider reviewing introductory resources to establish a solid foundation before diving into this material.
+</p>><p>
+   We will use Python as a starting point for our journey into Java. 
+   We will begin by looking at a very simple Java program, just to see what the language looks like and how we get a program to run. 
+   Next, we will look at the main constructs that are common to most programming languages:
+   <ul>
+    <li>
+        <p>
+            Data Types
+        </p>
+    </li>
+   <li>
+        <p>
+            Reading user input
+        </p>
+    </li>
+     <li>
+        <p>
+            Displaying text output
+        </p>
+    </li>
+      <li>
+        <p>
+            conditionals
+        </p>
+    </li>   
+    <li>
+        <p>
+            Loops
+        </p>
+    </li> 
+   </ul>
+  </p>
+
+  <p>
+   Once we have a solid understanding of Java fundamentals, we can dive deeper into the features that make Java both unique and powerful. 
+   This includes exploring its strong support for <term>object-oriented programming (OOP)</term>, which is a cornerstone of modern software development. 
+   We will examine the four main principles of OOP—<term>encapsulation</term>, <term>inheritance</term>, <term>polymorphism</term>, and <term>abstraction</term>—and how they allow us to design robust, modular, and reusable code.
+</p>
+<p>
+Through hands-on examples, we will learn how to create and work with <term>classes</term> and <term>objects</term>, the building blocks of Java programs. 
+We'll also explore more advanced features, such as <term>interfaces</term>, <term>abstract classes</term>, and the use of <term>packages</term> to organize code efficiently. 
+As we progress, we will see how Java's OOP features enable us to solve complex problems by modeling real-world systems and ensuring that our code is both flexible and maintainable.
+  </p>
+
+
+
+</section>

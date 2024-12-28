@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<exercises xml:id="ch1_exercises">
+  <title>Practice Zone</title>
+  <exercise label="prsn_pz_1" indentation="hide" language="java">
+    <statement>
+      <p>In this problem, you are given scrambled lines of code. Use these lines to construct a block of code to recreate the following output:
+        <pre>
+          Alice is an employee in Sales
+          Michael is an employee in Sales
+          Sarah is an employee in Marketing
+          John is an employee in Marketing
+
+        </pre>
+      </p>
+    </statement>
+    <blocks>
+      <block order="1">
+        <cline>employees = [['Alice', 'Sales'], ['Michael', 'Sales'], ['Sarah', 'Marketing'], ['John', 'Marketing']]
+        </cline>  
+      <cline>for person in employees:</cline>
+      <cline>    if person[1] == 'Sales':</cline>
+      <cline>        print(person[0], 'is an employee in Sales')</cline>
+      <cline>    elif person[1] == 'Marketing':</cline>
+      <cline>        print(person[0], 'is an employee in Marketing')</cline>
+      </block>
+    </blocks>
+  </exercise>
+
+
+  
+</exercises>

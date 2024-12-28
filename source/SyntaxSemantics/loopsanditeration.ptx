@@ -1,0 +1,195 @@
+<?xml version="1.0"?>
+
+<section xml:id="ch1_loops">
+    <title> Loops and Iteration </title>
+
+<p>You have already seen a couple of examples of iteration and looping in
+Java. So this section will just serve as a reference for the differences
+in Syntax.
+</p>
+<subsection xml:id="subsec-definiteloop">
+    <title>Definite Loop</title>
+    <p>
+        In Python the easiest way to write a definite loop is using the for loop
+in conjunction with the range function. For example:
+    </p>
+
+    <program language="python">
+        <code>
+    for i in range(10):
+        print(i)
+        </code>
+    </program>
+
+<p>
+   In Java we would write this as:
+ 
+</p>
+<program language="java">
+    <code>
+  for (Integer i = 0; i &lt; 10; i++ ) {
+        System.out.println(i);
+    }
+    </code>
+</program>
+<p>
+    Recall that the <c>range</c> function provides you with a wide variety of
+options for controlling the value of the loop variable.
+
+</p>
+  
+<program language="python">
+    <code>
+range(stop)
+range(start,stop)
+range(start,stop,step)
+    </code>
+</program>
+
+<p>
+    The Java for loop is really analogous to the last option giving you
+explicit control over the starting, stopping, and stepping in the three
+clauses inside the parenthesis. You can think of it this way:
+
+</p>
+   
+   <program language="">
+    <code>
+    for (start clause; stop clause; step clause) {
+        statement1
+        statement2
+        ...
+    }
+    </code>
+   </program>
+   
+
+<p>If you want to start at 100, stop at 0 and count backward by 5 the
+Python loop would be written as:</p>
+
+<program language="python">
+    <code>
+for i in range(100,-1,-5):
+    print(i)
+    </code>
+</program>
+
+    
+
+<p>In Java we would write this as:</p>
+
+<program language="java">
+    <code>
+for (Integer i = 100; i &gt;= 0; i -= 5)
+    System.out.println(i);
+    </code>
+</program>
+
+ <p>
+  In Python the for loop can also iterate over any sequence such as a
+list, a string, or a tuple. Java also provides a variation of its for
+loop that provides the same functionality in its so called ``for each``
+loop.  
+ </p>   
+
+
+
+<p>In Python we can iterate over a list as follows:</p>
+
+<program language="python">
+    <code>
+l = [1, 1, 2, 3, 5, 8, 13, 21]
+for fib in l:
+    print(fib)
+    </code>
+</program>
+   
+
+<p>In Java we can iterate over an ArrayList of integers too:</p>
+
+<program language="java">
+    <code>
+ ArrayList&lt;Integer&gt; l = new ArrayList&lt;Integer&gt;();
+l.add(1); l.add(1); l.add(2); l.add(3);
+for (Integer i : l) {
+    System.out.println(i)
+}
+    </code>
+</program>
+   
+
+<p>This example stretches the imagination a bit, and in fact points out one
+area where Java's primitive arrays are easier to use than an array
+list. In fact all primitive arrays can be used in a ``for each`` loop.
+</p>
+<program language="java">
+    <code>
+    int l[] = {1,1,2,3,5,8,13,21};
+    for(int i : l) {
+        System.out.println(i);
+    }
+    </code>
+</program>
+
+
+
+<p>To iterate over the characters in a string in Java do the following:
+</p>
+<program language="java">
+    <code>
+    String t = "Hello World";
+    for (char c : t.toCharArray()) {
+        System.out.println(c);
+    }
+
+    </code>
+</program>
+</subsection>
+<subsection xml:id="subsec-indefiniteloops">
+    <title>Indefinite Loops</title>
+    <p>
+        Both Python and Java support the while loop. Recall that in Python the
+while loop is written as:
+
+    </p>
+    <program language="python">
+        <code>
+    while  condition:
+       statement1
+       statement2
+       ...
+        </code>
+    </program>
+<p>In Java we add parenthesis and curly braces to get:</p>
+
+<program language="java">
+    <code>
+    while (condition) {
+        statement1
+        statement2
+        ...
+    }
+
+    </code>
+</program>
+
+
+<p>
+    Java adds an additional, if seldom used variation of the while loop
+called the do loop. The do loop is very similar to while except that the
+condition is evaluated at the end of the loop rather than the beginning.
+This ensures that a loop will be executed at least one time. Some
+programmers prefer this loop in some situations because it avoids an
+additional assignment prior to the loop. For example:
+</p>
+<program language="java">
+    <code>
+    do {
+        statement1
+        statement2
+        ...
+    } while (condition);
+    </code>
+</program>
+</subsection>
+</section>
