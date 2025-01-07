@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en-US">
-<title>Syntax and Semantics - from Python to Java</title>
-<xi:include href="./intro1.ptx"/>
-<xi:include href="./whyJava.ptx"/>
-<xi:include href="./firstlookjava.ptx"/>
-<xi:include href="./javadatatypes.ptx"/>
-<xi:include href="./conditionals.ptx"/>
-<xi:include href="./loopsanditeration.ptx"/>
+  <title>Syntax and Semantics - from Python to Java</title>
 
-<!-- <xi:include href="./exercises.ptx"/> -->
+  <xi:include href="./intro1.ptx"/>
+  <xi:include href="./whyJava.ptx"/>
+  <xi:include href="./firstlookjava.ptx"/>
+  <xi:include href="./javadatatypes.ptx"/>
+  <xi:include href="./conditionals.ptx"/>
+  <xi:include href="./loopsanditeration.ptx"/>
+
+  <!-- <xi:include href="./exercises.ptx"/> -->
 </chapter>
