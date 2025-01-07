@@ -15,6 +15,7 @@
     <xi:include href="./SyntaxSemantics/toctree.ptx" />
     <xi:include href="./DesignTools/toctree.ptx" />
     <xi:include href="./ObjectOrientedProgramming/toctree.ptx" />
+    <xi:include href="./DesignRecipe/toctree.ptx" />
 
 
     <!-- Include backmatter -->
