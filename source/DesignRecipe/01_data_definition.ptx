@@ -1,0 +1,278 @@
+<chapter xml:id="audrey-chaos">
+  <title>1. Data Definition</title>
+
+  <!-- ======================================
+       1. Overview and Objectives
+       ====================================== -->
+  <section xml:id="overview-objectives">
+    <title>Overview and Objectives</title>
+    <p>
+      This chapter introduces the importance of <em>data design</em> in any program. Students
+      often jump straight into coding—tackling a problem by writing loops, conditionals,
+      or function calls—without stopping to clarify exactly what data they’ll process and
+      how it’s structured. This leads to hidden confusion or brittle “quick fixes” that
+      eventually fail when requirements change.
+    </p>
+    <p> We follow the story of <strong>Audrey</strong>, a music lover who naively starts storing her
+      favorite songs in code. Each time she adds a new feature, unplanned changes to her data break
+      old parts of the program. By exploring her incremental fiasco, we’ll see why it’s crucial to
+      <em>explicitly design</em> and <em>document</em> your data before (and during) coding—even if it seems
+      like “extra work.” </p>
+    <p> After reading this chapter, you should be able to: <ul>
+        <li>Explain why “just start coding” can lead to maintenance headaches and silent bugs.</li>
+        <li>Articulate that all programs transform <em>input data</em> into <em>output data</em>,
+      and thus a clear data specification is vital.</li>
+        <li>Recognize that <em>data definitions</em> (written “blueprints” of how data is structured)
+      safeguard against accidental changes or misunderstandings.</li>
+        <li>Appreciate how typed languages like Java can later help <em>enforce</em> these
+      definitions automatically, rather than relying only on the programmer’s discipline.</li>
+      </ul>
+    </p>
+  </section>
+
+<!-- ======================================
+     2. Audrey’s Journey
+     ====================================== -->
+  <section xml:id="audrey-journey">
+    <title>Audrey’s Journey</title>
+
+    <!-- 2.1. Initial Goal -->
+    <subsection xml:id="initial-goal">
+      <title>1. Initial Goal</title>
+      <p> Audrey's to-do list is straightforward: <ol>
+          <li>Store a handful of songs, each with a rating (1–5).</li>
+          <li>Update that rating by the song's name.</li>
+        </ol> She's comfortable with basic
+        Python: lists, loops, and indexing. Let's see how she starts. </p>
+    </subsection>
+
+    <subsection xml:id="hard-coded-indices">
+      <title>2. Hard-Coded Indices</title>
+      <p> Audrey decides each song should be a list <c>[title, rating]</c>. Having worked with lists before,
+        she feels confident and jumps straight into coding: </p>
+      <listing xml:id="first-attempt">
+        <title>Audrey's Hard-Coded Indices</title>
+        <caption>Her first solution relies on knowing exactly where each piece of data lives in the list.</caption>
+        <program language="python">
+          music_library = [
+          ["Imagine", 5], # index 0
+          ["Thriller", 4], # index 1
+          ["Hey Jude", 5] # index 2
+          ]
+
+          # Change "Thriller" rating from 4 to 3
+          music_library[1][1] = 3
+          print(music_library)
+        </program>
+      </listing>
+      <p> When run, Python prints <c>[['Imagine', 5], ['Thriller', 3], ['Hey Jude', 5]]</c>. 
+        This works for now, but only because Audrey remembers that:
+        <ul>
+          <li>"Thriller" is at position 1 in the outer list</li>
+          <li>The rating is always at position 1 in each inner list</li>
+        </ul>
+        These assumptions make the code fragile - any change to the order or structure could break it.
+      </p>
+    </subsection>
+
+    <subsection xml:id="incremental-fixes">
+      <title>3. Incremental "Fixes"</title>
+      <p> Realizing that hard-coded indices like <c>music_library[1][1]</c> are risky, 
+        Audrey tries to make her code more flexible with helper functions: </p>
+      <listing xml:id="title-based-update">
+        <title>Searching by Title Instead of Position</title>
+        <caption>A more flexible approach that still has hidden assumptions about data layout.</caption>
+        <program language="python">
+          def find_song_index(library, song_title):
+              for i in range(len(library)):
+                  if library[i][0] == song_title: # Title is at index 0
+                      return i
+
+          def update_rating(library, song_title, new_rating):
+              idx = find_song_index(library, song_title)
+              library[idx][1] = new_rating  # Still assumes rating is at index 1
+
+          music_library = [
+              ["Imagine", 5],
+              ["Thriller", 4],
+              ["Hey Jude", 5]
+          ]
+
+          update_rating(music_library, "Thriller", 1)
+          print(music_library)
+        </program>
+      </listing>
+      <p> This is better - we're no longer dependent on knowing which row contains "Thriller". 
+        But we're still assuming that:
+        <ul>
+          <li>The title is always at index 0</li>
+          <li>The rating is always at index 1</li>
+        </ul>
+        These assumptions are buried in the code, making it hard to spot potential problems.
+      </p>
+    </subsection>
+
+    <subsection xml:id="adding-play-counts">
+      <title>4. Adding Play Counts</title>
+      <p> A week later, Audrey wants to track how often she listens to each song. She modifies each
+        entry to include a play count: </p>
+      <listing xml:id="adding-field">
+        <title>Introducing a New Field</title>
+        <caption>Adding play_count changes the data structure in ways that could break existing code.</caption>
+        <program language="python">
+          music_library = [
+              ["Imagine", 5, 120],    # Now includes play count
+              ["Thriller", 4, 230],
+              ["Hey Jude", 5, 150]
+          ]
+        </program>
+      </listing>
+      <p> This seemingly simple change creates several problems:
+        <ul>
+          <li>The <c>update_rating</c> function still uses index 1 for ratings, which still works... for now</li>
+          <li>If Audrey later reorders the fields to <c>[title, play_count, rating]</c>, the function will corrupt data</li>
+          <li>New functions to update play counts might accidentally modify ratings if they guess wrong about indices</li>
+        </ul>
+      </p>
+      <p><em>Key Lesson:</em> Without a clear definition of the data structure, even small changes can introduce
+        subtle bugs that might not be immediately apparent.</p>
+    </subsection>
+  </section>
+
+  <!-- ======================================
+       3. Designing Data: Why It Matters
+       ====================================== -->
+  <section xml:id="why-data-design-matters">
+    <title>Designing Data: Why It Matters</title>
+    <p> <em>Programs</em> fundamentally do this: they take <em>input data</em>, transform or analyze it,
+      and produce <em>output data</em>. Whether that data is a single integer or a complex structure
+      with nested fields, the program’s success relies on everyone understanding <strong>exactly
+      what the data is and how to interpret it</strong>. </p>
+    <p> If you never plan or document this structure, you’re effectively “designing” as you
+      code—mixing two hard tasks at once. This often leads to: <ul>
+        <li><em>Ambiguous fields</em>: Is <c>song[2]</c> the rating or the play count? Could it become <c>genre</c>
+        if we shift the order next week?</li>
+        <li><em>Misinterpreted units</em>: Is <c>weight</c> in pounds or kilograms? Are <c>dates</c> in
+      MM/DD/YYYY or DD/MM/YYYY format?</li>
+        <li><em>Silent breakage</em>: Old code “thinks” a new field is something else, leading
+          to bizarre outputs or corruption that can take hours to debug.</li>
+      </ul>
+    </p>
+    <p> In earlier courses, you might have been <em>protected</em> from this problem because the
+      instructor gave you a well-structured <c>Point</c> class, or a “student record” type, or a <c>database
+      schema</c>. You simply followed it. But now, you’re the one deciding how to store data.
+      Failing to define it clearly is a recipe for frustration. </p>
+  </section>
+
+  <!-- ======================================
+     4. The First Step of a Design Recipe: Data Definition
+     ====================================== -->
+  <section xml:id="data-definition-step">
+    <title>The First Step: Defining Your Data</title>
+    <p> A <strong>data definition</strong> is a concise statement of: </p>
+    <ol>
+      <li><em>Which fields</em> or attributes exist (e.g., <c>title</c>, <c>rating</c>, <c>play_count</c>).</li>
+      <li><em>How they’re typed or constrained</em> (e.g., rating is an integer 1–5, play_count is
+        nonnegative, etc.).</li>
+      <li><em>Any key assumptions</em> (like “rating can’t exceed 5,” or “dates must be in
+        MM/DD/YYYY format”).</li>
+    </ol>
+
+    <p>
+      For Audrey’s music library, we might define:
+    </p>
+    <blockquote>
+      <p>
+        <em> A <c>Song</c> is a Python list of the form <c>[title, rating, play_count]</c>, where: <ul>
+            <li><c>title</c> is a string (e.g., <c>"Imagine"</c>).</li>
+            <li><c>rating</c> is an integer in <c>[1..5]</c>.</li>
+            <li><c>play_count</c> is a nonnegative integer (0 or greater).</li>
+          </ul>
+        </em>
+      </p>
+    </blockquote>
+
+    <p> Why is this useful? Because if Audrey later decides “I need to store <c>artist</c>,” she’ll
+      update the definition to: <c>[title, rating, play_count, artist]</c>. Every function that
+      touches <c>Song</c> refers back to this “blueprint,” instead of guessing how many fields there
+      are or which index is which. </p>
+    <p>
+      <strong>Assumptions &amp; Constraints:</strong> Notice we said <c>rating</c> can’t exceed 5. In
+      Python, you might or might not write code to check that. But if you do—say, with an <c>if
+      new_rating &amp; 5</c> check—then you can detect bad data early. In other languages, like Java,
+      you could have a method that rejects any rating above 5 automatically. Either way, once you’ve
+      written down “rating is 1–5,” it’s easier to test or enforce that assumption. </p>
+    <p>
+      <em>Micro-Exercise:</em> If you decide <c>play_count</c> can’t exceed 9999, how would you
+      reflect that in your definition? Could you detect an invalid <c>play_count</c> in code and
+      raise an error or log a warning? </p>
+  </section>
+
+  <!-- ======================================
+       5. Designing vs. Implementing
+       ====================================== -->
+  <section xml:id="design-vs-implementation">
+    <title>Separating Design from Implementation</title>
+    <p> One reason novices skip data definitions is they jump right into “let’s make a loop in
+      Python” or “let’s code a quick function to do X.” But when you do that, you’re <strong>
+      implicitly</strong> designing the data <strong>while</strong> you implement logic—a mental juggling act that can
+      be error-prone. </p>
+    <p> <em>Best Practice:</em> Pause before coding. Ask: <em>"What data do I have? Where do these fields
+      come from? Do they have constraints?
+        How might they evolve over time?”</em> By addressing these questions early, you create a
+      stable foundation that makes the actual coding smoother and less likely to break with new
+      requirements. </p>
+    <p> This is the <em>first step</em> of a broader <strong>design recipe</strong> you’ll practice
+      throughout this course. You’ll see that once data is well-defined, you can systematically
+      define each function’s <strong>contract</strong> (what it takes in, what it returns), write tests, and
+      iterate your design. </p>
+  </section>
+
+  <!-- ======================================
+       6. Brief Look Ahead: Typed Languages
+       ====================================== -->
+  <section xml:id="typed-languages">
+    <title>Looking Ahead: Typed Languages</title>
+    <p> In Python, you rely on <em>discipline</em> and <em>documentation</em> to keep data definitions
+      consistent: the language won’t stop you from doing <c>song[0] * 3</c> if <c>song[0]</c> was
+      supposed to be a string. But in a typed language like <em>Java</em>, you can create a <c>class Song</c>
+      with fields <c>String title;</c>, <c>int rating;</c>, <c>int playCount;</c>, etc. The compiler
+      then checks if your code tries to assign <c>"Thriller"</c> (a string) to <c>rating</c> (an
+      integer). It will refuse to compile, effectively “enforcing” your data definition
+      automatically. </p>
+    <p>
+      Don’t worry if you haven’t learned Java yet. The <em>concept</em> of designing your data
+      carefully remains the same across all languages—some just have built-in ways of
+      preventing you from messing it up.
+    </p>
+  </section>
+
+  <!-- ======================================
+     7. Reflection and Next Steps
+     ====================================== -->
+  <section xml:id="reflection-next-steps">
+    <title>Reflection and Next Steps</title>
+    <p> Audrey’s incremental “fixes” all failed the moment she changed the order of fields or added
+      a new one. By contrast, a data definition—like <c>[title, rating, play_count]</c>— serves as a
+      stable reference point: any code that modifies or reads a field can check the blueprint to
+      avoid silent breakage. </p>
+    <p>
+      <strong>Takeaways:</strong>
+      <ul>
+        <li><em>All programs revolve around data:</em> if you don’t define it up front, you risk
+          layering assumptions until they collapse under new features.</li>
+        <li><em>Constraints become testable:</em> once you say “rating is ≤ 5,” you can
+          systematically check that in Python, or in a typed language like Java, you might disallow
+          setting rating above 5 altogether. Both approaches reduce guesswork.</li>
+        <li><em>A design recipe starts with data:</em> it might feel “extra,” but separating data
+          layout from coding logic frees you to adapt your program without everything breaking
+          unexpectedly.</li>
+      </ul>
+    </p>
+    <p> In the next chapter, we’ll see <em>how</em> to define each function’s “Contract” once we have a
+      clear data definition. Just as data needs a specification, so do functions: we’ll specify what
+      inputs they take, what outputs they give, and any invariants (like not accepting a <c>play_count</c>
+      less than 0). By combining these steps— data definition, then function
+      contracts, then testing—we build a robust, iterative path to maintainable code. </p>
+  </section>
+</chapter>
