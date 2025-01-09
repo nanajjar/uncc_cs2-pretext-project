@@ -3,7 +3,8 @@
   <title>The Design Recipe</title>
   <xi:include href="./01_data_definition.ptx" />
   <xi:include href="./02_contracts_purpose.ptx" />
-  <xi:include href="./03_testing_programs.ptx" />
+  <xi:include href="./03_example_tests.ptx" />
+  <xi:include href="./04_method_skeleton.ptx" />
 
 
 </chapter>

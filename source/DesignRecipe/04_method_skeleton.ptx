@@ -1,0 +1,359 @@
+<chapter xml:id="ch-method-skeleton">
+  <title>4. Method Template &amp; Skeleton</title>
+
+  <!-- ======================================
+       1. Overview & Objectives
+       ====================================== -->
+  <section xml:id="overview-objectives-method-skeleton">
+    <title>Overview and Objectives</title>
+    <p>
+      By now, you've seen how careful planning sets the stage for reliable, maintainable code.
+      In the previous chapters, we:
+    </p>
+    <ol>
+      <li>Defined our data structures (<em>Data Definitions</em>)</li>
+      <li>Wrote explicit <em>Method Signatures &amp; Purpose Statements</em></li>
+      <li>Created <em>Examples &amp; Tests</em> to clarify behavior</li>
+    </ol>
+    <p> In this chapter, we move to Step 5 of the Design Recipe: creating a <strong>method template
+      or skeleton</strong>. This step helps you outline the logical flow of your function before
+      diving into final code, ensuring that each piece of your plan has a clear place and purpose. </p>
+    <p> Students often jump straight to coding loops and conditionals as soon as they have a sense
+      of what a function should do. But as Audrey has learned (sometimes the hard way!), tackling
+      everything at once—data validation, main logic, edge cases—can quickly lead to unorganized
+      functions that are difficult to debug or extend. By sketching a simple skeleton <em>first</em>,
+      we keep each step of the process clear and intentional. </p>
+    <objectives>
+      <ul>
+        <li>
+          <p><em>Recognize</em> how a method skeleton clarifies your approach before full coding.</p>
+        </li>
+        <li>
+          <p><em>Practice</em> separating the “what” (the conceptual steps) from the “how” (the
+            actual code).</p>
+        </li>
+        <li>
+          <p><em>Connect</em> skeleton steps to the tests you wrote, ensuring every required
+            behavior is addressed.</p>
+        </li>
+        <li>
+          <p><em>Reduce</em> the risk of messy or unmaintainable functions by working from a solid
+            outline.</p>
+        </li>
+      </ul>
+    </objectives>
+  </section>
+
+  <!-- ======================================
+       2. Why Outline Before Coding?
+       ====================================== -->
+  <section xml:id="why-outline-before-coding">
+    <title>Why Outline Before Coding?</title>
+    <p>
+      Many programmers—novices and veterans alike—sometimes try to solve everything in one go:
+      they start coding loops, conditionals, and data manipulations the moment they have
+      a problem statement. This approach can seem efficient initially, but it often yields
+      disorganized, tangled code that’s stressful to update or fix later.
+    </p>
+    <p> A <em>method skeleton</em> (sometimes called an outline) is a practical way to prevent that
+      chaos. Rather than juggling all details in your mind, you jot down the main steps—like how to
+      handle invalid inputs, how you'll traverse data, and where you'll produce your output. This
+      structure helps ensure you haven't forgotten any core requirement. It's far easier to adjust a
+      few comments or reorder steps in an outline than to rip apart 30 lines of half-finished code
+      and guess what to fix. </p>
+    <p> As Audrey once said after reworking her <code>update_rating</code> function yet again, <em>“If
+      only I'd outlined it first, I'd have saved myself a lot of confusion!”</em>
+    </p>
+  </section>
+
+  <!-- ======================================
+       3. Audrey’s Journey: Outlining update_rating
+       ====================================== -->
+  <section xml:id="audrey-outline-update-rating">
+    <title>Audrey’s Journey: Outlining <code>update_rating</code></title>
+    <p> Recall Audrey’s function <code>update_rating</code> for modifying a song’s rating in her
+      music library. In earlier chapters, she discovered the hard way that mixing all her logic and
+      data assumptions in one big chunk of code led to repeated mistakes. Eventually, she documented
+      the function properly: </p>
+    <blockquote>
+      <p><strong>Goal:</strong> Update the rating for a given <code>song_title</code> in <code>
+        library</code>.</p>
+      <p>
+        <strong>Preconditions:</strong>
+      </p>
+      <ul>
+        <li><code>library</code> is a non-empty list of <code>[title, rating, play_count]</code>
+          entries.</li>
+        <li><code>song_title</code> is a non-empty string.</li>
+        <li><code>new_rating</code> is an integer in <code>[1..5]</code>.</li>
+      </ul>
+      <p><strong>Returns:</strong> <code>True</code> if the song was found and updated; <code>False</code>
+        otherwise.</p>
+      <p><strong>Raises:</strong> <code>ValueError</code> if any inputs are invalid.</p>
+    </blockquote>
+    <p>
+      Instead of coding it all at once, Audrey now drafts a skeleton:
+    </p>
+    <listing xml:id="update-rating-skeleton">
+      <title>Skeleton for <code>update_rating</code></title>
+      <program language="python">
+        def update_rating(library: list, song_title: str, new_rating: int) -> bool:
+        """
+        Updates the rating for a song in the music library.
+        (Full docstring details in previous chapters!)
+        """
+
+        # 1. Validate inputs (library, song_title, new_rating)
+        # - If invalid, raise ValueError
+
+        # 2. Loop through the library:
+        # - For each song, check if song_title matches
+        # - If so, update rating, return True
+
+        # 3. If we finish the loop with no match found, return False
+
+        pass # We'll fill this in later
+      </program>
+    </listing>
+    <p> A few comments and <code>pass</code> statements create a roadmap for her final
+      implementation. Now, Audrey (and anyone else reading her code) can see exactly where each step
+      belongs: from handling incorrect inputs to deciding when to return <code>True</code> or <code>
+      False</code>. This level of clarity makes subsequent coding (and debugging) far more
+      straightforward. </p>
+  </section>
+
+  <!-- ======================================
+       4. Typical Skeleton Patterns
+       ====================================== -->
+  <section xml:id="typical-skeleton-patterns">
+    <title>Typical Skeleton Patterns</title>
+    <p>
+      In many programming tasks—whether in Python, Java, or another language—common patterns of
+      logic often emerge. Recognizing these patterns can make drafting a skeleton almost second
+      nature. Here are a few you’ll frequently encounter:
+    </p>
+
+    <subsection xml:id="validate-and-loop">
+      <title>Pattern 1: Validate → Loop → Return</title>
+      <p>
+        Many functions deal with a list of items, searching for a match or applying an action.
+        The skeleton usually looks like:
+      </p>
+      <listing>
+        <program language="python">
+          def some_function(data: list) -> ???:
+          # 1. Validate data (not None, correct format, etc.)
+          # 2. Loop through data:
+          # - If some condition is met, do something (maybe return or update)
+          # 3. Return a final result if not found or if the loop completes
+        </program>
+      </listing>
+      <p> Our <code>update_rating</code> function is a classic example: after validation, it loops
+        for a matching title, updates if found, and returns <code>True</code>. If no match is found,
+        it returns <code>False</code>. </p>
+    </subsection>
+
+    <subsection xml:id="accumulate-and-return">
+      <title>Pattern 2: Accumulate &amp; Return</title>
+      <p> Functions that <em>build or collect</em> new data follow a pattern of initializing an
+        empty container (like a list or a numeric sum), looping, and then returning the collected
+        result: </p>
+      <listing>
+        <program language="python">
+          def compute_something(data: list) -> ???:
+          # 1. Validate data
+          # 2. Initialize an accumulator (e.g., an empty list or 0)
+          # 3. Loop through data:
+          # - If item meets a condition, add/append to the accumulator
+          # 4. Return the accumulator
+        </program>
+      </listing>
+      <p> For instance, <code>find_favorite_songs(library)</code> (which filters out songs rated 4
+        or 5) would gather matching titles in a list, then return that list once the loop finishes. </p>
+    </subsection>
+
+    <subsection xml:id="multiple-decisions">
+      <title>Pattern 3: Multiple Decisions</title>
+      <p>
+        Some functions need to handle different categories of inputs or multiple branching
+        conditions.
+        A skeleton might look like this:
+      </p>
+      <listing>
+        <program language="python">
+          def process_input(input_data):
+          # 1. Validate input_data
+          # 2. If input_data is type X, do something
+          # 3. Else if input_data is type Y, do something else
+          # 4. Else, handle "unexpected" case (raise an error or return a default)
+          # 5. Return final result
+        </program>
+      </listing>
+      <p>
+        By enumerating each possible branch in your skeleton, you ensure you’re not missing
+        a scenario. If the program evolves, you can adjust or insert new steps without
+        rewriting everything.
+      </p>
+    </subsection>
+  </section>
+
+  <!-- ======================================
+       5. Connecting Skeletons to Tests
+       ====================================== -->
+  <section xml:id="connecting-skeletons-tests">
+    <title>Connecting Skeletons to Tests</title>
+    <p> From Chapter 3, you know that <em>tests</em> confirm each function’s behavior under normal
+      use and edge cases. Writing a skeleton helps you align your logic with those tests: </p>
+    <ul>
+      <li><strong>Validate Inputs:</strong> If your tests confirm that invalid inputs trigger <code>
+        ValueError</code>, your skeleton should include a “Validate inputs” step.</li>
+      <li><strong>Loop Behavior:</strong> If you have a test ensuring the function finds the right
+        item in a list, your skeleton’s loop step must handle that scenario.</li>
+      <li><strong>Return Values:</strong> If your tests check for <code>True</code> vs. <code>False</code>,
+        your skeleton must reveal how and when each is returned.</li>
+    </ul>
+    <p>
+      This tight connection between skeleton steps and test cases makes it much harder
+      to “forget” a case or produce untested code paths. If there’s a mismatch—like a test
+      expects an early return but your skeleton has no return until the end—you can catch
+      and fix it early.
+    </p>
+  </section>
+
+  <!-- ======================================
+       6. Example: Skeleton for compute_popularity
+       ====================================== -->
+  <section xml:id="example-compute-popularity">
+    <title>Example: Skeleton for <code>compute_popularity</code></title>
+    <p> Recall <code>compute_popularity(song)</code> from Chapter 2, which calculates <code>rating ×
+      log(play_count + 1)</code> for a single song. Here’s how its skeleton might look: </p>
+    <listing>
+      <program language="python">
+        import math
+
+        def compute_popularity(song: list) -> float:
+        """
+        Returns a popularity score based on rating and play_count.
+        (See Chapter 2 for the full docstring.)
+        """
+
+        # 1. Validate 'song' is not None and has the form [title, rating, play_count]
+        # - rating in [1..5], play_count >= 0
+        # - If invalid, raise ValueError
+
+        # 2. Calculate popularity = rating * math.log(play_count + 1)
+
+        # 3. Return the popularity (float)
+
+        pass
+      </program>
+    </listing>
+    <p> Meanwhile, our tests from Chapter 3 might include an edge case where <code>rating = 5,
+      play_count = 0</code> (expecting <code>0</code>), a typical case for <code>rating = 5,
+      play_count = 100</code>, and invalid inputs that raise <code>ValueError</code>. Each bullet in
+      the skeleton lines up with those tests. If we neglected to handle <code>play_count &lt; 0</code>,
+      our skeleton would be missing a crucial step—and a test would (hopefully) fail. </p>
+  </section>
+
+  <!-- ======================================
+       7. Transition to Implementation
+       ====================================== -->
+  <section xml:id="transition-to-implementation">
+    <title>Transition to Implementation</title>
+    <p> Once your skeleton lines up with your tests and contract, you’re ready for Step 6: <strong>filling
+      in the method with real code</strong>. Each comment in the outline becomes one or more lines
+      of Python. If you discover new edge cases or data nuances along the way, you can still revise
+      the skeleton before finishing the details. </p>
+    <p>
+      As you implement each skeleton step, rerun your tests to confirm you haven’t accidentally
+      broken something else. This incremental approach keeps your codebase stable, and each
+      success gives you confidence to tackle the next piece.
+    </p>
+    <p>
+      By the end of Step 6, you’ll have a fully working, validated, and test-backed function
+      that matches your data definitions, contract, and examples. That’s the power of
+      systematically following the Design Recipe.
+    </p>
+  </section>
+
+  <!-- ======================================
+       8. Exercises & Practice
+       ====================================== -->
+  <section xml:id="exercises-practice-skeleton">
+    <title>Exercises &amp; Practice</title>
+
+    <exercise>
+      <title>1. Skeleton for <code>find_favorite_songs</code></title>
+      <statement>
+        <p> Recall the <code>find_favorite_songs(library)</code> function from earlier chapters,
+          which returns a list of titles for songs with a rating ≥ 4. Write a short skeleton that: </p>
+        <ul>
+          <li>Validates <code>library</code> (must be non-empty; each entry is <code>[title, rating,
+            play_count]</code>)</li>
+          <li>Initializes an empty list to hold favorite titles</li>
+          <li>Loops over each song, checks if <code>rating ≥ 4</code>, and appends <code>song[0]</code>
+            to the result</li>
+          <li>Returns the final list of “favorite” titles</li>
+        </ul>
+        <p>
+          Don’t write actual code—just the skeleton. Then, identify at least one test case for
+          each step you outlined.
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise>
+      <title>2. Skeleton for <code>create_playlist</code></title>
+      <statement>
+        <p> Audrey wants a <code>create_playlist</code> function that filters songs by mood (either
+          "chill" or "upbeat") and then sorts them by rating (highest first). Sketch a skeleton: </p>
+        <ul>
+          <li>Validate inputs</li>
+          <li>Filter the library by the requested mood</li>
+          <li>Sort the filtered list by rating in descending order</li>
+          <li>Return the sorted list</li>
+        </ul>
+        <p>
+          Again, focus only on the outline. Consider how you’d test each step—especially
+          any tricky edge cases (like an empty library or an unsupported mood).
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise>
+      <title>3. Reflect on a Past Project</title>
+      <statement>
+        <p>
+          Think of a time you dove straight into coding without a skeleton.
+          Did you encounter a confusing bug or find yourself refactoring large chunks of code?
+          How might a simple outline have helped you catch those issues sooner?
+          Write a short paragraph reflecting on how a skeleton might have made that experience
+          smoother.
+        </p>
+      </statement>
+    </exercise>
+  </section>
+
+  <!-- ======================================
+       9. Conclusion & Next Steps
+       ====================================== -->
+  <section xml:id="conclusion-next-steps-method-skeleton">
+    <title>Conclusion &amp; Next Steps</title>
+    <p>
+      Creating a method skeleton is a small step with a big payoff. It forces you to think
+      through the logic before you get lost in the details of code syntax. By clarifying each
+      stage—input validation, looping or branching, return values—you make sure your function
+      aligns with your data definitions, contracts, and test cases.
+    </p>
+    <p> In the next chapter (<strong>Step 6: Implementation</strong>), we’ll fill in these skeletons
+      with real code. You’ll see how to handle special cases gracefully, deal with exceptions where
+      needed, and confirm your solutions pass all the tests you drafted in Chapter 3. The Design
+      Recipe remains your reliable guide for building code that’s robust, maintainable, and a lot
+      less stressful to expand in the future. </p>
+    <p>
+      With a solid skeleton, you’re well on your way to writing code that you (and your teammates)
+      will actually enjoy working with. It’s one more reason to trust the Design Recipe:
+      structured thinking now saves you from headaches later.
+    </p>
+  </section>
+</chapter>
