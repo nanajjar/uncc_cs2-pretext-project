@@ -1,4 +1,4 @@
-<chapter xml:id="audrey-chaos">
+<chapter xml:id="ch-data-definition">
   <title>1. Data Definition</title>
 
   <!-- ======================================
@@ -9,25 +9,32 @@
     <p>
       This chapter introduces the importance of <em>data design</em> in any program. Students
       often jump straight into coding—tackling a problem by writing loops, conditionals,
-      or function calls—without stopping to clarify exactly what data they’ll process and
-      how it’s structured. This leads to hidden confusion or brittle “quick fixes” that
+      or function calls—without stopping to clarify exactly what data they'll process and
+      how it's structured. This leads to hidden confusion or brittle "quick fixes" that
       eventually fail when requirements change.
     </p>
     <p> We follow the story of <strong>Audrey</strong>, a music lover who naively starts storing her
       favorite songs in code. Each time she adds a new feature, unplanned changes to her data break
-      old parts of the program. By exploring her incremental fiasco, we’ll see why it’s crucial to
+      old parts of the program. By exploring her incremental fiasco, we'll see why it's crucial to
       <em>explicitly design</em> and <em>document</em> your data before (and during) coding—even if it seems
-      like “extra work.” </p>
-    <p> After reading this chapter, you should be able to: <ul>
-        <li>Explain why “just start coding” can lead to maintenance headaches and silent bugs.</li>
-        <li>Articulate that all programs transform <em>input data</em> into <em>output data</em>,
-      and thus a clear data specification is vital.</li>
-        <li>Recognize that <em>data definitions</em> (written “blueprints” of how data is structured)
-      safeguard against accidental changes or misunderstandings.</li>
-        <li>Appreciate how typed languages like Java can later help <em>enforce</em> these
-      definitions automatically, rather than relying only on the programmer’s discipline.</li>
+      like "extra work." </p>
+    
+    <objectives>
+      <ul>
+        <li><p>
+          <em>Identify</em> how undocumented data assumptions lead to maintenance problems and bugs
+        </p></li>
+        <li><p>
+          <em>Write</em> clear data definitions that specify structure and constraints
+        </p></li>
+        <li><p>
+          <em>Document</em> assumptions about valid values and relationships between fields
+        </p></li>
+        <li><p>
+          <em>Recognize</em> how typed languages can help enforce data definitions automatically
+        </p></li>
       </ul>
-    </p>
+    </objectives>
   </section>
 
 <!-- ======================================
@@ -38,12 +45,17 @@
 
     <!-- 2.1. Initial Goal -->
     <subsection xml:id="initial-goal">
-      <title>1. Initial Goal</title>
-      <p> Audrey's to-do list is straightforward: <ol>
-          <li>Store a handful of songs, each with a rating (1–5).</li>
-          <li>Update that rating by the song's name.</li>
-        </ol> She's comfortable with basic
-        Python: lists, loops, and indexing. Let's see how she starts. </p>
+      <title>1. The Music App Dream</title>
+      <p>Meet Audrey, a CS student who loves music and programming. After learning Python last semester,
+         she decides to build an app to track her growing music collection. "How hard could it be?" she thinks,
+         opening her laptop one Friday evening. All she needs is to:</p>
+      <ul>
+        <li>Store songs with ratings (1-5 stars)</li>
+        <li>Update ratings when she changes her mind</li>
+        <li>Find her favorite songs quickly</li>
+      </ul>
+      <p>Little does she know, her "quick weekend project" is about to teach her why
+         planning data structure is crucial...</p>
     </subsection>
 
     <subsection xml:id="hard-coded-indices">
@@ -137,6 +149,18 @@
       <p><em>Key Lesson:</em> Without a clear definition of the data structure, even small changes can introduce
         subtle bugs that might not be immediately apparent.</p>
     </subsection>
+
+    <!-- Add reflection questions after each attempt -->
+      <exercise>
+        <statement>
+          <p>What could go wrong with Audrey's latest approach? Consider:</p>
+          <ul>
+            <li>What happens if someone reorders the fields?</li>
+            <li>How would you know what values are valid for each field?</li>
+            <li>Could you accidentally put text where a number should go?</li>
+          </ul>
+        </statement>
+      </exercise>
   </section>
 
   <!-- ======================================
@@ -159,8 +183,7 @@
       </ul>
     </p>
     <p> In earlier courses, you might have been <em>protected</em> from this problem because the
-      instructor gave you a well-structured <c>Point</c> class, or a “student record” type, or a <c>database
-      schema</c>. You simply followed it. But now, you’re the one deciding how to store data.
+      instructor gave you a well-structured <c>Point</c> class, or a “student record” type, or a <c>database schema</c>. You simply followed it. But now, you’re the one deciding how to store data.
       Failing to define it clearly is a recipe for frustration. </p>
   </section>
 
@@ -198,8 +221,8 @@
       are or which index is which. </p>
     <p>
       <strong>Assumptions &amp; Constraints:</strong> Notice we said <c>rating</c> can’t exceed 5. In
-      Python, you might or might not write code to check that. But if you do—say, with an <c>if
-      new_rating &amp; 5</c> check—then you can detect bad data early. In other languages, like Java,
+      Python, you might or might not write code to check that. But if you do—say, with an 
+      <c>if new_rating &amp; 5</c> check—then you can detect bad data early. In other languages, like Java,
       you could have a method that rejects any rating above 5 automatically. Either way, once you’ve
       written down “rating is 1–5,” it’s easier to test or enforce that assumption. </p>
     <p>
@@ -232,19 +255,90 @@
        6. Brief Look Ahead: Typed Languages
        ====================================== -->
   <section xml:id="typed-languages">
-    <title>Looking Ahead: Typed Languages</title>
-    <p> In Python, you rely on <em>discipline</em> and <em>documentation</em> to keep data definitions
-      consistent: the language won’t stop you from doing <c>song[0] * 3</c> if <c>song[0]</c> was
-      supposed to be a string. But in a typed language like <em>Java</em>, you can create a <c>class Song</c>
-      with fields <c>String title;</c>, <c>int rating;</c>, <c>int playCount;</c>, etc. The compiler
-      then checks if your code tries to assign <c>"Thriller"</c> (a string) to <c>rating</c> (an
-      integer). It will refuse to compile, effectively “enforcing” your data definition
-      automatically. </p>
-    <p>
-      Don’t worry if you haven’t learned Java yet. The <em>concept</em> of designing your data
-      carefully remains the same across all languages—some just have built-in ways of
-      preventing you from messing it up.
-    </p>
+    <title>Looking Ahead: Java's Built-in Protection</title>
+    
+    <p>While Python lets us write data definitions as comments, some languages can actually
+       enforce our rules automatically. Let's peek at how Java helps prevent data-related mistakes.
+       Don't worry about the syntax—focus on what the code accomplishes.</p>
+
+    <subsection xml:id="java-song-class">
+      <title>A Song in Java</title>
+      <listing xml:id="song-java">
+        <program language="java">
+          public class Song {
+              // 'private' means these variables can only be changed
+              // using the methods we provide below
+              private String title;        // The song's name
+              private int rating;          // Must be 1-5
+              private int playCount;       // Must be >= 0
+              
+              // Methods to safely change the rating
+              public void setRating(int newRating) {
+                  if (newRating &lt; 1 &#124;&#124; newRating &gt; 5) {
+                        throw new IllegalArgumentException("Rating must be 1-5");
+                  }
+                  rating = newRating;
+              }
+              
+              // Methods to safely change the play count
+              public void setPlayCount(int newCount) {
+                  if (newCount &lt; 0) {
+                      throw new IllegalArgumentException("Play count can't be negative");
+                  }
+                  playCount = newCount;
+              }
+              
+              // Method to safely change the title
+              public void setTitle(String newTitle) {`
+                  if (newTitle == null || newTitle.isEmpty()) {
+                      throw new IllegalArgumentException("Title cannot be empty");
+                  }
+                  title = newTitle;
+              }
+          }
+        </program>
+      </listing>
+      <p>This Java code <em>enforces</em> our data definition in several ways:</p>
+      <ul>
+        <li>The variables are <c>private</c>, meaning they can only be changed using our special methods.</li>
+        <li>Each "setter" method checks that the new value is valid before making any changes.</li>
+        <li>The compiler ensures we can't accidentally put a number where text should go (or vice versa).</li>
+      </ul>
+    </subsection>
+
+    <subsection xml:id="compiler-catches-errors">
+      <title>The Compiler as Your Assistant</title>
+      <listing xml:id="java-errors">
+        <program language="java">
+          Song song = new Song();
+          
+          // These won't compile - Java catches type mismatches
+          song.setRating("five");         // Error: rating must be a number!
+          song.setPlayCount("lots");      // Error: play count must be a number!
+          
+          // These compile but fail when run - our methods catch invalid values
+          song.setRating(10);             // Error: rating must be 1-5
+          song.setPlayCount(-5);          // Error: can't have negative plays
+          song.setTitle("");              // Error: title can't be empty
+        </program>
+      </listing>
+      <p>Again, don't stress if this Java syntax feels overwhelming—you'll learn it step by step.
+         The key idea is that Java's type system acts like a helpful assistant, catching many data-related
+         mistakes before your program even runs.</p>
+    </subsection>
+
+    <subsection xml:id="focus-on-concepts">
+      <title>Focus on the Concepts First</title>
+      <p>For now, focus on understanding why data definitions matter. The Java examples above are just
+         a preview of how programming languages can help enforce good data design. Feel free to:</p>
+      <ul>
+        <li>Ask your instructor to explain any Java code that interests you</li>
+        <li>Use AI tools like ChatGPT to explore Java concepts</li>
+        <li>Discuss the code with classmates—explaining things to others often helps both parties learn</li>
+      </ul>
+      <p>We'll cover Java thoroughly in other chapters. For now, just appreciate how its type system
+         can turn our data definition "rules" into automatically-checked constraints.</p>
+    </subsection>
   </section>
 
   <!-- ======================================
