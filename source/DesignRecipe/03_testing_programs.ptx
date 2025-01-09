@@ -1,0 +1,324 @@
+<chapter xml:id="ch-examples-tests">
+  <title>3. Examples &amp; Tests</title>
+
+  <!-- ======================================
+       1. Overview and Objectives
+       ====================================== -->
+  <section xml:id="overview-objectives-example-tests">
+    <title>Overview and Objectives</title>
+    <p> In the previous chapters, you learned about defining data (Step 1) and writing clear method
+      signatures and purpose statements (Steps 2 &amp; 3) as part of the Design Recipe. Now, we move
+      on to <strong>Step 3: Writing Examples &amp; Tests</strong>. </p>
+    <p>
+      The key idea is straightforward: after figuring out what your function should do, you
+      create a few concrete examples to confirm it behaves correctly. Then, you turn these examples
+      into automated tests, so your checks can be repeated whenever you modify or extend the code.
+    </p>
+    <objectives>
+      <ul>
+        <li>
+          <p><em>Understand</em> why creating examples and tests <em>before or during</em>
+            implementation helps catch mistakes early.</p>
+        </li>
+        <li>
+          <p><em>Identify</em> typical, edge, and error-case scenarios for a function.</p>
+        </li>
+        <li>
+          <p><em>Use</em> Python’s <c>assert</c> statement to automate your tests (without needing
+            extra frameworks).</p>
+        </li>
+        <li>
+          <p><em>Recognize</em> how these test examples connect with the rest of the Design Recipe
+            to keep your programs reliable.</p>
+        </li>
+      </ul>
+    </objectives>
+  </section>
+
+  <!-- ======================================
+       2. Why Write Examples & Tests?
+       ====================================== -->
+  <section xml:id="why-examples-tests">
+    <title>Why Write Examples &amp; Tests?</title>
+    <p> Every time you write a function—like <c>calculate_total_price</c> or <c>count_vowels</c>—you
+      probably have one or two examples in mind: </p>
+    <ul>
+      <li>
+        <em>"If I call it on <c>[2, 3]</c>, I expect <c>5</c>."</em>
+      </li>
+      <li>
+        <em>"If I call it on <c>""</c> (empty string), I expect <c>0</c>."</em>
+      </li>
+    </ul>
+    <p> These examples clarify the function’s behavior in specific situations. When you turn them
+      into <em>automated tests</em>, you can re-check them quickly every time you change your code.
+      This prevents a common headache: <em>"I fixed a bug in one place, but I accidentally broke
+      something
+        else!"</em>
+    </p>
+    <p> While in a small project you might get away with ad-hoc or manual testing, in larger or
+      long-lived projects, automated tests save a <em>lot</em> of time and frustration. </p>
+  </section>
+
+  <!-- ======================================
+       3. A New Example: Counting Words
+       ====================================== -->
+  <section xml:id="count-words-example">
+    <title>A New Example: Counting Words</title>
+    <p> Let’s illustrate with a small, self-contained function: <c>count_words</c>. Suppose it: </p>
+    <ol>
+      <li>Takes a string of text</li>
+      <li>Splits it into words separated by spaces</li>
+      <li>Returns the number of words</li>
+    </ol>
+    <p> For instance: <ul>
+        <li><c>count_words("Hello world")</c> should return <c>2</c>.</li>
+        <li><c>count_words("")</c> (empty string) should return <c>0</c>.</li>
+        <li><c>count_words("OpenAI is awesome")</c> should return <c>3</c>.</li>
+      </ul>
+    </p>
+    <p> Let’s write a rough version of the function:
+    </p>
+    <listing>
+      <program language="python">
+        def count_words(text):
+        """
+        Returns the number of words in the given text. Words are separated by spaces.
+
+        Args:
+        text (str): A string that may be empty or contain multiple words separated by spaces.
+        Returns:
+        int: How many words are in 'text'.
+        """
+        # Split by spaces, filter out empty items, then count
+        if text.strip() == "": # If it's all whitespace or empty
+        return 0
+        words = text.split(" ")
+        return len(words)
+      </program>
+    </listing>
+    <p> We <em>think</em> this works for normal inputs, but we should confirm with examples—and then
+      automate those examples as tests. </p>
+  </section>
+
+  <!-- ======================================
+       4. Writing Examples Before or During Implementation
+       ====================================== -->
+  <section xml:id="examples-before-during">
+    <title>Writing Examples Before (or During) Implementation</title>
+    <p> In the Design Recipe, you write examples right after you define your function’s contract.
+      That way, your function’s behavior is explicit <em>before</em> you dive into coding (or at
+      least <em>very early</em> in the process). Our examples might be: </p>
+    <listing>
+      <program>
+        1) count_words(&quot;Hello world&quot;) -&gt; 2
+        2) count_words(&quot;&quot;) -&gt; 0
+        3) count_words(&quot;OpenAI is awesome&quot;) -&gt; 3
+        4) count_words(&quot; &quot;) -&gt; 0 (string of spaces only)
+        5) count_words(&quot;One two three&quot;) -&gt; 3 (multiple spaces?)
+      </program>
+    </listing>
+    <p> Notice that we included a couple of <em>edge cases</em>: </p>
+    <ul>
+      <li>The empty string (<c>""</c>)</li>
+      <li>A string of spaces (<c>" "</c>)</li>
+      <li>Extra spaces between words (<c>"One two three"</c>)</li>
+    </ul>
+    <p>
+      These might trip up naive code if we don’t handle them carefully.
+    </p>
+  </section>
+
+  <!-- ======================================
+       5. Testing with assert
+       ====================================== -->
+  <section xml:id="testing-with-assert">
+    <title>Testing with <c>assert</c></title>
+    <p> Python comes with a built-in statement called <c>assert</c> that you can use to test
+      conditions. If the condition is <c>False</c>, Python will raise an <c>AssertionError</c> and
+      stop the program. If the condition is <c>True</c>, it does nothing—meaning the test passed. </p>
+    <p> Let’s create a function named <c>test_count_words</c> to hold our checks: </p>
+    <listing>
+      <program language="python">
+        def test_count_words():
+        # Typical case
+        assert count_words("Hello world") == 2
+
+        # Empty string
+        assert count_words("") == 0
+
+        # A string with multiple words
+        assert count_words("OpenAI is awesome") == 3
+
+        # A string of spaces only
+        assert count_words(" ") == 0
+
+        # Extra spaces between words
+        assert count_words("One two three") == 3
+
+        print("test_count_words PASSED")
+      </program>
+    </listing>
+    <p> Once we run <c>test_count_words()</c>, each <c>assert</c> verifies our function returns the <em>
+      expected</em> value. If all checks pass, we see <c>test_count_words PASSED</c>. If something
+      is wrong, we get an <c>AssertionError</c> that tells us which check failed. </p>
+  </section>
+
+  <!-- ======================================
+       6. Seeing an Assertion Fail
+       ====================================== -->
+  <section xml:id="seeing-assertion-fail">
+    <title>Seeing an Assertion Fail</title>
+    <p> Suppose we introduced a small bug. For example, if we accidentally returned <c>len(words) -
+      1</c> in <c>count_words</c>: </p>
+    <listing>
+      <program language="python">
+        def count_words(text):
+        # Imagine we made a silly bug here:
+        if text.strip() == "":
+        return 0
+        words = text.split(" ")
+        return len(words) - 1 # BUG: subtract 1 for no reason
+      </program>
+    </listing>
+    <p> Now, when you call <c>test_count_words()</c>, Python will raise an <c>AssertionError</c> for
+      any test that expects 2 or 3 words but instead gets 1 or 2. You might see something like: </p>
+    <listing>
+      <program>
+        AssertionError
+      </program>
+    </listing>
+    <p> This indicates the test for <c>count_words("Hello world")</c> failed—our function returned <c>
+      1</c> instead of <c>2</c>. By printing out intermediate values or carefully reviewing the
+      code, we can spot the bug and fix it quickly. </p>
+  </section>
+
+  <!-- ======================================
+       7. A Simple "Test Runner"
+       ====================================== -->
+  <section xml:id="simple-test-runner">
+    <title>A Simple "Test Runner"</title>
+    <p> As your code grows, you might have more than one test function—like <c>test_count_words</c>, <c>
+      test_calculate_total_price</c>, etc. Running them one at a time can get boring. A small trick
+      is to gather them in a <c>run_tests()</c> function and call them all: </p>
+    <listing>
+      <program language="python">
+        def run_tests():
+        # Call each test function here
+        test_count_words()
+        # test_calculate_total_price()
+        # test_any_other_function()
+
+        # By default, let's run all tests if this file is run directly:
+        if __name__ == "__main__":
+        run_tests()
+      </program>
+    </listing>
+    <p> If everything passes, you’ll see each test's “PASSED” message. If any fail, an <c>
+      AssertionError</c> pops up, and you know exactly which function to fix first. </p>
+  </section>
+
+  <!-- ======================================
+       8. Connection to the Design Recipe
+       ====================================== -->
+  <section xml:id="connection-to-design-recipe">
+    <title>Connection to the Design Recipe</title>
+    <p>
+      In the broader Design Recipe, these examples and tests come right after you’ve stated each
+      function’s data definitions and purpose. The tests:
+    </p>
+    <ul>
+      <li><em>Reinforce the contract:</em> If your docstring says <c>count_words("Hello world")</c>
+        returns <c>2</c>, your test enforces that promise.</li>
+      <li><em>Catch edge-case bugs:</em> We specifically tested empty strings and trailing spaces,
+        which might be overlooked otherwise.</li>
+      <li><em>Enable quick iteration:</em> Anytime we modify <c>count_words</c>, we re-run the tests
+        to confirm it still works.</li>
+    </ul>
+  </section>
+
+  <!-- ======================================
+       9. Looking Ahead (Optional Frameworks)
+       ====================================== -->
+  <section xml:id="looking-ahead-frameworks">
+    <title>Looking Ahead: Beyond <c>assert</c></title>
+    <p> For larger projects, manually writing your own test functions is still helpful, but Python
+      also provides powerful tools like <c>unittest</c> and <c>pytest</c>. These: </p>
+    <ul>
+      <li>Automatically discover test functions (so you don’t have to write a <c>run_tests</c>
+        manually).</li>
+      <li>Give more detailed error messages when tests fail.</li>
+      <li>Support advanced features like grouping tests or running only certain ones.</li>
+    </ul>
+    <p> Later in the course, we’ll show you how to <em>import</em> and use <c>pytest</c> once you’re
+      more comfortable with Python modules, error handling, and exceptions. For now, using simple <c>
+      assert</c> checks in a single file is an excellent way to build testable, reliable code
+      without overwhelming complexity. </p>
+  </section>
+
+  <!-- ======================================
+       10. Exercises & Checkpoints
+       ====================================== -->
+  <section xml:id="exercises-checkpoints">
+    <title>Exercises &amp; Checkpoints</title>
+
+    <exercise>
+      <title>1. Write and Test <c>count_letters</c></title>
+      <statement>
+        <p>Create a function named <c>count_letters(text)</c> that returns how many letters (a-z or
+          A-Z) appear in the given string. For instance:</p>
+        <ul>
+          <li><c>count_letters("Hello!")</c> → <c>5</c></li>
+          <li><c>count_letters("")</c> → <c>0</c></li>
+          <li><c>count_letters("123 !!")</c> → <c>0</c></li>
+        </ul>
+        <p>Write at least four <c>assert</c> tests in a <c>test_count_letters()</c> function. Then,
+          run them to confirm your function works. (Hint: you can use <c>str.isalpha()</c> to check
+          if a character is a letter.)</p>
+      </statement>
+    </exercise>
+
+    <exercise>
+      <title>2. Edge Cases for <c>count_letters</c></title>
+      <statement>
+        <p>Think of one “weird” input for <c>count_letters</c> that might reveal a bug (for example,
+          a string with emojis or a long string of whitespace). Add an <c>assert</c> test for it and
+          see if your code handles it correctly.</p>
+      </statement>
+    </exercise>
+
+    <exercise>
+      <title>3. Debugging a Broken Test</title>
+      <statement>
+        <p>Intentionally break <c>count_letters</c> by skipping the last letter or ignoring
+          uppercase letters. Run your tests to see which one fails first. Fix the bug and verify the
+          tests pass again.</p>
+      </statement>
+    </exercise>
+
+    <exercise>
+      <title>4. Reflect on the Process</title>
+      <statement>
+        <p>In a short paragraph, describe how it feels to have automated tests for your functions.
+          Do you find bugs more quickly? Do you have more or less confidence when changing your
+          code? Write down your reflections.</p>
+      </statement>
+    </exercise>
+  </section>
+
+  <!-- ======================================
+       11. Conclusion & Next Steps
+       ====================================== -->
+  <section xml:id="conclusion-next-steps">
+    <title>Conclusion &amp; Next Steps</title>
+    <p> By turning your function examples into automated tests—even using Python’s simple <c>assert</c>—you
+      gain powerful protection against accidental mistakes and regressions. This practice fits
+      neatly into the Design Recipe: once you declare a function’s purpose, data definitions, and
+      contract, you transform your examples into quick checks that confirm you’re on the right
+      track. </p>
+    <p> In the next chapter, we’ll take a closer look at <em>invalid inputs</em> and how to handle
+      them. You’ve already seen Python raise an <c>AssertionError</c> when something goes wrong;
+      soon, you’ll learn to raise and handle other <em>exceptions</em> more gracefully to make your
+      programs more robust. </p>
+  </section>
+</chapter>
