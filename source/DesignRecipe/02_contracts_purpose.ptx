@@ -1,4 +1,4 @@
-<chapter xml:id="2-method-signature-purpose">
+<chapter xml:id="ch-method-signature-purpose">
   <title>2. Method Signature &amp; Purpose Statement</title>
 
   <!-- Overview -->
@@ -109,36 +109,31 @@
       <p><strong>Mai:</strong> "This is exactly what I needed to know! We should document all of this."</p>
     </blockquote>
 
-    <p>
-      Their conversation revealed four key parts of any function contract:
-    </p>
+    <p>Their conversation revealed four key parts of any function contract:</p>
     <ul>
-      <li><em>Preconditions:</em> What must be true about the inputs? (e.g., rating must be 1-5)</li>
-      <li><em>Input Types:</em> What kind of data can each parameter accept?</li>
-      <li><em>Return Value:</em> What does success or failure look like?</li>
-      <li><em>Error Cases:</em> What happens when things go wrong?</li>
+      <li><p><em>Preconditions:</em> What must be true about the inputs? (e.g., rating must be 1-5)</p></li>
+      <li><p><em>Input Types:</em> What kind of data can each parameter accept?</p></li>
+      <li><p><em>Return Value:</em> What does success or failure look like?</p></li>
+      <li><p><em>Error Cases:</em> What happens when things go wrong?</p></li>
     </ul>
 
-    <p>
-      Mai grabbed another napkin and started organizing their thoughts:
-    </p>
+    <p>Mai grabbed another napkin and started organizing their thoughts:</p>
     
     <blockquote>
       <title>Mai's Napkin Notes</title>
-      <p>
-        update_rating needs:
-        <ul>
-          <li>Inputs:
-            <ul>
-              <li>library: must be a non-empty list of songs</li>
-              <li>song_title: must be a non-empty string</li>
-              <li>new_rating: must be an int from 1 to 5</li>
-            </ul>
-          </li>
-          <li>Output: should tell us if it worked (True/False?)</li>
-          <li>Errors: raise ValueError for bad inputs</li>
-        </ul>
-      </p>
+      <p>update_rating needs:</p>
+      <ul>
+        <li>
+          <p>Inputs:</p>
+          <ul>
+            <li><p>library: must be a non-empty list of songs</p></li>
+            <li><p>song_title: must be a non-empty string</p></li>
+            <li><p>new_rating: must be an int from 1 to 5</p></li>
+          </ul>
+        </li>
+        <li><p>Output: should tell us if it worked (True/False?)</p></li>
+        <li><p>Errors: raise ValueError for bad inputs</p></li>
+      </ul>
     </blockquote>
   </section>
 
@@ -169,7 +164,7 @@
                 raise ValueError("Library cannot be None or empty")
             if not song_title:  # Catches empty strings
                 raise ValueError("Song title cannot be empty")
-            if not (1 <= new_rating <= 5):
+            if not (1 &lt;= new_rating &lt;= 5):
                 raise ValueError("Rating must be 1-5")
             # ... rest of implementation ...
       </program>
@@ -345,16 +340,16 @@
               Args:
                   song: A list [title, rating, play_count] where:
                        - rating is in [1..5]
-                       - play_count is >= 0
+                       - play_count is &gt;= 0
 
               Returns:
-                  A float value >= 0, higher means more popular.
+                  A float value &gt;= 0, higher means more popular.
 
               Raises:
                   ValueError: If rating or play_count are invalid.
 
               Example:
-                  >>> compute_popularity(["Hey Jude", 5, 100])
+                  &gt;&gt;&gt; compute_popularity(["Hey Jude", 5, 100])
                   23.0
               """
               # We'll implement this in later chapters
@@ -415,7 +410,7 @@
                   TypeError: If input types are wrong
 
               Examples:
-                  >>> process_data([1, 2, 3], 0.5)
+                  &gt;&gt;&gt; process_data([1, 2, 3], 0.5)
                   {'above': 2, 'below': 1}
               """
         </program>
@@ -557,7 +552,7 @@
         </p>
         <ul>
           <li>Takes a list of student names and their grades</li>
-          <li>Returns a list of names of students who passed (grade >= 60)</li>
+          <li>Returns a list of names of students who passed (grade &gt;= 60)</li>
           <li>Handles empty lists and invalid grades appropriately</li>
         </ul>
         <p>

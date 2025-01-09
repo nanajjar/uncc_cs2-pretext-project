@@ -1,4 +1,4 @@
-<chapter xml:id="1-data-definition">
+<chapter xml:id="ch-data-definition">
   <title>1. Data Definition</title>
 
   <!-- ======================================
@@ -22,19 +22,16 @@
     <objectives>
       <ul>
         <li><p>
-          <em>Explain</em> why "just start coding" can lead to maintenance headaches and silent bugs.
+          <em>Identify</em> how undocumented data assumptions lead to maintenance problems and bugs
         </p></li>
         <li><p>
-          <em>Articulate</em> that all programs transform <em>input data</em> into <em>output data</em>,
-          and thus a clear data specification is vital.
+          <em>Write</em> clear data definitions that specify structure and constraints
         </p></li>
         <li><p>
-          <em>Recognize</em> that <em>data definitions</em> (written "blueprints" of how data is structured)
-          safeguard against accidental changes or misunderstandings.
+          <em>Document</em> assumptions about valid values and relationships between fields
         </p></li>
         <li><p>
-          <em>Understand</em> how typed languages like Java can help <em>enforce</em> these
-          definitions automatically, rather than relying only on the programmer's discipline.
+          <em>Recognize</em> how typed languages can help enforce data definitions automatically
         </p></li>
       </ul>
     </objectives>
@@ -152,6 +149,18 @@
       <p><em>Key Lesson:</em> Without a clear definition of the data structure, even small changes can introduce
         subtle bugs that might not be immediately apparent.</p>
     </subsection>
+
+    <!-- Add reflection questions after each attempt -->
+      <exercise>
+        <statement>
+          <p>What could go wrong with Audrey's latest approach? Consider:</p>
+          <ul>
+            <li>What happens if someone reorders the fields?</li>
+            <li>How would you know what values are valid for each field?</li>
+            <li>Could you accidentally put text where a number should go?</li>
+          </ul>
+        </statement>
+      </exercise>
   </section>
 
   <!-- ======================================
@@ -174,8 +183,7 @@
       </ul>
     </p>
     <p> In earlier courses, you might have been <em>protected</em> from this problem because the
-      instructor gave you a well-structured <c>Point</c> class, or a “student record” type, or a <c>database
-      schema</c>. You simply followed it. But now, you’re the one deciding how to store data.
+      instructor gave you a well-structured <c>Point</c> class, or a “student record” type, or a <c>database schema</c>. You simply followed it. But now, you’re the one deciding how to store data.
       Failing to define it clearly is a recipe for frustration. </p>
   </section>
 
@@ -213,8 +221,8 @@
       are or which index is which. </p>
     <p>
       <strong>Assumptions &amp; Constraints:</strong> Notice we said <c>rating</c> can’t exceed 5. In
-      Python, you might or might not write code to check that. But if you do—say, with an <c>if
-      new_rating &amp; 5</c> check—then you can detect bad data early. In other languages, like Java,
+      Python, you might or might not write code to check that. But if you do—say, with an 
+      <c>if new_rating &amp; 5</c> check—then you can detect bad data early. In other languages, like Java,
       you could have a method that rejects any rating above 5 automatically. Either way, once you’ve
       written down “rating is 1–5,” it’s easier to test or enforce that assumption. </p>
     <p>
@@ -247,11 +255,11 @@
        6. Brief Look Ahead: Typed Languages
        ====================================== -->
   <section xml:id="typed-languages">
-    <title>Looking Ahead: Java's Type System</title>
+    <title>Looking Ahead: Java's Built-in Protection</title>
     
-    <p>Let's peek at how Java can help enforce data definitions automatically. Don't worry if the
-       Java code looks unfamiliar—you're not expected to understand it fully yet. The goal is to see
-       how a typed language can catch data-related mistakes early.</p>
+    <p>While Python lets us write data definitions as comments, some languages can actually
+       enforce our rules automatically. Let's peek at how Java helps prevent data-related mistakes.
+       Don't worry about the syntax—focus on what the code accomplishes.</p>
 
     <subsection xml:id="java-song-class">
       <title>A Song in Java</title>
