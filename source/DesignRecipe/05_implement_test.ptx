@@ -1,0 +1,389 @@
+<chapter xml:id="ch-implement-test-refine">
+  <title>5. Implement, Test &amp; Refine</title>
+
+
+  <!-- ======================================
+       1. Overview & Motivation
+       ====================================== -->
+
+
+  <section xml:id="overview-implementation-tests">
+    <title>Overview &amp; Motivation</title>
+    <p>
+      So far, you’ve followed a structured journey through the Design Recipe:
+    </p>
+    <ol>
+      <li><strong>Data Definitions</strong> (Chapter 1)</li>
+      <li><strong>Method Signatures &amp; Purpose Statements</strong> (Chapter 2)</li>
+      <li><strong>Examples &amp; Tests</strong> (Chapter 3)</li>
+      <li><strong>Skeleton / Method Template</strong> (Chapter 4)</li>
+    </ol>
+    <p>
+      Now comes the final—and perhaps most satisfying—phase: putting everything together in
+      a working, fully tested solution. In many beginner courses, coding is treated as the
+      only step—people rush to “just write the function.” But you’ve learned that a clear,
+      deliberate process leads to reliable, maintainable code.
+    </p>
+    <p>
+      In this chapter, you’ll see how to transform your skeleton (or outline) into a
+      full implementation and how to systematically test and refine it until you’re confident
+      it meets your design. You’ll also discover why adhering to these structured steps
+      prevents late-night debugging disasters.
+    </p>
+    <p>
+      By the end, you’ll have completed the entire Design Recipe cycle and seen firsthand
+      why every phase—from data definitions to final testing—truly matters.
+    </p>
+  </section>
+
+
+  <!-- ======================================
+       2. From Skeleton to Final Code
+       ====================================== -->
+
+
+  <section xml:id="from-skeleton-to-code">
+    <title>From Skeleton to Final Code</title>
+    <p>
+      In Chapter 4, you learned the value of writing a “method skeleton” (or outline):
+      you established the logical flow of your function, step by step, without worrying
+      about the final code details. Now, it’s time to fill in those placeholders with real
+      Python (or Java) statements.
+    </p>
+    <p>
+      Think of the skeleton as a set of clear signposts. You already decided:
+    </p>
+    <ul>
+      <li>Where to validate inputs</li>
+      <li>How (and if) to loop</li>
+      <li>What to return (and when to raise exceptions)</li>
+    </ul>
+    <p>
+      Because those signposts are in place, you can focus on getting each piece right,
+      confident you won’t forget any requirement from your contract or data definition.
+    </p>
+
+
+    <subsection xml:id="audrey-latest-project">
+      <title>Audrey’s Latest Project</title>
+      <p> Let’s jump back to Audrey, who’s now finalizing <code>update_rating</code> for her
+        music-app dream project. Previously, she documented the function’s purpose, wrote a
+        skeleton, and crafted some tests. After receiving feedback from her friend Mai (and
+        re-reading her own notes), Audrey feels prepared to implement the final code. </p>
+    </subsection>
+
+  </section>
+
+
+  <!-- ======================================
+       3. Implementing Step-by-Step
+       ====================================== -->
+
+
+  <section xml:id="implementing-step-by-step">
+    <title>Implementing Step-by-Step</title>
+    <p> Let’s revisit the <code>update_rating</code> skeleton and fill it in. According to the <em>data
+      definitions</em> and <em>method signature</em> from earlier chapters: </p>
+    <blockquote>
+      <p><em>Goal</em>: Update the rating for a given <code>song_title</code> in a <code>library</code>,
+        returning <code>True</code> if updated, <code>False</code> if the song isn’t found, and
+        raising <code>ValueError</code> if the inputs violate our constraints.</p>
+    </blockquote>
+
+
+    <listing xml:id="update-rating-final">
+      <title>Filling in the Skeleton: <code>update_rating</code></title>
+      <program language="python">
+def update_rating(library: list, song_title: str, new_rating: int) -> bool:
+    """Updates the rating for a song in the music library.
+    Args:
+        library: A non-empty list of songs, each [title, rating, play_count].
+        song_title: The song to look for (must be a non-empty string).
+        new_rating: The new rating (must be an int in [1..5]).
+    Returns:
+        True if the song was found and updated; False otherwise.
+    Raises:
+        ValueError: If library is empty, song_title is empty, or new_rating is out of range.
+    """
+    # 1. Validate inputs
+    if library is None or len(library) == 0:
+        raise ValueError("Library cannot be None or empty.")
+    if not song_title:
+        raise ValueError("Song title cannot be empty.")
+    if not (1 &lt;= new_rating &lt;= 5):
+        raise ValueError("Rating must be between 1 and 5.")
+
+    # 2. Search for matching song and update rating
+    for song in library:
+        if song[0] == song_title:
+            song[1] = new_rating
+            return True
+            
+    # 3. If no match was found, return False
+    return False
+      </program>
+    </listing>
+
+    <p> Notice how each comment from the skeleton corresponds to a distinct code block. The final
+      result is clear and concise—no wasted lines or hidden assumptions. Audrey didn’t need to guess
+      whether she should raise an exception or return <code>False</code> for invalid inputs—she’d
+      already settled that in the earlier design steps. </p>
+
+  </section>
+
+
+  <!-- ======================================
+       4. Testing & Refinement
+       ====================================== -->
+
+
+  <section xml:id="testing-refinement">
+    <title>Testing &amp; Refinement</title>
+    <p> Once you have your initial implementation, the next step is to run your <em>examples
+        and tests</em>—the same ones you drafted in Chapter 3. This “test-first” or “test-early”
+      approach pays off now by giving you immediate confidence (or immediate warning!) about whether
+      your code does what you promised. </p>
+
+
+    <subsection xml:id="running-tests">
+      <title>Running Your Tests</title>
+      <p>
+        If you created a dedicated test function, such as:
+      </p>
+      <listing>
+        <program language="python">
+
+def test_update_rating():
+    library = [
+        ["Imagine", 5, 120],
+        ["Thriller", 4, 230]
+    ]
+    
+    # Standard case: update existing song
+    assert update_rating(library, "Thriller", 3) == True
+    assert library[1][1] == 3  # now 3 stars
+    
+    # Not found
+    assert update_rating(library, "Unknown Song", 4) == False
+    
+    # Edge: rating out of bounds
+    try:
+        update_rating(library, "Imagine", 6)
+        assert False, "Expected ValueError for rating above 5"
+    except ValueError:
+        pass  # This is correct: our function should raise ValueError
+        </program>
+      </listing>
+      <p> Then you simply run <code>test_update_rating()</code> and watch for any <code>
+        AssertionError</code>. If everything passes, you’ll see no error—just a silent, successful
+        test. Some people like to print a “PASSED!” message at the end so they know everything
+        worked. </p>
+      <p>
+        But what if something fails? That’s where refinement comes in.
+      </p>
+    </subsection>
+
+    <subsection xml:id="refining-code">
+      <title>Refining Your Code</title>
+      <p> If you see a test fail—maybe the function returned <code>True</code> instead of <code>
+        False</code> or raised an unexpected exception—don’t panic. This is exactly why we test
+        early and often. </p>
+      <p>
+        You’ll check:
+      </p>
+      <ul>
+        <li><strong>Did I misunderstand an edge case?</strong> Maybe your <code>Data Definition</code>
+          needs a tweak.</li>
+        <li><strong>Is the test correct?</strong> On rare occasions, your test might be the issue—if
+          you wrote an incorrect expected value or forgot the design rules you set.</li>
+        <li><strong>Am I mixing concerns?</strong> If your function tries to do too many things at
+          once, it might become confusing. Splitting complex logic into smaller helpers can clarify
+          where the bug lies.</li>
+      </ul>
+      <p> After finding the root cause, you <em>adjust your code (or your test)</em>, re-run the
+        tests, and repeat until everything aligns. This cycle—fix, test, fix, test—is far more
+        efficient than writing code blindly and hoping your final result works. </p>
+    </subsection>
+
+  </section>
+
+
+  <!-- ======================================
+       5. Another Example: compute_popularity
+       ====================================== -->
+
+
+  <section xml:id="more-fill-ins">
+    <title>More Practice: <code>compute_popularity</code></title>
+    <p> Let’s illustrate the same process with a different function: <code>compute_popularity</code>,
+      which we introduced in Chapter 2. This function calculates a numeric “popularity score” based
+      on <code>rating</code> and <code>play_count</code>. By Chapter 4, you had written a skeleton
+      with steps: </p>
+    <blockquote>
+      <p><em>1.</em> Validate inputs<br />
+         <em>2.</em> Calculate <code>rating * log(play_count + 1)</code><br />
+         <em>
+        3.</em> Return the result </p>
+    </blockquote>
+    <p> Now, you fill it in with real code:</p>
+    <listing>
+      <program language="python">
+import math
+def compute_popularity(song: list) -> float:
+    """Calculates a song's popularity as rating * log(play_count + 1).
+    Args:
+        song: [title, rating, play_count] where rating in [1..5] and play_count >= 0
+    Returns:
+        A float representing the popularity score.
+    Raises:
+        ValueError: if the song data is invalid.
+    """
+    # 1. Validate
+    if song is None or len(song) &lt; 3:
+        raise ValueError("Expected song to be [title, rating, play_count].")
+    
+    title, rating, play_count = song[0], song[1], song[2]
+    
+    if not title:
+        raise ValueError("Song title can't be empty.")
+    if not (1 &lt;= rating &lt;= 5):
+        raise ValueError("Rating must be 1..5.")
+    if play_count &lt; 0:
+        raise ValueError("play_count can't be negative.")
+    
+    # 2. Calculate 
+    popularity = rating * math.log(play_count + 1)
+    
+    # 3. Return
+    return popularity
+      </program>
+    </listing>
+    <p>
+      Next, run your test suite. For instance:
+</p>
+    <listing>
+      <program language="python">
+def test_compute_popularity():
+    # Typical case
+    assert abs(compute_popularity(["Thriller", 5, 100]) - 23.0) &lt; 0.001
+    
+    # Edge: zero plays => rating * log(1) => 0
+    assert compute_popularity(["Imagine", 5, 0]) == 0.0
+    
+    # Invalid rating
+    try:
+        compute_popularity(["Hey Jude", 6, 10])
+        assert False, "Expected ValueError for rating above 5"
+    except ValueError:
+        pass
+      </program>
+    </listing>
+    <p>
+      If all these pass, you’re done! If any fail, refine the code until the behavior matches
+      your contract.
+    </p>
+
+  </section>
+
+
+  <!-- ======================================
+       6. Recap & Looking Ahead
+       ====================================== -->
+
+
+  <section xml:id="recap-looking-ahead">
+    <title>Recap &amp; Looking Ahead</title>
+    <p> By systematically <em>implementing</em> each skeleton step and then <em>testing &amp;
+      refining</em>, you ensure your code truly matches the design you envisioned. No guesswork, no
+      “Hmm, I hope this works!”—just a clear, confirmable match between your function’s stated
+      purpose and its actual behavior. </p>
+    <p> This final stage of the Design Recipe is often the most rewarding. You get to see your
+      functions come to life <strong>without</strong> the chaos or last-minute mysteries that plague
+      a “just wing it” approach. You also learn to trust your own work: if your design steps and
+      tests are thorough, you can confidently declare, “Yes, this function is correct.” </p>
+    <p>
+      In upcoming chapters, we’ll continue building on these skills:
+    </p>
+    <ul>
+      <li><em>Handling more complex data:</em> dealing with nested lists, dictionaries, or multiple
+        constraints</li>
+      <li><em>Advanced testing strategies:</em> using Python’s <code>pytest</code> or frameworks
+        like <code>unittest</code></li>
+      <li><em>Relating this to Java’s type system:</em> seeing how typed fields in Java can automate
+        parts of this “validation” step</li>
+    </ul>
+    <p>
+      For now, celebrate finishing the full Design Recipe cycle on a few example functions.
+      As you tackle larger problems, keep applying the same steps. Over time, you’ll discover
+      that this recipe isn’t just an academic exercise—it’s a powerful habit for developing
+      robust, maintainable code in any language you learn.
+    </p>
+  </section>
+
+
+  <!-- ======================================
+       7. Exercises & Practice
+       ====================================== -->
+
+
+  <section xml:id="exercises-practice-implementation">
+    <title>Exercises &amp; Practice</title>
+
+
+    <exercise>
+      <title>1. Implement <code>find_favorite_songs</code> &amp; Test It</title>
+      <statement>
+        <p> Recall your <code>find_favorite_songs(library)</code> skeleton from Chapter 4, which
+          returns a list of titles for songs rated at least 4. Now, write the full implementation
+          and test it thoroughly: </p>
+        <ul>
+          <li> Validate <code>library</code>: ensure it's not <code>None</code> or empty, and each
+            element is <code>[title, rating, play_count]</code>. </li>
+          <li> Loop through songs, check if <code>rating &gt;= 4</code>, and append the <code>title</code>
+            to a result list. </li>
+          <li>
+            Return that result list.
+          </li>
+        </ul>
+        <p>
+          Write at least one test that verifies this logic, plus a test
+          for invalid input. Refine until everything passes.
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise>
+      <title>2. Create a <code>remove_song</code> Function</title>
+      <statement>
+        <p> Imagine Audrey wants a <code>remove_song</code> function that removes a song by title
+          from her library. Define it in full (data definition, contract, skeleton, final
+          implementation) and write tests for: </p>
+        <ul>
+          <li>
+            Removing an existing song (verify it’s gone)
+          </li>
+          <li> Attempting to remove a song that doesn’t exist (should it return <code>False</code>
+            or do something else?) </li>
+          <li> Invalid inputs (e.g., <code>None</code> for the library) </li>
+        </ul>
+        <p>
+          Apply the Design Recipe steps thoroughly, then finalize the code
+          and confirm all tests pass.
+        </p>
+      </statement>
+    </exercise>
+
+    <exercise>
+      <title>3. Reflection on Confidence</title>
+      <statement>
+        <p>
+          In a brief paragraph, explain how writing tests before (or during) implementation
+          affects your confidence and workflow. Compare this to times you wrote code without
+          any formal tests. Do you feel more in control or less? What might you do differently
+          in future assignments?
+        </p>
+      </statement>
+    </exercise>
+
+  </section>
+</chapter>

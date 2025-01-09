@@ -5,6 +5,8 @@
   <xi:include href="./02_contracts_purpose.ptx" />
   <xi:include href="./03_example_tests.ptx" />
   <xi:include href="./04_method_skeleton.ptx" />
+  <xi:include href="./05_implement_test.ptx" />
+  <xi:include href="./06_final_recipe.ptx" />
 
 
 </chapter>
