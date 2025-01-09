@@ -9,25 +9,35 @@
     <p>
       This chapter introduces the importance of <em>data design</em> in any program. Students
       often jump straight into coding—tackling a problem by writing loops, conditionals,
-      or function calls—without stopping to clarify exactly what data they’ll process and
-      how it’s structured. This leads to hidden confusion or brittle “quick fixes” that
+      or function calls—without stopping to clarify exactly what data they'll process and
+      how it's structured. This leads to hidden confusion or brittle "quick fixes" that
       eventually fail when requirements change.
     </p>
     <p> We follow the story of <strong>Audrey</strong>, a music lover who naively starts storing her
       favorite songs in code. Each time she adds a new feature, unplanned changes to her data break
-      old parts of the program. By exploring her incremental fiasco, we’ll see why it’s crucial to
+      old parts of the program. By exploring her incremental fiasco, we'll see why it's crucial to
       <em>explicitly design</em> and <em>document</em> your data before (and during) coding—even if it seems
-      like “extra work.” </p>
-    <p> After reading this chapter, you should be able to: <ul>
-        <li>Explain why “just start coding” can lead to maintenance headaches and silent bugs.</li>
-        <li>Articulate that all programs transform <em>input data</em> into <em>output data</em>,
-      and thus a clear data specification is vital.</li>
-        <li>Recognize that <em>data definitions</em> (written “blueprints” of how data is structured)
-      safeguard against accidental changes or misunderstandings.</li>
-        <li>Appreciate how typed languages like Java can later help <em>enforce</em> these
-      definitions automatically, rather than relying only on the programmer’s discipline.</li>
+      like "extra work." </p>
+    
+    <objectives>
+      <ul>
+        <li><p>
+          <em>Explain</em> why "just start coding" can lead to maintenance headaches and silent bugs.
+        </p></li>
+        <li><p>
+          <em>Articulate</em> that all programs transform <em>input data</em> into <em>output data</em>,
+          and thus a clear data specification is vital.
+        </p></li>
+        <li><p>
+          <em>Recognize</em> that <em>data definitions</em> (written "blueprints" of how data is structured)
+          safeguard against accidental changes or misunderstandings.
+        </p></li>
+        <li><p>
+          <em>Understand</em> how typed languages like Java can help <em>enforce</em> these
+          definitions automatically, rather than relying only on the programmer's discipline.
+        </p></li>
       </ul>
-    </p>
+    </objectives>
   </section>
 
 <!-- ======================================

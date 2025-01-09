@@ -18,6 +18,13 @@ This master guide unifies the approach for writing instructional materials (text
 
 ### 1.3 Incorporating the Email’s Vision
 
+> **Clarification (Chapter Continuity & Python-Centric):**
+>
+> * Even though the course transitions to Java, our **Design Recipe** materials should be *Python-centric* unless explicitly focusing on Java syntax.
+> * We will maintain ongoing examples/scenarios (e.g., Audrey's Music Library) in Python, adding short Java previews *as needed* to highlight typed OOP concepts, but **not** requiring Java proficiency to grasp the design-recipe steps.
+> * Authors introducing new concepts (like method/function contracts, preconditions, or postconditions) should continue building from **Audrey's** story or similarly consistent examples.
+> * Hands-on exercises should reflect step-by-step coding in Python first, while preserving a constructive narrative style; any Java demonstration is purely a preview and does not replace the Python-based explanation.
+
 From the course coordinator’s email (summarized here), the core concept is to run two parallel “tracks”:
 
 * Track A focuses on the design recipe and conceptual OOP thinking. We leverage students’ existing Python knowledge to illustrate design principles—e.g., data definitions, test-first examples—before layering on Java specifics.
@@ -96,6 +103,11 @@ Each chapter or module should start by posing a short, relatable scenario or pro
     * Summarize what was learned.
     * Possibly tease how this connects to future modules (e.g., bigger projects).
 
+> **Additional Guidance (Chapter 2 and beyond):**
+>
+> * Keep using the same scenario if possible in future chapters (e.g., Audrey's Music Library) to reinforce continuity; show how to write Python-style contracts/tests first, then provide a short Java preview, if needed.
+> * Avoid assuming Java familiarity when teaching core design-recipe concepts—use Java examples only to demonstrate typed language advantages or constraints.
+
 ### 4.2 Lab Assignments & Homework
 
 * Design Recipe Lab: In weeks focusing on Track A, labs often involve:
@@ -139,6 +151,13 @@ To ensure all chapters feel cohesive:
 5. No Parallel Development Section
     * We are not documenting how authors will collectively do merges or pull requests. Instead, we simply stress: everyone must abide by the guidelines here for style, structure, and pedagogy.
 
+> **Clarification (Python vs. Java for Design Recipes):**
+>
+> * To prevent confusion, authors should remember that our design-recipe instruction *relies on Python examples first*.
+> * Java segments can appear in "preview" sections or at the end to show typed enforcement, but should never overshadow the Python storyline.
+> * Scenarios (like Audrey's music library) should be extended or revisited often to maintain a cohesive narrative across chapters.
+> * When introducing function/method contracts, authors should demonstrate real coding examples in Python, focusing on preconditions/postconditions and test cases. Only afterward, show a snippet in Java for contrast.
+
 ## 7. Expanding the Email’s Inspiration
 
 Below is a short restatement of the key points from the original email, reframed for clarity:
@@ -159,5 +178,12 @@ We encourage authors to keep these points front and center when drafting chapter
     3. Conclude with a refined, well-tested Java solution.
     4. Provide reflection prompts or expansions for lab/homework tasks.
 * Secondary Action: If new examples or scenarios are introduced, keep the style consistent with Audrey’s Music Library or similarly concrete, real-world contexts. Show partial code, highlight pitfalls, and reinforce how the design recipe addresses them.
+
+> **Clarification:**
+>
+> * Chapter 2 is on step 3, chapter 3 is on step 4, and so on. The first step will be covered at the end.
+> * Continue focusing on Python in examples, preserving the same narrative (e.g., Audrey's library).
+> * Show how we'd do minimal Java parallels at the end, clarifying that deeper Java syntax coverage will come in later chapters.
+> * After Chapter 2, ensure each subsequent chapter references and builds upon these *same design-recipe fundamentals* in a consistent voice.
 
 By adhering to these guidelines, the final product—be it a textbook, a set of online modules, or a series of handouts—will present students with a unified and constructivist learning journey. They’ll see how disciplined design thinking, combined with Java’s typing and OOP features, can dramatically improve both the readability and correctness of their code.

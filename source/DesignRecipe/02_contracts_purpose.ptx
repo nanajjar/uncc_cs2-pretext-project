@@ -1,0 +1,569 @@
+<chapter xml:id="2-method-signature-purpose">
+  <title>2. Method Signature &amp; Purpose Statement</title>
+
+  <!-- Overview -->
+  <section xml:id="overview-and-objectives">
+    <title>Overview and Objectives</title>
+    <p>
+      In Chapter 1, we saw how Audrey's lack of data definitions led to confusion when her music library 
+      needed new features. But even with clear data definitions, we still need a way to communicate what 
+      our functions or methods do with that data.
+    </p>
+    <p>
+      In this chapter, we'll continue Audrey's story as she learns why documenting what a function promises 
+      (and what constraints it has) is just as crucial as documenting data structure. We'll discover how 
+      tools like docstrings in Python can make these "contracts" explicit and checkable.
+    </p>
+
+    <objectives>
+      <ul>
+        <li>
+          <p><em>Recognize</em> that functions need clear "contracts" to prevent misuse and confusion</p>
+        </li>
+        <li>
+          <p><em>Write</em> method signatures that specify inputs, outputs, and key constraints</p>
+        </li>
+        <li>
+          <p><em>Create</em> purpose statements that explain what a function does (and doesn't do)</p>
+        </li>
+        <li>
+          <p><em>Use</em> Python's docstrings to document function contracts effectively</p>
+        </li>
+      </ul>
+    </objectives>
+  </section>
+
+  <!-- The Problem -->
+  <section xml:id="the-communication-breakdown">
+    <title>A Communication Breakdown</title>
+    <p>
+      After learning about data definitions, Audrey felt more confident. Each song was now clearly defined 
+      as [title, rating, play_count] with specific rules about valid values. Excited to share her progress, 
+      she showed her code to her study group.
+    </p>
+
+    <listing xml:id="shared-function">
+      <program language="python">
+        def update_rating(library, song_title, new_rating):
+            for entry in library:
+                if entry[0] == song_title:
+                    entry[1] = new_rating
+                    return
+      </program>
+    </listing>
+
+    <p>Her friend Mai tried using the function:</p>
+
+    <listing>
+      <program language="python">
+        # Mai's attempt
+        songs = [["Hey Jude", 4, 10]]
+        result = update_rating(songs, "Hey Jude", 5)
+        print(f"Update succeeded: {result}")  # Prints: Update succeeded: None
+        
+        # Later...
+        update_rating(None, "Hey Jude", 5)   # Crashes! 
+        update_rating(songs, "Hey Jude", 10)  # Sets rating to 10 (invalid!)
+        update_rating([], "", -1)            # Silently does nothing
+      </program>
+    </listing>
+
+    <p>"Your function is broken!" Mai said. "It returns None even when it works, crashes sometimes, 
+       and doesn't tell me if the song wasn't found!"</p>
+       
+    <p>Audrey protested: "But it works fine for me! I always check the library after calling it, 
+       and I know not to pass None or invalid ratings..."</p>
+
+    <p>They were both right—and both wrong. The function worked exactly as Audrey intended, but 
+       she'd never explicitly stated those intentions. She'd written code that made sense to her 
+       but left others guessing about:</p>
+    <ul>
+      <li>What valid values can new_rating take?</li>
+      <li>Can library be None or empty?</li>
+      <li>How do we know if the update succeeded?</li>
+      <li>Should it warn us if song_title isn't found?</li>
+    </ul>
+  </section>
+
+  <!-- Modify transition to discovering-contracts section -->
+  <section xml:id="discovering-contracts">
+    <title>From Confusion to Clarity</title>
+    <p>
+      After the miscommunication, Mai and Audrey met at the campus coffee shop. Instead of arguing about 
+      who was right, they decided to write down exactly what they each thought the function should do.
+    </p>
+    
+    <blockquote>
+      <p><strong>Mai:</strong> "Let me write down what confused me when I tried using your function..."</p>
+      <p><em>Mai writes on a napkin:</em>
+        <ul>
+          <li>Can I pass an empty library?</li>
+          <li>What happens if the song isn't found?</li>
+          <li>How do I know if the update worked?</li>
+        </ul>
+      </p>
+      <p><strong>Audrey:</strong> "Oh! I see the problem. I had all these rules in my head, but I never 
+         wrote them down. Like, ratings have to be 1-5..."</p>
+      <p><strong>Mai:</strong> "Wait, they do? That would've been good to know before I tried setting it to 10!"</p>
+      <p><strong>Audrey:</strong> "Right... and the library can't be None, and song titles can't be empty..."</p>
+      <p><strong>Mai:</strong> "This is exactly what I needed to know! We should document all of this."</p>
+    </blockquote>
+
+    <p>
+      Their conversation revealed four key parts of any function contract:
+    </p>
+    <ul>
+      <li><em>Preconditions:</em> What must be true about the inputs? (e.g., rating must be 1-5)</li>
+      <li><em>Input Types:</em> What kind of data can each parameter accept?</li>
+      <li><em>Return Value:</em> What does success or failure look like?</li>
+      <li><em>Error Cases:</em> What happens when things go wrong?</li>
+    </ul>
+
+    <p>
+      Mai grabbed another napkin and started organizing their thoughts:
+    </p>
+    
+    <blockquote>
+      <title>Mai's Napkin Notes</title>
+      <p>
+        update_rating needs:
+        <ul>
+          <li>Inputs:
+            <ul>
+              <li>library: must be a non-empty list of songs</li>
+              <li>song_title: must be a non-empty string</li>
+              <li>new_rating: must be an int from 1 to 5</li>
+            </ul>
+          </li>
+          <li>Output: should tell us if it worked (True/False?)</li>
+          <li>Errors: raise ValueError for bad inputs</li>
+        </ul>
+      </p>
+    </blockquote>
+  </section>
+
+  <section xml:id="from-discussion-to-docs">
+    <title>Turning Coffee Shop Notes into Code</title>
+    <p>
+      Back at their dorm, Audrey and Mai turned their napkin notes into Python code. They knew that
+      Python has special "docstrings" - documentation strings that explain what functions do.
+    </p>
+
+    <p>Their first attempt looked promising, but they weren't sure about the best format:</p>
+
+    <listing>
+      <program language="python">
+        def update_rating(library, song_title, new_rating):
+            """
+            Updates a song's rating. The song must exist in the library.
+            
+            We require:
+            - library is a non-None, non-empty list of songs
+            - song_title is a non-empty string
+            - new_rating is an int between 1 and 5
+            
+            Returns True if found and updated, False if song not found.
+            Raises ValueError for invalid inputs.
+            """
+            if library is None or len(library) == 0:
+                raise ValueError("Library cannot be None or empty")
+            if not song_title:  # Catches empty strings
+                raise ValueError("Song title cannot be empty")
+            if not (1 <= new_rating <= 5):
+                raise ValueError("Rating must be 1-5")
+            # ... rest of implementation ...
+      </program>
+    </listing>
+
+    <p>
+      This was much better! Now anyone reading the function would know:
+    </p>
+    <ul>
+      <li>Exactly what inputs are valid (and invalid)</li>
+      <li>What the function promises to return</li>
+      <li>When and why it might raise errors</li>
+    </ul>
+
+    <p>
+      But Mai noticed something: "This is good, but it's still kind of... informal? Like, we're just
+      writing paragraphs. Is there a more standardized way to document functions in Python?"
+    </p>
+  </section>
+
+  <section xml:id="informal-to-formal">
+    <title>Making Documentation More Structured</title>
+    <p>
+      Before looking at Python's formal documentation tools, let's practice writing a contract 
+      for another function. This will help us see what information is most important to include.
+    </p>
+
+    <exercise>
+      <title>Quick Practice: Documenting a Function</title>
+      <statement>
+        <p>Write informal documentation (like Mai's napkin notes) for this function:</p>
+        <program language="python">
+          def find_favorite_songs(library):
+              """What would you write here?"""
+              result = []
+              for song in library:
+                  if song[1] >= 4:
+                      result.append(song[0])
+              return result
+        </program>
+      </statement>
+    </exercise>
+  </section>
+
+  <!-- Modify why-signature-purpose introduction -->
+  <section xml:id="why-signature-purpose">
+    <title>Writing Clear Contracts with Python</title>
+    <p>
+      Remember how Audrey and Mai discovered they needed to specify:
+      <ul>
+        <li>What kinds of inputs are valid</li>
+        <li>What the function promises to do</li>
+        <li>What happens when things go wrong</li>
+      </ul>
+      Python provides two main tools for this: <strong>method signatures</strong> with type hints
+      and <strong>purpose statements</strong> in docstrings. Together, these form a clear contract
+      between the function and its users.
+    </p>
+    <p> A <strong>method signature</strong> is more than just “function name + parameters.” It’s a
+      compact way to state the function’s inputs, outputs, and sometimes exceptions or error
+      conditions. Combined with a <strong>purpose statement</strong> (a one- or two-sentence
+      explanation of the function’s job), you get a “mini contract” that aligns everyone’s
+      expectations. </p>
+
+    <subsection xml:id="living-documentation">
+      <title>A Form of Living Documentation</title>
+      <p>
+        Once written, these signatures and purpose statements become living documentation. If you
+        decide
+        to change the function’s behavior—like refusing to update a rating if the new value is out
+        of
+        [1..5]—you can update the contract accordingly. Anyone reading the code can see exactly
+        what’s
+        expected, without guessing or searching for hidden assumptions.
+      </p>
+    </subsection>
+
+    <subsection xml:id="better-testing-later">
+      <title>Enabling Better Testing (Later Steps)</title>
+      <p>
+        These contracts also guide test creation. Step 4 of the design recipe (Examples &amp; Tests)
+        becomes
+        much clearer when we know each function’s inputs, outputs, and constraints. We can
+        systematically
+        test valid and invalid ratings, missing song titles, etc., rather than discovering them “by
+        accident”
+        during frantic debugging.
+      </p>
+    </subsection>
+  </section>
+
+  <!-- Update method-signature-python introduction -->
+  <section xml:id="method-signature-python">
+    <title>From Notes to Professional Documentation</title>
+    <p>
+      After some research, Mai discovered that professional Python developers use a combination of
+      two tools to write clear contracts: <em>type hints</em> and structured <em>docstrings</em>.
+    </p>
+
+    <blockquote>
+      <p><strong>Mai:</strong> "Look what I found! We can actually tell Python what types our function expects:"</p>
+      <program language="python">
+        def update_rating(library: list, song_title: str, new_rating: int) -> bool:
+      </program>
+      <p><strong>Audrey:</strong> "That's cool! So anyone can see that new_rating must be an integer?"</p>
+      <p><strong>Mai:</strong> "Exactly! And the -> bool means it returns True or False."</p>
+    </blockquote>
+
+    <p>Excited by this discovery, they refined their documentation further:</p>
+
+    <listing>
+      <program language="python">
+        def update_rating(library: list, song_title: str, new_rating: int) -> bool:
+            """
+            Updates the rating for a song in the music library.
+
+            Args:
+                library: A list of songs, each [title, rating, play_count].
+                        Cannot be None or empty.
+                song_title: The title to search for. Must be non-empty.
+                new_rating: New rating value, must be in range [1..5].
+
+            Returns:
+                True if the song was found and updated, False otherwise.
+
+            Raises:
+                ValueError: If any inputs violate their constraints.
+
+            Example:
+                >>> songs = [["Hey Jude", 3, 10]]
+                >>> update_rating(songs, "Hey Jude", 4)
+                True
+                >>> update_rating(songs, "Unknown Song", 4)
+                False
+            """
+            # Implementation will come later...
+            pass
+      </program>
+    </listing>
+
+    <p>This version had several advantages over their coffee-shop notes:</p>
+    <ul>
+      <li>Type hints (<c>list</c>, <c>str</c>, <c>int</c>) catch type mismatches early</li>
+      <li>Structured sections (Args, Returns, Raises) make the contract easy to scan</li>
+      <li>Example usage shows exactly how the function should behave</li>
+      <li>The return type (<c>bool</c>) makes it clear how to check for success</li>
+    </ul>
+
+    <subsection xml:id="another-contract-example">
+      <title>Practice: Writing Another Contract</title>
+      <p>
+        Mai suggested they practice by writing a contract for a new function: one that would
+        compute a "popularity score" for each song.
+      </p>
+
+      <blockquote>
+        <p><strong>Audrey:</strong> "How about something that combines rating and play count?
+           Like rating × log(play_count + 1)?"</p>
+        <p><strong>Mai:</strong> "Perfect! Let's write out the contract first, before any code:"</p>
+      </blockquote>
+
+      <listing>
+        <program language="python">
+          def compute_popularity(song: list) -> float:
+              """
+              Calculates a song's popularity score based on rating and play count.
+
+              The score is: rating * log(play_count + 1)
+              This means:
+              - A 5-star song with 0 plays scores 5 * log(1) = 0
+              - A 5-star song with 100 plays scores 5 * log(101) ≈ 23.0
+
+              Args:
+                  song: A list [title, rating, play_count] where:
+                       - rating is in [1..5]
+                       - play_count is >= 0
+
+              Returns:
+                  A float value >= 0, higher means more popular.
+
+              Raises:
+                  ValueError: If rating or play_count are invalid.
+
+              Example:
+                  >>> compute_popularity(["Hey Jude", 5, 100])
+                  23.0
+              """
+              # We'll implement this in later chapters
+              pass
+      </program>
+      </listing>
+
+      <p>
+        Notice how this contract:
+        <ul>
+          <li>Explains the mathematical formula clearly</li>
+          <li>Shows what different inputs would produce</li>
+          <li>Maintains the same constraints from our Song definition</li>
+          <li>Uses the same structure as update_rating for consistency</li>
+        </ul>
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="formalizing-contracts">
+    <title>Formalizing Function Contracts</title>
+    <p>
+      Having seen how method signatures and purpose statements emerge naturally from documenting our 
+      intentions, let's formalize what makes a good function contract. A complete contract needs:
+    </p>
+    
+    <subsection xml:id="contract-components">
+      <title>Essential Components</title>
+      <ul>
+        <li><p><strong>Method Signature:</strong> The function name, parameter types, and return type</p></li>
+        <li><p><strong>Purpose Statement:</strong> A clear, one-sentence description of the function's role</p></li>
+        <li><p><strong>Preconditions:</strong> Requirements that inputs must satisfy</p></li>
+        <li><p><strong>Postconditions:</strong> Guarantees about the output or effects</p></li>
+        <li><p><strong>Error Cases:</strong> What happens when preconditions are violated</p></li>
+      </ul>
+    </subsection>
+
+    <subsection xml:id="standard-docstring-format">
+      <title>Standard Documentation Format</title>
+      <p>
+        In Python, we use docstrings with specific sections:
+      </p>
+      <listing>
+        <program language="python">
+          def process_data(data: list, threshold: float) -> dict:
+              """
+              Brief description of function's purpose.
+
+              Args:
+                  data: Description of data parameter and constraints
+                  threshold: Description and valid range
+
+              Returns:
+                  Description of return value
+
+              Raises:
+                  ValueError: When and why this might occur
+                  TypeError: If input types are wrong
+
+              Examples:
+                  >>> process_data([1, 2, 3], 0.5)
+                  {'above': 2, 'below': 1}
+              """
+        </program>
+      </listing>
+    </subsection>
+  </section>
+
+  <section xml:id="java-parallel">
+    <title>A Preview: Contracts in Java</title>
+    <p>
+      While we're learning to write clear contracts in Python, let's peek at how Java—a language 
+      you'll learn soon—handles function contracts. Don't worry if the Java syntax looks strange; 
+      you're not expected to understand it all yet.
+    </p>
+
+    <subsection xml:id="comparing-approaches">
+      <title>Python vs. Java: A First Look</title>
+      <listing xml:id="simple-comparison">
+        <program language="python">
+          # In Python, we document our contract in comments
+          def update_rating(song_title: str, new_rating: int) -> bool:
+              """
+              Updates a song's rating if it exists in our library.
+              
+              Args:
+                  song_title: Name of song (must not be empty)
+                  new_rating: New rating (must be 1-5)
+              
+              Returns:
+                  True if song was found and updated
+              """
+              # Implementation will come later...
+              pass
+        </program>
+        <program language="java">
+          // In Java, some rules are enforced by the language
+          public boolean updateRating(String songTitle, int newRating) {
+              // Java ensures songTitle can only be text
+              // and newRating can only be a whole number
+              
+              // Implementation will come later...
+              return false;
+          }
+        </program>
+      </listing>
+      <p>
+        Notice how Java's type system helps enforce part of our contract:
+      </p>
+      <ul>
+        <li>You can't accidentally pass a number where text is needed</li>
+        <li>You can't return text when a true/false answer is expected</li>
+        <li>Java checks these rules before the program even runs</li>
+      </ul>
+    </subsection>
+
+    <subsection xml:id="focus-on-python">
+      <title>Stay Focused on Python for Now</title>
+      <p>
+        The Java example above is just a preview. For now, focus on writing clear contracts in Python:
+      </p>
+      <ul>
+        <li>Use type hints to show what kind of data functions expect</li>
+        <li>Write detailed docstrings explaining constraints</li>
+        <li>Include examples showing how to use the function correctly</li>
+      </ul>
+      <p>
+        We'll learn more about Java's type system in later chapters. For now, just notice how 
+        different languages can help us express and enforce our function contracts in different ways.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="reflection-tying-back">
+    <title>The Value of Clear Contracts</title>
+    
+    <subsection xml:id="immediate-benefits">
+      <title>Immediate Benefits</title>
+      <ul>
+        <li>
+          <p><strong>Error Prevention:</strong> By explicitly stating constraints (like "rating must 
+             be 1-5"), we catch invalid inputs before they cause problems.</p>
+        </li>
+        <li>
+          <p><strong>Documentation:</strong> The contract serves as living documentation that stays 
+             in sync with the code.</p>
+        </li>
+        <li>
+          <p><strong>Testing Guide:</strong> Contracts naturally suggest test cases: valid inputs, 
+             edge cases, and error conditions.</p>
+        </li>
+      </ul>
+    </subsection>
+
+    <subsection xml:id="long-term-value">
+      <title>Long-term Value</title>
+      <ul>
+        <li>
+          <p><strong>Maintenance:</strong> Future developers (including yourself) can understand and 
+             modify code with confidence.</p>
+        </li>
+        <li>
+          <p><strong>Reusability:</strong> Well-documented functions with clear contracts are easier 
+             to reuse in new contexts.</p>
+        </li>
+        <li>
+          <p><strong>Reliability:</strong> When every function's contract is clear, large systems 
+             become more reliable and easier to debug.</p>
+        </li>
+      </ul>
+    </subsection>
+  </section>
+
+  <section xml:id="next-steps">
+    <title>Preparing for Implementation</title>
+    <p>
+      With clear method signatures and purpose statements in place, we're ready for the next step: 
+      writing examples and tests <em>before</em> implementation. This "test-first" approach ensures 
+      our contract is complete and unambiguous.
+    </p>
+    
+    <subsection xml:id="what-to-expect">
+      <title>What's Coming Next</title>
+      <p>
+        In Chapter 3, we'll:
+      </p>
+      <ul>
+        <li>Learn how to derive test cases from contracts</li>
+        <li>Write examples that cover normal usage and edge cases</li>
+        <li>Use test frameworks to automate verification</li>
+        <li>Refine contracts based on test insights</li>
+      </ul>
+    </subsection>
+
+    <exercise>
+      <title>Practice: Writing Contracts</title>
+      <statement>
+        <p>
+          Write a complete contract for a function that:
+        </p>
+        <ul>
+          <li>Takes a list of student names and their grades</li>
+          <li>Returns a list of names of students who passed (grade >= 60)</li>
+          <li>Handles empty lists and invalid grades appropriately</li>
+        </ul>
+        <p>
+          Include the method signature, purpose statement, parameters, return value, and error cases.
+        </p>
+      </statement>
+    </exercise>
+  </section>
+</chapter>
