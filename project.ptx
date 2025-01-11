@@ -4,8 +4,19 @@
   <targets>
     <target name="web" format="html" />
     <target name="print" format="pdf" />
+     <target
+            name="runestone"
+            format="html"
+            platform="runestone"
+          />
+   
   </targets>
 </project>
+
+
+
+
+
 
 
 <!-- SAMPLE MANIFEST illustrating all options. Defaults are given (mostly).              -->
