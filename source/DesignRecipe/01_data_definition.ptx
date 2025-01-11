@@ -38,10 +38,10 @@
   </subsection>
 
 <!-- ======================================
-     2. Audrey’s Journey
+     2. Audrey's Journey
      ====================================== -->
   <subsection xml:id="audrey-journey">
-    <title>Audrey’s Journey</title>
+    <title>Audrey's Journey</title>
 
     <!-- 2.1. Initial Goal -->
     <subsubsection xml:id="initial-goal">
@@ -169,9 +169,9 @@
     <title>Designing Data: Why It Matters</title>
     <p> <em>Programs</em> fundamentally do this: they take <em>input data</em>, transform or analyze it,
       and produce <em>output data</em>. Whether that data is a single integer or a complex structure
-      with nested fields, the program’s success relies on everyone understanding <alert>exactly
+      with nested fields, the program's success relies on everyone understanding <alert>exactly
       what the data is and how to interpret it</alert>. </p>
-    <p> If you never plan or document this structure, you’re effectively “designing” as you
+    <p> If you never plan or document this structure, you're effectively “designing” as you
       code—mixing two hard tasks at once. This often leads to: <ul>
         <li><em>Ambiguous fields</em>: Is <c>song[2]</c> the rating or the play count? Could it become <c>genre</c>
         if we shift the order next week?</li>
@@ -182,7 +182,7 @@
       </ul>
     </p>
     <p> In earlier courses, you might have been <em>protected</em> from this problem because the
-      instructor gave you a well-structured <c>Point</c> class, or a “student record” type, or a <c>database schema</c>. You simply followed it. But now, you’re the one deciding how to store data.
+      instructor gave you a well-structured <c>Point</c> class, or a “student record” type, or a <c>database schema</c>. You simply followed it. But now, you're the one deciding how to store data.
       Failing to define it clearly is a recipe for frustration. </p>
   </subsection>
 
@@ -194,14 +194,14 @@
     <p> A <alert>data definition</alert> is a concise statement of: </p>
     <ol>
       <li><em>Which fields</em> or attributes exist (e.g., <c>title</c>, <c>rating</c>, <c>play_count</c>).</li>
-      <li><em>How they’re typed or constrained</em> (e.g., rating is an integer 1–5, play_count is
+      <li><em>How they're typed or constrained</em> (e.g., rating is an integer 1–5, play_count is
         nonnegative, etc.).</li>
-      <li><em>Any key assumptions</em> (like “rating can’t exceed 5,” or “dates must be in
+      <li><em>Any key assumptions</em> (like “rating can't exceed 5,” or “dates must be in
         MM/DD/YYYY format”).</li>
     </ol>
 
     <p>
-      For Audrey’s music library, we might define:
+      For Audrey's music library, we might define:
     </p>
     <blockquote>
       <p>
@@ -214,18 +214,18 @@
       </p>
     </blockquote>
 
-    <p> Why is this useful? Because if Audrey later decides “I need to store <c>artist</c>,” she’ll
+    <p> Why is this useful? Because if Audrey later decides “I need to store <c>artist</c>,” she'll
       update the definition to: <c>[title, rating, play_count, artist]</c>. Every function that
       touches <c>Song</c> refers back to this “blueprint,” instead of guessing how many fields there
       are or which index is which. </p>
     <p>
-      <alert>Assumptions &amp; Constraints:</alert> Notice we said <c>rating</c> can’t exceed 5. In
+      <alert>Assumptions &amp; Constraints:</alert> Notice we said <c>rating</c> can't exceed 5. In
       Python, you might or might not write code to check that. But if you do—say, with an 
       <c>if new_rating &amp; 5</c> check—then you can detect bad data early. In other languages, like Java,
-      you could have a method that rejects any rating above 5 automatically. Either way, once you’ve
-      written down “rating is 1–5,” it’s easier to test or enforce that assumption. </p>
+      you could have a method that rejects any rating above 5 automatically. Either way, once you've
+      written down “rating is 1–5,” it's easier to test or enforce that assumption. </p>
     <p>
-      <em>Micro-Exercise:</em> If you decide <c>play_count</c> can’t exceed 9999, how would you
+      <em>Micro-Exercise:</em> If you decide <c>play_count</c> can't exceed 9999, how would you
       reflect that in your definition? Could you detect an invalid <c>play_count</c> in code and
       raise an error or log a warning? </p>
   </subsection>
@@ -235,8 +235,8 @@
        ====================================== -->
   <subsection xml:id="design-vs-implementation">
     <title>Separating Design from Implementation</title>
-    <p> One reason novices skip data definitions is they jump right into “let’s make a loop in
-      Python” or “let’s code a quick function to do X.” But when you do that, you’re <alert>
+    <p> One reason novices skip data definitions is they jump right into “let's make a loop in
+      Python” or “let's code a quick function to do X.” But when you do that, you're <alert>
       implicitly</alert> designing the data <alert>while</alert> you implement logic—a mental juggling act that can
       be error-prone. </p>
     <p> <em>Best Practice:</em> Pause before coding. Ask: <em>"What data do I have? Where do these fields
@@ -244,9 +244,9 @@
         How might they evolve over time?”</em> By addressing these questions early, you create a
       stable foundation that makes the actual coding smoother and less likely to break with new
       requirements. </p>
-    <p> This is the <em>first step</em> of a broader <alert>design recipe</alert> you’ll practice
-      throughout this course. You’ll see that once data is well-defined, you can systematically
-      define each function’s <alert>contract</alert> (what it takes in, what it returns), write tests, and
+    <p> This is the <em>first step</em> of a broader <alert>design recipe</alert> you'll practice
+      throughout this course. You'll see that once data is well-defined, you can systematically
+      define each function's <alert>contract</alert> (what it takes in, what it returns), write tests, and
       iterate your design. </p>
   </subsection>
 
@@ -345,14 +345,14 @@
      ====================================== -->
   <subsection xml:id="reflection-next-steps">
     <title>Reflection and Next Steps</title>
-    <p> Audrey’s incremental “fixes” all failed the moment she changed the order of fields or added
+    <p> Audrey's incremental “fixes” all failed the moment she changed the order of fields or added
       a new one. By contrast, a data definition—like <c>[title, rating, play_count]</c>— serves as a
       stable reference point: any code that modifies or reads a field can check the blueprint to
       avoid silent breakage. </p>
     <p>
       <alert>Takeaways:</alert>
       <ul>
-        <li><em>All programs revolve around data:</em> if you don’t define it up front, you risk
+        <li><em>All programs revolve around data:</em> if you don't define it up front, you risk
           layering assumptions until they collapse under new features.</li>
         <li><em>Constraints become testable:</em> once you say “rating is ≤ 5,” you can
           systematically check that in Python, or in a typed language like Java, you might disallow
@@ -362,8 +362,8 @@
           unexpectedly.</li>
       </ul>
     </p>
-    <p> In the next section, we’ll see <em>how</em> to define each function’s “Contract” once we have a
-      clear data definition. Just as data needs a specification, so do functions: we’ll specify what
+    <p> In the next section, we'll see <em>how</em> to define each function's “Contract” once we have a
+      clear data definition. Just as data needs a specification, so do functions: we'll specify what
       inputs they take, what outputs they give, and any invariants (like not accepting a <c>play_count</c>
       less than 0). By combining these steps— data definition, then function
       contracts, then testing—we build a robust, iterative path to maintainable code. </p>
@@ -377,14 +377,14 @@
        ======================= -->
     <exercise xml:id="mc-fragile-indices">
       <title>Hard-Coded Indices Pitfalls</title>
-      <statement> Audrey’s code once did <code>library[0][1]</code> to change a song’s rating. Which
+      <statement> Audrey's code once did <code>library[0][1]</code> to change a song's rating. Which
         of the following is the best explanation of why this is risky? </statement>
       <choices randomize="yes">
         <!-- Mark one choice correct="yes" -->
         <choice>
           <statement> Because Python always indexes from 1, making <code>[0][1]</code> out of range. </statement>
           <feedback>
-            Python is 0-based, so that’s not the root problem.
+            Python is 0-based, so that's not the root problem.
           </feedback>
         </choice>
         <choice correct="yes">
@@ -400,8 +400,8 @@
             It is never valid to access a nested list by two indices in Python.
           </statement>
           <feedback>
-            Nested indexing is valid in Python—it’s the assumption about *which* index
-            stores what that’s the problem.
+            Nested indexing is valid in Python—it's the assumption about *which* index
+            stores what that's the problem.
           </feedback>
         </choice>
         <choice>
@@ -482,9 +482,9 @@
        (No numbered lines in the blocks)
        ======================= -->
     <exercise xml:id="parsons-audrey-journey" language="natural">
-      <title>Parsons: Audrey’s Data Definition Journey</title>
+      <title>Parsons: Audrey's Data Definition Journey</title>
       <statement>
-        Arrange these statements to reflect how Audrey’s approach evolved,
+        Arrange these statements to reflect how Audrey's approach evolved,
         leading her to realize a formal data definition was necessary.
       </statement>
       <blocks layout="vertical" randomize="yes">
@@ -512,7 +512,7 @@
         </block>
       </blocks>
       <solution>
-        <p>Correct order in Audrey’s story: <ol>
+        <p>Correct order in Audrey's story: <ol>
             <li>No documentation for [title, rating]</li>
             <li>Adding fields like play_count breaks old assumptions</li>
             <li>She sees the fragility of “index 0, index 1” logic</li>

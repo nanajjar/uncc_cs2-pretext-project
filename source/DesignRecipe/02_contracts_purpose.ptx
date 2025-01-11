@@ -5,12 +5,12 @@
   <subsection xml:id="overview-and-objectives">
     <title>Overview and Objectives</title>
     <p>
-      In Chapter 1, we saw how Audrey's lack of data definitions led to confusion when her music library 
+      In Section 1, we saw how Audrey's lack of data definitions led to confusion when her music library 
       needed new features. But even with clear data definitions, we still need a way to communicate what 
       our functions or methods do with that data.
     </p>
     <p>
-      In this chapter, we'll continue Audrey's story as she learns why documenting what a function promises 
+      In this section, we'll continue Audrey's story as she learns why documenting what a function promises 
       (and what constraints it has) is just as crucial as documenting data structure. We'll discover how 
       tools like docstrings in Python can make these "contracts" explicit and checkable.
     </p>
@@ -223,10 +223,10 @@
       and <alert>purpose statements</alert> in docstrings. Together, these form a clear contract
       between the function and its users.
     </p>
-    <p> A <alert>method signature</alert> is more than just “function name + parameters.” It’s a
-      compact way to state the function’s inputs, outputs, and sometimes exceptions or error
+    <p> A <alert>method signature</alert> is more than just “function name + parameters.” It's a
+      compact way to state the function's inputs, outputs, and sometimes exceptions or error
       conditions. Combined with a <alert>purpose statement</alert> (a one- or two-sentence
-      explanation of the function’s job), you get a “mini contract” that aligns everyone’s
+      explanation of the function's job), you get a “mini contract” that aligns everyone's
       expectations. </p>
 
     <subsubsection xml:id="living-documentation">
@@ -234,10 +234,10 @@
       <p>
         Once written, these signatures and purpose statements become living documentation. If you
         decide
-        to change the function’s behavior—like refusing to update a rating if the new value is out
+        to change the function's behavior—like refusing to update a rating if the new value is out
         of
         [1..5]—you can update the contract accordingly. Anyone reading the code can see exactly
-        what’s
+        what's
         expected, without guessing or searching for hidden assumptions.
       </p>
     </subsubsection>
@@ -247,7 +247,7 @@
       <p>
         These contracts also guide test creation. Step 4 of the design recipe (Examples &amp; Tests)
         becomes
-        much clearer when we know each function’s inputs, outputs, and constraints. We can
+        much clearer when we know each function's inputs, outputs, and constraints. We can
         systematically
         test valid and invalid ratings, missing song titles, etc., rather than discovering them “by
         accident”
@@ -569,10 +569,10 @@
        1. PARSONS PROBLEM: Audrey & Mai's Story (Motivation)
        ========================================================= -->
     <exercise xml:id="parsons-audrey-mai-story" language="natural">
-      <title>Parsons: Audrey &amp; Mai’s Journey to Documenting Function Constraints</title>
+      <title>Parsons: Audrey &amp; Mai's Journey to Documenting Function Constraints</title>
       <statement>
         Rearrange these story beats to see how Audrey and Mai realized the importance
-        of a function’s **signature and purpose statement** (docstring).
+        of a function's **signature and purpose statement** (docstring).
       </statement>
       <blocks layout="vertical" randomize="yes">
         <block order="1">
@@ -679,8 +679,7 @@
       <title>Benefits of a Purpose Statement</title>
       <statement>
         Which of the following best captures the **main benefit** of writing a clear purpose
-        statement
-        for your function in Chapter 2’s context?
+        statement for your function based on this section's context?
       </statement>
       <choices randomize="yes">
         <choice correct="yes">
@@ -689,7 +688,7 @@
             what inputs are valid, and what output to expect.
           </statement>
           <feedback>
-            Correct! Documenting the function’s purpose and constraints is key for preventing
+            Correct! Documenting the function's purpose and constraints is key for preventing
             misuse.
           </feedback>
         </choice>
@@ -767,7 +766,7 @@
         </choice>
         <choice>
           <statement>Error Cases</statement>
-          <feedback>Error cases describe what happens with invalid inputs, not the function’s
+          <feedback>Error cases describe what happens with invalid inputs, not the function's
             signature details.</feedback>
         </choice>
       </choices>
@@ -794,7 +793,7 @@
         </choice>
         <choice>
           <statement>Purpose Statement</statement>
-          <feedback>This describes the function’s job or role, not constraints on inputs.</feedback>
+          <feedback>This describes the function's job or role, not constraints on inputs.</feedback>
         </choice>
         <choice>
           <statement>Postconditions</statement>
@@ -825,11 +824,11 @@
         </choice>
         <choice>
           <statement>Preconditions</statement>
-          <feedback>These specify requirements on inputs, not the function’s overall job.</feedback>
+          <feedback>These specify requirements on inputs, not the function's overall job.</feedback>
         </choice>
         <choice correct="yes">
           <statement>Purpose Statement</statement>
-          <feedback>Correct! A purpose statement summarizes the function’s intended behavior.</feedback>
+          <feedback>Correct! A purpose statement summarizes the function's intended behavior.</feedback>
         </choice>
         <choice>
           <statement>Postconditions</statement>
@@ -862,7 +861,7 @@
         </choice>
         <choice>
           <statement>Purpose Statement</statement>
-          <feedback>This is a short description of the function’s role, not the final guaranteed
+          <feedback>This is a short description of the function's role, not the final guaranteed
             state.</feedback>
         </choice>
         <choice correct="yes">
@@ -897,13 +896,13 @@
           <statement>Preconditions</statement>
           <feedback>
             Preconditions specify valid input scenarios, while “error cases” detail what happens if
-            they’re not met.
+            they're not met.
           </feedback>
         </choice>
         <choice>
           <statement>Purpose Statement</statement>
           <feedback>
-            This describes the function’s main job, not how errors or invalid inputs are handled.
+            This describes the function's main job, not how errors or invalid inputs are handled.
           </feedback>
         </choice>
         <choice>
