@@ -369,4 +369,195 @@
       less than 0). By combining these steps— data definition, then function
       contracts, then testing—we build a robust, iterative path to maintainable code. </p>
   </section>
+
+  <section xml:id="ch-data-definition-exercises">
+    <title>Chapter 1: Data Definition Exercises</title>
+
+    <!-- =======================
+       1. MULTIPLE CHOICE
+       ======================= -->
+    <exercise xml:id="mc-fragile-indices">
+      <title>Hard-Coded Indices Pitfalls</title>
+      <statement> Audrey’s code once did <code>library[0][1]</code> to change a song’s rating. Which
+        of the following is the best explanation of why this is risky? </statement>
+      <choices randomize="yes">
+        <!-- Mark one choice correct="yes" -->
+        <choice>
+          <statement> Because Python always indexes from 1, making <code>[0][1]</code> out of range. </statement>
+          <feedback>
+            Python is 0-based, so that’s not the root problem.
+          </feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>
+            Changing the data structure (like adding a new field)
+            can break old assumptions about which index stores the rating.
+          </statement>
+          <feedback> Exactly. If a new field pushes <code>rating</code> to <code>[2]</code>, code
+            referencing <code>[1]</code> corrupts data. </feedback>
+        </choice>
+        <choice>
+          <statement>
+            It is never valid to access a nested list by two indices in Python.
+          </statement>
+          <feedback>
+            Nested indexing is valid in Python—it’s the assumption about *which* index
+            stores what that’s the problem.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            Hard-coding indices only matters in typed languages like Java, not in Python.
+          </statement>
+          <feedback>
+            Even in Python, undocumented “magic” indices can cause silent breakage if data changes.
+          </feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- =======================
+       2. MULTIPLE CHOICE
+       ======================= -->
+    <exercise xml:id="mc-define-early">
+      <title>Defining Data Early</title>
+      <statement> Based on Chapter 1, why is it crucial to define data (e.g., <code>[title, rating,
+        play_count]</code>) before writing code? </statement>
+      <choices randomize="yes">
+        <choice>
+          <statement>
+            You cannot write loops in Python without a prior data definition.
+          </statement>
+          <feedback>
+            You *can* write loops, but they may be fragile without a clear data structure.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            It makes the program run 100x faster automatically.
+          </statement>
+          <feedback>
+            Defining data is about clarity and maintainability,
+            not about huge performance boosts by itself.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            It only matters for projects with over 1,000 lines of code.
+          </statement>
+          <feedback>
+            Even small projects benefit from well-defined data.
+          </feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>
+            It prevents hidden assumptions about field positions,
+            so adding new fields later does not silently break old logic.
+          </statement>
+          <feedback>
+            Right. Explicit data definitions reduce the chance of “magic index” errors
+            and ease future expansion.
+          </feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- =======================
+       3. TRUE/FALSE
+       (Neutral single feedback)
+       ======================= -->
+    <exercise xml:id="tf-typed-only" type="truefalse">
+      <title>Data Definitions and Typed Languages</title>
+      <!-- Set correct="no" if statement is false, and provide a single feedback. -->
+      <statement correct="no">
+        Data definitions are only necessary in typed languages like Java,
+        and serve no purpose in Python.
+      </statement>
+      <feedback>
+        Data definitions can help clarify structure in *any* language, typed or not.
+      </feedback>
+    </exercise>
+
+    <!-- =======================
+       4. PARSONS PROBLEM
+       (No numbered lines in the blocks)
+       ======================= -->
+    <exercise xml:id="parsons-audrey-journey" language="natural">
+      <title>Parsons: Audrey’s Data Definition Journey</title>
+      <statement>
+        Arrange these statements to reflect how Audrey’s approach evolved,
+        leading her to realize a formal data definition was necessary.
+      </statement>
+      <blocks layout="vertical" randomize="yes">
+        <!-- No "1)" or "2)" in the text to avoid defeating the purpose -->
+        <block order="1">
+          <choice correct="yes">
+            <cline>Initially stores songs as [title, rating] without documenting any structure.</cline>
+          </choice>
+        </block>
+        <block order="2">
+          <choice correct="yes">
+            <cline>Realizes that adding new fields like play_count breaks the code's assumptions.</cline>
+          </choice>
+        </block>
+        <block order="3">
+          <choice correct="yes">
+            <cline>Recognizes that “index 0 is title, index 1 is rating” is too fragile.</cline>
+          </choice>
+        </block>
+        <block order="4">
+          <choice correct="yes">
+            <cline>Defines data explicitly (e.g., [title, rating, play_count]) to prevent “magic
+              index” bugs.</cline>
+          </choice>
+        </block>
+      </blocks>
+      <solution>
+        <p>Correct order in Audrey’s story: <ol>
+            <li>No documentation for [title, rating]</li>
+            <li>Adding fields like play_count breaks old assumptions</li>
+            <li>She sees the fragility of “index 0, index 1” logic</li>
+            <li>Finally, she formalizes [title, rating, play_count]</li>
+          </ol>
+        </p>
+      </solution>
+    </exercise>
+
+    <!-- =======================
+       5. SHORT ANSWER
+       (Create a Data Definition)
+       ======================= -->
+    <exercise xml:id="sa-create-data-definition">
+      <title>Create a Data Definition</title>
+      <statement>
+        <p> Suppose you're designing a system for a library of books. Propose a simple <em>data
+          definition</em> (in the style of Chapter 1) describing how to store each book. Specify: </p>
+        <ul>
+          <li>The structure (e.g., <code>[title, author, pages]</code>)</li>
+          <li>Any constraints (e.g., <code>pages &gt;= 1</code>, or <code>title</code> non-empty)</li>
+        </ul>
+        <p>Write your definition below.</p>
+      </statement>
+      <!-- The <response> signals we want a short-answer text box. -->
+      <response />
+      <solution>
+        <p>
+          <strong>Sample Data Definition:</strong>
+        </p>
+        <p>
+          <em>A <code>Book</code> is a list of the form <code>[title, author, page_count]</code>
+            where:</em>
+        </p>
+        <ul>
+          <li><code>title</code> is a non-empty string (e.g. "Pride and Prejudice").</li>
+          <li><code>author</code> is a non-empty string (e.g. "Jane Austen").</li>
+          <li><code>page_count</code> is an integer &gt;= 1.</li>
+        </ul>
+        <p> You could refine constraints (e.g., max pages = 9999) or store extra fields like <code>
+          genre</code> and <code>publication_year</code>. The crucial idea is documenting each field
+          and its valid range or type. </p>
+      </solution>
+    </exercise>
+
+  </section>
 </chapter>

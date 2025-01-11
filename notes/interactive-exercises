@@ -1,0 +1,443 @@
+---
+created: 2025-01-11T05:54:37 (UTC -05:00)
+tags: []
+source: https://runestone.academy/ns/books/published/pretextguide/topic-interactive-exercises.html
+author: 
+---
+
+# Interactive Exercises
+
+> ## Excerpt
+>
+> PreTeXt has markup for a variety of interactive problem types, described individually in the subsections to follow.  Generally, for a regular HTML build (Chapter 29), these will be interactive, informing the reader when their answer is correct, and providing feedback when their answer is not correct.  When HTML is built to host on a Runestone server (Chapter 32), then student progress as part of a course will be recorded on the server.  Some features, which will be noted below, such as execution of computer code, is more capable on a Runestone server.
+
+---
+PreTeXt has markup for a variety of interactive problem types, described individually in the subsections to follow. Generally, for a regular HTML build ([Chapter 29](https://runestone.academy/ns/books/published/pretextguide/online-html.html "Chapter 29: Conversion to Online HTML")), these will be interactive, informing the reader when their answer is correct, and providing feedback when their answer is not correct. When HTML is built to host on a Runestone server ([Chapter 32](https://runestone.academy/ns/books/published/pretextguide/runestone.html "Chapter 32: Conversion to Runestone")), then student progress as part of a course will be recorded on the server. Some features, which will be noted below, such as execution of computer code, is more capable on a Runestone server.
+
+Generally, an interactive exercise is authored much like a “regular” `<exercise>` ([Section 3.9](https://runestone.academy/ns/books/published/pretextguide/overview-exercises.html "Section 3.9: Exercises")) with `<statement>`, `<hint>`, `<answer>`, `<solution>`. However, there is also some additional markup which serves as a signal that the exercise is more than a short-answer, or free-response, question. Usually, but not always, this signal is an additional element following `<statement>`. One consequence of this is that all but one type of interactive exercise will require a `<statement>` element to contain the question text.
+
+Each type of interactive question has a static version for use in output formats like print, PDF, or braille. Details are given below. Note that since the ability for instant evaluation of a reader’s answer means an author provides the solution and other feedback, this can then be incorporated into a static version as an automatically-generated `<answer>` and/or `<solution>` (in addition to any others an author provides). Note that an author can provide a `<hint>` for use in all output formats, but there are not any automatically-generated `<hint>` for static versions of interactive problems. Visibility of these solutions can be controlled via the mechanism applicable to all exercises, see [Section 26.4](https://runestone.academy/ns/books/published/pretextguide/exercise-component-visibility.html "Section 26.4: Exercise Component Visibility").
+
+Note the opportunity to provide feeback to the reader using a `<feedback>` element in various locations. These are generally optional, but highly encouraged as a way to improve the quality of your reader’s experience.
+
+These interactive questions are enabled by software from Runestone Academy ([Chapter 32](https://runestone.academy/ns/books/published/pretextguide/runestone.html "Chapter 32: Conversion to Runestone")) and have extra capabilities when the online version of our output is hosted on Runestone servers. But you *must* use a `@label` attribute. This is described more carefully next, so that we can make reference to it from other locations.
+
+- [4.12.1 True/False Exercises](https://runestone.academy/ns/books/published/pretextguide/true-false-exercises.html)
+- [4.12.2 Multiple-Choice Exercises](https://runestone.academy/ns/books/published/pretextguide/multiple-choice-exercises.html)
+- [4.12.3 Parsons Problems](https://runestone.academy/ns/books/published/pretextguide/parsons-problems.html)
+- [4.12.4 Horizontal Parsons Problems](https://runestone.academy/ns/books/published/pretextguide/horizontal-parsons-problems.html)
+- [4.12.5 Matching Exercises](https://runestone.academy/ns/books/published/pretextguide/matching-exercises.html)
+- [4.12.6 Clickable Area Exercises](https://runestone.academy/ns/books/published/pretextguide/clickable-area-exercises.html)
+- [4.12.7 Fill-in-the-Blanks Exercises](https://runestone.academy/ns/books/published/pretextguide/fill-in-exercises.html)
+- [4.12.8 Coding Exercises and Projects](https://runestone.academy/ns/books/published/pretextguide/coding-exercises-projects.html)
+- [4.12.9 Short Answer Exercises](https://runestone.academy/ns/books/published/pretextguide/short-answer-exercises.html)
+
+---
+
+created: 2025-01-11T05:55:09 (UTC -05:00)
+tags: []
+source: <https://runestone.academy/ns/books/published/pretextguide/true-false-exercises.html>
+author
+---
+
+# True/False Exercises
+
+> ## Excerpt
+>
+> A True/False exercise must have a <statement> element, and this element must have a @correct attribute, whose value is yes or no (there is no default value).  That’s it.  The presence of the @correct attribute is the signal that this is a True/False exercise.
+
+---
+A True/False exercise *must* have a `<statement>` element, and this element *must* have a `@correct` attribute, whose value is `yes` or `no` (there is no default value). That’s it. The presence of the `@correct` attribute is the signal that this is a True/False exercise.
+
+The text of the statement is the assertion the reader must determine is true or not. The `@correct` attribute is how an author describes if the statment is true (`yes`) or false (`no`). This is enough information for a conversion to formulate a version of the question. An optional `<feedback>` element may follow the `<statement>`, and should provide more thatn a binary explanation of the exercise.
+
+Presentation as an interactive element will vary cosmetically, according to the output type targeted.
+
+A static version gets an automatic `<answer>` that is simply “True” or “False”. The automatic `<solution>` is the same, plus the content of `<feedback>`.
+
+---
+
+created: 2025-01-11T05:55:21 (UTC -05:00)
+tags: []
+source: <https://runestone.academy/ns/books/published/pretextguide/multiple-choice-exercises.html>
+author
+---
+
+# Multiple-Choice Exercises
+
+> ## Excerpt
+>
+> A multiple-choice exercise is signaled by a <choices> element (plural) following a <statement> and preceding an optional <hint>.  The <choices> element is structured by a sequence of <choice> elements, whose content is a potential answer for the reader to choose.  So the <statement> is the prompt or question, and the <choice> are the possible answers.
+
+---
+A multiple-choice exercise is signaled by a `<choices>` element (plural) following a `<statement>` and preceding an optional `<hint>`. The `<choices>` element is structured by a sequence of `<choice>` elements, whose content is a potential answer for the reader to choose. So the `<statement>` is the prompt or question, and the `<choice>` are the possible answers.
+
+At least one `<choice>` has an attribute `@correct` set to the value `yes`. The default value of `@correct` is `no`. There may be several correct answers, indicated with this attribute. The presentation as an exercise with one answer or many is automatic. However, in the event there is exactly one correct answer, but you wish the reader to consider the possibility of multiple correct answers, you may set the `@multiple-correct` attribute on the `<choices>` element to `yes`. The default value is `no`.
+
+Each `<choice>` element must be further structured with a `<statement>` and a `<feedback>`, which each can contain items such as paragraphs (`<p>`). In this way, the highly-encouraged feedback can be associated with each correct and incorrect choice.
+
+The order of the `<choice>` as authored, is the order they will be given in a static version. To present the choices in different orders in an interactive version, set the `@randomize` attribute on the `<choices>` element to `yes`.
+
+An automatic `<answer>` for the static version is simply the list markers for the correct choices. An automatic `<solution>` has an indication for each choice if it is correct or incorrect, along with the choice’s feedback.
+
+---
+
+created: 2025-01-11T05:55:34 (UTC -05:00)
+tags: []
+source: <https://runestone.academy/ns/books/published/pretextguide/parsons-problems.html>
+author
+---
+
+# Parsons Problems
+
+> ## Excerpt
+>
+> Parsons problems are named for Dale Parsons, one of their creators, along with Patricia Haden.  They could also be called mixed-up blocks.  A reader is presented with a set of blocks containing text, either computer code or natural language, and their goal is to assemble the blocks into a correct order.  This could be a computer problem with a stated purpose, or could be a logical argument such as proof, or it could be a procedure such as a recipe.  An interactive drag-and-drip interface is a very efficient presentation for a reader.
+
+---
+
+## 4.12.3 Parsons Problems
+
+Parsons problems are named for Dale Parsons, one of their creators, along with Patricia Haden. They could also be called mixed-up blocks. A reader is presented with a set of blocks containing text, either computer code or natural language, and their goal is to assemble the blocks into a correct order. This could be a computer problem with a stated purpose, or could be a logical argument such as proof, or it could be a procedure such as a recipe. An interactive drag-and-drip interface is a very efficient presentation for a reader.
+
+Similar to multiple-choice exercises, a `<statement>` is followed by a `<blocks>` element containing a sequence of `<block>` elements. The `<blocks>` element is the signal that this is a Parsons problem. The overall `<exercise>` element may have several attributes:
+
+- `@numbered` set to `left` or `right` indicates the blocks should be numbered, and on which side the numbers go. The default value is `no`.
+
+- `@language` set to `natural` indicates the text of the blocks is natural language, while the use of a computer language should be indicated by naming the actual language employed. A list of languages will soon be added in [Section 4.15](https://runestone.academy/ns/books/published/pretextguide/topic-program-console.html "Section 4.15: Programs and Consoles"). The default is `natural`.
+
+- `@indentation` set to `hide` indicates that a computer code exercise will not include indentation common to each line of a block. In other words, the problem is slightly harder, as the interactive interface will require the reader to adjust the block horizontally to provide common indentation for the block. The default is `show`.
+
+A `<block>` that has natural content is authored as usual, with a sequence of paragraphs (`<p>`) or similar. If the content is a computer language, then it should be authored as a sequence of lines, using the `<cline>` element, which allows for precise interpretation of indentation and non-standard characters. Include *all* indentation necessary for each line, no matter how `@indentation` is set. The content of the blocks, arranged properly, should form a syntactically correct program. If the reader is to provide indentation, PreTeXt will strip away the common amount of indentation.
+
+A block may be a distractor, meaning it is not to be used at all in the solution. Indicate this with a `@correct` attribute on the `<block>` set to `no` (the default being `yes`). Furthermore, a given block of the solution can be authored with several alternatives, only one of which is correct. Indicate this by structuring a `<block>` with a sequence of `<choice>`. Each `<choice>` should be authored similarly to a `<block>`, and the one correct choice should have the `<correct>` attribute set to `yes` (the default being `no`).
+
+The blocks should be authored in the correct order and the interactive interface will control the randomization. A block that is a distractor may be placed in any location amidst the other blocks. Each block should have an `<@order>` attribute that is a whole number, counting from 1. This is the fixed, mixed-up, order that will be presented in any static rendition. In static versions, sequences of blocks are in lists, which are numbered if the attribute has been set, but the left/right distinction is lost—all numbers are to the left. An automatic `<answer>` is provided if blocks are numbered, and it is just the block numbers in the correct order. An automatic `<solution>` is always generated with the text of the blocks listed in the correct order. For an exercise with computer code, the PreTeXt `<program>` element and the exercise’s `@language` attribute will produce a syntax-highlighted listing.
+
+There is no provision for a `<feedback>` element. Further explanation may be provided in a `<hint>`, `<answer>`, or `<solution>`. Also, a good interactive interface can provide assistance to a reader by telling them if they have too few or too many blocks, or combining or removing blocks, and so on.
+
+As of 2022-06-14 work is underway to relax the strict ordering assumed of the blocks. So there will be extra markup to specify a poset or directed acyclic graph on the blocks.
+
+---
+
+created: 2025-01-11T05:55:43 (UTC -05:00)
+tags: []
+source: <https://runestone.academy/ns/books/published/pretextguide/horizontal-parsons-problems.html>
+author
+---
+
+# Horizontal Parsons Problems
+
+> ## Excerpt
+>
+> A horizontal Parsons problem is very similar to the traditional vertical problems just described in Subsection 4.12.3.  Except they are horizontal.  Which means the blocks are very short (a word or symbol) and they are rearranged by the reader to form a horizontal bit of text.  They are ideal for constructing a single line of computer code, such as a regular expression, or a short sentence.  While similar, they have a few features which are different.
+
+---
+A horizontal Parsons problem is very similar to the traditional *vertical* problems just described in [Subsection 4.12.3](https://runestone.academy/ns/books/published/pretextguide/parsons-problems.html "Subsection 4.12.3: Parsons Problems"). Except they are horizontal. Which means the blocks are very short (a word or symbol) and they are rearranged by the reader to form a horizontal bit of text. They are ideal for constructing a single line of computer code, such as a regular expression, or a short sentence. While similar, they have a few features which are different.
+
+To indicate a horizontal problem, set the `@layout` attribute on the `<blocks>` element to the value `horizontal`. The default value is `vertical` and so is not necessary for the traditional versions.
+
+The syntax for blocks is the same, and they are authored in an order that yields a correct answer. The use of an `@order` attribute on each `<block>` indicates a rearrangment to be used for a static version. Blocks may be reused. To do this, place an `@xml:id` on a single instance of a block to be reused. Then, to indicate its reuse as part of a correct version, use a `@ref` attribute on a `<block>`. Since the duplicate instance is not shown to the reader, the use of `@order` and `@ref` is mutually-exclusive. You can set the `@reuse` attribute on the `@blocks` element to the value `yes` to force the interface to allow the reader to reuse blocks, even if there is no duplication in the correct version. Otherwise, the interface reacts to the presence or absence of blocks with the `@ref` attribute.
+
+Distractors may be included in the same manner as for vertical Parsons problems, by setting the `@correct` attribute on a `<block>` to the value `no`. The default is `yes`. It does not make much sense to indicate a reusable block (in either form) as a distractor, so don’t.
+
+Another option on the `@blocks` element is the `@randomize` attribute. The default value is `yes`. When the value is set to `no`, then the blocks are always presented to the reader in the same order, which is the one given by the `@order` attribute.
+
+As of 2022-11-28, the implemenation of these problems assumes that the blocks rearrange to be computer code. So you *can* set the `@language` attribute on the `<exercise>` element to `natural`, but it will not have much effect. Markup like `<em>` on the text of a block will be unpredictable, as will attempts to use mathematics. And the text of blocks will always be in a monospaced font, perhaps with some syntax highlighting if `@language` is set properly.
+
+---
+
+created: 2025-01-11T05:55:57 (UTC -05:00)
+tags: []
+source: <https://runestone.academy/ns/books/published/pretextguide/matching-exercises.html>
+author
+---
+
+# Matching Exercises
+
+> ## Excerpt
+>
+> A matching exercise asks a reader to pair a premise with a response.  Similar to multiple-choice exercises and Parsons problems, a <matches> element follows a <statement> and this is the signal.  The <matches> element is structured as a sequence of <match> elements, each of which has a <premise> element and the matching <response> element.  Since the content of each premise and response is best kept short and simple as a phrase, the elements may also be simple phrases without the additional structure of <p> elements, or similar.  That’s it.
+
+---
+A matching exercise asks a reader to pair a premise with a response. Similar to multiple-choice exercises and Parsons problems, a `<matches>` element follows a `<statement>` and this is the signal. The `<matches>` element is structured as a sequence of `<match>` elements, each of which has a `<premise>` element and the matching `<response>` element. Since the content of each premise and response is best kept short and simple as a phrase, the elements may also be simple phrases without the additional structure of `<p>` elements, or similar. That’s it.
+
+An interactive interface should randomize at least one of the lists of premises and responses, consulting the authored version for the correct pairings. For a static version, an author should put an `<order>` element on each `<match>` whose value is a whole number, starting from 1. Then the `<premise>` will appear in the authored order, while the `<response>` will be re-ordered according to the attribute.
+
+A single `<feedback>` element may be given, as a peer of `<statement>`, in addition to authored `<hint>`, `<answer>`, or `<solution>`. For a static version an automatic `<solution>` presents the problem in the order the `<match>` were authored.
+
+---
+
+created: 2025-01-11T05:56:05 (UTC -05:00)
+tags: []
+source: <https://runestone.academy/ns/books/published/pretextguide/clickable-area-exercises.html>
+author
+---
+
+# Clickable Area Exercises
+
+> ## Excerpt
+>
+> Clickable Area is a misnomer, assuming an interactive version of this type of problem.  Perhaps “Select Text” would be better.  In any event “area” is not meant to connote a geometric notion, instead this is about a sequence of characters, either in natural language or in computer code.
+
+---
+Clickable Area is a misnomer, assuming an interactive version of this type of problem. Perhaps “Select Text” would be better. In any event “area” is not meant to connote a geometric notion, instead this is about a sequence of characters, either in natural language or in computer code.
+
+A `<statement>` is a prompt, describing which sort of areas should be selected by the reader. Such as: Locate all the nouns in the following paragraph. This is followed by an `<areas>` element, which is the signal for this type of exercise. The `<areas>` element holds either (a) PreTeXt paragraphs or similar, or (b) a sequence of `<cline>`, understood to be program code. In the latter case, a `@language` attribute on the `<areas>` element will enable the right syntax highlighting in some output formats.
+
+Within the content of the `<areas>` element an `<area>` element can be used to surround a run of characters. These cannot cross XML boundaries, such as a `<cline>` or `<p>`. A `@correct` attribute, with values `yes` or `no`, indicates the text is to be selected (clicked on) or that it is a distractor (tempting to click on). The default is `yes`, so only distractors need to be indicated.
+
+A single overall `<feedback>` may be placed following the `<areas>` element.
+
+Now an interactive version will allow the reader to click on and off the marked areas of text, and provide information about which are correct and which are not, in addition to general feedback.
+
+Generally, a static version of the problem will not be clickable. `<wink/>` So your prompt might say something generic like “select” or “locate” since a reader might work the problem on paper by circling or underlining the areas. A static version includes an automatic `<answer>` which is a list of the correct areas as text, followed by a list of the incorrect areas as text. An automatic `<solution>` repeats the text in the `<areas>` element, and uses (accessible) visual cues to note the correct and incorrect text.
+
+---
+
+created: 2025-01-11T05:56:18 (UTC -05:00)
+tags: []
+source: <https://runestone.academy/ns/books/published/pretextguide/fill-in-exercises.html>
+author
+---
+
+# Fill-in-the-Blanks Exercises
+
+> ## Excerpt
+>
+> As of 2022-06-14 a major effort is underway to provide comprehensive markup for fill-in-the-blank problems.  Until then, there is transitional markup intended only to supply a migration path for projects originally authored for Runestone servers (Chapter 32).  So (a) our documentation is sparse, and (b) there will be no backward-compatible improvements.  So in particular, new projects should wait for the new markup.  Also, studying examples may be a useful way to augment what is described here.
+
+---
+As of 2022-06-14 a major effort is underway to provide comprehensive markup for fill-in-the-blank problems. Until then, there is transitional markup intended only to supply a migration path for projects originally authored for Runestone servers ([Chapter 32](https://runestone.academy/ns/books/published/pretextguide/runestone.html "Chapter 32: Conversion to Runestone")). So (a) our documentation is sparse, and (b) there will be no backward-compatible improvements. So in particular, new projects should wait for the new markup. Also, studying examples may be a useful way to augment what is described here.
+
+A `<statement>` is enriched with empty `<var/>` elements which will render as the blanks in the problem.
+
+The signal for a fill-in problem is a `<setup>` element containing a sequence of `<var>` elements. Each `<var>` contains a sequence of `<condition>` elements that describe possible values (via regular expressions) which might appear in a blank. The first condition describes the correct answer(s), and then the subsequent conditions are descriptions of probable incorrect answers. Each `<condition>` has a `<feedback>`. So the first condition to match an entry provided via a blank will be noted as correct or incorrect, and its feedback will be relayed.
+
+The `<var>` of the statement and the `<var>` of the setup are in a 1-1 correspondence, which establishes how the setup is associated with a blank. The `<var>` in the statement may have a `@width` attribute whose value controls how many characters would be visible in the blank.
+
+A static version will include an automatic `<solution>` which “fills in” each blank with a correct answer, and then duplicates the feedback text, in order.
+
+---
+
+created: 2025-01-11T05:56:27 (UTC -05:00)
+tags: []
+source: <https://runestone.academy/ns/books/published/pretextguide/coding-exercises-projects.html>
+author
+---
+
+# Coding Exercises and Projects
+
+> ## Excerpt
+>
+> A Coding Exercise is formed by placing a <program> element after the <statement> of an <exercise>.  The main distinction is that this is a signal that the interactivity is provided by the <program>, and therefore the <exercise> will not be understood as a short answer exercise (Subsection 4.12.9).  For this reason, the <program> should be requested as one of the interactive realizations (Subsection 4.15.2, Subsection 4.15.3).
+
+---
+A Coding Exercise is formed by placing a `<program>` element *after* the `<statement>` of an `<exercise>`. The main distinction is that this is a signal that the interactivity is provided by the `<program>`, and therefore the `<exercise>` will not be understood as a short answer exercise ([Subsection 4.12.9](https://runestone.academy/ns/books/published/pretextguide/short-answer-exercises.html "Subsection 4.12.9: Short Answer Exercises")). For this reason, the `<program>` should be requested as one of the interactive realizations ([Subsection 4.15.2](https://runestone.academy/ns/books/published/pretextguide/interactive-program-codelens.html "Subsection 4.15.2: Interactive Programs, CodeLens"), [Subsection 4.15.3](https://runestone.academy/ns/books/published/pretextguide/interactive-program-activecode.html "Subsection 4.15.3: Interactive Programs, ActiveCode")).
+
+The identical construction may be used with any PROJECT-LIKE (List 4.2.2.2) such as an `<activity>`. As of 2022-06-17 this only applies to the form that uses a `<statement>`, but will soon also apply to `<task>` within PROJECT-LIKE.
+
+Realize that it is always possible to place a `<program>` *inside* of a `<statement>`, and if there is no `<program>` that is *after* the `<statement>` (or another signal for an interactive exercise) then the `<exercise>` will be classified as a short-answer exercise. It may be instructive to understand that in a static realization, a `<program>` at the *end* of a `<statement>` may be visually identical to an `<exercise>` where the `<program>` is *after* the `<statement>`, even though the former is a short-answer exercise and the latter is a coding exercise (which will render differently for different output formats and hosting platforms).
+
+---
+
+created: 2025-01-11T05:56:40 (UTC -05:00)
+tags: []
+source: <https://runestone.academy/ns/books/published/pretextguide/short-answer-exercises.html>
+author
+---
+
+# Short Answer Exercises
+
+> ## Excerpt
+>
+> Short Answer questions might also be known as Free Response questions, or Essay questions.  A PreTeXt <exercise>, or a PROJECT-LIKE that is not structured by <task>, is implicitly of this nature.  But you still need to signal that you wish such a problem to be interactive, typically with a text box where the student can enter an answer.  So, similar to other types of exercises, add a <response/> element immediately after the <statement>.  (We expect to add attributes for this element to influence the behavior of the text box.)
+
+---
+Short Answer questions might also be known as Free Response questions, or Essay questions. A PreTeXt `<exercise>`, or a PROJECT-LIKE that is not structured by `<task>`, is implicitly of this nature. But you still need to signal that you wish such a problem to be interactive, typically with a text box where the student can enter an answer. So, similar to other types of exercises, add a `<response/>` element immediately after the `<statement>`. (We expect to add attributes for this element to influence the behavior of the text box.)
+
+In an online setting, it is a simple matter to provide a place for a reader to type in an answer, response, or essay. But then what? Until artificial intelligence is brought to bear, somebody (not something), such as an instructor for a course of enrolled students, will need to read a response and provide a score and/or comments that can be saved and distributed back to the students. So the first prerequisite is that HTML output is being built for a capable platform. As of 2022-06-15, this means a Runestone server ([Chapter 32](https://runestone.academy/ns/books/published/pretextguide/runestone.html "Chapter 32: Conversion to Runestone")), but it could easily also be a WeBWorK server.
+
+A publisher can control when a response area is created in HTML output ([Subsection 44.4.13](https://runestone.academy/ns/books/published/pretextguide/online-short-answer-responses.html "Subsection 44.4.13: Short Answer Responses")). The default is to only have this area present when it is possible for a response to be graded and scored. However, an option will cause a response box to be created always. A reader can reflect on the question by typing in a response, and the text will be saved *on that particular device* only. When it is impossible for a response to be graded, placeholder text will warn the reader.
+
+---
+
+created: 2025-01-11T06:31:38 (UTC -05:00)
+tags: []
+source: <https://runestone.academy/ns/books/published/pretextguide/subsection-69.html>
+author: Robert A. Beezer, David Farmer, Alex Jordan, Mitchel T. Keller
+---
+
+# Exercises, Original Versions
+
+> ## Excerpt
+>
+> 🔗
+
+---
+[🔗](https://runestone.academy/ns/books/published/pretextguide/subsection-69.html#subsection-69 "Copy permalink for Subsection 4.13.1: Exercises, Original Versions")
+
+[🔗](https://runestone.academy/ns/books/published/pretextguide/subsection-69.html#p-551 "Copy permalink for Paragraph")
+
+In a conversion to HTML, a `<hint>` to an `<exercise>` renders nicely in a knowl, right below the exercise statement. For a conversion to LaTeX/PDF/print, you might wish to display a hint, visibly, as part of the exercise, or you may wish to park the hint in a Hints to Exercises division in the back matter. To control visibility of the components of exercises (and projects) there are twenty switches you can use. See [Section 26.4](https://runestone.academy/ns/books/published/pretextguide/exercise-component-visibility.html "Section 26.4: Exercise Component Visibility") for more.
+
+---
+
+created: 2025-01-11T06:31:57 (UTC -05:00)
+tags: []
+source: <https://runestone.academy/ns/books/published/pretextguide/topic-solutions-division.html>
+author
+---
+
+# Exercises, Solutions Versions
+
+> ## Excerpt
+>
+> Exercises, and their components may be duplicated easily, to provide a back matter appendix with solutions, or within each division.  For example, you can easily create an end-of-chapter division with solutions to every inline exercise throughout the chapter and solutions to all the divisional exercises from each section of the chapter.
+
+---
+Exercises, and their components may be duplicated easily, to provide a back matter appendix with solutions, or within each division. For example, you can easily create an end-of-chapter division with solutions to every inline exercise throughout the chapter and solutions to all the divisional exercises from each section of the chapter.
+
+The `<solutions>` element will create an entire division, semi-automatically. You can provide a `<title>`, an `<introduction>`, and `<conclusion>`. The remaining content is statements, hints, answers, and solutions to exercises (and projects).
+
+If `<solutions>` is a child of `<backmatter>`, then an appendix will be generated, and covering `<exercise>` from the entire `<book>` or `<article>`. If `<solutions>` is a child of a division, then a new subdivision is created and the scope is all `<exercise>` for the division. So, for example, a `<solutions>` placed inside a `<chapter>` will render as a division that looks like a `<section>` and will include components of all the exercises (at any level) contained within the `<chapter>`.
+
+An optional attribute is `@scope`, whose value is the `@xml:id` of a division. Then it is this division which is scanned for exercises and their solutions (rather than defaulting to the enclosing parent of the `<solutions>`). This allows for much greater flexibility. For a simple example, suppose a `<chapter>` contains two `<exercises>`, and you want to have two `<solutions>` within the chapter, each covering just one of the `<exercises>`. This can be accomplished with `@scope`, and you can arrange the four divisions (two `<exercises>` and two `<solutions>`) however you wish within the chapter.
+
+An author filters the types of exercises, and their components, through attributes of the `<solutions>` element. For example
+
+```
+reading="hint answer"
+```
+
+would cause every `<exercise>` within each `<reading-questions>` to have its `<hint>` and `<answer>` displayed, but not its `<statement>` nor its `<solution>`. These are the attribute names and the possible values.
+
+Table 4.13.2.1. Attributes (left) and Values (right) for `<solutions>` element
+
+<table><tbody><tr><td><code>inline</code></td><td><code>statement</code></td></tr><tr><td><code>divisional</code></td><td><code>hint</code></td></tr><tr><td><code>reading</code></td><td><code>answer</code></td></tr><tr><td><code>worksheet</code></td><td><code>solution</code></td></tr><tr><td><code>project</code></td><td></td></tr></tbody></table>
+
+```
+&lt;section&gt;
+  &lt;title&gt;Tropical Bird of Paradise&lt;title&gt;
+  ...
+  &lt;solutions worksheet="hint solution" project="hint solution"&gt;
+    &lt;title&gt;Hints and Solutions to Worksheets and Projects&lt;title&gt;
+  &lt;/solutions&gt;
+&lt;/section&gt;
+```
+
+would generate an entire subsection with hints and solutions to every worksheet and every project, located anywhere (including in subsections and subsubsections) in the section on Birds of Paradise.
+
+An `@admit` attribute specifies some feature of an exercise’s serial number to determine whether its components are admitted into the solutions division. (For example, the “serial number” of Exercise 1.2.3 is 3.) Presently, the only options are `odd`, `even`, and the default `all`. So, PreTeXt source like
+
+```
+&lt;solutions divisional="answer" admit="odd"&gt;
+```
+
+would generate a subsection with answers to only the odd-numbered divisional exercises.
+
+---
+
+created: 2025-01-11T06:32:41 (UTC -05:00)
+tags: []
+source: <https://runestone.academy/ns/books/published/pretextguide/subsection-77.html>
+author
+---
+
+# Content and Placement of Programs and Consoles
+
+> ## Excerpt
+>
+> A <program> will be treated as verbatim text (see Section 3.16), subject to all the exceptions for exceptional characters (see Section 3.14).  Indentation will be preserved, though an equal amount of leading whitespace will be stripped from every line, so as to keep the code shifted left as far as possible.  So you can indent your code consistently along with your XML indentation.  For this reason it is best to indent with spaces, and not tabs.  A mix will almost surely end badly, and in some programming languages tabs are discouraged (e.g. Python).
+
+---
+A `<program>` will be treated as verbatim text (see [Section 3.16](https://runestone.academy/ns/books/published/pretextguide/overview-verbatim-literal.html "Section 3.16: Verbatim and Literal Text")), subject to all the exceptions for exceptional characters (see [Section 3.14](https://runestone.academy/ns/books/published/pretextguide/overview-exceptional-characters.html "Section 3.14: Exceptional Characters")). Indentation will be preserved, though an equal amount of leading whitespace will be stripped from every line, so as to keep the code shifted left as far as possible. So you can indent your code consistently along with your XML indentation. For this reason it is best to indent with spaces, and not tabs. A mix will almost surely end badly, and in some programming languages tabs are discouraged (e.g. Python).
+
+A `<console>` is a transcript of an interactive session in a terminal or console at a command-line. It is a sequence of the following elements, in this order, possibly repeated many times as a group: `<input>`, and `<output>`. The `<output>` is optional. The content of these two elements is treated as verbatim text (see [Section 3.16](https://runestone.academy/ns/books/published/pretextguide/overview-verbatim-literal.html "Section 3.16: Verbatim and Literal Text")), subject to all the exceptions for exceptional characters (see [Section 3.14](https://runestone.academy/ns/books/published/pretextguide/overview-exceptional-characters.html "Section 3.14: Exceptional Characters")). A `@prompt` attribute on the `<input>` can be supplied to provide a system prompt distinct from the actual commands. The default prompt is a dollar sign followed by a space. If it is more convenient `@prompt` may be supplied on the `<console>`, to be used in each enclosed `<input>`. If you do not want any prompts at all, just use an empty value for `@prompt`.
+
+A `<program>` or `<console>` may be wrapped in a `<listing>`, see [Section 4.19](https://runestone.academy/ns/books/published/pretextguide/topic-listing.html "Section 4.19: Program Listings"). This will behave similar to a `<figure>`, with the `<caption>` displayed below, and a number assigned. So, in particular, if your program or console is important enough to cross-reference, it is an enclosing `<listing>` that serves as the target.
+
+The `@language` attribute may be used to get some degree of language-specific syntax highlighting and/or interactive behavior. We will eventually provide a table of attribute values here. They are always lowercase, and a good first guess is likely to succeed.
+
+In some output formats, notably HTML, the syntax highlighter can add lines or highlight individual lines of code. Highlighting lines is not supported for LaTeX output. To display line numbers, set the `@line-numbers` attribute to `yes`. To highlight particular lines, set `@highlight-lines` to a comma-separated list consisting of individual lines and/or ranges indicated with dashes. Some examples are: `5`, `2,5`, `2,5-8,10-15,15`.
+
+For interactive versions hosted on Runestone servers, the `@label` attribute is critical, just like for interactive exercises. So be certain to read Best Practice 4.12.0.26.
+
+---
+
+created: 2025-01-11T06:35:57 (UTC -05:00)
+tags: []
+source: <https://runestone.academy/ns/books/published/pretextguide/interactive-program-codelens.html>
+author
+---
+
+# Interactive Programs, CodeLens
+
+> ## Excerpt
+>
+> CodeLens is an interactive version of a computer program, which can be visualized by stepping through the code one statement at a time, watching output, variables, and other data structures change.  So it is similar to a debugger, except the reader does not set breakpoints or modify program data on-the-fly.  This is possible automatically for several different languages when your HTML is hosted on a Runestone server (Chapter 32).  This may also be accomplished “in browser” when hosted on any old generic web server.  The catch is that for a generic server a publisher must generate trace data in advance, typically with the PreTeXt-CLI (Section 5.2).  Place the <interactive> attribute on a <program> element with the value codelens to elect this behavior (no is the default value).  Also, be sure to specify a language from the supported languages: Python, Java, C, and C++.  Consult Table 4.15.4.1 below for a summary of various combinations.  When an output format does not support an interactive CodeLens instance, the fallback is a static program listing.
+
+---
+CodeLens is an interactive version of a computer program, which can be visualized by stepping through the code one statement at a time, watching output, variables, and other data structures change. So it is similar to a debugger, except the reader does not set breakpoints or modify program data on-the-fly. This is possible automatically for several different languages when your HTML is hosted on a Runestone server ([Chapter 32](https://runestone.academy/ns/books/published/pretextguide/runestone.html "Chapter 32: Conversion to Runestone")). This may also be accomplished “in browser” when hosted on any old generic web server. The catch is that for a generic server a publisher must generate trace data in advance, typically with the PreTeXt-CLI ([Section 5.2](https://runestone.academy/ns/books/published/pretextguide/processing-CLI.html "Section 5.2: The PreTeXt-CLI")). Place the `<interactive>` attribute on a `<program>` element with the value `codelens` to elect this behavior (`no` is the default value). Also, be sure to specify a language from the supported languages: Python, Java, C, and C++. Consult Table 4.15.4.1 below for a summary of various combinations. When an output format does not support an interactive CodeLens instance, the fallback is a static program listing.
+
+---
+
+created: 2025-01-11T06:37:03 (UTC -05:00)
+tags: []
+source: <https://runestone.academy/ns/books/published/pretextguide/interactive-program-activecode.html>
+author
+---
+
+# Interactive Programs, ActiveCode
+
+> ## Excerpt
+>
+> ActiveCode is an interactive environment where a reader may work on code through repeated edit-compile-test cycles.  Code can be provided by an author as a complete program to be modified, a partial program to be completed, or nothing at all.  One good example is that maybe header files, import statement, and similar are provided, and a skeleton of a main entry-point procedure is also provided.  Then a reader can concentrate on the more conceptual parts of the programming.  Some languages will be executable “in browser” on any old generic web server, while others must be on a Runestone server (Chapter 32) where a Jobe Server 1  is running to support the execution.
+
+---
+ActiveCode is an interactive environment where a reader may work on code through repeated edit-compile-test cycles. Code can be provided by an author as a complete program to be modified, a partial program to be completed, or nothing at all. One good example is that maybe header files, import statement, and similar are provided, and a skeleton of a main entry-point procedure is also provided. Then a reader can concentrate on the more conceptual parts of the programming. Some languages will be executable “in browser” on any old generic web server, while others must be on a Runestone server ([Chapter 32](https://runestone.academy/ns/books/published/pretextguide/runestone.html "Chapter 32: Conversion to Runestone")) where a [Jobe Server](https://github.com/trampgeek/jobe) <sup> 1 </sup>  is running to support the execution.
+
+Place the `@interactive` attribute on a `<program>` element with the value `activecode` to elect this behavior (`no` is the default value). Also, be sure to specify a language from the supported languages. Consult Table 4.15.4.1 below for a summary of various combinations. When an output format does not support an interactive ActiveCode instance, the fallback is a static program listing.
+
+Note that a Python ActiveCode automatically is enabled with a CodeLens button and requires no preparation of any trace data. So a reader can form any type of Python program and closely examine its behavior.
+
+Note also that a data file may be provided independently for consumption by an ActiveCode program. See [Section 4.16](https://runestone.academy/ns/books/published/pretextguide/topic-datafile.html "Section 4.16: Data Files").
+
+ActiveCode elements that are language `sql` can make use of an SQLite database file. This is different than a `datafile` (which is expected to be text or an image). To include a database file, use the `@database` on the `<program>` element and specify the file to load as a string relative to the `@@external` top-level directory
+
+If you want to include code from one or more preceding `<program>` elements, use the `@include` attribute whose value is a list (comma-separated or space-separated) of `@xml:id`s for the code you want included.
+
+---
+
+created: 2025-01-11T06:37:22 (UTC -05:00)
+tags: []
+source: <https://runestone.academy/ns/books/published/pretextguide/subsection-80.html>
+author
+---
+
+# Interactive Program Capabilities
+
+> ## Excerpt
+>
+> This table lists which types of interactivity are available on various combinations of servers and programming languages.  The entry “AC + CL” means that both ActiveCode and CodeLens instances are availble, but the ActiveCode instance will have a CodeLens button enabled.
+
+---
+This table lists which types of interactivity are available on various combinations of servers and programming languages. The entry “AC + CL” means that both ActiveCode and CodeLens instances are availble, but the ActiveCode instance will have a CodeLens button enabled.
+
+Note that `python` is generic Python with the standard libraries (version 3.x). On the other hand `python3` is a Runestone server installation (only) with a number of additional popular Python packages available, such as `numpy` and `pandas`.
+
+Table 4.15.4.1. Interactive Programs
+
+| Language | `@language` | Server |
+| --- | --- | --- |
+|  |  | Generic | Runestone |
+| Python | `python` | AC + CL | AC + CL |
+| Python 3 | `python3` |  | AC |
+| Java | `java` | CL | AC + CL |
+| C | `c` | CL | AC + CL |
+| C++ | `cpp` | CL | AC + CL |
+| JavaScript | javascript | AC | AC |
+| HTML | `html` | AC | AC |
+| SQL | `sql` | AC | AC |
+| Octave | `octave` |  | AC |
+| AC = ActiveCode, CL = CodeLens |
