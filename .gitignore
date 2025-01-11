@@ -1,6 +1,3 @@
-# Python virtual environment
-.venv
-
 # <!-- Managed automatically by PreTeXt authoring tools -->
 # (delete the above line to manage this file manually)
 
@@ -12,6 +9,8 @@
 output
 published
 
+# Environments
+venv/
 # don't track assets generated from source
 generated-assets
 
@@ -92,6 +91,7 @@ bh_unicode_properties.cache
 # Sublime-github package stores a github token in this file
 # https://packagecontrol.io/packages/sublime-github
 GitHub.sublime-settings
+
 
 # Don't include Dropbox settings and caches
 .dropbox
