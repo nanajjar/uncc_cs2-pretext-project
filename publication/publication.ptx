@@ -14,15 +14,10 @@
     <pub-date>2025-01-11</pub-date>
   </metadata>
 
-  <html favicon="simple"> 
-    <platform host="runestone" />
-    <!-- knowled checkpoints interfere with ActiveCode problems -->
-    <knowl exercise-inline="no" example="no" listing="yes" />
-    <css colors="green_plum" />
-    <!-- <css shell="crc" toc="crc"  banner="crc" navbar = 'crc'/> -->
-    <css style="wide" toc="wide" banner="wide" navbar="wide" shell="wide" />
+  
 
-</html>
-
+<html>
+    <platform host="runestone"/>
+  </html>
 <stringparam key="debug.rs.services.file" value="/Users/bmiller/Runestone/RunestoneComponents/runestone/dist/webpack_static_imports.xml" />
 </publication>
