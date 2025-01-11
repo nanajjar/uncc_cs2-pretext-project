@@ -188,8 +188,7 @@
         AssertionError
       </program>
     </listing>
-    <p> This indicates the test for <c>count_words("Hello world")</c> failed—our function returned <c>
-      1</c> instead of <c>2</c>. By printing out intermediate values or carefully reviewing the
+    <p> This indicates the test for <c>count_words("Hello world")</c> failed—our function returned <c>1</c> instead of <c>2</c>. By printing out intermediate values or carefully reviewing the
       code, we can spot the bug and fix it quickly. </p>
   </subsection>
 
@@ -198,8 +197,7 @@
        ====================================== -->
   <subsection xml:id="simple-test-runner">
     <title>A Simple "Test Runner"</title>
-    <p> As your code grows, you might have more than one test function—like <c>test_count_words</c>, <c>
-      test_calculate_total_price</c>, etc. Running them one at a time can get boring. A small trick
+    <p> As your code grows, you might have more than one test function—like <c>test_count_words</c>, <c>test_calculate_total_price</c>, etc. Running them one at a time can get boring. A small trick
       is to gather them in a <c>run_tests()</c> function and call them all: </p>
     <listing>
       <program language="python">
