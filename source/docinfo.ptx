@@ -1,35 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--********************************************************************
+Copyright 2015 Robert A. Beezer
 
-<!-- The docinfo block is the analogue to the latex preamble -->
-<!-- This is where you can define macros and other book-wide -->
-<!-- settings. -->
-<docinfo xmlns:xi="http://www.w3.org/2001/XInclude">
-  <!-- A unique name for the book in a catalog; for example, see https://pretextbook.org/catalog.html and https://runestone.academy/ns/books/index. It contains a simple lowercase string with no dashes or other special characters. See https://pretextbook.org/doc/guide/html/sec-publishing-to-runestone-academy.html for more information. -->
-  <document-id>uncc_cs2</document-id>
-  <!-- A brief description for the book in a catalog; see the links above. The @shelf is used only when publishing to Runestone; see https://runestone.academy/ns/books/index for a list of valid values. You must copy these @shelf names exactly, including capitalization. -->
-  <blurb shelf="Intro to Computer Science"> An adaptation of Java for Python Programmers extended to include how to design programs with object oriented programming. </blurb>
+This file is part of MathBook XML.
 
+MathBook XML is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 or version 3 of the
+License (at your option).
 
-  <!-- The next three lines are likely for mature projects only: -->
+MathBook XML is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-  <!-- <brandlogo url="" source="images/cover.png"/> -->
-  <!-- <covers front="images/front.pdf" back="images/back.pdf"/> -->
-  <!-- <document-id>unique-book-id</document-id> -->
+You should have received a copy of the GNU General Public License
+along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
+*********************************************************************-->
+<!-- This file was originally part of the book     -->
+<!-- (as copied on 2015/07/12)                     -->
+<!--                                               -->
+<!--   Abstract Algebra: Theory and Applications   -->
+<!--                                               -->
+<!-- Copyright (C) 1997-2014  Thomas W. Judson     -->
+<docinfo>
 
-  <!-- macros for defining latex math shortcuts. It is good practice -->
-  <!-- to define these semantically, so that the macro relates to what-->
-  <!-- it defines. -->
-  <macros> \newcommand{\N}{\mathbb N} \newcommand{\Z}{\mathbb Z} \newcommand{\Q}{\mathbb Q} \newcommand{\R}{\mathbb R} </macros>
+    <!-- the other option is "long" which will produce an -->
+    <!-- entire front matter section with more headings   -->
+    <author-biographies length="short" />
 
-  <!-- If you put any latex-image elements you can include preambles -->
-  <!-- for those in the next element. -->
-  <latex-image-preamble> \usepackage{tikz, pgfplots} \usetikzlibrary{positioning,matrix,arrows} \usetikzlibrary{shapes,decorations,shadows,fadings,patterns} \usetikzlibrary{decorations.markings} </latex-image-preamble>
+    <document-id edition="1">uncc_cs2</document-id>
 
-  <!-- It is possible to rename elements: -->
-  <!-- <rename element="assemblage" xml:lang="en-US">Summary</rename> -->
+    <!-- Prefix to enhance Sage notebook contents -->
+    <initialism></initialism>
+    <blurb shelf="introcs"> An adaptation of Java for Python Programmers extended to include how to design programs with object oriented programming. </blurb>
+   
 
-  <!-- Specify the default type of cross reference: -->
-  <!-- <cross-references text="type-global" /> -->
+    <!-- this is the default, but supresses a warning -->
+    <cross-references text="type-global" />
 
 
 </docinfo>

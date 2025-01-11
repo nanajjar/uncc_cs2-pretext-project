@@ -5,6 +5,19 @@
   <xi:include href="./docinfo.ptx" />
 
   <book xml:id="uncc_cs2">
+  <docinfo>
+            <title>Introduction to CS 1</title>
+            <author>
+                <name>UNCC CS</name>
+                <email>nanajjar@charlotte.edu</email>
+            </author>
+            <publisher>PreTeXt Publishing</publisher>
+            <document-id>uncc_cs2</document-id>
+            <pub-date>2024-01-11</pub-date>
+            <blurb shelf="Intro to Computer Science">
+                An adaptation of Java for Python Programmers extended to include how to design programs with object oriented programming.
+            </blurb>
+        </docinfo>
     <title>ITSC 1213 - Introduction to CS 2</title>
     <subtitle>Interactive Edition</subtitle>
 
