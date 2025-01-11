@@ -1,8 +1,8 @@
-<chapter xml:id="ch-method-signature-purpose">
-  <title>2. Method Signature &amp; Purpose Statement</title>
+<section xml:id="ch-method-signature-purpose">
+  <title>Method Signature &amp; Purpose Statement</title>
 
   <!-- Overview -->
-  <section xml:id="overview-and-objectives">
+  <subsection xml:id="overview-and-objectives">
     <title>Overview and Objectives</title>
     <p>
       In Chapter 1, we saw how Audrey's lack of data definitions led to confusion when her music library 
@@ -31,10 +31,10 @@
         </li>
       </ul>
     </objectives>
-  </section>
+  </subsection>
 
   <!-- The Problem -->
-  <section xml:id="the-communication-breakdown">
+  <subsection xml:id="the-communication-breakdown">
     <title>A Communication Breakdown</title>
     <p>
       After learning about data definitions, Audrey felt more confident. Each song was now clearly defined 
@@ -83,10 +83,10 @@
       <li>How do we know if the update succeeded?</li>
       <li>Should it warn us if song_title isn't found?</li>
     </ul>
-  </section>
+  </subsection>
 
   <!-- Modify transition to discovering-contracts section -->
-  <section xml:id="discovering-contracts">
+  <subsection xml:id="discovering-contracts">
     <title>From Confusion to Clarity</title>
     <p>
       After the miscommunication, Mai and Audrey met at the campus coffee shop. Instead of arguing about 
@@ -94,7 +94,7 @@
     </p>
     
     <blockquote>
-      <p><strong>Mai:</strong> "Let me write down what confused me when I tried using your function..."</p>
+      <p><alert>Mai:</alert> "Let me write down what confused me when I tried using your function..."</p>
       <p><em>Mai writes on a napkin:</em>
         <ul>
           <li>Can I pass an empty library?</li>
@@ -102,11 +102,11 @@
           <li>How do I know if the update worked?</li>
         </ul>
       </p>
-      <p><strong>Audrey:</strong> "Oh! I see the problem. I had all these rules in my head, but I never 
+      <p><alert>Audrey:</alert> "Oh! I see the problem. I had all these rules in my head, but I never 
          wrote them down. Like, ratings have to be 1-5..."</p>
-      <p><strong>Mai:</strong> "Wait, they do? That would've been good to know before I tried setting it to 10!"</p>
-      <p><strong>Audrey:</strong> "Right... and the library can't be None, and song titles can't be empty..."</p>
-      <p><strong>Mai:</strong> "This is exactly what I needed to know! We should document all of this."</p>
+      <p><alert>Mai:</alert> "Wait, they do? That would've been good to know before I tried setting it to 10!"</p>
+      <p><alert>Audrey:</alert> "Right... and the library can't be None, and song titles can't be empty..."</p>
+      <p><alert>Mai:</alert> "This is exactly what I needed to know! We should document all of this."</p>
     </blockquote>
 
     <p>Their conversation revealed four key parts of any function contract:</p>
@@ -135,9 +135,9 @@
         <li><p>Errors: raise ValueError for bad inputs</p></li>
       </ul>
     </blockquote>
-  </section>
+  </subsection>
 
-  <section xml:id="from-discussion-to-docs">
+  <subsection xml:id="from-discussion-to-docs">
     <title>Turning Coffee Shop Notes into Code</title>
     <p>
       Back at their dorm, Audrey and Mai turned their napkin notes into Python code. They knew that
@@ -183,9 +183,9 @@
       But Mai noticed something: "This is good, but it's still kind of... informal? Like, we're just
       writing paragraphs. Is there a more standardized way to document functions in Python?"
     </p>
-  </section>
+  </subsection>
 
-  <section xml:id="informal-to-formal">
+  <subsection xml:id="informal-to-formal">
     <title>Making Documentation More Structured</title>
     <p>
       Before looking at Python's formal documentation tools, let's practice writing a contract 
@@ -207,10 +207,10 @@
         </program>
       </statement>
     </exercise>
-  </section>
+  </subsection>
 
   <!-- Modify why-signature-purpose introduction -->
-  <section xml:id="why-signature-purpose">
+  <subsection xml:id="why-signature-purpose">
     <title>Writing Clear Contracts with Python</title>
     <p>
       Remember how Audrey and Mai discovered they needed to specify:
@@ -219,17 +219,17 @@
         <li>What the function promises to do</li>
         <li>What happens when things go wrong</li>
       </ul>
-      Python provides two main tools for this: <strong>method signatures</strong> with type hints
-      and <strong>purpose statements</strong> in docstrings. Together, these form a clear contract
+      Python provides two main tools for this: <alert>method signatures</alert> with type hints
+      and <alert>purpose statements</alert> in docstrings. Together, these form a clear contract
       between the function and its users.
     </p>
-    <p> A <strong>method signature</strong> is more than just “function name + parameters.” It’s a
+    <p> A <alert>method signature</alert> is more than just “function name + parameters.” It’s a
       compact way to state the function’s inputs, outputs, and sometimes exceptions or error
-      conditions. Combined with a <strong>purpose statement</strong> (a one- or two-sentence
+      conditions. Combined with a <alert>purpose statement</alert> (a one- or two-sentence
       explanation of the function’s job), you get a “mini contract” that aligns everyone’s
       expectations. </p>
 
-    <subsection xml:id="living-documentation">
+    <subsubsection xml:id="living-documentation">
       <title>A Form of Living Documentation</title>
       <p>
         Once written, these signatures and purpose statements become living documentation. If you
@@ -240,9 +240,9 @@
         what’s
         expected, without guessing or searching for hidden assumptions.
       </p>
-    </subsection>
+    </subsubsection>
 
-    <subsection xml:id="better-testing-later">
+    <subsubsection xml:id="better-testing-later">
       <title>Enabling Better Testing (Later Steps)</title>
       <p>
         These contracts also guide test creation. Step 4 of the design recipe (Examples &amp; Tests)
@@ -253,11 +253,11 @@
         accident”
         during frantic debugging.
       </p>
-    </subsection>
-  </section>
+    </subsubsection>
+  </subsection>
 
   <!-- Update method-signature-python introduction -->
-  <section xml:id="method-signature-python">
+  <subsection xml:id="method-signature-python">
     <title>From Notes to Professional Documentation</title>
     <p>
       After some research, Mai discovered that professional Python developers use a combination of
@@ -265,12 +265,12 @@
     </p>
 
     <blockquote>
-      <p><strong>Mai:</strong> "Look what I found! We can actually tell Python what types our function expects:"</p>
+      <p><alert>Mai:</alert> "Look what I found! We can actually tell Python what types our function expects:"</p>
       <program language="python">
         def update_rating(library: list, song_title: str, new_rating: int) -> bool:
       </program>
-      <p><strong>Audrey:</strong> "That's cool! So anyone can see that new_rating must be an integer?"</p>
-      <p><strong>Mai:</strong> "Exactly! And the -> bool means it returns True or False."</p>
+      <p><alert>Audrey:</alert> "That's cool! So anyone can see that new_rating must be an integer?"</p>
+      <p><alert>Mai:</alert> "Exactly! And the -> bool means it returns True or False."</p>
     </blockquote>
 
     <p>Excited by this discovery, they refined their documentation further:</p>
@@ -313,7 +313,7 @@
       <li>The return type (<c>bool</c>) makes it clear how to check for success</li>
     </ul>
 
-    <subsection xml:id="another-contract-example">
+    <subsubsection xml:id="another-contract-example">
       <title>Practice: Writing Another Contract</title>
       <p>
         Mai suggested they practice by writing a contract for a new function: one that would
@@ -321,9 +321,9 @@
       </p>
 
       <blockquote>
-        <p><strong>Audrey:</strong> "How about something that combines rating and play count?
+        <p><alert>Audrey:</alert> "How about something that combines rating and play count?
            Like rating × log(play_count + 1)?"</p>
-        <p><strong>Mai:</strong> "Perfect! Let's write out the contract first, before any code:"</p>
+        <p><alert>Mai:</alert> "Perfect! Let's write out the contract first, before any code:"</p>
       </blockquote>
 
       <listing>
@@ -366,28 +366,28 @@
           <li>Uses the same structure as update_rating for consistency</li>
         </ul>
       </p>
-    </subsection>
-  </section>
+    </subsubsection>
+  </subsection>
 
-  <section xml:id="formalizing-contracts">
+  <subsection xml:id="formalizing-contracts">
     <title>Formalizing Function Contracts</title>
     <p>
       Having seen how method signatures and purpose statements emerge naturally from documenting our 
       intentions, let's formalize what makes a good function contract. A complete contract needs:
     </p>
     
-    <subsection xml:id="contract-components">
+    <subsubsection xml:id="contract-components">
       <title>Essential Components</title>
       <ul>
-        <li><p><strong>Method Signature:</strong> The function name, parameter types, and return type</p></li>
-        <li><p><strong>Purpose Statement:</strong> A clear, one-sentence description of the function's role</p></li>
-        <li><p><strong>Preconditions:</strong> Requirements that inputs must satisfy</p></li>
-        <li><p><strong>Postconditions:</strong> Guarantees about the output or effects</p></li>
-        <li><p><strong>Error Cases:</strong> What happens when preconditions are violated</p></li>
+        <li><p><alert>Method Signature:</alert> The function name, parameter types, and return type</p></li>
+        <li><p><alert>Purpose Statement:</alert> A clear, one-sentence description of the function's role</p></li>
+        <li><p><alert>Preconditions:</alert> Requirements that inputs must satisfy</p></li>
+        <li><p><alert>Postconditions:</alert> Guarantees about the output or effects</p></li>
+        <li><p><alert>Error Cases:</alert> What happens when preconditions are violated</p></li>
       </ul>
-    </subsection>
+    </subsubsection>
 
-    <subsection xml:id="standard-docstring-format">
+    <subsubsection xml:id="standard-docstring-format">
       <title>Standard Documentation Format</title>
       <p>
         In Python, we use docstrings with specific sections:
@@ -415,10 +415,10 @@
               """
         </program>
       </listing>
-    </subsection>
-  </section>
+    </subsubsection>
+  </subsection>
 
-  <section xml:id="java-parallel">
+  <subsection xml:id="java-parallel">
     <title>A Preview: Contracts in Java</title>
     <p>
       While we're learning to write clear contracts in Python, let's peek at how Java—a language 
@@ -426,7 +426,7 @@
       you're not expected to understand it all yet.
     </p>
 
-    <subsection xml:id="comparing-approaches">
+    <subsubsection xml:id="comparing-approaches">
       <title>Python vs. Java: A First Look</title>
       <listing xml:id="simple-comparison">
         <program language="python">
@@ -464,9 +464,9 @@
         <li>You can't return text when a true/false answer is expected</li>
         <li>Java checks these rules before the program even runs</li>
       </ul>
-    </subsection>
+    </subsubsection>
 
-    <subsection xml:id="focus-on-python">
+    <subsubsection xml:id="focus-on-python">
       <title>Stay Focused on Python for Now</title>
       <p>
         The Java example above is just a preview. For now, focus on writing clear contracts in Python:
@@ -480,50 +480,50 @@
         We'll learn more about Java's type system in later chapters. For now, just notice how 
         different languages can help us express and enforce our function contracts in different ways.
       </p>
-    </subsection>
-  </section>
+    </subsubsection>
+  </subsection>
 
-  <section xml:id="reflection-tying-back">
+  <subsection xml:id="reflection-tying-back">
     <title>The Value of Clear Contracts</title>
     
-    <subsection xml:id="immediate-benefits">
+    <subsubsection xml:id="immediate-benefits">
       <title>Immediate Benefits</title>
       <ul>
         <li>
-          <p><strong>Error Prevention:</strong> By explicitly stating constraints (like "rating must 
+          <p><alert>Error Prevention:</alert> By explicitly stating constraints (like "rating must 
              be 1-5"), we catch invalid inputs before they cause problems.</p>
         </li>
         <li>
-          <p><strong>Documentation:</strong> The contract serves as living documentation that stays 
+          <p><alert>Documentation:</alert> The contract serves as living documentation that stays 
              in sync with the code.</p>
         </li>
         <li>
-          <p><strong>Testing Guide:</strong> Contracts naturally suggest test cases: valid inputs, 
+          <p><alert>Testing Guide:</alert> Contracts naturally suggest test cases: valid inputs, 
              edge cases, and error conditions.</p>
         </li>
       </ul>
-    </subsection>
+    </subsubsection>
 
-    <subsection xml:id="long-term-value">
+    <subsubsection xml:id="long-term-value">
       <title>Long-term Value</title>
       <ul>
         <li>
-          <p><strong>Maintenance:</strong> Future developers (including yourself) can understand and 
+          <p><alert>Maintenance:</alert> Future developers (including yourself) can understand and 
              modify code with confidence.</p>
         </li>
         <li>
-          <p><strong>Reusability:</strong> Well-documented functions with clear contracts are easier 
+          <p><alert>Reusability:</alert> Well-documented functions with clear contracts are easier 
              to reuse in new contexts.</p>
         </li>
         <li>
-          <p><strong>Reliability:</strong> When every function's contract is clear, large systems 
+          <p><alert>Reliability:</alert> When every function's contract is clear, large systems 
              become more reliable and easier to debug.</p>
         </li>
       </ul>
-    </subsection>
-  </section>
+    </subsubsection>
+  </subsection>
 
-  <section xml:id="next-steps">
+  <subsection xml:id="next-steps">
     <title>Preparing for Implementation</title>
     <p>
       With clear method signatures and purpose statements in place, we're ready for the next step: 
@@ -531,10 +531,10 @@
       our contract is complete and unambiguous.
     </p>
     
-    <subsection xml:id="what-to-expect">
+    <subsubsection xml:id="what-to-expect">
       <title>What's Coming Next</title>
       <p>
-        In Chapter 3, we'll:
+        In Section 3, we'll:
       </p>
       <ul>
         <li>Learn how to derive test cases from contracts</li>
@@ -542,7 +542,7 @@
         <li>Use test frameworks to automate verification</li>
         <li>Refine contracts based on test insights</li>
       </ul>
-    </subsection>
+    </subsubsection>
 
     <exercise>
       <title>Practice: Writing Contracts</title>
@@ -560,10 +560,10 @@
         </p>
       </statement>
     </exercise>
-  </section>
+  </subsection>
 
-  <section xml:id="ch-method-signature-purpose-exercises">
-    <title>Chapter 2: Method Signature &amp; Purpose Exercises</title>
+  <subsection xml:id="ch-method-signature-purpose-exercises">
+    <title>Method Signature &amp; Purpose Exercises</title>
 
     <!-- =========================================================
        1. PARSONS PROBLEM: Audrey & Mai's Story (Motivation)
@@ -607,7 +607,7 @@
       </blocks>
       <solution>
         <p>
-          <strong>Suggested order:</strong>
+          <alert>Suggested order:</alert>
         </p>
         <ol>
           <li>Mai calls <code>update_rating(None, ...)</code> → code crashes</li>
@@ -659,7 +659,7 @@
       </blocks>
       <solution>
         <p>
-          <strong>Correct chain of reasoning:</strong>
+          <alert>Correct chain of reasoning:</alert>
         </p>
         <ol>
           <li>No docstring → users guess usage</li>
@@ -919,5 +919,5 @@
         </choice>
       </choices>
     </exercise>
-  </section>
-</chapter>
+  </subsection>
+</section>
