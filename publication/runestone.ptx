@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<publication>
+  <!-- directories are relative to the main source PreTeXt file -->
+
+  <source>
+    <directories external="Figures" generated="GenFigs" />
+    <version include="html"/>
+  </source>
+
+  <metadata>
+    <title>Intro to CS2 (Java)</title>
+    <author>UNCC CS</author>
+    <publisher>PreTeXt Publishing</publisher>
+    <pub-date>2025-01-11</pub-date>
+  </metadata>
+
+  
+
+<html>
+    <platform host="runestone"/>
+  </html>
+<stringparam key="debug.rs.services.file" value="/Users/bmiller/Runestone/RunestoneComponents/runestone/dist/webpack_static_imports.xml" />
+</publication>

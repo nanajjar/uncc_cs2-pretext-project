@@ -8,26 +8,26 @@
   <targets>
     <target name="web">
       <format>html</format>
-      <source>source/main.ptx</source>
+      <source>source/uncc_cs2.ptx</source>
       <publication>source/publication-rs-for-all.xml</publication>
       <stringparam key="html.css.extra" value="external/custom-styles.css"/>
       <output-dir>output/html</output-dir>
     </target>
     <target name="runestone">
       <format>html</format>
-      <source>source/main.ptx</source>
-      <publication>publication/publication.ptx</publication>
+      <source>source/uncc_cs2.ptx</source>
+      <publication>./publication/runestone.ptx</publication>
       <output-dir>published/uncc_cs2</output-dir>
     </target>
     <target name="latex">
       <format>latex</format>
-      <source>source/main.ptx</source>
+      <source>source/uncc_cs2.ptx</source>
       <publication>source/publication-rs-for-all.xml</publication>
       <output-dir>output/latex</output-dir>
     </target>
     <target name="pdf" pdf-method="xelatex">
       <format>pdf</format>
-      <source>source/main.ptx</source>
+      <source>source/uncc_cs2.ptx</source>
       <publication>source/publication-rs-latex.xml</publication>
       <output-dir>output/pdf</output-dir>
     </target>

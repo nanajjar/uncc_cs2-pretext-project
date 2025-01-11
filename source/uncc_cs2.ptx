@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<pretext xml:lang="en-US" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <!-- we first include a file which contains the docinfo element: -->
+  <xi:include href="./docinfo.ptx" />
+
+  <book xml:id="uncc_cs2">
+  <docinfo>
+            <title>Introduction to CS 1</title>
+            <author>
+                <name>UNCC CS</name>
+                <email>nanajjar@charlotte.edu</email>
+            </author>
+            <publisher>PreTeXt Publishing</publisher>
+            <document-id>uncc_cs2</document-id>
+            <pub-date>2024-01-11</pub-date>
+            <blurb shelf="Intro to Computer Science">
+                An adaptation of Java for Python Programmers extended to include how to design programs with object oriented programming.
+            </blurb>
+        </docinfo>
+    <title>ITSC 1213 - Introduction to CS 2</title>
+    <subtitle>Interactive Edition</subtitle>
+
+    <!-- Include frontmatter -->
+    <xi:include href="./frontmatter.ptx" />
+
+    <!-- Include chapters -->
+    <xi:include href="./DesignRecipe/toctree.ptx" />
+    <xi:include href="./SyntaxSemantics/toctree.ptx" />
+    <xi:include href="./ObjectOrientedProgramming/toctree.ptx" />
+    <xi:include href="./Tools/toctree.ptx" />
+
+
+    <!-- Include backmatter -->
+    <xi:include href="./backmatter.ptx" />
+
+  </book>
+</pretext>
+
+
+
+
+        <!-- <xi:include href="./SimplePythonData/toctree.ptx" /> -->
