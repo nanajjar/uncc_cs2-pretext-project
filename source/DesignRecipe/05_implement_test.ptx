@@ -327,7 +327,7 @@ def test_compute_popularity():
 
 
   <section xml:id="exercises-practice-implementation">
-    <title>Exercises &amp; Practice</title>
+    <title> Practice</title>
 
 
     <exercise>
@@ -384,6 +384,306 @@ def test_compute_popularity():
         </p>
       </statement>
     </exercise>
+
+    <section xml:id="ch-implement-test-refine-exercises">
+      <title>Chapter 5: Implement, Test &amp; Refine Exercises</title>
+
+      <!-- ============================================================
+       1. PARSONS PROBLEM: Finishing Code Based on a Skeleton
+       ============================================================ -->
+      <exercise xml:id="parsons-implement-update-rating" language="python">
+        <title>Parsons: From Skeleton to Final Implementation</title>
+        <statement> Audrey has a skeleton for <code>update_rating(library, song_title, new_rating)</code>
+          from Chapter 4. Now she’s ready to fill in the details and ensure it passes the tests from
+          Chapter 3. Rearrange these lines to create a coherent, final version. <strong>Recall:</strong>
+      <ul>
+            <li><code>update_rating</code> should return <code>True</code> if the song is found and
+          rating is updated, else <code>False</code>.</li>
+            <li>Raise <code>ValueError</code> if <code>new_rating</code> is out of [1..5].</li>
+          </ul>
+        </statement>
+        <blocks layout="vertical" randomize="yes">
+          <block order="1">
+            <choice correct="yes">
+              <cline>def update_rating(library, song_title, new_rating):</cline>
+            </choice>
+          </block>
+          <block order="2">
+            <choice correct="yes">
+              <cline> # Step 1: Validate inputs (from skeleton)</cline>
+            </choice>
+          </block>
+          <block order="3">
+            <choice correct="yes">
+              <cline> if new_rating &lt; 1 or new_rating &gt; 5:</cline>
+            </choice>
+          </block>
+          <block order="4">
+            <choice correct="yes">
+              <cline> raise ValueError("Rating must be 1..5")</cline>
+            </choice>
+          </block>
+          <block order="5">
+            <choice correct="yes">
+              <cline> # Step 2: Loop through library to find the matching song</cline>
+            </choice>
+          </block>
+          <block order="6">
+            <choice correct="yes">
+              <cline> for song in library:</cline>
+            </choice>
+          </block>
+          <block order="7">
+            <choice correct="yes">
+              <cline> if song[0] == song_title: # match found by title</cline>
+            </choice>
+          </block>
+          <block order="8">
+            <choice correct="yes">
+              <cline> song[1] = new_rating # update rating</cline>
+            </choice>
+          </block>
+          <block order="9">
+            <choice correct="yes">
+              <cline> return True</cline>
+            </choice>
+          </block>
+          <block order="10">
+            <choice correct="yes">
+              <cline> # Step 3: If loop finishes with no match, return False</cline>
+            </choice>
+          </block>
+          <block order="11">
+            <choice correct="yes">
+              <cline> return False</cline>
+            </choice>
+          </block>
+        </blocks>
+        <solution>
+          <p>
+            <strong>Suggested final code order:</strong>
+          </p>
+          <pre><code>def update_rating(library, song_title, new_rating):
+    # Step 1: Validate inputs
+    if new_rating &lt; 1 or new_rating &gt; 5:
+        raise ValueError("Rating must be 1..5")
+
+    # Step 2: Loop through library to find matching song
+    for song in library:
+        if song[0] == song_title:
+            song[1] = new_rating
+            return True
+
+    # Step 3: If not found, return False
+    return False
+</code></pre>
+        </solution>
+      </exercise>
+
+
+      <!-- ============================================================
+       2. MULTIPLE-CHOICE: Why Retest After Implementation?
+       ============================================================ -->
+      <exercise xml:id="mc-retest-after-implementation">
+        <title>Retesting After Implementation</title>
+        <statement>
+          After you finish implementing a function based on a skeleton,
+          why does Chapter 5 stress the importance of re-running your tests?
+        </statement>
+        <choices randomize="yes">
+          <choice>
+            <statement>
+              Tests are only needed once, and then can be deleted after initial success.
+            </statement>
+            <feedback>
+              No. Tests should be kept and re-run whenever the code changes,
+              catching potential regressions.
+            </feedback>
+          </choice>
+          <choice correct="yes">
+            <statement>
+              Because each new change (or final code details) can introduce new bugs,
+              so re-running ensures nothing broke.
+            </statement>
+            <feedback>
+              Correct! Implementation steps can inadvertently break previous logic,
+              so retesting prevents regressions.
+            </feedback>
+          </choice>
+          <choice>
+            <statement>
+              Because Python won’t compile unless you have at least 5 tests.
+            </statement>
+            <feedback>
+              Python doesn’t enforce a specific number of tests;
+              tests are a best-practice, not a compiler requirement.
+            </feedback>
+          </choice>
+          <choice>
+            <statement>
+              Because once we have an implementation, we want to auto-generate new docstrings from
+              tests.
+            </statement>
+            <feedback>
+              Tests don’t automatically create docstrings.
+              They verify code correctness, not write documentation.
+            </feedback>
+          </choice>
+        </choices>
+      </exercise>
+
+
+      <!-- ============================================================
+       3. TRUE/FALSE: Final Test Coverage
+       ============================================================ -->
+      <exercise xml:id="tf-final-test-coverage" type="truefalse">
+        <title>All Green Tests Means Complete Coverage?</title>
+        <statement correct="no">
+          If all existing tests pass after implementation, it guarantees we have covered
+          every possible edge case and no bugs remain.
+        </statement>
+        <feedback>
+          Passing tests do not always prove total correctness.
+          We reduce risk, but cannot guarantee we covered every edge scenario.
+        </feedback>
+      </exercise>
+
+
+      <!-- ============================================================
+       4. PARSONS PROBLEM: Refinement After a Bug
+       ============================================================ -->
+      <exercise xml:id="parsons-refine-bugfix" language="python">
+        <title>Parsons: Refining Code After a Bug</title>
+        <statement> Audrey runs her tests and finds a bug: <code>update_rating</code> crashes if <code>
+          library</code> is <code>None</code>. She decides to refine her code. Rearrange these lines
+          to integrate a quick fix without breaking existing logic. </statement>
+        <blocks layout="vertical" randomize="yes">
+          <block order="1">
+            <choice correct="yes">
+              <cline>def update_rating(library, song_title, new_rating):</cline>
+            </choice>
+          </block>
+          <block order="2">
+            <choice correct="yes">
+              <cline> # Refinement: Check if library is None or not a list</cline>
+            </choice>
+          </block>
+          <block order="3">
+            <choice correct="yes">
+              <cline> if not isinstance(library, list):</cline>
+            </choice>
+          </block>
+          <block order="4">
+            <choice correct="yes">
+              <cline> raise ValueError("Library must be a list")</cline>
+            </choice>
+          </block>
+          <block order="5">
+            <choice correct="yes">
+              <cline> if new_rating &lt; 1 or new_rating &gt; 5:</cline>
+            </choice>
+          </block>
+          <block order="6">
+            <choice correct="yes">
+              <cline> raise ValueError("Rating must be 1..5")</cline>
+            </choice>
+          </block>
+          <block order="7">
+            <choice correct="yes">
+              <cline> for song in library:</cline>
+            </choice>
+          </block>
+          <block order="8">
+            <choice correct="yes">
+              <cline> if song[0] == song_title:</cline>
+            </choice>
+          </block>
+          <block order="9">
+            <choice correct="yes">
+              <cline> song[1] = new_rating</cline>
+            </choice>
+          </block>
+          <block order="10">
+            <choice correct="yes">
+              <cline> return True</cline>
+            </choice>
+          </block>
+          <block order="11">
+            <choice correct="yes">
+              <cline> return False</cline>
+            </choice>
+          </block>
+        </blocks>
+        <solution>
+          <p>
+            <strong>Refined solution (bug fix for <code>None</code> library):</strong>
+          </p>
+          <pre><code>def update_rating(library, song_title, new_rating):
+    # Refinement: library must be a list
+    if not isinstance(library, list):
+        raise ValueError("Library must be a list")
+
+    if new_rating &lt; 1 or new_rating &gt; 5:
+        raise ValueError("Rating must be 1..5")
+
+    for song in library:
+        if song[0] == song_title:
+            song[1] = new_rating
+            return True
+
+    return False
+</code></pre>
+        </solution>
+      </exercise>
+
+
+      <!-- ============================================================
+       5. SHORT-ANSWER: Final Reflection: Implementation & Tests
+       ============================================================ -->
+      <exercise xml:id="sa-ch5-refine-code-snippet">
+        <title>Short Answer: Refining <code>count_words</code> After a Failing Test</title>
+        <statement>
+          <p>Below is Audrey’s <code>count_words</code> function and a test that fails when the
+            input is just whitespace (<code>" "</code>):</p>
+          <program language="python">
+            def count_words(text):
+            # Current implementation
+            words = text.split(" ")
+            return len(words)
+
+            def test_count_words_whitespace():
+            # We expect 0 words if the string is just spaces
+            result = count_words(" ")
+            # But the function returns 1 instead, causing an AssertionError:
+            assert result == 0, f"Expected 0, got {result}"
+            print("Whitespace test passed.")
+          </program>
+          <p> When <code>test_count_words_whitespace()</code> runs, it raises <code>AssertionError</code>
+            indicating the function returns 1 instead of 0. </p>
+          <p> In <strong>2–3 sentences</strong>, explain how you would refine <code>count_words</code>
+            to handle whitespace-only input correctly <em>without</em> breaking other scenarios.
+            Reference how you’ll confirm it works (e.g., re-running the failing test and possibly
+            others). </p>
+        </statement>
+        <response />
+        <solution>
+          <p>
+            <strong>Sample Response (One Possible Refinement):</strong>
+          </p>
+          <ul>
+            <li> I modify <code>count_words</code> to strip the input before splitting or check if <code>
+              text.strip()</code> is empty, returning 0 in that case. For example: <pre><code>if text.strip() == "":
+    return 0
+words = text.strip().split()
+return len(words)</code></pre>
+            </li>
+            <li> I rerun <code>test_count_words_whitespace</code>, verifying no assertion error. I’d
+              also run existing tests (like normal strings, empty string) to ensure no regression. </li>
+          </ul>
+        </solution>
+      </exercise>
+
+    </section>
 
   </section>
 </chapter>

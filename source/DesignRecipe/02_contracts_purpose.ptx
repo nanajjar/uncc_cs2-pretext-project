@@ -561,4 +561,363 @@
       </statement>
     </exercise>
   </section>
+
+  <section xml:id="ch-method-signature-purpose-exercises">
+    <title>Chapter 2: Method Signature &amp; Purpose Exercises</title>
+
+    <!-- =========================================================
+       1. PARSONS PROBLEM: Audrey & Mai's Story (Motivation)
+       ========================================================= -->
+    <exercise xml:id="parsons-audrey-mai-story" language="natural">
+      <title>Parsons: Audrey &amp; Mai’s Journey to Documenting Function Constraints</title>
+      <statement>
+        Rearrange these story beats to see how Audrey and Mai realized the importance
+        of a function’s **signature and purpose statement** (docstring).
+      </statement>
+      <blocks layout="vertical" randomize="yes">
+        <block order="1">
+          <choice correct="yes">
+            <cline>Mai calls <code>update_rating(None, "Hey Jude", 5)</code> and the code crashes.</cline>
+          </choice>
+        </block>
+        <block order="2">
+          <choice correct="yes">
+            <cline>Audrey exclaims, “But I knew never to pass <code>None</code>! I never wrote that
+              down though...”</cline>
+          </choice>
+        </block>
+        <block order="3">
+          <choice correct="yes">
+            <cline>Mai tries setting rating to <code>10</code>, breaking assumptions about the valid
+              range of <code>[1..5]</code>.</cline>
+          </choice>
+        </block>
+        <block order="4">
+          <choice correct="yes">
+            <cline>Together, they realize they need a docstring specifying <code>library</code>
+              cannot be <code>None</code> and <code>rating</code> must be in <code>[1..5]</code>.</cline>
+          </choice>
+        </block>
+        <block order="5">
+          <choice correct="yes">
+            <cline>They add a method signature with type hints and a <code>Raises ValueError</code>
+              note if constraints are violated.</cline>
+          </choice>
+        </block>
+      </blocks>
+      <solution>
+        <p>
+          <strong>Suggested order:</strong>
+        </p>
+        <ol>
+          <li>Mai calls <code>update_rating(None, ...)</code> → code crashes</li>
+          <li>Audrey: "I just *knew* not to pass None, but never documented it!"</li>
+          <li>Mai tries rating=10 → assumptions break</li>
+          <li>They realize constraints must be explicit in a docstring</li>
+          <li>They finally add type hints, docstring sections for usage &amp; errors</li>
+        </ol>
+      </solution>
+    </exercise>
+
+
+    <!-- =========================================================
+       2. PARSONS PROBLEM: Chain of Logical Reasoning
+       ========================================================= -->
+    <exercise xml:id="parsons-logical-reasoning" language="natural">
+      <title>Parsons: Chain of Reasoning for a Method Contract</title>
+      <statement>
+        Reorder these logic steps showing **why** Audrey and Mai ended up writing
+        a detailed method signature &amp; purpose statement.
+      </statement>
+      <blocks layout="vertical" randomize="yes">
+        <block order="1">
+          <choice correct="yes">
+            <cline>Without any docstring or signature, users guess how to call the function.</cline>
+          </choice>
+        </block>
+        <block order="2">
+          <choice correct="yes">
+            <cline>Mai accidentally uses invalid inputs (e.g., rating=10).</cline>
+          </choice>
+        </block>
+        <block order="3">
+          <choice correct="yes">
+            <cline>Audrey realizes she never stated rating must be 1..5 anywhere.</cline>
+          </choice>
+        </block>
+        <block order="4">
+          <choice correct="yes">
+            <cline>They define a purpose statement explaining what the function does and
+              constraints on its parameters.</cline>
+          </choice>
+        </block>
+        <block order="5">
+          <choice correct="yes">
+            <cline>Now invalid calls can raise errors or be clearly documented, reducing confusion.</cline>
+          </choice>
+        </block>
+      </blocks>
+      <solution>
+        <p>
+          <strong>Correct chain of reasoning:</strong>
+        </p>
+        <ol>
+          <li>No docstring → users guess usage</li>
+          <li>Mai tries invalid inputs (e.g., rating=10)</li>
+          <li>Audrey sees rating constraints were never shared</li>
+          <li>They add a formal docstring with inputs &amp; purpose</li>
+          <li>Invalid calls become clearer or raise documented errors</li>
+        </ol>
+      </solution>
+    </exercise>
+
+
+    <!-- =========================================================
+       3. MULTIPLE-CHOICE (Graded)
+       ========================================================= -->
+    <exercise xml:id="mc-purpose-statement-benefits">
+      <title>Benefits of a Purpose Statement</title>
+      <statement>
+        Which of the following best captures the **main benefit** of writing a clear purpose
+        statement
+        for your function in Chapter 2’s context?
+      </statement>
+      <choices randomize="yes">
+        <choice correct="yes">
+          <statement>
+            It ensures anyone using the function knows what it does,
+            what inputs are valid, and what output to expect.
+          </statement>
+          <feedback>
+            Correct! Documenting the function’s purpose and constraints is key for preventing
+            misuse.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            It automatically tests your code for you, eliminating the need for a test suite.
+          </statement>
+          <feedback>
+            No, you still need to write tests. A docstring does not perform automated checks.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            It hides the actual code so only the signature is visible in Python.
+          </statement>
+          <feedback>
+            Python docstrings do not hide code. They just provide documentation.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            It compresses the code size, making the program load faster.
+          </statement>
+          <feedback>
+            Purpose statements do not optimize or compress code size.
+          </feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+
+    <!-- =========================================================
+       4. TRUE/FALSE (Graded)
+       ========================================================= -->
+    <exercise xml:id="tf-signature-contraints" type="truefalse">
+      <title>Signatures &amp; Enforced Constraints</title>
+      <statement correct="no"> Specifying parameter types (e.g., <code>song_title: str</code>) in a
+        Python signature will cause a runtime error if a different type is passed. </statement>
+      <feedback>
+        Python does not enforce type hints at runtime. Type hints + docstrings help humans (and
+        optional tools),
+        but don't inherently stop wrong types at runtime.
+      </feedback>
+    </exercise>
+
+    <!-- =============================================
+     MULTIPLE-CHOICE ALTERNATIVE TO MATCHING
+     Each premise is a separate MC question
+     referencing the same set of “concepts.”
+     ============================================= -->
+
+    <!-- 1. Method Signature -->
+    <exercise xml:id="mc-id-signature">
+      <title>Identify: Method Signature</title>
+      <statement> Which concept is described by: <em>“The function name, parameters (with types),
+        and return type—describing how the function is called
+          and what it returns.”</em>
+      </statement>
+      <choices randomize="yes">
+        <choice correct="yes">
+          <statement>Method Signature</statement>
+          <feedback>Correct! That is precisely what a method signature describes.</feedback>
+        </choice>
+        <choice>
+          <statement>Preconditions</statement>
+          <feedback>Preconditions are about requirements that must hold before calling the function.</feedback>
+        </choice>
+        <choice>
+          <statement>Purpose Statement</statement>
+          <feedback>This explains what the function does, rather than its parameters or return type.</feedback>
+        </choice>
+        <choice>
+          <statement>Postconditions</statement>
+          <feedback>These are guaranteed outcomes once the function completes, not how it's called.</feedback>
+        </choice>
+        <choice>
+          <statement>Error Cases</statement>
+          <feedback>Error cases describe what happens with invalid inputs, not the function’s
+            signature details.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- 2. Preconditions -->
+    <exercise xml:id="mc-id-preconditions">
+      <title>Identify: Preconditions</title>
+      <statement> Which concept is described by: <em>“Conditions that must be true or satisfied
+        before the function runs,
+          such as rating in [1..5].”</em>
+      </statement>
+      <choices randomize="yes">
+        <choice>
+          <statement>Method Signature</statement>
+          <feedback>
+            A signature states parameter types/return types, but not required input conditions.
+          </feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>Preconditions</statement>
+          <feedback>Exactly! Preconditions are the assumptions that must hold before calling the
+            function.</feedback>
+        </choice>
+        <choice>
+          <statement>Purpose Statement</statement>
+          <feedback>This describes the function’s job or role, not constraints on inputs.</feedback>
+        </choice>
+        <choice>
+          <statement>Postconditions</statement>
+          <feedback>These describe guarantees after the function completes, not the input
+            requirements.</feedback>
+        </choice>
+        <choice>
+          <statement>Error Cases</statement>
+          <feedback>That focuses on how invalid inputs are handled, not on the valid conditions
+            themselves.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- 3. Purpose Statement -->
+    <exercise xml:id="mc-id-purpose-statement">
+      <title>Identify: Purpose Statement</title>
+      <statement> Which concept is described by: <em>“A concise explanation of what the function
+        does, clarifying its main role or behavior.”</em>
+      </statement>
+      <choices randomize="yes">
+        <choice>
+          <statement>Method Signature</statement>
+          <feedback>
+            The signature is about how the function is called (parameters/return), not its main
+            explanation.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>Preconditions</statement>
+          <feedback>These specify requirements on inputs, not the function’s overall job.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>Purpose Statement</statement>
+          <feedback>Correct! A purpose statement summarizes the function’s intended behavior.</feedback>
+        </choice>
+        <choice>
+          <statement>Postconditions</statement>
+          <feedback>Postconditions describe results after successful execution, not the overall
+            “purpose.”</feedback>
+        </choice>
+        <choice>
+          <statement>Error Cases</statement>
+          <feedback>That deals with exceptions or invalid inputs, not the fundamental purpose.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- 4. Postconditions -->
+    <exercise xml:id="mc-id-postconditions">
+      <title>Identify: Postconditions</title>
+      <statement> Which concept is described by: <em>“What the function guarantees or ensures once
+        it completes, given valid inputs.”</em>
+      </statement>
+      <choices randomize="yes">
+        <choice>
+          <statement>Method Signature</statement>
+          <feedback>
+            This only specifies parameters/return type, not the guaranteed state after execution.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>Preconditions</statement>
+          <feedback>Those are the assumptions before execution, not the outcome guarantees.</feedback>
+        </choice>
+        <choice>
+          <statement>Purpose Statement</statement>
+          <feedback>This is a short description of the function’s role, not the final guaranteed
+            state.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>Postconditions</statement>
+          <feedback>Exactly. Postconditions indicate the state or results we can rely on after a
+            valid call.</feedback>
+        </choice>
+        <choice>
+          <statement>Error Cases</statement>
+          <feedback>
+            Error cases handle invalid inputs or exceptions, not normal outcomes with valid data.
+          </feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- 5. Error Cases -->
+    <exercise xml:id="mc-id-error-cases">
+      <title>Identify: Error Cases</title>
+      <statement> Which concept is described by: <em>“Possible invalid inputs or exceptions, and how
+        the function handles them
+          (e.g., raises ValueError).”</em>
+      </statement>
+      <choices randomize="yes">
+        <choice>
+          <statement>Method Signature</statement>
+          <feedback>
+            This covers parameters and returns, not how errors are handled.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>Preconditions</statement>
+          <feedback>
+            Preconditions specify valid input scenarios, while “error cases” detail what happens if
+            they’re not met.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>Purpose Statement</statement>
+          <feedback>
+            This describes the function’s main job, not how errors or invalid inputs are handled.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>Postconditions</statement>
+          <feedback>
+            Postconditions describe normal results for valid data, not the reaction to invalid data.
+          </feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>Error Cases</statement>
+          <feedback>Correct! This section explains how the function responds to invalid inputs or
+            raises exceptions.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </section>
 </chapter>

@@ -211,10 +211,10 @@
   </section>
 
   <!-- ======================================
-       8. Exercises & Reflection
+       8. Exercises & Practice
        ====================================== -->
   <section xml:id="exercises-reflection-step0">
-    <title>Exercises &amp; Reflection</title>
+    <title>Practice</title>
 
     <exercise>
       <title>1. Ambiguous Prompt Practice</title>
@@ -322,5 +322,230 @@
     <p>
       <em>Best of luck, and happy designing!</em>
     </p>
+  </section>
+
+  <section xml:id="ch-final-recipe-exercises">
+    <title>Chapter 6: Final Recipe (Step 0) Exercises</title>
+
+    <!-- ============================================================
+       1. PARSONS PROBLEM: The Consequence of Skipping Step 0
+       ============================================================ -->
+    <exercise xml:id="parsons-skip-step0" language="natural">
+      <title>Parsons: What Happens If We Skip Step 0?</title>
+      <statement>
+        Rearrange these story beats to see how failing to restate/understand the problem
+        can cause chaos later in the design process.
+      </statement>
+      <blocks layout="vertical" randomize="yes">
+        <block order="1">
+          <choice correct="yes">
+            <cline>Audrey sees a vague assignment: “Build a function to process orders with a
+              discount.”</cline>
+          </choice>
+        </block>
+        <block order="2">
+          <choice correct="yes">
+            <cline>She immediately starts coding, assuming each order is just a float price and
+              discount=10%.</cline>
+          </choice>
+        </block>
+        <block order="3">
+          <choice correct="yes">
+            <cline>Weeks later, a teammate clarifies that “orders” include shipping/tax, and
+              discount depends on the item type.</cline>
+          </choice>
+        </block>
+        <block order="4">
+          <choice correct="yes">
+            <cline>Audrey’s code doesn’t handle any of that because she never restated the problem
+              or asked clarifying questions.</cline>
+          </choice>
+        </block>
+        <block order="5">
+          <choice correct="yes">
+            <cline>She must rewrite large sections, discovering Step 0 (“Understand &amp; Restate”)
+              was vital all along.</cline>
+          </choice>
+        </block>
+      </blocks>
+      <solution>
+        <p>
+          <strong>Suggested order:</strong>
+        </p>
+        <ol>
+          <li>Assignment is vague: “Build function to process discount orders.”</li>
+          <li>Audrey codes immediately, assuming one float price + 10% discount.</li>
+          <li>Teammate clarifies shipping, tax, item-specific discounts.</li>
+          <li>Audrey’s code is incomplete due to no clarifications.</li>
+          <li>She must do a major rewrite, realizing Step 0 was crucial.</li>
+        </ol>
+      </solution>
+    </exercise>
+
+
+    <!-- ============================================================
+       2. MULTIPLE-CHOICE: Why Step 0 Matters
+       ============================================================ -->
+    <exercise xml:id="mc-step0-importance">
+      <title>Why “Understand &amp; Restate the Problem” First?</title>
+      <statement> Chapter 6 emphasizes Step 0 of the Design Recipe: fully clarifying and restating
+        the problem before coding. Which answer <strong>best</strong> captures why this is
+        necessary? </statement>
+      <choices randomize="yes">
+        <choice correct="yes">
+          <statement>
+            You might otherwise make assumptions about data formats or requirements,
+            leading to large rewrites if they turn out to be incorrect.
+          </statement>
+          <feedback>
+            Correct! Step 0 prevents costly rewrites by clarifying requirements early.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            It forces the compiler to automatically generate all data definitions.
+          </statement>
+          <feedback>
+            There is no compiler feature that creates definitions for you;
+            Step 0 is a human-centered activity.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            It is only important for typed languages like Java, not for Python.
+          </statement>
+          <feedback>
+            No—misunderstanding a problem is language-agnostic. Step 0 helps in *any* language.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            It ensures your code never needs testing, since you understood the problem perfectly.
+          </statement>
+          <feedback>
+            You still need to test! Even with a perfect problem restatement, bugs can arise in
+            logic.
+          </feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+
+    <!-- ============================================================
+       3. TRUE/FALSE: One Reading Enough?
+       ============================================================ -->
+    <exercise xml:id="tf-one-reading" type="truefalse">
+      <title>Is One Reading of the Prompt Enough?</title>
+      <statement correct="no">
+        Once you read the project prompt once, you have everything you need to start coding
+        without revisiting the prompt or clarifying details.
+      </statement>
+      <feedback>
+        Typically false. You often need to reread, restate, and ask questions to uncover hidden
+        details
+        and avoid incorrect assumptions.
+      </feedback>
+    </exercise>
+
+
+    <!-- ============================================================
+       4. SHORT-ANSWER: Restate a Vague Prompt
+       ============================================================ -->
+    <exercise xml:id="sa-restating-vague-prompt">
+      <title>Short Answer: Restate a Vague Prompt</title>
+      <statement>
+        <p> Suppose you receive a prompt: <em>"Write a function that manages customer data."</em>
+          That’s all the instructions you have. In the spirit of Step 0, produce a <strong>
+          restatement</strong> that includes: </p>
+        <ul>
+          <li> Key assumptions you must clarify (e.g., “What is a <code>customer</code>? Are we
+            storing a <code>name</code>, <code>email</code>, <code>purchase history</code>?”) </li>
+          <li> Possible edge cases or special conditions (e.g., “What if the user has no purchase
+            history? Is <code>email</code> always valid?”) </li>
+          <li> A concise summary of <strong>what “manage” means</strong> (e.g., “Add, remove, or
+            update customer details.”) </li>
+        </ul>
+        <p>
+          <em>Write your restatement below:</em>
+        </p>
+      </statement>
+      <response />
+      <solution>
+        <p>
+          <strong>Sample Restatement:</strong>
+        </p>
+        <ul>
+          <li> A <code>customer</code> has at least a <code>name</code> (string), <code>email</code>
+            (string), and an optional <code>purchase_history</code> (list of orders). </li>
+          <li>
+            “Manage” means we can add new customers (with valid email),
+            remove existing customers, or update their name/email.
+          </li>
+          <li> Edge cases: <ul>
+              <li>Empty name or invalid email? Are we storing partial data?</li>
+              <li>What if <code>purchase_history</code> is empty or <code>None</code>?</li>
+            </ul>
+          </li>
+          <li>
+            We might need clarifications on whether email is always unique or how we handle
+            duplicates.
+          </li>
+        </ul>
+        <p>
+          By writing these questions/assumptions up front, we avoid building code that contradicts
+          the real requirements.
+        </p>
+      </solution>
+    </exercise>
+
+
+    <!-- ============================================================
+       5. MULTIPLE-CHOICE: Step 0 & the Rest of the Design Recipe
+       ============================================================ -->
+    <exercise xml:id="mc-step0-impact">
+      <title>The Impact of Step 0 on Later Steps</title>
+      <statement> How does <strong>Step 0: Understand &amp; Restate the Problem</strong> affect the
+        rest of the Design Recipe (Steps 1–5)? </statement>
+      <choices randomize="yes">
+        <choice correct="yes">
+          <statement>
+            It clarifies data definitions and constraints early, ensuring your method signatures,
+            tests, skeletons, and final implementation align with the true requirements.
+          </statement>
+          <feedback>
+            Correct! Everything else (data definitions, tests, etc.) depends on an accurate
+            understanding of the problem.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            It eliminates the need for a skeleton, since you already know the problem well.
+          </statement>
+          <feedback>
+            Even with a good problem restatement, you still benefit from a skeleton/outline in Step
+            4.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            It’s optional if you trust your intuition; the rest of the steps can fix any
+            misunderstanding automatically.
+          </statement>
+          <feedback>
+            Misunderstandings often lead to big rewrites. Step 0 is not optional if you want to
+            avoid chaos.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            It forces you to skip writing docstrings, since the problem is already understood.
+          </statement>
+          <feedback> No. Docstrings remain essential in Step 2 (Method Signature &amp; Purpose). Step 0
+            just ensures you document the <em>correct</em> idea. </feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+
   </section>
 </chapter>

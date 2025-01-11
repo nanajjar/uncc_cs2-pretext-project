@@ -321,4 +321,296 @@
       soon, you’ll learn to raise and handle other <em>exceptions</em> more gracefully to make your
       programs more robust. </p>
   </section>
+
+  <section xml:id="ch-examples-tests-exercises">
+    <title>Chapter 3: Examples &amp; Tests Exercises</title>
+
+    <!-- =========================================================
+       1. PARSONS PROBLEM: Audrey's Testing Realization
+       ========================================================= -->
+    <exercise xml:id="parsons-audrey-tests-story" language="natural">
+      <title>Parsons: Audrey’s Realization on Examples &amp; Tests</title>
+      <statement>
+        Rearrange these story beats to see how Audrey learned that **writing examples &amp; tests**
+        early can prevent major headaches.
+      </statement>
+      <blocks layout="vertical" randomize="yes">
+        <block order="1">
+          <choice correct="yes">
+            <cline>Audrey writes a function <code>count_words</code> with no examples or tests.</cline>
+          </choice>
+        </block>
+        <block order="2">
+          <choice correct="yes">
+            <cline>She notices weird results when the input string is empty or contains extra
+              spaces.</cline>
+          </choice>
+        </block>
+        <block order="3">
+          <choice correct="yes">
+            <cline>After hours of debugging, she realizes she never defined how the function
+              should handle those edge cases.</cline>
+          </choice>
+        </block>
+        <block order="4">
+          <choice correct="yes">
+            <cline>She decides to write clear examples first, then turn them into automated tests
+              using <code>assert</code>.</cline>
+          </choice>
+        </block>
+        <block order="5">
+          <choice correct="yes">
+            <cline>Now she can quickly catch mistakes for inputs like <code>""</code> or <code>"Hello
+              world"</code> without guesswork.</cline>
+          </choice>
+        </block>
+      </blocks>
+      <solution>
+        <p>
+          <strong>Suggested Order:</strong>
+        </p>
+        <ol>
+          <li>No initial examples or tests for <code>count_words</code></li>
+          <li>Weird results for empty or extra-space inputs</li>
+          <li>She realizes no edge-case specification existed</li>
+          <li>Writes examples first, turns them into <code>assert</code> tests</li>
+          <li>Catches mistakes quickly for tricky cases</li>
+        </ol>
+      </solution>
+    </exercise>
+
+    <!-- =========================================================
+       2. PARSONS PROBLEM: Building a test function
+       ========================================================= -->
+    <exercise xml:id="parsons-build-a-test" language="python">
+      <title>Parsons: Building a Simple test_count_words</title>
+      <statement> Rearrange these lines to create a coherent <code>test_count_words</code> function
+        that checks typical and edge cases for <code>count_words</code>. </statement>
+      <!-- We'll create vertical blocks representing lines in a test function. -->
+      <blocks layout="vertical" randomize="yes">
+        <block order="1">
+          <choice correct="yes">
+            <cline>def test_count_words():</cline>
+          </choice>
+        </block>
+        <block order="2">
+          <choice correct="yes">
+            <cline> # Typical case</cline>
+          </choice>
+        </block>
+        <block order="3">
+          <choice correct="yes">
+            <cline> assert count_words("Hello world") == 2</cline>
+          </choice>
+        </block>
+        <block order="4">
+          <choice correct="yes">
+            <cline> # Edge case: empty string</cline>
+          </choice>
+        </block>
+        <block order="5">
+          <choice correct="yes">
+            <cline> assert count_words("") == 0</cline>
+          </choice>
+        </block>
+        <block order="6">
+          <choice correct="yes">
+            <cline> # Edge case: string with extra spaces</cline>
+          </choice>
+        </block>
+        <block order="7">
+          <choice correct="yes">
+            <cline> assert count_words(" OpenAI is awesome ") == 3</cline>
+          </choice>
+        </block>
+        <block order="8">
+          <choice correct="yes">
+            <cline> print("test_count_words PASSED")</cline>
+          </choice>
+        </block>
+      </blocks>
+      <solution>
+        <p>Reordered lines form a standard test function:</p>
+        <pre><code>def test_count_words():
+    # Typical case
+    assert count_words("Hello world") == 2
+    
+    # Edge case: empty string
+    assert count_words("") == 0
+    
+    # Edge case: string with extra spaces
+    assert count_words("  OpenAI   is   awesome  ") == 3
+    
+    print("test_count_words PASSED")
+</code></pre>
+      </solution>
+    </exercise>
+
+    <!-- =========================================================
+       3. MULTIPLE-CHOICE (Graded)
+       ========================================================= -->
+    <exercise xml:id="mc-why-create-examples-first">
+      <title>Why Create Examples First?</title>
+      <statement> Chapter 3 highlights creating examples before (or during) implementation. Which
+        reason below best explains <strong>why</strong>? </statement>
+      <choices randomize="yes">
+        <choice correct="yes">
+          <statement>
+            Having examples clarifies expected behavior, making it easier to spot logic errors
+            and handle edge cases before writing all the code.
+          </statement>
+          <feedback>
+            Correct! Writing examples first ensures we know exactly what the function should do,
+            simplifying implementation and testing.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            It automatically generates a user interface with no coding needed.
+          </statement>
+          <feedback>
+            Examples do not build a UI; they just clarify behavior and guide testing.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            It makes your program run 10x faster.
+          </statement>
+          <feedback>
+            Speed is not the primary concern here; correctness and clarity are the benefits.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            Python disallows writing code before you define at least three examples.
+          </statement>
+          <feedback>
+            Python doesn't enforce example-driven development; it’s just a best practice,
+            not a language rule.
+          </feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- =========================================================
+       4. TRUE/FALSE (Graded)
+       ========================================================= -->
+    <exercise xml:id="tf-all-tests-pass">
+      <title>All Tests Pass = No Bugs?</title>
+      <statement correct="no">
+        Once all your tests pass, you have 100% certainty there are no bugs left in the code.
+      </statement>
+      <feedback>
+        Even thorough testing can’t guarantee absolute freedom from all bugs.
+        Tests reduce risk but don’t prove total correctness.
+      </feedback>
+    </exercise>
+
+    <exercise xml:id="sa-ch3-examples-tests">
+      <title>Short Answer: Designing Examples &amp; Tests for <code>update_rating</code></title>
+      <statement>
+        <p> Imagine we have already created a <strong>Data Definition</strong> (Chapter 1) and a <strong>Method
+          Signature &amp; Purpose Statement</strong> (Chapter 2) for <code>update_rating(library,
+          song_title, new_rating)</code>. Here are the deliverables from previous steps: </p>
+        <blockquote>
+          <p>
+            <strong>Data Definition (from Chapter 1):</strong>
+          </p>
+          <p> A <code>Song</code> is a Python list of the form <code>[title, rating, play_count]</code>,
+            where: </p>
+          <ul>
+            <li><code>title</code> is a string (non-empty).</li>
+            <li><code>rating</code> is an integer in <code>[1..5]</code>.</li>
+            <li><code>play_count</code> is a nonnegative integer (0 or more).</li>
+          </ul>
+        </blockquote>
+        <blockquote>
+          <p>
+            <strong>Method Signature &amp; Purpose (from Chapter 2):</strong>
+          </p>
+          <p>
+            <code>def update_rating(library: list, song_title: str, new_rating: int) -&gt; bool:</code>
+          </p>
+          <ul>
+            <li><em>Purpose Statement:</em> Updates the rating of the song titled <code>song_title</code>
+              in <code>library</code> if it exists, returning <code>True</code> if found and
+              updated, or <code>False</code> otherwise.</li>
+            <li>Precondition: <code>library</code> is a list of <code>Song</code> entries, each with
+              a valid <code>rating</code> in [1..5].</li>
+            <li>Error Case: If <code>new_rating</code> is outside [1..5], or <code>song_title</code>
+              is empty, we might raise <code>ValueError</code>.</li>
+          </ul>
+        </blockquote>
+        <p> Now, according to Chapter 3 of the Design Recipe, we must craft <strong>Examples &amp;
+          Tests</strong> <em>before or during implementation</em> to clarify and confirm how <code>
+          update_rating</code> should behave. <strong>In your answer, do the following</strong>: </p>
+        <ol>
+          <li> Provide at least <strong>3 examples</strong> of calling <code>update_rating</code>
+            (one typical case, one edge case, and one error/invalid case). </li>
+          <li> Convert each example into a <code>pytest</code>-style or <code>assert</code>-based <strong>
+            test</strong>, explaining <em>why</em> you chose these particular inputs and what
+            outcome you expect (<code>True</code>, <code>False</code>, or an exception). </li>
+          <li>
+            Briefly justify how these tests follow from the data definition and signature (e.g.,
+            referencing rating constraints or checking for empty titles).
+          </li>
+        </ol>
+        <p>
+          <em>Write your answer below:</em>
+        </p>
+      </statement>
+      <response />
+      <solution>
+        <p>
+          <strong>Sample Answer (One Possible Approach):</strong>
+        </p>
+        <ol>
+          <li><strong>Examples</strong>: <ul>
+              <li><em>Typical Case:</em> <code>update_rating(library, "Thriller", 4)</code> where <code>library
+            = [["Imagine", 5, 120], ["Thriller", 2, 100]]</code>. Expect <code>True</code>; rating
+            changes from 2 to 4. </li>
+              <li><em>Edge Case:</em> <code>update_rating([], "Imagine", 5)</code> on an empty
+            library. Expect <code>False</code> (no songs). </li>
+              <li><em>Error/Invalid Case:</em> <code>update_rating(library, "Hey Jude", 10)</code>,
+            with <code>10</code> outside [1..5], expecting <code>ValueError</code> or some error
+            scenario. </li>
+            </ul>
+          </li>
+          <li><strong>Tests</strong> (using <code>assert</code> or a test framework): <pre><code>def test_update_rating():
+    # Typical
+    library = [
+      ["Imagine", 5, 120],
+      ["Thriller", 2, 100]
+    ]
+    result = update_rating(library, "Thriller", 4)
+    assert result == True
+    assert library[1][1] == 4  # rating should now be 4
+
+    # Edge: empty library
+    empty_lib = []
+    result2 = update_rating(empty_lib, "Imagine", 5)
+    assert result2 == False
+
+    # Invalid rating
+    try:
+        update_rating(library, "Hey Jude", 10)
+        assert False, "Expected ValueError for rating=10"
+    except ValueError:
+        pass  # correct behavior
+</code></pre>
+          </li>
+          <li><strong>Justification</strong>: <ul>
+              <li>From the data definition, <code>rating</code> must be in [1..5], so we test an
+            out-of-range rating. </li>
+              <li>The signature says we return <code>bool</code> (<code>True</code> or <code>False</code>)
+            for valid calls, so we confirm that typical and edge-case calls return the correct
+            boolean. </li>
+              <li>We include <code>ValueError</code> handling because the signature/purpose says we
+            raise an error if <code>new_rating</code> is invalid. </li>
+            </ul>
+          </li>
+        </ol>
+      </solution>
+    </exercise>
+  </section>
 </chapter>

@@ -286,7 +286,7 @@
       <title>1. Skeleton for <code>find_favorite_songs</code></title>
       <statement>
         <p> Recall the <code>find_favorite_songs(library)</code> function from earlier chapters,
-          which returns a list of titles for songs with a rating ≥ 4. Write a short skeleton that: </p>
+          which returns a list of titles for songs with a rating &gt;= 4. Write a short skeleton that: </p>
         <ul>
           <li>Validates <code>library</code> (must be non-empty; each entry is <code>[title, rating,
             play_count]</code>)</li>
@@ -355,5 +355,268 @@
       will actually enjoy working with. It’s one more reason to trust the Design Recipe:
       structured thinking now saves you from headaches later.
     </p>
+  </section>
+
+  <section xml:id="ch-method-skeleton-exercises">
+    <title>Chapter 4: Method Skeleton Exercises</title>
+
+    <!-- ===============================================================
+       1. PARSONS PROBLEM: Audrey’s Fiasco Without a Skeleton
+       =============================================================== -->
+    <exercise xml:id="parsons-audrey-skeleton-fiasco" language="natural">
+      <title>Parsons: Audrey’s Fiasco Without a Skeleton</title>
+      <statement>
+        Rearrange these story beats to see how Audrey skipped creating a skeleton,
+        leading to a messy, hard-to-maintain function.
+      </statement>
+      <blocks layout="vertical" randomize="yes">
+        <block order="1">
+          <choice correct="yes">
+            <cline>Audrey jumps directly into coding a loop and conditionals with no outline.</cline>
+          </choice>
+        </block>
+        <block order="2">
+          <choice correct="yes">
+            <cline>She realizes halfway that she needs input validation but tries to wedge it in
+              after she’s written most of the logic.</cline>
+          </choice>
+        </block>
+        <block order="3">
+          <choice correct="yes">
+            <cline>Her function quickly grows disorganized, mixing data checks, loops, and
+              return statements in random places.</cline>
+          </choice>
+        </block>
+        <block order="4">
+          <choice correct="yes">
+            <cline>Small changes break existing code, because everything is tangled together
+              with no clear structure.</cline>
+          </choice>
+        </block>
+        <block order="5">
+          <choice correct="yes">
+            <cline>She finally concedes that a skeleton/outline first would have prevented
+              the chaos.</cline>
+          </choice>
+        </block>
+      </blocks>
+      <solution>
+        <p>
+          <strong>Suggested Order:</strong>
+        </p>
+        <ol>
+          <li>Audrey codes loop/conditionals immediately (no outline).</li>
+          <li>Tries adding input checks late in the process.</li>
+          <li>Logic becomes messy and disorganized.</li>
+          <li>Minor changes break the code because it’s so tangled.</li>
+          <li>Realizes an upfront skeleton would have spared her a fiasco.</li>
+        </ol>
+      </solution>
+    </exercise>
+
+
+    <!-- ===============================================================
+       2. PARSONS PROBLEM: Steps in a Skeleton
+       =============================================================== -->
+    <exercise xml:id="parsons-skeleton-steps" language="natural">
+      <title>Parsons: Typical Steps in a Skeleton</title>
+      <statement> Reorder these typical <em>method skeleton</em> steps to see how they might appear
+        (e.g., validate inputs, loop/filter data, return results). </statement>
+      <blocks layout="vertical" randomize="yes">
+        <block order="1">
+          <choice correct="yes">
+            <cline># 1. Validate inputs (e.g., ensure list is not None/empty)</cline>
+          </choice>
+        </block>
+        <block order="2">
+          <choice correct="yes">
+            <cline># 2. Initialize accumulators or placeholders if needed</cline>
+          </choice>
+        </block>
+        <block order="3">
+          <choice correct="yes">
+            <cline># 3. Loop or iterate over the data, applying logic or checks</cline>
+          </choice>
+        </block>
+        <block order="4">
+          <choice correct="yes">
+            <cline># 4. Decide early returns or update accumulators</cline>
+          </choice>
+        </block>
+        <block order="5">
+          <choice correct="yes">
+            <cline># 5. Return final result (e.g., True/False or a list of filtered items)</cline>
+          </choice>
+        </block>
+      </blocks>
+      <solution>
+        <p>
+          <strong>Common skeleton steps in order:</strong>
+        </p>
+        <ol>
+          <li>Validate inputs</li>
+          <li>Initialize accumulators</li>
+          <li>Loop/iterate over data</li>
+          <li>Decide if/when to return or update accumulators</li>
+          <li>Return final result</li>
+        </ol>
+      </solution>
+    </exercise>
+
+
+    <!-- ===============================================================
+       3. MULTIPLE-CHOICE (Graded)
+       =============================================================== -->
+    <exercise xml:id="mc-why-skeleton-first">
+      <title>Why Write a Skeleton First?</title>
+      <statement> Chapter 4 recommends writing a skeleton (outline) <strong>before</strong> coding
+        the full function. Which answer <strong>best</strong> captures why? </statement>
+      <choices randomize="yes">
+        <choice correct="yes">
+          <statement>
+            It prevents mixing all logic (input checks, loops, return conditions) in one
+            haphazard chunk, making the code easier to modify or debug.
+          </statement>
+          <feedback>
+            Correct! A skeleton organizes each step, reducing confusion and tangling of code.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            It ensures Python will auto-generate tests for each step.
+          </statement>
+          <feedback>
+            Skeletons help humans plan code; Python won’t create tests automatically.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            It optimizes the function to run in constant time, regardless of inputs.
+          </statement>
+          <feedback>
+            Skeletons are about design clarity, not guaranteeing O(1) performance.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            It eliminates the need to define data structures or docstrings.
+          </statement>
+          <feedback>
+            Actually, you still need data definitions and docstrings; the skeleton just guides the
+            function's flow.
+          </feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+
+    <!-- ===============================================================
+       4. TRUE/FALSE (Graded)
+       =============================================================== -->
+    <exercise xml:id="tf-skeleton-hides-code" type="truefalse">
+      <title>Skeleton vs. Full Implementation</title>
+      <statement correct="no">
+        A skeleton is just a partial outline, so Python hides the real implementation code
+        after you finalize the skeleton.
+      </statement>
+      <feedback>
+        A skeleton is a planning tool for humans. Once you write the full code, it's all visible
+        and not hidden by Python.
+      </feedback>
+    </exercise>
+
+
+    <exercise xml:id="sa-ch4-skeleton">
+      <title>Short Answer: Constructing a Skeleton with Previous Deliverables</title>
+      <statement>
+        <p> Suppose you are writing <code>remove_song(library, song_title)</code> to delete a song
+          from <code>library</code>. We already have: </p>
+        <blockquote>
+          <p>
+            <strong>Data Definition (Chapter 1):</strong>
+          </p>
+          <p> A <code>Song</code> is <code>[title, rating, play_count]</code> with <code>rating</code>
+            in [1..5], <code>title</code> non-empty, and <code>play_count</code> &gt;= 0. </p>
+        </blockquote>
+        <blockquote>
+          <p>
+            <strong>Method Signature &amp; Purpose Statement (Chapter 2):</strong>
+          </p>
+          <p>
+            <code>def remove_song(library: list, song_title: str) -&gt; bool:</code>
+          </p>
+          <ul>
+            <li><em>Purpose:</em> Remove the first song with <code>title == song_title</code> from <code>
+              library</code>, returning <code>True</code> if successful or <code>False</code> if the
+              song is not found. </li>
+            <li><em>Precondition:</em> <code>library</code> is a list of <code>Song</code> items. <code>
+              song_title</code> is non-empty. </li>
+            <li><em>Error Cases:</em> Possibly raise <code>ValueError</code> if <code>song_title</code>
+              is empty. </li>
+          </ul>
+        </blockquote>
+        <blockquote>
+          <p>
+            <strong>Examples &amp; Tests (Chapter 3):</strong>
+          </p>
+          <p>
+            <em>We have test scenarios confirming removal of an existing song, returning <code>True</code>,
+              plus tests checking an empty library or absent title (return <code>False</code>), and
+              a <code>ValueError</code> if <code>song_title</code> is empty.</em>
+          </p>
+        </blockquote>
+        <p> In <strong>Chapter 4</strong>, your task is to produce a <strong>method skeleton</strong>
+          (outline) for <code>remove_song</code> using the **Design Recipe** so that your final code
+          is <em>structured</em> and aligns with the above deliverables. <strong>In your answer, do
+          the following:</strong>
+        </p>
+        <ol>
+          <li><em>List each step</em> in the skeleton (e.g., "1. Validate inputs," "2. Loop over
+            library," etc.).</li>
+          <li>Explain <em>how each step references or handles the constraints</em> from earlier
+            chapters (e.g., checking <code>song_title</code> is non-empty, using the test scenarios
+            from Chapter 3 to guide your logic). </li>
+          <li><em>Do not</em> write the final code; just a well-commented or outlined structure.
+            Show how you’d leave placeholders for each step. </li>
+        </ol>
+        <p>
+          <em>Provide your skeleton outline below:</em>
+        </p>
+      </statement>
+      <response />
+      <solution>
+        <p>
+          <strong>Sample Skeleton Explanation:</strong>
+        </p>
+        <pre><code># remove_song(library, song_title) -> bool
+
+# Step 1: Validate Inputs
+#   - If song_title is empty, raise ValueError
+#   - If library is None or not a list, maybe raise ValueError
+#
+# Step 2: Loop through each song in library
+#   - Check if the current song's title == song_title
+#   - If found, remove that song from library, return True
+#
+# Step 3: If loop ends with no match, return False
+</code></pre>
+        <p>
+          <strong>Relating to earlier chapters:</strong>
+        </p>
+        <ul>
+          <li><em>Data Definition (Ch.1):</em> We ensure each item is a <code>Song</code> and <code>
+            song_title</code> is valid (non-empty). </li>
+          <li><em>Signature &amp; Purpose (Ch.2):</em> We plan to return <code>bool</code> and
+            possibly raise <code>ValueError</code> if <code>song_title</code> is empty. </li>
+          <li><em>Examples &amp; Tests (Ch.3):</em> We note the scenario for "removing an existing
+            song" (expect True), "song not found" (False), and "song_title is empty" (ValueError). </li>
+        </ul>
+        <p>
+          By drafting this outline first, we avoid mixing logic and validation, ensuring
+          each piece is consistent with prior deliverables.
+        </p>
+      </solution>
+    </exercise>
+    
   </section>
 </chapter>
