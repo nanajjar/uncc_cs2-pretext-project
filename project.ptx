@@ -15,7 +15,7 @@
     </target>
     <target name="runestone">
       <format>html</format>
-      <source>source/uncc_cs2.ptx</source>
+      <source>source/main.ptx</source>
       <publication>./publication/runestone.ptx</publication>
       <output-dir>published/uncc_cs2</output-dir>
     </target>
