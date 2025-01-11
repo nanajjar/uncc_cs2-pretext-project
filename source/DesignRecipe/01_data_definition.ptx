@@ -1,19 +1,19 @@
-<chapter xml:id="ch-data-definition">
-  <title>1. Data Definition</title>
+<section xml:id="ch-data-definition">
+  <title>Data Definition</title>
 
   <!-- ======================================
        1. Overview and Objectives
        ====================================== -->
-  <section xml:id="overview-objectives">
+  <subsection xml:id="overview-objectives">
     <title>Overview and Objectives</title>
     <p>
-      This chapter introduces the importance of <em>data design</em> in any program. Students
+      This section introduces the importance of <em>data design</em> in any program. Students
       often jump straight into coding—tackling a problem by writing loops, conditionals,
       or function calls—without stopping to clarify exactly what data they'll process and
       how it's structured. This leads to hidden confusion or brittle "quick fixes" that
       eventually fail when requirements change.
     </p>
-    <p> We follow the story of <strong>Audrey</strong>, a music lover who naively starts storing her
+    <p> We follow the story of <alert>Audrey</alert>, a music lover who naively starts storing her
       favorite songs in code. Each time she adds a new feature, unplanned changes to her data break
       old parts of the program. By exploring her incremental fiasco, we'll see why it's crucial to
       <em>explicitly design</em> and <em>document</em> your data before (and during) coding—even if it seems
@@ -35,17 +35,17 @@
         </p></li>
       </ul>
     </objectives>
-  </section>
+  </subsection>
 
 <!-- ======================================
      2. Audrey’s Journey
      ====================================== -->
-  <section xml:id="audrey-journey">
+  <subsection xml:id="audrey-journey">
     <title>Audrey’s Journey</title>
 
     <!-- 2.1. Initial Goal -->
-    <subsection xml:id="initial-goal">
-      <title>1. The Music App Dream</title>
+    <subsubsection xml:id="initial-goal">
+      <title>The Music App Dream</title>
       <p>Meet Audrey, a CS student who loves music and programming. After learning Python last semester,
          she decides to build an app to track her growing music collection. "How hard could it be?" she thinks,
          opening her laptop one Friday evening. All she needs is to:</p>
@@ -56,10 +56,10 @@
       </ul>
       <p>Little does she know, her "quick weekend project" is about to teach her why
          planning data structure is crucial...</p>
-    </subsection>
+    </subsubsection>
 
-    <subsection xml:id="hard-coded-indices">
-      <title>2. Hard-Coded Indices</title>
+    <subsubsection xml:id="hard-coded-indices">
+      <title>Hard-Coded Indices</title>
       <p> Audrey decides each song should be a list <c>[title, rating]</c>. Having worked with lists before,
         she feels confident and jumps straight into coding: </p>
       <listing xml:id="first-attempt">
@@ -85,10 +85,10 @@
         </ul>
         These assumptions make the code fragile - any change to the order or structure could break it.
       </p>
-    </subsection>
+    </subsubsection>
 
-    <subsection xml:id="incremental-fixes">
-      <title>3. Incremental "Fixes"</title>
+    <subsubsection xml:id="incremental-fixes">
+      <title>Incremental "Fixes"</title>
       <p> Realizing that hard-coded indices like <c>music_library[1][1]</c> are risky, 
         Audrey tries to make her code more flexible with helper functions: </p>
       <listing xml:id="title-based-update">
@@ -122,10 +122,10 @@
         </ul>
         These assumptions are buried in the code, making it hard to spot potential problems.
       </p>
-    </subsection>
+    </subsubsection>
 
-    <subsection xml:id="adding-play-counts">
-      <title>4. Adding Play Counts</title>
+    <subsubsection xml:id="adding-play-counts">
+      <title>Adding Play Counts</title>
       <p> A week later, Audrey wants to track how often she listens to each song. She modifies each
         entry to include a play count: </p>
       <listing xml:id="adding-field">
@@ -148,7 +148,6 @@
       </p>
       <p><em>Key Lesson:</em> Without a clear definition of the data structure, even small changes can introduce
         subtle bugs that might not be immediately apparent.</p>
-    </subsection>
 
     <!-- Add reflection questions after each attempt -->
       <exercise>
@@ -161,17 +160,17 @@
           </ul>
         </statement>
       </exercise>
-  </section>
-
+  </subsubsection>
+</subsection>
   <!-- ======================================
        3. Designing Data: Why It Matters
        ====================================== -->
-  <section xml:id="why-data-design-matters">
+  <subsection xml:id="why-data-design-matters">
     <title>Designing Data: Why It Matters</title>
     <p> <em>Programs</em> fundamentally do this: they take <em>input data</em>, transform or analyze it,
       and produce <em>output data</em>. Whether that data is a single integer or a complex structure
-      with nested fields, the program’s success relies on everyone understanding <strong>exactly
-      what the data is and how to interpret it</strong>. </p>
+      with nested fields, the program’s success relies on everyone understanding <alert>exactly
+      what the data is and how to interpret it</alert>. </p>
     <p> If you never plan or document this structure, you’re effectively “designing” as you
       code—mixing two hard tasks at once. This often leads to: <ul>
         <li><em>Ambiguous fields</em>: Is <c>song[2]</c> the rating or the play count? Could it become <c>genre</c>
@@ -185,14 +184,14 @@
     <p> In earlier courses, you might have been <em>protected</em> from this problem because the
       instructor gave you a well-structured <c>Point</c> class, or a “student record” type, or a <c>database schema</c>. You simply followed it. But now, you’re the one deciding how to store data.
       Failing to define it clearly is a recipe for frustration. </p>
-  </section>
+  </subsection>
 
   <!-- ======================================
      4. The First Step of a Design Recipe: Data Definition
      ====================================== -->
-  <section xml:id="data-definition-step">
+  <subsection xml:id="data-definition-step">
     <title>The First Step: Defining Your Data</title>
-    <p> A <strong>data definition</strong> is a concise statement of: </p>
+    <p> A <alert>data definition</alert> is a concise statement of: </p>
     <ol>
       <li><em>Which fields</em> or attributes exist (e.g., <c>title</c>, <c>rating</c>, <c>play_count</c>).</li>
       <li><em>How they’re typed or constrained</em> (e.g., rating is an integer 1–5, play_count is
@@ -220,7 +219,7 @@
       touches <c>Song</c> refers back to this “blueprint,” instead of guessing how many fields there
       are or which index is which. </p>
     <p>
-      <strong>Assumptions &amp; Constraints:</strong> Notice we said <c>rating</c> can’t exceed 5. In
+      <alert>Assumptions &amp; Constraints:</alert> Notice we said <c>rating</c> can’t exceed 5. In
       Python, you might or might not write code to check that. But if you do—say, with an 
       <c>if new_rating &amp; 5</c> check—then you can detect bad data early. In other languages, like Java,
       you could have a method that rejects any rating above 5 automatically. Either way, once you’ve
@@ -229,39 +228,39 @@
       <em>Micro-Exercise:</em> If you decide <c>play_count</c> can’t exceed 9999, how would you
       reflect that in your definition? Could you detect an invalid <c>play_count</c> in code and
       raise an error or log a warning? </p>
-  </section>
+  </subsection>
 
   <!-- ======================================
        5. Designing vs. Implementing
        ====================================== -->
-  <section xml:id="design-vs-implementation">
+  <subsection xml:id="design-vs-implementation">
     <title>Separating Design from Implementation</title>
     <p> One reason novices skip data definitions is they jump right into “let’s make a loop in
-      Python” or “let’s code a quick function to do X.” But when you do that, you’re <strong>
-      implicitly</strong> designing the data <strong>while</strong> you implement logic—a mental juggling act that can
+      Python” or “let’s code a quick function to do X.” But when you do that, you’re <alert>
+      implicitly</alert> designing the data <alert>while</alert> you implement logic—a mental juggling act that can
       be error-prone. </p>
     <p> <em>Best Practice:</em> Pause before coding. Ask: <em>"What data do I have? Where do these fields
       come from? Do they have constraints?
         How might they evolve over time?”</em> By addressing these questions early, you create a
       stable foundation that makes the actual coding smoother and less likely to break with new
       requirements. </p>
-    <p> This is the <em>first step</em> of a broader <strong>design recipe</strong> you’ll practice
+    <p> This is the <em>first step</em> of a broader <alert>design recipe</alert> you’ll practice
       throughout this course. You’ll see that once data is well-defined, you can systematically
-      define each function’s <strong>contract</strong> (what it takes in, what it returns), write tests, and
+      define each function’s <alert>contract</alert> (what it takes in, what it returns), write tests, and
       iterate your design. </p>
-  </section>
+  </subsection>
 
   <!-- ======================================
        6. Brief Look Ahead: Typed Languages
        ====================================== -->
-  <section xml:id="typed-languages">
+  <subsection xml:id="typed-languages">
     <title>Looking Ahead: Java's Built-in Protection</title>
     
     <p>While Python lets us write data definitions as comments, some languages can actually
        enforce our rules automatically. Let's peek at how Java helps prevent data-related mistakes.
        Don't worry about the syntax—focus on what the code accomplishes.</p>
 
-    <subsection xml:id="java-song-class">
+    <subsubsection xml:id="java-song-class">
       <title>A Song in Java</title>
       <listing xml:id="song-java">
         <program language="java">
@@ -304,9 +303,9 @@
         <li>Each "setter" method checks that the new value is valid before making any changes.</li>
         <li>The compiler ensures we can't accidentally put a number where text should go (or vice versa).</li>
       </ul>
-    </subsection>
+    </subsubsection>
 
-    <subsection xml:id="compiler-catches-errors">
+    <subsubsection xml:id="compiler-catches-errors">
       <title>The Compiler as Your Assistant</title>
       <listing xml:id="java-errors">
         <program language="java">
@@ -325,9 +324,9 @@
       <p>Again, don't stress if this Java syntax feels overwhelming—you'll learn it step by step.
          The key idea is that Java's type system acts like a helpful assistant, catching many data-related
          mistakes before your program even runs.</p>
-    </subsection>
+    </subsubsection>
 
-    <subsection xml:id="focus-on-concepts">
+    <subsubsection xml:id="focus-on-concepts">
       <title>Focus on the Concepts First</title>
       <p>For now, focus on understanding why data definitions matter. The Java examples above are just
          a preview of how programming languages can help enforce good data design. Feel free to:</p>
@@ -338,20 +337,20 @@
       </ul>
       <p>We'll cover Java thoroughly in other chapters. For now, just appreciate how its type system
          can turn our data definition "rules" into automatically-checked constraints.</p>
-    </subsection>
-  </section>
+    </subsubsection>
+  </subsection>
 
   <!-- ======================================
      7. Reflection and Next Steps
      ====================================== -->
-  <section xml:id="reflection-next-steps">
+  <subsection xml:id="reflection-next-steps">
     <title>Reflection and Next Steps</title>
     <p> Audrey’s incremental “fixes” all failed the moment she changed the order of fields or added
       a new one. By contrast, a data definition—like <c>[title, rating, play_count]</c>— serves as a
       stable reference point: any code that modifies or reads a field can check the blueprint to
       avoid silent breakage. </p>
     <p>
-      <strong>Takeaways:</strong>
+      <alert>Takeaways:</alert>
       <ul>
         <li><em>All programs revolve around data:</em> if you don’t define it up front, you risk
           layering assumptions until they collapse under new features.</li>
@@ -363,15 +362,15 @@
           unexpectedly.</li>
       </ul>
     </p>
-    <p> In the next chapter, we’ll see <em>how</em> to define each function’s “Contract” once we have a
+    <p> In the next section, we’ll see <em>how</em> to define each function’s “Contract” once we have a
       clear data definition. Just as data needs a specification, so do functions: we’ll specify what
       inputs they take, what outputs they give, and any invariants (like not accepting a <c>play_count</c>
       less than 0). By combining these steps— data definition, then function
       contracts, then testing—we build a robust, iterative path to maintainable code. </p>
-  </section>
+  </subsection>
 
-  <section xml:id="ch-data-definition-exercises">
-    <title>Chapter 1: Data Definition Exercises</title>
+  <subsection xml:id="ch-data-definition-exercises">
+    <title>Data Definition Exercises</title>
 
     <!-- =======================
        1. MULTIPLE CHOICE
@@ -421,7 +420,7 @@
        ======================= -->
     <exercise xml:id="mc-define-early">
       <title>Defining Data Early</title>
-      <statement> Based on Chapter 1, why is it crucial to define data (e.g., <code>[title, rating,
+      <statement> Based on this section, why is it crucial to define data (e.g., <code>[title, rating,
         play_count]</code>) before writing code? </statement>
       <choices randomize="yes">
         <choice>
@@ -531,7 +530,7 @@
       <title>Create a Data Definition</title>
       <statement>
         <p> Suppose you're designing a system for a library of books. Propose a simple <em>data
-          definition</em> (in the style of Chapter 1) describing how to store each book. Specify: </p>
+          definition</em> (in the style of this section) describing how to store each book. Specify: </p>
         <ul>
           <li>The structure (e.g., <code>[title, author, pages]</code>)</li>
           <li>Any constraints (e.g., <code>pages &gt;= 1</code>, or <code>title</code> non-empty)</li>
@@ -542,7 +541,7 @@
       <response />
       <solution>
         <p>
-          <strong>Sample Data Definition:</strong>
+          <alert>Sample Data Definition:</alert>
         </p>
         <p>
           <em>A <code>Book</code> is a list of the form <code>[title, author, page_count]</code>
@@ -559,5 +558,5 @@
       </solution>
     </exercise>
 
-  </section>
-</chapter>
+  </subsection>
+</section>
