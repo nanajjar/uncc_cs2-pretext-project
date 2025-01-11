@@ -6,16 +6,16 @@
 
   <book xml:id="uncc_cs2">
     <title>ITSC 1213 - Introduction to CS 2</title>
-    <subtitle></subtitle>
+    <subtitle>Interactive Edition</subtitle>
 
     <!-- Include frontmatter -->
     <xi:include href="./frontmatter.ptx" />
 
     <!-- Include chapters -->
-    <xi:include href="./SyntaxSemantics/toctree.ptx" />
-    <xi:include href="./DesignTools/toctree.ptx" />
-    <xi:include href="./ObjectOrientedProgramming/toctree.ptx" />
     <xi:include href="./DesignRecipe/toctree.ptx" />
+    <xi:include href="./SyntaxSemantics/toctree.ptx" />
+    <xi:include href="./ObjectOrientedProgramming/toctree.ptx" />
+    <xi:include href="./Tools/toctree.ptx" />
 
 
     <!-- Include backmatter -->

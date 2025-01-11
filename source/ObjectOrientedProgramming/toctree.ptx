@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en-US">
 <title>Object Oriented Development</title>
-<xi:include href="./oointro.ptx"/>
+<!-- <xi:include href="./oointro.ptx"/> -->
 <xi:include href="./what-is-oo-programming.ptx"/>
 
 <xi:include href="./definingclasses.ptx"/>

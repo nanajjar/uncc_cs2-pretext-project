@@ -1,43 +1,43 @@
-<chapter xml:id="ch-step0-understand-problem">
-  <title>6. Final Recipe</title>
+<section xml:id="ch-step0-understand-problem">
+  <title>Final Recipe</title>
 
   <!-- ======================================
        1. Overview & Motivation
        ====================================== -->
-  <section xml:id="overview-and-motivation-step0">
+  <subsection xml:id="overview-and-motivation-step0">
     <title>Overview &amp; Motivation</title>
-    <p> We’ve journeyed through every phase of the Design Recipe: defining data, writing method
+    <p> We've journeyed through every phase of the Design Recipe: defining data, writing method
       signatures &amp; purpose statements, creating examples &amp; tests, building skeletons, and
-      finalizing our implementations. At first glance, it may appear we’ve covered every aspect of
-      structured problem solving. But we saved one essential piece for last: <strong>Step 0:
-      Understand &amp; Restate the Problem</strong>. </p>
-    <p> Why is it “Step 0”? Because it should <em>precede</em> every other step—yet it’s the one
-      most commonly rushed or overlooked. After all, isn’t reading the assignment or prompt enough
-      to “know” what you’re doing? As we’ll see, simply reading the problem isn’t the same as <em>truly
+      finalizing our implementations. At first glance, it may appear we've covered every aspect of
+      structured problem solving. But we saved one essential piece for last: <alert>Step 0:
+      Understand &amp; Restate the Problem</alert>. </p>
+    <p> Why is it “Step 0”? Because it should <em>precede</em> every other step—yet it's the one
+      most commonly rushed or overlooked. After all, isn't reading the assignment or prompt enough
+      to “know” what you're doing? As we'll see, simply reading the problem isn't the same as <em>truly
       understanding</em> it. Hidden assumptions, ambiguous details, and unclear requirements can
-      derail your entire project if you skip this critical step. In this final chapter, we’ll
+      derail your entire project if you skip this critical step. In this final section, we'll
       explore why a careful restatement of the problem is essential—and how it ties together all the
       other steps in the Design Recipe. </p>
-  </section>
+  </subsection>
 
   <!-- ======================================
        2. Why Step 0 Is Often the Hardest
        ====================================== -->
-  <section xml:id="why-step0-hardest">
+  <subsection xml:id="why-step0-hardest">
     <title>Why Step 0 Is Often the Hardest</title>
-    <p> When you’re given a programming task—whether a homework prompt or a real-world feature
-      request—it’s tempting to think, <em>“All I need to do is parse some data, loop over it, and
+    <p> When you're given a programming task—whether a homework prompt or a real-world feature
+      request—it's tempting to think, <em>“All I need to do is parse some data, loop over it, and
       produce an output.
-        Let’s just start coding!”</em>
+        Let's just start coding!”</em>
     </p>
     <p>
       But the moment you dive into code, you lock in assumptions about data formats, edge cases,
       and interpretations of the requirements. If any assumption turns out to be wrong—perhaps the
-      data is structured differently or the real edge cases weren’t what you expected—no amount of
+      data is structured differently or the real edge cases weren't what you expected—no amount of
       elegant loops or conditionals can avoid a rewrite.
     </p>
     <p>
-      <strong>Step 0 challenges you to slow down, clarify, and confirm the real problem</strong>
+      <alert>Step 0 challenges you to slow down, clarify, and confirm the real problem</alert>
       before you write a single line of code. This can feel harder than coding because: </p>
     <ul>
       <li>
@@ -49,24 +49,24 @@
       <li>
         <em>You must ask clarifying questions</em> or document your assumptions. This can involve
         reaching out to an instructor, TA, or stakeholder to resolve ambiguities—or explicitly
-        noting how you’ve chosen to interpret them if no one’s available to confirm. </li>
+        noting how you've chosen to interpret them if no one's available to confirm. </li>
     </ul>
     <p>
       Novices often skip Step 0 under time pressure or from excitement to “just build something.”
       But failing to clarify the problem up front almost guarantees bigger headaches later.
     </p>
-  </section>
+  </subsection>
 
   <!-- ======================================
        3. One Problem, Multiple Interpretations
        ====================================== -->
-  <section xml:id="multiple-interpretations">
+  <subsection xml:id="multiple-interpretations">
     <title>One Problem, Multiple Interpretations</title>
     <p>
       Even the simplest prompts can hide multiple valid interpretations. Suppose a friend says:
     </p>
     <blockquote>
-      <p><strong>Task:</strong> “Write a function that takes a list of orders and calculates the
+      <p><alert>Task:</alert> “Write a function that takes a list of orders and calculates the
         total cost with a discount.”</p>
     </blockquote>
     <p>
@@ -77,7 +77,7 @@
       <li>A flat 10% discount applied to the entire sum</li>
       <li>A single total (e.g., <code>40.5</code>) returned by the function</li>
     </ul>
-    <p>That’s a perfectly plausible interpretation. But consider other possibilities:</p>
+    <p>That's a perfectly plausible interpretation. But consider other possibilities:</p>
     <ul>
       <li>Each order might be a dictionary with <code>quantity</code>, <code>price</code>, and <code>
         coupon_code</code> fields.</li>
@@ -89,12 +89,12 @@
     <p> None of these interpretations is <em>wrong</em> in general. Step 0 helps you pinpoint the <em>
       specific</em> interpretation that your friend or your assignment truly requires. By clarifying
       it upfront, you avoid building a solution that only partially addresses the real need. </p>
-  </section>
+  </subsection>
 
   <!-- ======================================
        4. Practical Techniques for Step 0
        ====================================== -->
-  <section xml:id="practical-techniques">
+  <subsection xml:id="practical-techniques">
     <title>Practical Techniques for Step 0</title>
     <p>
       If a prompt ever seems “too obvious to clarify,” you may be overlooking important details.
@@ -102,125 +102,125 @@
     </p>
     <ol>
       <li>
-        <p><strong>Paraphrase the Prompt:</strong> In your own words, restate exactly what you’re
+        <p><alert>Paraphrase the Prompt:</alert> In your own words, restate exactly what you're
           being asked to do. Include data sources, constraints, and the form of the expected output.
-          If you can’t articulate these points, the problem may not be as clear as you think.</p>
+          If you can't articulate these points, the problem may not be as clear as you think.</p>
       </li>
       <li>
-        <p><strong>List Edge Cases or Special Conditions:</strong> Could the input list be empty?
+        <p><alert>List Edge Cases or Special Conditions:</alert> Could the input list be empty?
           Could prices be negative? What if the discount is zero or above 100%? Identifying corner
           cases now saves a lot of trouble later.</p>
       </li>
       <li>
-        <p><strong>Identify Inputs &amp; Outputs Precisely:</strong> Are you receiving a list of
+        <p><alert>Identify Inputs &amp; Outputs Precisely:</alert> Are you receiving a list of
           floats, a list of dictionaries, or something else? Are you returning a float, a string
           receipt, or multiple values? Nail down exactly what flows in and out.</p>
       </li>
       <li>
-        <p><strong>Ask Clarifying Questions:</strong> If the assignment is ambiguous, ask your
+        <p><alert>Ask Clarifying Questions:</alert> If the assignment is ambiguous, ask your
           instructor, TA, or project partner. If no one is available to clarify, make a reasonable
           assumption and <em>document it</em> so everyone knows which path you chose.</p>
       </li>
     </ol>
-  </section>
+  </subsection>
 
   <!-- ======================================
        5. Consequences of Skipping Step 0
        ====================================== -->
-  <section xml:id="consequences-of-skipping-step0">
+  <subsection xml:id="consequences-of-skipping-step0">
     <title>Consequences of Skipping Step 0</title>
     <p>
       Skipping Step 0 might feel efficient at first, but it often leads to:
     </p>
     <ul>
-      <li><strong>Unnecessary Refactoring:</strong> You code a solution based on guesses, then
+      <li><alert>Unnecessary Refactoring:</alert> You code a solution based on guesses, then
         discover new requirements, forcing major rewrites.</li>
-      <li><strong>Conflicting Data Definitions:</strong> You treat an “order” as a float, but
+      <li><alert>Conflicting Data Definitions:</alert> You treat an “order” as a float, but
         someone else envisions it as <code>[price, quantity, coupon]</code>. Your tests and logic
         will constantly clash.</li>
-      <li><strong>Wasted Testing Effort:</strong> If your examples or tests assume the “wrong”
-        interpretation, you’ll have to redo them once you finally learn the real requirements.</li>
+      <li><alert>Wasted Testing Effort:</alert> If your examples or tests assume the “wrong”
+        interpretation, you'll have to redo them once you finally learn the real requirements.</li>
     </ul>
     <p>
       In short, skipping Step 0 is a recipe for confusion and extra work—all because the core
-      problem wasn’t understood from the start.
+      problem wasn't understood from the start.
     </p>
-  </section>
+  </subsection>
 
   <!-- ======================================
        6. Integrating Step 0 with the Full Design Recipe
        ====================================== -->
-  <section xml:id="integrating-step0">
+  <subsection xml:id="integrating-step0">
     <title>Integrating Step 0 with the Full Design Recipe</title>
-    <p> After seeing Steps 1–5 in action, it should be clear that Step 0 <strong>feeds</strong>
+    <p> After seeing Steps 1–5 in action, it should be clear that Step 0 <alert>feeds</alert>
       everything else. Once you clarify the problem: </p>
     <ul>
       <li>
-        <p><strong>Data Definitions (Step 1)</strong> become more accurate, reflecting the
+        <p><alert>Data Definitions (Step 1)</alert> become more accurate, reflecting the
           real-world entities you need.</p>
       </li>
       <li>
-        <p><strong>Method Signatures &amp; Purpose Statements (Step 2)</strong> are no longer
+        <p><alert>Method Signatures &amp; Purpose Statements (Step 2)</alert> are no longer
           guesswork—each parameter and return type follows from the clarified requirements.</p>
       </li>
       <li>
-        <p><strong>Examples &amp; Tests (Step 3)</strong> target the correct scenarios and edge
+        <p><alert>Examples &amp; Tests (Step 3)</alert> target the correct scenarios and edge
           cases, rather than random guesses.</p>
       </li>
       <li>
-        <p><strong>Skeleton / Method Template (Step 4)</strong> covers the necessary logic, free of
+        <p><alert>Skeleton / Method Template (Step 4)</alert> covers the necessary logic, free of
           last-minute surprises.</p>
       </li>
       <li>
-        <p><strong>Implementation &amp; Refinement (Step 5)</strong> aligns with the true problem,
+        <p><alert>Implementation &amp; Refinement (Step 5)</alert> aligns with the true problem,
           reducing the risk of major rework.</p>
       </li>
     </ul>
     <p>
-      By the time you’re filling in your skeleton with real code, you’ll be confident you’re
+      By the time you're filling in your skeleton with real code, you'll be confident you're
       solving the right problem.
     </p>
-  </section>
+  </subsection>
 
   <!-- ======================================
-       7. One Final Push: Why It’s Worth It
+       7. One Final Push: Why It's Worth It
        ====================================== -->
-  <section xml:id="final-push-why-worth-it">
-    <title>One Final Push: Why It’s Worth the “Extra Work”</title>
+  <subsection xml:id="final-push-why-worth-it">
+    <title>One Final Push: Why It's Worth the “Extra Work”</title>
     <p>
-      Throughout this course, we’ve emphasized how each step of the Design Recipe can feel
+      Throughout this course, we've emphasized how each step of the Design Recipe can feel
       like “extra work” at first—Step 0 especially. But if you misunderstand the fundamental
       problem, no amount of well-tested code can fix that.
     </p>
     <p>
-      <strong>Step 0 is the keystone</strong>: it saves you from solving the wrong problem, or
+      <alert>Step 0 is the keystone</alert>: it saves you from solving the wrong problem, or
       solving the right problem in an ill-suited way. Yes, it costs time up front to restate
       requirements and ask questions, but that investment pays off by preventing large-scale
       rewrites and confusion down the line. </p>
     <p>
-      With Step 0 in place, you’ll:
+      With Step 0 in place, you'll:
     </p>
     <ul>
       <li><em>Collaborate better:</em> Everyone involved (teammates, instructors, stakeholders) sees
         a clear restatement of the problem.</li>
-      <li><em>Code more efficiently:</em> You’ll only implement what’s really needed, skipping
+      <li><em>Code more efficiently:</em> You'll only implement what's really needed, skipping
         pointless features or half-guessed logic.</li>
-      <li><em>Avoid hidden gotchas:</em> By identifying potential edge cases early, you won’t face
+      <li><em>Avoid hidden gotchas:</em> By identifying potential edge cases early, you won't face
         last-minute surprises.</li>
     </ul>
-  </section>
+  </subsection>
 
   <!-- ======================================
        8. Exercises & Practice
        ====================================== -->
-  <section xml:id="exercises-reflection-step0">
+  <subsection xml:id="exercises-reflection-step0">
     <title>Practice</title>
 
     <exercise>
       <title>1. Ambiguous Prompt Practice</title>
       <statement>
         <p>
-          You’re told: “Build a function that tracks user logins and sends an alert
+          You're told: “Build a function that tracks user logins and sends an alert
           if suspicious activity is detected.” In your own words, restate the problem
           and clarify:
         </p>
@@ -229,12 +229,12 @@
           <li>How is the alert sent (email, console print, push notification)?</li>
           <li>How should we store or track the logins (list, database, logs)?</li>
         </ul>
-        <p>If you can’t find definitive answers, propose assumptions and note them explicitly.</p>
+        <p>If you can't find definitive answers, propose assumptions and note them explicitly.</p>
       </statement>
     </exercise>
 
     <exercise>
-      <title>2. Spotting Ambiguities in a Classmate’s Description</title>
+      <title>2. Spotting Ambiguities in a Classmate's Description</title>
       <statement>
         <p>
           Ask a friend or classmate to describe a programming project they worked on.
@@ -276,35 +276,35 @@
       </statement>
     </exercise>
 
-  </section>
+  </subsection>
 
   <!-- ======================================
        9. Conclusion: The Full Picture
        ====================================== -->
-  <section xml:id="conclusion-full-picture">
+  <subsection xml:id="conclusion-full-picture">
     <title>Conclusion: The Full Picture</title>
     <p>
-      With Step 0 now added to your toolkit, the Design Recipe is complete. Let’s recap
+      With Step 0 now added to your toolkit, the Design Recipe is complete. Let's recap
       the entire flow:
     </p>
     <ol>
       <li>
-        <strong>Step 0: Understand &amp; Restate the Problem</strong>
+        <alert>Step 0: Understand &amp; Restate the Problem</alert>
       </li>
       <li>
-        <strong>Step 1: Data Definitions</strong>
+        <alert>Step 1: Data Definitions</alert>
       </li>
       <li>
-        <strong>Step 2: Method Signatures &amp; Purpose Statements</strong>
+        <alert>Step 2: Method Signatures &amp; Purpose Statements</alert>
       </li>
       <li>
-        <strong>Step 3: Examples &amp; Tests</strong>
+        <alert>Step 3: Examples &amp; Tests</alert>
       </li>
       <li>
-        <strong>Step 4: Skeleton / Method Template</strong>
+        <alert>Step 4: Skeleton / Method Template</alert>
       </li>
       <li>
-        <strong>Step 5: Implementation, Testing &amp; Refinement</strong>
+        <alert>Step 5: Implementation, Testing &amp; Refinement</alert>
       </li>
     </ol>
     <p>
@@ -314,18 +314,18 @@
       you create reliable, maintainable code that truly addresses the problem at hand.
     </p>
     <p>
-      We hope this final “Step 0” chapter convinces you that fully understanding the task
+      We hope this final “Step 0” section convinces you that fully understanding the task
       is more than just re-reading an assignment. With the complete Design Recipe,
-      you’re equipped to tackle projects of any size or complexity—less guesswork, fewer
+      you're equipped to tackle projects of any size or complexity—less guesswork, fewer
       nasty surprises, and stronger confidence in your final solutions.
     </p>
     <p>
       <em>Best of luck, and happy designing!</em>
     </p>
-  </section>
+  </subsection>
 
-  <section xml:id="ch-final-recipe-exercises">
-    <title>Chapter 6: Final Recipe (Step 0) Exercises</title>
+  <subsection xml:id="ch-final-recipe-exercises">
+    <title>Final Recipe (Step 0) Exercises</title>
 
     <!-- ============================================================
        1. PARSONS PROBLEM: The Consequence of Skipping Step 0
@@ -357,7 +357,7 @@
         </block>
         <block order="4">
           <choice correct="yes">
-            <cline>Audrey’s code doesn’t handle any of that because she never restated the problem
+            <cline>Audrey's code doesn't handle any of that because she never restated the problem
               or asked clarifying questions.</cline>
           </choice>
         </block>
@@ -370,13 +370,13 @@
       </blocks>
       <solution>
         <p>
-          <strong>Suggested order:</strong>
+          <alert>Suggested order:</alert>
         </p>
         <ol>
           <li>Assignment is vague: “Build function to process discount orders.”</li>
           <li>Audrey codes immediately, assuming one float price + 10% discount.</li>
           <li>Teammate clarifies shipping, tax, item-specific discounts.</li>
-          <li>Audrey’s code is incomplete due to no clarifications.</li>
+          <li>Audrey's code is incomplete due to no clarifications.</li>
           <li>She must do a major rewrite, realizing Step 0 was crucial.</li>
         </ol>
       </solution>
@@ -388,8 +388,8 @@
        ============================================================ -->
     <exercise xml:id="mc-step0-importance">
       <title>Why “Understand &amp; Restate the Problem” First?</title>
-      <statement> Chapter 6 emphasizes Step 0 of the Design Recipe: fully clarifying and restating
-        the problem before coding. Which answer <strong>best</strong> captures why this is
+      <statement> Section 6 emphasizes Step 0 of the Design Recipe: fully clarifying and restating
+        the problem before coding. Which answer <alert>best</alert> captures why this is
         necessary? </statement>
       <choices randomize="yes">
         <choice correct="yes">
@@ -455,14 +455,14 @@
       <title>Short Answer: Restate a Vague Prompt</title>
       <statement>
         <p> Suppose you receive a prompt: <em>"Write a function that manages customer data."</em>
-          That’s all the instructions you have. In the spirit of Step 0, produce a <strong>
-          restatement</strong> that includes: </p>
+          That's all the instructions you have. In the spirit of Step 0, produce a <alert>
+          restatement</alert> that includes: </p>
         <ul>
           <li> Key assumptions you must clarify (e.g., “What is a <code>customer</code>? Are we
             storing a <code>name</code>, <code>email</code>, <code>purchase history</code>?”) </li>
           <li> Possible edge cases or special conditions (e.g., “What if the user has no purchase
             history? Is <code>email</code> always valid?”) </li>
-          <li> A concise summary of <strong>what “manage” means</strong> (e.g., “Add, remove, or
+          <li> A concise summary of <alert>what “manage” means</alert> (e.g., “Add, remove, or
             update customer details.”) </li>
         </ul>
         <p>
@@ -472,7 +472,7 @@
       <response />
       <solution>
         <p>
-          <strong>Sample Restatement:</strong>
+          <alert>Sample Restatement:</alert>
         </p>
         <ul>
           <li> A <code>customer</code> has at least a <code>name</code> (string), <code>email</code>
@@ -504,7 +504,7 @@
        ============================================================ -->
     <exercise xml:id="mc-step0-impact">
       <title>The Impact of Step 0 on Later Steps</title>
-      <statement> How does <strong>Step 0: Understand &amp; Restate the Problem</strong> affect the
+      <statement> How does <alert>Step 0: Understand &amp; Restate the Problem</alert> affect the
         rest of the Design Recipe (Steps 1–5)? </statement>
       <choices randomize="yes">
         <choice correct="yes">
@@ -528,7 +528,7 @@
         </choice>
         <choice>
           <statement>
-            It’s optional if you trust your intuition; the rest of the steps can fix any
+            It's optional if you trust your intuition; the rest of the steps can fix any
             misunderstanding automatically.
           </statement>
           <feedback>
@@ -547,5 +547,5 @@
     </exercise>
 
 
-  </section>
-</chapter>
+  </subsection>
+</section>

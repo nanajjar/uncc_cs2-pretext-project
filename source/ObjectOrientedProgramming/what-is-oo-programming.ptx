@@ -2,10 +2,8 @@
   <title>What Is  Object-Oriented  Programming?</title>
   <introduction>
     <p>
-      Java is an object-oriented (OO) language,
-      and this book takes an object-oriented approach to programming.
-      So before beginning our discussion of Java,
-      we need to talk about:
+      Java is an object-oriented (OO) language, and this book emphasizes an object-oriented approach to programming. 
+      To deepen our understanding and effectively apply Java's capabilities, we first need to discuss:
       <ul>
        <li><p> what an object is</p></li>
        <li><p> how objects are grouped into classes</p></li>
