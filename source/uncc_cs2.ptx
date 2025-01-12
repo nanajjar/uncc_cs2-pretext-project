@@ -6,20 +6,16 @@
 
   <book xml:id="uncc_cs2">
   <docinfo>
-            <title>Introduction to CS 1</title>
-            <author>
-                <name>UNCC CS</name>
-                <email>nanajjar@charlotte.edu</email>
-            </author>
+            <title>Introduction to CS 2</title>
+        
             <publisher>PreTeXt Publishing</publisher>
             <document-id>uncc_cs2</document-id>
-            <pub-date>2024-01-11</pub-date>
+            <pub-date>2025-01-11</pub-date>
             <blurb shelf="Intro to Computer Science">
-                An adaptation of Java for Python Programmers extended to include how to design programs with object oriented programming.
-            </blurb>
+How to Design Programs with Object Oriented Programming - From Python to Java            </blurb>
         </docinfo>
     <title>ITSC 1213 - Introduction to CS 2</title>
-    <subtitle>Interactive Edition</subtitle>
+    <subtitle>How to Design Programs with Object Oriented Programming - From Python to Java  </subtitle>
 
     <!-- Include frontmatter -->
     <xi:include href="./frontmatter.ptx" />
@@ -31,9 +27,11 @@
     <xi:include href="./Tools/toctree.ptx" />
 
 
-    <!-- Include backmatter -->
-    <xi:include href="./backmatter.ptx" />
-
+    <backmatter>
+            <index>
+                <index-list />
+            </index>
+        </backmatter>
   </book>
 </pretext>
 
