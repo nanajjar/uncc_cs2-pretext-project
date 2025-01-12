@@ -22,7 +22,7 @@ UML class diagrams also capture relationships between classes—such as associat
     </p>
     <p>
     This serves as the first step, and we will continue to build on this foundation as we introduce and explore object-oriented concepts and design principles. 
-For a more in depth discussion refer to <a href="https://developer.ibm.com/articles/the-class-diagram/">this article from IBM Developer on class diagrams</a>
+For a more in depth discussion refer to <url href="https://developer.ibm.com/articles/the-class-diagram/">this article from IBM Developer on class diagrams</url>
     </p>
 
 </introduction>
@@ -56,13 +56,29 @@ This structure provides a clear visual representation of a class's internal deta
 To illustrate, consider a Person class and a Book class as examples. While the following Java class definition is intentionally simplified, it effectively demonstrates the core UML data representations.
 </p>
 <p>
-    For example, a Person class and a Book class might be modeled like this.
-    ADD UML DIAGRAM
-</p>
+    For example, a Circle class and a Book class might be modeled like this.
+    </p>
+    <sidebyside>
+        
+    
+ <figure xml:id="fig-uml_person">
+      <caption>This UML diagram illustrates a Person as a datatype
+       
+      </caption> 
+      <image width="10%" source="ch-tools/person_uml.png"/>
+    </figure>
+    <figure xml:id="fig-uml_book">
+      <caption>This UML diagram illustrates a Book as a datatype
+       
+      </caption> 
+      <image width="10%" source="ch-tools/book_uml.png"/>
+    </figure>
+    
+    </sidebyside>
 
 <p>
-    This indicates that a Person object has private fields named name and birthDate, along with public methods named getName, setName, and isBirthday. 
-    Similarly, a Book object has private fields named title and authors, and public methods named getTitle, getAuthors, and addAuthor.
+    This shows that a Person object has private fields named <c>name</c> and <c>birthDate</c>, along with public methods named <c>getName</c>, <c>setName</c>, and <c>isBirthday</c>. 
+    Similarly, a Book object has private fields named <c>title</c> and <c>authors</c>, and public methods named <c>getTitle</c>, <c>getAuthors</c>, and addAuthor.
 </p>
 <p>The fields and methods are annotated to indicate their access level:
 <ul>
@@ -117,7 +133,10 @@ We will introduce concepts like static members (underlined) and abstract members
 Watch this first 4 minutes of this video for a quick tutorial about creating class diagrams. 
 The rest of the video dives into relationships between classes which we will cover later in the course. 
 Feel free to watch it as a look forward!
-ADD VIDEO
+<video xml:id="uml_video" youtube="UI6lqHOVHic"/>
+
+
+
 </p>
 </subsection>
 
