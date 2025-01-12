@@ -7,10 +7,14 @@
   <bibinfo>
   
     <author>
-      <personname>Nadia Najjar</personname>
-      <department>College of Computing and Informatics</department>
-      <institution>University of North Carolina at Charlotte</institution>
-    </author>
+        <personname>Nadia Najjar</personname> 
+        <institution>University of North Carolina at Charlotte</institution>
+            <email></email>
+        </author>
+        <author><personname> Dhruv Dhamani</personname>
+        <institution>University of North Carolina at Charlotte</institution>
+          <email></email>
+        </author>
     <date>
       <today />
     </date>
@@ -25,15 +29,43 @@
       <shortlicense> This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit <url href="http://creativecommons.org/licenses/by-sa/4.0/" visual="creativecommons.org/licenses/by-sa/4.0"> CreativeCommons.org</url>
       </shortlicense>
     </copyright>
+
+   
   
   </bibinfo>
 
   <titlepage>
-    <titlepage-items/>
-  </titlepage>
+</titlepage>
+ <preface>
+      <p>
+             
+<p>
+      This book is a PreText adaptation of 
+      Java for Python Programmers (<url href="https://github.com/RunestoneInteractive/java4python" visual="">https://github.com/RunestoneInteractive/java4python</url>) by Brad Miller, CS Awesome by Beryl Hoffman (<url href="https://github.com/RunestoneInteractive/csawesome" visual="">https://github.com/RunestoneInteractive/csawesome</url>) 
+      and Java, Java, Java: Object-Oriented Problem Solving, 2024E by Ralph Morelli, Ralph Walde, Beryl Hoffman, and David G. Cooper (<url href="https://github.com/ram8647/javajavajava" visual="">https://github.com/ram8647/javajavajava</url>).
+      </p>
 
-  <colophon xml:id="front-colophon">
-    <colophon-items/>
-  </colophon>
+<p>
+In addition to helping students transition from Python to Java, this book is intended to facilitate their shift from procedural and functional programming to object-oriented programming.
+ We introduce a structured design recipe for programming (<url href="https://htdp.org" visual="">https://htdp.org</url>), specifically tailored to the principles and practices of object-oriented development.            
+ </p>
+     <p>
+    The book designed for students enrolled in the Introduction to Computer Science II course at the University of North Carolina at Charlotte.
+    </p>
+  <p>
+    This edition, released for the Spring 2025 semester, will continue to evolve in during the semester to better highlight the interconnections between computational thinking and object oriented programming concepts.
+   </p>
+      </p>
+
+      <p>
+  This work is licensed under a Creative Commons Attribution 4.0 International License which allows the book to be used,
+  modified, and shared with attribution:
+  <url href="https://creativecommons.org/licenses/by/4.0/" visual="">https://creativecommons.org/licenses/by/4.0/</url>.  
+</p>
+      </preface>
+  <!-- <colophon xml:id="front-colophon">
+
+    
+  </colophon> -->
 </frontmatter>
 

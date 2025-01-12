@@ -33,7 +33,9 @@ along with MathBook XML.  If not, see <http://www.gnu.org/licenses/>.
 
     <!-- Prefix to enhance Sage notebook contents -->
     <initialism></initialism>
-    <blurb shelf="introcs"> An adaptation of Java for Python Programmers extended to include how to design programs with object oriented programming. </blurb>
+    <blurb shelf="introcs"> 
+    <blurb shelf="">How to Design Programs with Object Oriented programming</blurb>
+    </blurb>
    
 
     <!-- this is the default, but supresses a warning -->
