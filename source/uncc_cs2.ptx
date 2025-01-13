@@ -28,6 +28,10 @@ How to Design Programs with Object Oriented Programming - From Python to Java   
     <!-- CSAwesome chapters -->
     <xi:include href="./Unit01-Getting-Started/toctree.ptx" />
     <xi:include href="./Unit02-Using-Objects/toctree.ptx" />
+    <xi:include href="./Unit03-If-Statements/toctree.ptx" />
+    <xi:include href="./Unit04-Iteration/toctree.ptx" />
+    <xi:include href="./Unit05-Writing-Classes/toctree.ptx" />
+    <xi:include href="./Unit06-Arrays/toctree.ptx" />
     <xi:include href="./Unit07-ArrayList/toctree.ptx" />
     <xi:include href="./Unit08-2DArray/toctree.ptx" />
     <xi:include href="./Unit09-Inheritance/toctree.ptx" />
