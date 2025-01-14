@@ -605,18 +605,6 @@
           </choice>
         </block>
       </blocks>
-      <solution>
-        <p>
-          <alert>Suggested order:</alert>
-        </p>
-        <ol>
-          <li>Mai calls <code>update_rating(None, ...)</code> → code crashes</li>
-          <li>Audrey: "I just *knew* not to pass None, but never documented it!"</li>
-          <li>Mai tries rating=10 → assumptions break</li>
-          <li>They realize constraints must be explicit in a docstring</li>
-          <li>They finally add type hints, docstring sections for usage &amp; errors</li>
-        </ol>
-      </solution>
     </exercise>
 
 
@@ -657,18 +645,6 @@
           </choice>
         </block>
       </blocks>
-      <solution>
-        <p>
-          <alert>Correct chain of reasoning:</alert>
-        </p>
-        <ol>
-          <li>No docstring → users guess usage</li>
-          <li>Mai tries invalid inputs (e.g., rating=10)</li>
-          <li>Audrey sees rating constraints were never shared</li>
-          <li>They add a formal docstring with inputs &amp; purpose</li>
-          <li>Invalid calls become clearer or raise documented errors</li>
-        </ol>
-      </solution>
     </exercise>
 
 

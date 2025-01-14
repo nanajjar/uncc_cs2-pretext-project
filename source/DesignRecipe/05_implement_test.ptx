@@ -459,25 +459,6 @@ def test_compute_popularity():
             </choice>
           </block>
         </blocks>
-        <solution>
-          <p>
-            <alert>Suggested final code order:</alert>
-          </p>
-          <pre><code>def update_rating(library, song_title, new_rating):
-    # Step 1: Validate inputs
-    if new_rating &lt; 1 or new_rating &gt; 5:
-        raise ValueError("Rating must be 1..5")
-
-    # Step 2: Loop through library to find matching song
-    for song in library:
-        if song[0] == song_title:
-            song[1] = new_rating
-            return True
-
-    # Step 3: If not found, return False
-    return False
-</code></pre>
-        </solution>
       </exercise>
 
 

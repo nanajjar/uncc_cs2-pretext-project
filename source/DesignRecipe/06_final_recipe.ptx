@@ -368,18 +368,6 @@
           </choice>
         </block>
       </blocks>
-      <solution>
-        <p>
-          <alert>Suggested order:</alert>
-        </p>
-        <ol>
-          <li>Assignment is vague: “Build function to process discount orders.”</li>
-          <li>Audrey codes immediately, assuming one float price + 10% discount.</li>
-          <li>Teammate clarifies shipping, tax, item-specific discounts.</li>
-          <li>Audrey's code is incomplete due to no clarifications.</li>
-          <li>She must do a major rewrite, realizing Step 0 was crucial.</li>
-        </ol>
-      </solution>
     </exercise>
 
 

@@ -400,18 +400,6 @@
           </choice>
         </block>
       </blocks>
-      <solution>
-        <p>
-          <alert>Suggested Order:</alert>
-        </p>
-        <ol>
-          <li>Audrey codes loop/conditionals immediately (no outline).</li>
-          <li>Tries adding input checks late in the process.</li>
-          <li>Logic becomes messy and disorganized.</li>
-          <li>Minor changes break the code because it's so tangled.</li>
-          <li>Realizes an upfront skeleton would have spared her a fiasco.</li>
-        </ol>
-      </solution>
     </exercise>
 
 
@@ -449,18 +437,6 @@
           </choice>
         </block>
       </blocks>
-      <solution>
-        <p>
-          <alert>Common skeleton steps in order:</alert>
-        </p>
-        <ol>
-          <li>Validate inputs</li>
-          <li>Initialize accumulators</li>
-          <li>Loop/iterate over data</li>
-          <li>Decide if/when to return or update accumulators</li>
-          <li>Return final result</li>
-        </ol>
-      </solution>
     </exercise>
 
 

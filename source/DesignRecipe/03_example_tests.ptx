@@ -363,18 +363,6 @@
           </choice>
         </block>
       </blocks>
-      <solution>
-        <p>
-          <alert>Suggested Order:</alert>
-        </p>
-        <ol>
-          <li>No initial examples or tests for <code>count_words</code></li>
-          <li>Weird results for empty or extra-space inputs</li>
-          <li>She realizes no edge-case specification existed</li>
-          <li>Writes examples first, turns them into <code>assert</code> tests</li>
-          <li>Catches mistakes quickly for tricky cases</li>
-        </ol>
-      </solution>
     </exercise>
 
     <!-- =========================================================

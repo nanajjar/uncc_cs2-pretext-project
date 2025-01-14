@@ -511,15 +511,6 @@
           </choice>
         </block>
       </blocks>
-      <solution>
-        <p>Correct order in Audrey's story: <ol>
-            <li>No documentation for [title, rating]</li>
-            <li>Adding fields like play_count breaks old assumptions</li>
-            <li>She sees the fragility of “index 0, index 1” logic</li>
-            <li>Finally, she formalizes [title, rating, play_count]</li>
-          </ol>
-        </p>
-      </solution>
     </exercise>
 
     <!-- =======================
