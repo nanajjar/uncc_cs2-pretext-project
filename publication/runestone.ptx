@@ -18,7 +18,7 @@
   <html favicon="simple"> 
     <platform host="runestone" />
     <!-- knowled checkpoints interfere with ActiveCode problems -->
-    <knowl exercise-inline="no" example="no" listing="yes" />
+    <knowl exercise-inline="no" example="no" listing="no" />
     <css colors="green_plum" />
     <!-- <css shell="crc" toc="crc"  banner="crc" navbar = 'crc'/> -->
     <css style="wide" toc="wide" banner="wide" navbar="wide" shell="wide" />
