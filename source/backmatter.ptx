@@ -17,7 +17,10 @@
   <!-- <index> <title>Index</title> <index-list/> </index> -->
 
   <colophon>
-    <p> This book was authored in <pretext />. </p>
+    <p> This book is a PreText adaptation of Java for Python Programmers (https://github.com/RunestoneInteractive/java4python) by Brad Miller. It is designed for students enrolled in the Introduction to Computer Science II course at the University of North Carolina at Charlotte.
+
+In addition to helping students transition from Python to Java, this book is intended to facilitate their shift from procedural and functional programming to object-oriented programming.
+ We introduce </p>
   </colophon>
 </backmatter>
 
