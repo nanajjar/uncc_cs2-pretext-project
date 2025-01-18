@@ -99,19 +99,6 @@ Given the name of an animal, count how many lines involve that animal (regardles
 
 Given an event type, produce a **list of distinct** animals that had that event. For instance, “Which animals had a `feeding` event?” might return `[Lion, Penguin]`.
 
-### Do a Bulk Update in a Single Statement
-
-Just as you did in Lab 1, also plan how you’d do some “bulk update” in one line. Maybe you:
-
-- Mark all events of a certain type with a status like “checkNeeded.”
-- Offset or adjust times if the log was recorded incorrectly.
-
-Include this plan in your method skeleton or docstrings (Steps 2–4). You’ll implement it in Lab 3.
-
-### Adding a New Log Entry
-
-Also, as in Lab 1, we’d like to see how you’d **add a new event** mid-script. Maybe at `time=55`, `Elephant` had a `play` event. In your Step 4 skeleton, outline how you’d do that and confirm it’s included.
-
 ---
 
 ## Deliverables for Lab 2
