@@ -1,0 +1,621 @@
+<section xml:id="ch-design-recipe-template">
+  <title>Final Template</title>
+
+  <!-- ========================================================
+       1. OVERVIEW &amp; PURPOSE
+       ======================================================== -->
+  <subsection xml:id="dr-template-overview">
+    <title>Overview &amp; Purpose</title>
+    <p> By now, you have mastered all six steps of the Design Recipe, including the crucial
+      <em>Step 0: Understand &amp; Restate the Problem</em>. This final chapter provides
+      a <alert>complete template</alert> that will guide you through each step when solving programming problems. </p>
+    <p>
+      The template is organized into two key parts for each step:
+    </p>
+    <ul>
+      <li>
+        <em>What to Do:</em> <b>Clear instructions</b> for completing the step </li>
+      <li>
+        <em>Why it Matters:</em> <b>Key benefits</b> and connections to previous chapters </li>
+    </ul>
+    <p> Following these steps in sequence (beginning with Step 0) will help you create reliable, 
+      well-documented code that's easier to test and maintain. Remember: taking time to understand 
+      the problem thoroughly in Step 0 prevents costly mistakes later. </p>
+  </subsection>
+
+
+  <!-- ========================================================
+       2. TEMPLATE AT A GLANCE
+       ======================================================== -->
+  <subsection xml:id="dr-template-glance">
+    <title>The Template At a Glance</title>
+    <p>
+      Here's your roadmap through the Design Recipe's six steps:
+    </p>
+    <ol>
+      <li><b>Step 0:</b> Understand &amp; Restate the Problem</li>
+      <li><b>Step 1:</b> Data Definitions</li>
+      <li><b>Step 2:</b> Method Signatures &amp; Purpose Statements</li>
+      <li><b>Step 3:</b> Examples &amp; Tests</li>
+      <li><b>Step 4:</b> Skeleton / Method Template</li>
+      <li><b>Step 5:</b> Implementation, Testing &amp; Refinement</li>
+    </ol>
+    <p> You can document these steps in one file or split them across multiple files—choose what 
+      works best for your project. The key is maintaining clear organization so you can easily 
+      review and update your work as needed. </p>
+  </subsection>
+
+
+  <!-- ========================================================
+       3. DETAILED TEMPLATE (FOR STUDENTS TO FILL)
+       ======================================================== -->
+  <subsection xml:id="dr-template-detailed">
+    <title>The Detailed, Fill-In Template</title>
+
+    <!-- =====================================
+         STEP 0
+         ===================================== -->
+    <subsubsection xml:id="dr-step0-template">
+      <title>Step 0: Understand &amp; Restate the Problem</title>
+
+
+      <ul>
+        <li>
+          <p>Carefully read the assignment or project prompt at least twice.</p>
+        </li>
+        <li>
+          <p>Identify ambiguities or missing details—e.g. data format, constraints, edge cases.</p>
+        </li>
+        <li>
+          <p>Ask for clarifications from your TA, instructor, or client if possible. If you
+            cannot get clarification, list your assumptions explicitly.</p>
+        </li>
+        <li>
+          <p>Write a short “restatement” of the problem <em>in your own words</em>. Check that
+            you cover all required inputs, outputs, and behaviors.</p>
+        </li>
+      </ul>
+
+      <!-- Description -->
+
+      <p>
+        Step 0 is your foundation for success. Consider these critical points:
+      </p>
+      <ul>
+        <li>Most serious bugs stem from misunderstood requirements, not coding errors</li>
+        <li>Restating the problem reveals gaps in your understanding</li>
+        <li>Clear problem statements make it easier to get help from others</li>
+      </ul>
+
+      <!-- Template Form -->
+      <p>
+        <b>TEMPLATE:</b>
+      </p>
+      <listing xml:id="step0-template">
+        <caption>Step 0 Template Structure</caption>
+        <program language="text">
+# STEP 0: Restatement of the Problem
+
+## My Understanding
+- Main goals:
+- Required inputs:
+- Expected outputs:
+- Key behaviors:
+
+## Key Details / Questions
+- Ambiguities:
+  1. ...
+  2. ...
+- Assumptions:
+  1. ...
+  2. ...
+
+## Scope / Edge Cases
+- Special cases:
+  1. ...
+  2. ...
+- Constraints:
+  1. ...
+  2. ...
+        </program>
+      </listing>
+
+      <!-- Pitfalls -->
+      <p>
+        <b>COMMON PITFALLS:</b>
+        <ul>
+          <li>
+            <p>Not stating assumptions explicitly, so teammates don't realize the interpretation
+              you chose.</p>
+          </li>
+          <li> 
+            <p>Skipping Step 0 entirely and jumping into coding—risking a major redesign when the
+              real requirements emerge.</p>
+          </li>
+        </ul>
+      </p>
+
+    </subsubsection>
+
+    <!-- =====================================
+         STEP 1
+         ===================================== -->
+    <subsubsection xml:id="dr-step1-template">
+      <title>Step 1: Data Definitions</title>
+
+
+      <ul>
+        <li>
+          <p>Identify all data structures you will use (e.g., <c>Song</c>, <c>LogEntry</c>
+            , <c>Order</c>).</p>
+        </li>
+        <li>
+          <p>Describe each structure’s fields (or elements) and <em>valid ranges</em> or
+            constraints. Use your restatement from Step 0 to ensure consistency.</p>
+        </li>
+        <li>
+          <p>If your language is untyped (like Python), note that these constraints may only be
+            enforced by logic, not by the compiler.</p>
+        </li>
+      </ul>
+
+      <!-- Description -->
+
+      <p>
+        In Chapter 1, you learned that well-defined data serves multiple purposes:
+      </p>
+      <ul>
+        <li>Prevents "magic index" errors and confusion about field meanings</li>
+        <li>Acts as the blueprint for the rest of your design</li>
+        <li>Protects against breaking changes when data formats evolve</li>
+      </ul>
+
+      <!-- Template Form -->
+      <p>
+        <b>TEMPLATE:</b>
+      </p>
+      <listing xml:id="step1-template">
+        <caption>Step 1 Template Structure</caption>
+        <program language="text">
+# STEP 1: Data Definitions
+
+## Main Data Structures
+1. TypeName1:
+   - Purpose: ...
+   - Structure: ...
+
+2. TypeName2:
+   - Purpose: ...
+   - Structure: ...
+
+## Fields &amp; Valid Ranges
+TypeName1:
+- field1: type, constraints
+- field2: type, constraints
+
+TypeName2:
+- field1: type, constraints
+- field2: type, constraints
+
+## Additional Constraints
+1. Relationship rules: ...
+2. Cross-field validations: ...
+3. Uniqueness requirements: ...
+        </program>
+      </listing>
+
+      <!-- Pitfalls -->
+      <p>
+        <b>COMMON PITFALLS:</b>
+        <ul>
+          <li>
+            <p>Forgetting to include constraints (like “rating must be 1..5”)—leading to silent errors when out-of-range values occur.</p>
+          </li>
+          <li>
+            <p>Using ambiguous data structures (e.g. a bare list) without explaining what each element means.</p>
+          </li>
+        </ul>
+      </p>
+
+    </subsubsection>
+
+
+    <!-- =====================================
+         STEP 2
+         ===================================== -->
+    <subsubsection xml:id="dr-step2-template">
+      <title>Step 2: Method Signatures &amp; Purpose Statements</title>
+
+
+      <ul>
+        <li>
+          <p>For each function or method you plan to write, define its signature (input types, return type).</p>
+        </li>
+        <li>
+          <p>Write a short purpose statement (a docstring or comment) describing <em>what</em> it does, <em>why</em> it does it, and any error conditions.</p>
+        </li>
+        <li>
+          <p>Reference your data definitions from Step 1 to avoid conflicts or contradictions.</p>
+        </li>
+      </ul>
+
+      <!-- Description -->
+
+      <p>
+        Chapter 2 taught us that function contracts provide several benefits:
+      </p>
+      <ul>
+        <li>Clarify how to use each function without reading its implementation</li>
+        <li>Foster better collaboration between team members</li>
+        <li>Prevent accidental misuse of code or invalid data passing</li>
+      </ul>
+
+      <!-- Template Form -->
+      <p>
+        <b>TEMPLATE:</b>
+      </p>
+      <listing xml:id="step2-template">
+        <caption>Step 2 Template Structure</caption>
+        <program language="python">
+# STEP 2: Method Signatures &amp; Purpose Statements
+
+def function_name(param1: Type, param2: Type) -> ReturnType:
+    """
+    Purpose:
+        What: Brief description of function's primary task
+        Why: Context or reason for this function's existence
+    
+    Args:
+        param1: Description and constraints
+        param2: Description and constraints
+    
+    Returns:
+        Description of return value and format
+    
+    Raises:
+        ErrorType1: Condition that triggers this error
+        ErrorType2: Condition that triggers this error
+    """
+
+# (Repeat for additional functions)
+        </program>
+      </listing>
+
+      <!-- Pitfalls -->
+      <p>
+        <b>COMMON PITFALLS:</b>
+        <ul>
+          <li>
+            <p>Being vague about input constraints (e.g., “param1 is a list,” but not specifying
+              it must be non-empty or must contain only numbers).</p>
+          </li>
+          <li>
+            <p>Omitting error cases and leaving them to be “discovered” during coding, which can
+              cause inconsistent error handling.</p>
+          </li>
+        </ul>
+      </p>
+
+    </subsubsection>
+
+
+    <!-- =====================================
+         STEP 3
+         ===================================== -->
+    <subsubsection xml:id="dr-step3-template">
+      <title>Step 3: Examples &amp; Tests</title>
+
+
+      <ul>
+        <li>
+          <p>Write concrete examples showing typical, edge-case, and error scenarios for each
+            function.</p>
+        </li>
+        <li>
+          <p>Turn these examples into automated tests (using <c>assert</c>, <c>unittest</c>,
+            or another testing framework).</p>
+        </li>
+        <li>
+          <p>Try to include at least one test for each important constraint you wrote in Step 1
+            (e.g., rating out of range, empty lists, etc.).</p>
+        </li>
+      </ul>
+
+      <!-- Description -->
+
+      <p>
+        Chapter 3 highlighted how examples &amp; tests provide multiple advantages:
+      </p>
+      <ul>
+        <li>Catch misunderstandings early in development</li>
+        <li>Document precisely what functions should return in specific situations</li>
+        <li>Enable confident coding and maintain solution stability</li>
+      </ul>
+
+      <!-- Template Form -->
+      <p>
+        <b>TEMPLATE:</b>
+      </p>
+      <listing xml:id="step3-template">
+        <caption>Step 3 Template Structure</caption>
+        <program language="python">
+# STEP 3: Examples &amp; Tests
+
+def test_function_name():
+    # Normal Cases
+    - Test 1: Basic usage
+      Input: ...
+      Expected: ...
+      test_basic()
+    
+    # Edge Cases
+    - Test 2: Empty/minimal input
+      Input: ...
+      Expected: ...
+      test_empty()
+    
+    # Error Cases
+    - Test 3: Invalid input
+      Input: ...
+      Expected Exception: ...
+      test_invalid()
+
+def test_basic():
+    assert function_name(valid_input) == expected_output
+
+def test_empty():
+    assert function_name([]) == []  # or appropriate empty result
+
+def test_invalid():
+    with pytest.raises(ValueError):
+        function_name(invalid_input)
+        </program>
+      </listing>
+
+      <!-- Pitfalls -->
+      <p>
+        <b>COMMON PITFALLS:</b>
+        <ul>
+          <li>
+            <p>Providing only “happy path” tests and ignoring edge cases (like empty input).</p>
+          </li>
+          <li>
+            <p>Not testing error handling—leading to untested code paths.</p>
+          </li>
+        </ul>
+      </p>
+
+    </subsubsection>
+
+
+    <!-- =====================================
+         STEP 4
+         ===================================== -->
+    <subsubsection xml:id="dr-step4-template">
+      <title>Step 4: Skeleton / Method Template</title>
+
+
+      <ul>
+        <li>
+          <p>Outline how your function will flow: input validation, loops or conditionals,
+            returning data.</p>
+        </li>
+        <li>
+          <p>Do not fill in detailed code yet—just high-level pseudocode or commented steps.</p>
+        </li>
+        <li>
+          <p>Ensure your skeleton aligns with your Step 2 signatures and Step 3 test
+            expectations.</p>
+        </li>
+      </ul>
+
+      <!-- Description -->
+
+      <p>
+        As Chapter 4 showed, a skeleton provides several benefits:
+      </p>
+      <ul>
+        <li>Helps avoid writing everything at once</li>
+        <li>Clarifies structure and reveals missing logic before implementation</li>
+        <li>Enables quick reordering or insertion of steps when needed</li>
+      </ul>
+
+      <!-- Template Form -->
+      <p>
+        <b>TEMPLATE:</b>
+      </p>
+      <listing xml:id="step4-template">
+        <caption>Step 4 Template Structure</caption>
+        <program language="python">
+# STEP 4: Skeleton / Method Template
+
+def function_name(param1: Type, param2: Type) -> ReturnType:
+    """From Step 2: Purpose &amp; signature"""
+    
+    # 1. Input Validation
+    # - Check param1 constraints
+    # - Check param2 constraints
+    # - Raise appropriate errors
+    
+    # 2. Setup
+    # - Initialize variables
+    # - Prepare data structures
+    
+    # 3. Main Logic
+    # - Core algorithm steps
+    # - Key transformations
+    
+    # 4. Return
+    # - Format result
+    # - Final validation
+    return result  # placeholder
+        </program>
+      </listing>
+
+      <!-- Pitfalls -->
+      <p>
+        <b>COMMON PITFALLS:</b>
+        <ul>
+          <li>
+            <p>Writing the entire function now instead of limiting it to an outline—leading to
+              confusion and missed opportunities for early feedback.</p>
+          </li>
+          <li>
+            <p>Skipping placeholders for validation logic or ignoring how error cases will be
+              handled.</p>
+          </li>
+        </ul>
+      </p>
+
+    </subsubsection>
+
+
+    <!-- =====================================
+         STEP 5
+         ===================================== -->
+    <subsubsection xml:id="dr-step5-template">
+      <title>Step 5: Implementation, Testing &amp; Refinement</title>
+
+
+      <ul>
+        <li>
+          <p>Convert your skeleton comments into real code, line by line or block by block.</p>
+        </li>
+        <li>
+          <p>Immediately run your tests (from Step 3) after each block or change. Fix any bugs or
+            update tests if you discover a mismatch in assumptions.</p>
+        </li>
+        <li>
+          <p>Record any final insights: Did your design change slightly? Did you spot new edge
+            cases?</p>
+        </li>
+      </ul>
+
+      <!-- Description -->
+
+      <p>
+        Chapter 5 emphasized several key points about implementation:
+      </p>
+      <ul>
+        <li>Implementing with a robust design and test coverage reduces stress</li>
+        <li>Quick error detection replaces guesswork in solutions</li>
+        <li>The "Refinement" phase acknowledges and systematically addresses oversights</li>
+      </ul>
+
+      <!-- Template Form -->
+      <p>
+        <b>TEMPLATE:</b>
+      </p>
+      <listing xml:id="step5-template">
+        <caption>Step 5 Template Structure</caption>
+        <program language="python">
+# STEP 5: Implementation  Testing
+
+def function_name(param1: Type, param2: Type) -> ReturnType:
+    # 1. Input Validation
+    if not valid(param1):
+        raise ValueError("param1 must be...")
+    
+    # 2. Setup
+    result = initialize()
+    
+    # 3. Main Logic
+    try:
+        # Core implementation
+        pass
+    except Exception as e:
+        # Error handling
+        pass
+    
+    # 4. Return
+    return result
+
+# Implementation Notes:
+# 1. Changes from original design:
+#    - ...
+# 2. Additional edge cases found:
+#    - ...
+# 3. Optimization opportunities:
+#    - ...
+        </program>
+      </listing>
+
+      <!-- Pitfalls -->
+      <p>
+        <b>COMMON PITFALLS:</b>
+        <ul>
+          <li>
+            <p>Failing to re-run tests frequently, which makes it harder to locate newly
+              introduced bugs.</p>
+          </li>
+          <li>
+            <p>Overlooking small updates to data definitions or signatures when you discover new
+              requirements during implementation.</p>
+          </li>
+        </ul>
+      </p>
+
+    </subsubsection>
+
+  </subsection>
+
+
+  <!-- ========================================================
+       4. USING THIS TEMPLATE EFFECTIVELY
+       ======================================================== -->
+  <subsection xml:id="dr-template-guidance">
+    <title>How to Use This Template Effectively</title>
+    <p>
+      Here are a few practical tips for adopting this template in your labs, assignments, or
+      team projects:
+    </p>
+    <enumeratedlist>
+      <li>
+        <p>
+          <b>Work in order:</b> Do not skip to Step 5 prematurely. Each step clarifies or
+          locks in details that the subsequent step relies on. </p>
+      </li>
+      <li>
+        <p>
+          <b>Leverage version control:</b> Commit your Step 0–4 docs before you start
+          coding, so you can track changes and compare your final code (Step 5) to the skeleton. </p>
+      </li>
+      <li>
+        <p>
+          <b>Review with peers or a TA:</b> An outside reader can catch contradictions or
+          missing constraints. This is especially valuable for Step 0 (restating the problem) and
+          Step 1 (data definitions). </p>
+      </li>
+      <li>
+        <p>
+          <b>Refer back to chapters 0–6:</b> If you find yourself struggling with a step,
+          each chapter offers deeper explanation, examples, and guidance for best practices. </p>
+      </li>
+    </enumeratedlist>
+    <p> If this process feels “slow,” remember that the time spent clarifying each step <em>before</em>
+      coding often saves you from hours of debugging, rework, or contradictory assumptions. </p>
+  </subsection>
+
+
+  <!-- ========================================================
+       5. CONCLUSION
+       ======================================================== -->
+  <subsection xml:id="dr-template-conclusion">
+    <title>Conclusion &amp; Next Steps</title>
+    <p>
+      This template combines all Design Recipe steps into a practical framework. By carefully 
+      completing each section, you'll create solutions that are well-designed, thoroughly tested, 
+      and easier to maintain.
+    </p>
+    <p> While you can adapt this template to your needs, preserve the core principles: thoroughly 
+      <em>understand</em> the problem first, <em>design</em> before coding, and let <em>tests guide</em> 
+      your implementation. </p>
+    <p>
+      With these tools and techniques, you're ready to tackle programming challenges systematically 
+      and effectively. Remember that mastering the Design Recipe is an ongoing journey—each project 
+      helps you refine your approach and build better software.
+    </p>
+    <p>Now go forth and design great solutions—but don't forget to start at Step 0!</p>
+  </subsection>
+
+</section>

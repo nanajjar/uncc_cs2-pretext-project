@@ -7,6 +7,7 @@
   <xi:include href="./04_method_skeleton.ptx" />
   <xi:include href="./05_implement_test.ptx" />
   <xi:include href="./06_final_recipe.ptx" />
+  <xi:include href="./07_template.ptx" />
 
 
 </chapter>
