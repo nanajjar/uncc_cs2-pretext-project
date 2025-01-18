@@ -572,35 +572,35 @@
       <title>Parsons: Audrey &amp; Mai's Journey to Documenting Function Constraints</title>
       <statement>
         Rearrange these story beats to see how Audrey and Mai realized the importance
-        of a function's **signature and purpose statement** (docstring).
+        of a function's <alert>signature and purpose statement</alert> (docstring).
       </statement>
       <blocks layout="vertical" randomize="yes">
         <block order="1">
           <choice correct="yes">
-            <cline>Mai calls <code>update_rating(None, "Hey Jude", 5)</code> and the code crashes.</cline>
+            <cline>Mai calls <c>update_rating(None, "Hey Jude", 5)</c> and the code crashes.</cline>
           </choice>
         </block>
         <block order="2">
           <choice correct="yes">
-            <cline>Audrey exclaims, “But I knew never to pass <code>None</code>! I never wrote that
+            <cline>Audrey exclaims, “But I knew never to pass <c>None</c>! I never wrote that
               down though...”</cline>
           </choice>
         </block>
         <block order="3">
           <choice correct="yes">
-            <cline>Mai tries setting rating to <code>10</code>, breaking assumptions about the valid
-              range of <code>[1..5]</code>.</cline>
+            <cline>Mai tries setting rating to <c>10</c>, breaking assumptions about the valid
+              range of <c>[1..5]</c>.</cline>
           </choice>
         </block>
         <block order="4">
           <choice correct="yes">
-            <cline>Together, they realize they need a docstring specifying <code>library</code>
-              cannot be <code>None</code> and <code>rating</code> must be in <code>[1..5]</code>.</cline>
+            <cline>Together, they realize they need a docstring specifying <c>library</c>
+              cannot be <c>None</c> and <c>rating</c> must be in <c>[1..5]</c>.</cline>
           </choice>
         </block>
         <block order="5">
           <choice correct="yes">
-            <cline>They add a method signature with type hints and a <code>Raises ValueError</code>
+            <cline>They add a method signature with type hints and a <c>Raises ValueError</c>
               note if constraints are violated.</cline>
           </choice>
         </block>
@@ -614,7 +614,7 @@
     <exercise xml:id="parsons-logical-reasoning" language="natural">
       <title>Parsons: Chain of Reasoning for a Method Contract</title>
       <statement>
-        Reorder these logic steps showing **why** Audrey and Mai ended up writing
+        Reorder these logic steps showing <alert>why</alert> Audrey and Mai ended up writing
         a detailed method signature &amp; purpose statement.
       </statement>
       <blocks layout="vertical" randomize="yes">
@@ -654,7 +654,7 @@
     <exercise xml:id="mc-purpose-statement-benefits">
       <title>Benefits of a Purpose Statement</title>
       <statement>
-        Which of the following best captures the **main benefit** of writing a clear purpose
+        Which of the following best captures the <alert>main benefit</alert> of writing a clear purpose
         statement for your function based on this section's context?
       </statement>
       <choices randomize="yes">
@@ -701,7 +701,7 @@
        ========================================================= -->
     <exercise xml:id="tf-signature-contraints" type="truefalse">
       <title>Signatures &amp; Enforced Constraints</title>
-      <statement correct="no"> Specifying parameter types (e.g., <code>song_title: str</code>) in a
+      <statement correct="no"> Specifying parameter types (e.g., <c>song_title: str</c>) in a
         Python signature will cause a runtime error if a different type is passed. </statement>
       <feedback>
         Python does not enforce type hints at runtime. Type hints + docstrings help humans (and

@@ -80,21 +80,26 @@ To illustrate, consider a Person class and a Book class as examples. While the f
     This shows that a Person object has private fields named <c>name</c> and <c>birthDate</c>, along with public methods named <c>getName</c>, <c>setName</c>, and <c>isBirthday</c>. 
     Similarly, a Book object has private fields named <c>title</c> and <c>authors</c>, and public methods named <c>getTitle</c>, <c>getAuthors</c>, and addAuthor.
 </p>
-<p>The fields and methods are annotated to indicate their access level:
+    Programming languages like C++, Java, and C# all utilize access modifiers including "public", "protected", and "private" to control the visibility of class members within a program.
+<p>
+    
+</p>
+<p>
+    In these examples the fields and methods are annotated to indicate their access level:
 <ul>
     <li>
         <p>
-            + (plus) for public
+            + (plus) for public - members declared as public can be accessed from anywhere within the program.
         </p>
     </li>
     <li>
         <p>
-            - (minus) for private
+            - (minus) for private - members declared as private can only be accessed within the same class.
         </p>
     </li>
     <li>
         <p>
-            # (hash) for protected
+            # (hash) for protected - members declared as protected can be accessed within the same class and by its subclasses.
         </p>
     </li>
 </ul>
@@ -130,7 +135,7 @@ We will introduce concepts like static members (underlined) and abstract members
 </p>
 
 <p>
-Watch this first 4 minutes of this video for a quick tutorial about creating class diagrams. 
+Watch the first 4 minutes of this video for a quick tutorial about creating class diagrams. 
 The rest of the video dives into relationships between classes which we will cover later in the course. 
 Feel free to watch it as a look forward!
 <video xml:id="uml_video" youtube="UI6lqHOVHic"/>

@@ -73,14 +73,14 @@
       You might assume:
     </p>
     <ul>
-      <li>A list of numeric prices, like <code>[10.0, 15.0, 20.0]</code></li>
+      <li>A list of numeric prices, like <c>[10.0, 15.0, 20.0]</c></li>
       <li>A flat 10% discount applied to the entire sum</li>
-      <li>A single total (e.g., <code>40.5</code>) returned by the function</li>
+      <li>A single total (e.g., <c>40.5</c>) returned by the function</li>
     </ul>
     <p>That's a perfectly plausible interpretation. But consider other possibilities:</p>
     <ul>
-      <li>Each order might be a dictionary with <code>quantity</code>, <code>price</code>, and <code>
-        coupon_code</code> fields.</li>
+      <li>Each order might be a dictionary with <c>quantity</c>, <c>price</c>, and <c>
+        coupon_code</c> fields.</li>
       <li>Shipping or taxes might not be discounted at all.</li>
       <li>Some items could have different discount rates—accessories get 10%, electronics get 5%,
         etc.</li>
@@ -136,7 +136,7 @@
       <li><alert>Unnecessary Refactoring:</alert> You code a solution based on guesses, then
         discover new requirements, forcing major rewrites.</li>
       <li><alert>Conflicting Data Definitions:</alert> You treat an “order” as a float, but
-        someone else envisions it as <code>[price, quantity, coupon]</code>. Your tests and logic
+        someone else envisions it as <c>[price, quantity, coupon]</c>. Your tests and logic
         will constantly clash.</li>
       <li><alert>Wasted Testing Effort:</alert> If your examples or tests assume the “wrong”
         interpretation, you'll have to redo them once you finally learn the real requirements.</li>
@@ -446,10 +446,10 @@
           That's all the instructions you have. In the spirit of Step 0, produce a <alert>
           restatement</alert> that includes: </p>
         <ul>
-          <li> Key assumptions you must clarify (e.g., “What is a <code>customer</code>? Are we
-            storing a <code>name</code>, <code>email</code>, <code>purchase history</code>?”) </li>
+          <li> Key assumptions you must clarify (e.g., “What is a <c>customer</c>? Are we
+            storing a <c>name</c>, <c>email</c>, <c>purchase history</c>?”) </li>
           <li> Possible edge cases or special conditions (e.g., “What if the user has no purchase
-            history? Is <code>email</code> always valid?”) </li>
+            history? Is <c>email</c> always valid?”) </li>
           <li> A concise summary of <alert>what “manage” means</alert> (e.g., “Add, remove, or
             update customer details.”) </li>
         </ul>
@@ -463,15 +463,15 @@
           <alert>Sample Restatement:</alert>
         </p>
         <ul>
-          <li> A <code>customer</code> has at least a <code>name</code> (string), <code>email</code>
-            (string), and an optional <code>purchase_history</code> (list of orders). </li>
+          <li> A <c>customer</c> has at least a <c>name</c> (string), <c>email</c>
+            (string), and an optional <c>purchase_history</c> (list of orders). </li>
           <li>
             “Manage” means we can add new customers (with valid email),
             remove existing customers, or update their name/email.
           </li>
           <li> Edge cases: <ul>
               <li>Empty name or invalid email? Are we storing partial data?</li>
-              <li>What if <code>purchase_history</code> is empty or <code>None</code>?</li>
+              <li>What if <c>purchase_history</c> is empty or <c>None</c>?</li>
             </ul>
           </li>
           <li>
