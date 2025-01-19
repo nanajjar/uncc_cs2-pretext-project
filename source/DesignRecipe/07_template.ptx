@@ -7,7 +7,7 @@
   <subsection xml:id="dr-template-overview">
     <title>Overview &amp; Purpose</title>
     <p> By now, you have mastered all six steps of the Design Recipe, including the crucial
-      <em>Step 0: Understand &amp; Restate the Problem</em>. This final chapter provides
+      <em>Step 0: Understand &amp; Restate the Problem</em>. This final section provides
       a <alert>complete template</alert> that will guide you through each step when solving programming problems. </p>
     <p>
       The template is organized into two key parts for each step:
@@ -16,7 +16,7 @@
       <li>
         <em>What to Do:</em> <b>Clear instructions</b> for completing the step </li>
       <li>
-        <em>Why it Matters:</em> <b>Key benefits</b> and connections to previous chapters </li>
+        <em>Why it Matters:</em> <b>Key benefits</b> and connections to previous sections </li>
     </ul>
     <p> Following these steps in sequence (beginning with Step 0) will help you create reliable, 
       well-documented code that's easier to test and maintain. Remember: taking time to understand 
@@ -150,7 +150,7 @@
             , <c>Order</c>).</p>
         </li>
         <li>
-          <p>Describe each structure’s fields (or elements) and <em>valid ranges</em> or
+          <p>Describe each structure's fields (or elements) and <em>valid ranges</em> or
             constraints. Use your restatement from Step 0 to ensure consistency.</p>
         </li>
         <li>
@@ -162,7 +162,7 @@
       <!-- Description -->
 
       <p>
-        In Chapter 1, you learned that well-defined data serves multiple purposes:
+        In Section 1, you learned that well-defined data serves multiple purposes:
       </p>
       <ul>
         <li>Prevents "magic index" errors and confusion about field meanings</li>
@@ -242,7 +242,7 @@ TypeName2:
       <!-- Description -->
 
       <p>
-        Chapter 2 taught us that function contracts provide several benefits:
+        Section 2 taught us that function contracts provide several benefits:
       </p>
       <ul>
         <li>Clarify how to use each function without reading its implementation</li>
@@ -324,7 +324,7 @@ def function_name(param1: Type, param2: Type) -> ReturnType:
       <!-- Description -->
 
       <p>
-        Chapter 3 highlighted how examples &amp; tests provide multiple advantages:
+        Section 3 highlighted how examples &amp; tests provide multiple advantages:
       </p>
       <ul>
         <li>Catch misunderstandings early in development</li>
@@ -412,7 +412,7 @@ def test_invalid():
       <!-- Description -->
 
       <p>
-        As Chapter 4 showed, a skeleton provides several benefits:
+        As Section 4 showed, a skeleton provides several benefits:
       </p>
       <ul>
         <li>Helps avoid writing everything at once</li>
@@ -494,7 +494,7 @@ def function_name(param1: Type, param2: Type) -> ReturnType:
       <!-- Description -->
 
       <p>
-        Chapter 5 emphasized several key points about implementation:
+        Section 5 emphasized several key points about implementation:
       </p>
       <ul>
         <li>Implementing with a robust design and test coverage reduces stress</li>
@@ -577,7 +577,7 @@ def function_name(param1: Type, param2: Type) -> ReturnType:
       </li>
       <li>
         <p>
-          <b>Leverage version control:</b> Commit your Step 0–4 docs before you start
+          <b>Leverage version control:</b> Commit your Step 0-4 docs before you start
           coding, so you can track changes and compare your final code (Step 5) to the skeleton. </p>
       </li>
       <li>
@@ -588,8 +588,8 @@ def function_name(param1: Type, param2: Type) -> ReturnType:
       </li>
       <li>
         <p>
-          <b>Refer back to chapters 0–6:</b> If you find yourself struggling with a step,
-          each chapter offers deeper explanation, examples, and guidance for best practices. </p>
+          <b>Refer back to section 0-6:</b> If you find yourself struggling with a step,
+          each section offers deeper explanation, examples, and guidance for best practices. </p>
       </li>
     </enumeratedlist>
     <p> If this process feels “slow,” remember that the time spent clarifying each step <em>before</em>
