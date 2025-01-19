@@ -53,7 +53,8 @@ language. The requirements for this new data type are as follows:
        Here is a mostly complete implementation of a Fraction class in Python
 that we will refer to throughout this section: 
     </p>
-    <program language="python">
+
+    <program interactive="activecode" language="python" xml:id="class_def1" label="class_def_1">
         <code>
     class Fraction:
        def __init__(self, num, den):

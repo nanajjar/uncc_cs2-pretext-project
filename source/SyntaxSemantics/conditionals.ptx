@@ -83,7 +83,7 @@
       Here is a simple example in both Python and Java.
     </p>
 
-    <program language="python">
+ <program interactive="activecode" language="python" xml:id="condition1" label="condition_1">
       <code>
         grade = int(input('enter a grade'))
         if grade &lt; 60:
@@ -103,7 +103,7 @@
       In Java we have a couple of ways to write this
     </p>
 
-    <program language="java">
+    <program interactive="activecode" language="java" xml:id="condition2" label="condition_2">
       <code>
         public class ElseIf {
             public static void main(String args[]) {
@@ -135,7 +135,7 @@
       Since the if is the only statement used in each else we can get away with the following.
     </p>
 
-    <program language="java">
+    <program interactive="activecode" language="java" xml:id="condition3" label="condition_3">
       <code>
          public class ElseIf {
              public static void main(String args[]) {
@@ -163,8 +163,8 @@
       To write the grade program using a switch statement we would use the following:
     </p>
 
-    <program language="java">
-      <code>
+    <program interactive="activecode" language="java" xml:id="condition4" label="condition_4">
+      <input>
        public class SwitchUp {
            public static void main(String args[]) {
                int grade = 85;
@@ -188,7 +188,7 @@
                }
            }
        }
-      </code>
+      </input>
     </program>
 
     <p>
