@@ -5,6 +5,9 @@
 # ensure this file is tracked
 !.gitignore
 
+# don't track virtual environments
+.venv
+
 # don't track unpublished builds or stage (note: Runestone uses `published`)
 output
 published
@@ -89,7 +92,6 @@ bh_unicode_properties.cache
 # Sublime-github package stores a github token in this file
 # https://packagecontrol.io/packages/sublime-github
 GitHub.sublime-settings
-
 
 # Don't include Dropbox settings and caches
 .dropbox
