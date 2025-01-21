@@ -152,7 +152,6 @@ def update_rating(library: list, song_title: str, new_rating: int) -> bool:
       </p>
       <listing>
         <program language="python">
-
 def test_update_rating():
     library = [
         ["Imagine", 5, 120],
@@ -161,17 +160,12 @@ def test_update_rating():
     
     # Standard case: update existing song
     assert update_rating(library, "Thriller", 3) == True
-    assert library[1][1] == 3  # now 3 stars
+    assert library[1][1] == 3  # rating changed to 3
     
     # Not found
     assert update_rating(library, "Unknown Song", 4) == False
-    
-    # Edge: rating out of bounds
-    try:
-        update_rating(library, "Imagine", 6)
-        assert False, "Expected ValueError for rating above 5"
-    except ValueError:
-        pass  # This is correct: our function should raise ValueError
+
+    print("test_update_rating PASSED")
         </program>
       </listing>
       <p> Then you simply run <c>test_update_rating()</c> and watch for any <c>

@@ -5,9 +5,6 @@
 # ensure this file is tracked
 !.gitignore
 
-# don't track Environments
-venv/
-
 # don't track unpublished builds or stage (note: Runestone uses `published`)
 output
 published
