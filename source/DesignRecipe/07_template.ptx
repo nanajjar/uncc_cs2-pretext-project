@@ -305,84 +305,121 @@ def function_name(param1: Type, param2: Type) -> ReturnType:
     <subsubsection xml:id="dr-step3-template">
       <title>Step 3: Examples &amp; Tests</title>
 
-
-      <ul>
-        <li>
-          <p>Write concrete examples showing typical, edge-case, and error scenarios for each
-            function.</p>
-        </li>
-        <li>
-          <p>Turn these examples into automated tests (using <c>assert</c>, <c>unittest</c>,
-            or another testing framework).</p>
-        </li>
-        <li>
-          <p>Try to include at least one test for each important constraint you wrote in Step 1
-            (e.g., rating out of range, empty lists, etc.).</p>
-        </li>
-      </ul>
-
-      <!-- Description -->
-
+      <!-- Explanation for novices -->
       <p>
-        Section 3 highlighted how examples &amp; tests provide multiple advantages:
+        After clarifying the problem (Step 0), defining your data (Step 1), and writing 
+        your function's signature/purpose (Step 2), you're ready to illustrate <em>specific</em> 
+        behavior with <alert>Examples &amp; Tests</alert>. The best way to ensure you've covered 
+        all scenarios—normal, edge, and (optionally) error cases—is to list them in a <strong>table</strong>. 
+        Each row typically includes:
       </p>
       <ul>
-        <li>Catch misunderstandings early in development</li>
-        <li>Document precisely what functions should return in specific situations</li>
-        <li>Enable confident coding and maintain solution stability</li>
+        <li>The <em>type of case</em> (normal usage, edge, or special/error scenario)</li>
+        <li>The <em>input</em> you plan to give the function</li>
+        <li>The <em>expected output</em> you want back</li>
+        <li>A brief <em>note or rationale</em> explaining <em>why</em> that output is correct</li>
       </ul>
 
-      <!-- Template Form -->
       <p>
-        <b>TEMPLATE:</b>
+        Once you have this table of examples, you can turn each row into an automated test, 
+        typically using simple <c>assert</c> statements in Python. That way, any time you 
+        change your code, you can re-run these tests to confirm you haven't broken anything.
       </p>
-      <listing xml:id="step3-template">
-        <caption>Step 3 Template Structure</caption>
-        <program language="python">
-# STEP 3: Examples &amp; Tests
 
-def test_function_name():
-    # Normal Cases
-    - Test 1: Basic usage
-      Input: ...
-      Expected: ...
-      test_basic()
-    
-    # Edge Cases
-    - Test 2: Empty/minimal input
-      Input: ...
-      Expected: ...
-      test_empty()
-    
-    # Error Cases
-    - Test 3: Invalid input
-      Input: ...
-      Expected Exception: ...
-      test_invalid()
-
-def test_basic():
-    assert function_name(valid_input) == expected_output
-
-def test_empty():
-    assert function_name([]) == []  # or appropriate empty result
-
-def test_invalid():
-    with pytest.raises(ValueError):
-        function_name(invalid_input)
+      <!-- Example Table -->
+      <listing xml:id="step3-table-example">
+        <title>Sample Table for <c>count_words</c></title>
+        <program language="text">
+| Case          | Input              | Expected Output | Notes                          |
+|---------------|--------------------|-----------------|--------------------------------|
+| Normal usage  | "Hello world"      | 2               | 2 words separated by a space   |
+| Empty string  | ""                 | 0               | No words at all                |
+| Whitespace    | "   "              | 0               | Spaces only, so 0 words        |
+| Multiple words| "OpenAI is cool"   | 3               | 3 words: "OpenAI", "is", "cool"|
         </program>
       </listing>
 
-      <!-- Pitfalls -->
       <p>
-        <b>COMMON PITFALLS:</b>
-        <ul>
-          <li>
-            <p>Providing only “happy path” tests and ignoring edge cases (like empty input).</p>
-          </li>
-          <li>
-            <p>Not testing error handling—leading to untested code paths.</p>
-          </li>
-        </ul>
+        In a more advanced course, you might include a row for "invalid inputs" (like 
+        <c>count_words(None)</c>) or out-of-range values. But if you haven't learned how to handle 
+        errors or exceptions in Python yet, it's okay to keep those scenarios out of your main tests. 
+        You can add them once you cover exception handling in a later unit.
+      </p>
+
+      <!-- Turning Rows into Tests -->
+      <p>
+        Each row translates neatly into a code-based test. For instance:
+      </p>
+
+      <listing xml:id="step3-tests-example">
+        <title>Turning Table Rows into Assertions</title>
+        <program language="python">
+def test_count_words():
+    # Normal usage
+    assert count_words("Hello world") == 2
+
+    # Empty string
+    assert count_words("") == 0
+
+    # Whitespace only
+    assert count_words("   ") == 0
+
+    # Multiple words
+    assert count_words("OpenAI is cool") == 3
+
+    print("test_count_words PASSED")
+        </program>
+      </listing>
+
+      <p>
+        If all assertions pass, you know your function meets these examples. If any fail, Python raises 
+        an <c>AssertionError</c>, pointing you to which scenario is broken. Rerun <c>test_count_words</c> 
+        each time you update <c>count_words</c> to make sure you haven't accidentally broken existing 
+        functionality.
+      </p>
+
+      <!-- Template Form -->
+      <p><strong>TEMPLATE FOR STEP 3:</strong></p>
+      <listing xml:id="step3-template-structure">
+        <caption>Recommended Structure for Examples &amp; Tests</caption>
+        <program language="text">
+# STEP 3: Examples &amp; Tests
+
+## 1) Table of Test Cases
+| Case / Type   | Input(s)                 | Expected Output | Notes/Rationale                       |
+|---------------|--------------------------|-----------------|----------------------------------------|
+| Normal ...    | ...                      | ...             | Why do we expect that result?         |
+| Edge ...      | ...                      | ...             | E.g., empty list, 0 or negative, etc. |
+| Error ...     | ...                      | ...             | If we haven't learned exceptions yet, |
+|               |                          |                 | we can skip or just list them here.   |
+
+## 2) Test Function
+def test_my_function():
+    # For each row above, write an assert statement:
+    # 1. Normal
+    assert my_function(...) == ...
+    
+    # 2. Edge
+    assert my_function(...) == ...
+    
+    # 3. (Optional) Error case if you know how to test errors
+
+    print("test_my_function PASSED")
+        </program>
+      </listing>
+
+      <p>
+        By separating the <strong>table of examples</strong> from the <strong>automated test code</strong>, 
+        you ensure that every scenario you identify is explicitly tested. This also makes it easy to 
+        review: if someone asks "Have you tested an empty string?" you can point them to the row in the 
+        table and the corresponding <c>assert</c> statement in your test file.
+      </p>
+
+      <p>
+        Remember, you can keep your example table in comments or a separate document. The key is to 
+        systematically match each row to a line of test code. Later, once you learn about exceptions 
+        (like <c>ValueError</c>), you can expand your table to include error cases and explore 
+        techniques for verifying that <em>invalid input triggers the right failure</em>.
       </p>
 
     </subsubsection>
@@ -466,7 +503,6 @@ def function_name(param1: Type, param2: Type) -> ReturnType:
           </li>
         </ul>
       </p>
-
     </subsubsection>
 
 

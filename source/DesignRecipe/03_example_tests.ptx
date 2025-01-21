@@ -6,14 +6,17 @@
        ====================================== -->
   <subsection xml:id="overview-objectives-example-tests">
     <title>Overview and Objectives</title>
-    <p> In the previous sections, you learned about defining data (Step 1) and writing clear method
-      signatures and purpose statements (Steps 2 &amp; 3) as part of the Design Recipe. Now, we move
-      on to <alert>Step 3: Writing Examples &amp; Tests</alert>. </p>
+    <p> In the previous sections, you learned about defining data (Step 1) and writing clear
+      method signatures and purpose statements (Steps 2) as part of the Design
+      Recipe. Now, we move on to <alert>Step 3: Writing Examples &amp; Tests</alert>. </p>
+
     <p>
-      The key idea is straightforward: after figuring out what your function should do, you
-      create a few concrete examples to confirm it behaves correctly. Then, you turn these examples
-      into automated tests, so your checks can be repeated whenever you modify or extend the code.
+      The key idea is straightforward: after clarifying what your function should do, you
+      create a few concrete examples to confirm it behaves correctly. Then, you transform these
+      examples into automated tests, so your checks can be repeated whenever you modify or extend
+      the code.
     </p>
+
     <objectives>
       <ul>
         <li>
@@ -35,12 +38,13 @@
     </objectives>
   </subsection>
 
+
   <!-- ======================================
        2. Why Write Examples & Tests?
        ====================================== -->
   <subsection xml:id="why-examples-tests">
     <title>Why Write Examples &amp; Tests?</title>
-    <p> Every time you write a function—like <c>calculate_total_price</c> or <c>count_vowels</c>—you
+    <p> Each time you write a function—like <c>calculate_total_price</c> or <c>count_vowels</c>—you
       probably have one or two examples in mind: </p>
     <ul>
       <li>
@@ -50,22 +54,22 @@
         <em>"If I call it on <c>""</c> (empty string), I expect <c>0</c>."</em>
       </li>
     </ul>
-    <p> These examples clarify the function's behavior in specific situations. When you turn them
+    <p> These examples clarify the function’s behavior in specific situations. When you turn them
       into <em>automated tests</em>, you can re-check them quickly every time you change your code.
       This prevents a common headache: <em>"I fixed a bug in one place, but I accidentally broke
-      something
-        else!"</em>
+      something else!"</em>
     </p>
-    <p> While in a small project you might get away with ad-hoc or manual testing, in larger or
+    <p> In a small project you might get away with ad-hoc or manual testing, but in larger or
       long-lived projects, automated tests save a <em>lot</em> of time and frustration. </p>
   </subsection>
+
 
   <!-- ======================================
        3. A New Example: Counting Words
        ====================================== -->
   <subsection xml:id="count-words-example">
     <title>A New Example: Counting Words</title>
-    <p> Let's illustrate with a small, self-contained function: <c>count_words</c>. Suppose it: </p>
+    <p> Let’s illustrate with a small, self-contained function: <c>count_words</c>. Suppose it: </p>
     <ol>
       <li>Takes a string of text</li>
       <li>Splits it into words separated by spaces</li>
@@ -74,10 +78,11 @@
     <p> For instance: <ul>
         <li><c>count_words("Hello world")</c> should return <c>2</c>.</li>
         <li><c>count_words("")</c> (empty string) should return <c>0</c>.</li>
-        <li><c>count_words("OpenAI is awesome")</c> should return <c>3</c>.</li>
+        <li><c>count_words(" Java is awesome")</c> should return <c>3</c>.</li>
       </ul>
     </p>
-    <p> Let's write a rough version of the function:
+    <p>
+      Let’s write a rough version of the function:
     </p>
     <listing>
       <program language="python">
@@ -101,76 +106,114 @@
       automate those examples as tests. </p>
   </subsection>
 
-  <!-- ======================================
-       4. Writing Examples Before or During Implementation
-       ====================================== -->
-  <subsection xml:id="examples-before-during">
-    <title>Writing Examples Before (or During) Implementation</title>
-    <p> In the Design Recipe, you write examples right after you define your function's contract.
-      That way, your function's behavior is explicit <em>before</em> you dive into coding (or at
-      least <em>very early</em> in the process). Our examples might be: </p>
-    <listing>
-      <program>
-        1) count_words(&quot;Hello world&quot;) -&gt; 2
-        2) count_words(&quot;&quot;) -&gt; 0
-        3) count_words(&quot;OpenAI is awesome&quot;) -&gt; 3
-        4) count_words(&quot; &quot;) -&gt; 0 (string of spaces only)
-        5) count_words(&quot;One two three&quot;) -&gt; 3 (multiple spaces?)
-      </program>
-    </listing>
-    <p> Notice that we included a couple of <em>edge cases</em>: </p>
-    <ul>
-      <li>The empty string (<c>""</c>)</li>
-      <li>A string of spaces (<c>" "</c>)</li>
-      <li>Extra spaces between words (<c>"One two three"</c>)</li>
-    </ul>
-    <p>
-      These might trip up naive code if we don't handle them carefully.
-    </p>
-  </subsection>
 
   <!-- ======================================
-       5. Testing with assert
+       4. Writing Examples with a Table
+       ====================================== -->
+  <subsection xml:id="examples-before-during">
+    <title>Writing Examples with a Table</title>
+    <p> In the Design Recipe, you create examples right after you define your function’s contract.
+      That way, the function’s behavior is explicit <em>before</em> you dive into coding (or at
+      least very early). Instead of writing these examples as a quick bullet list, we can arrange
+      them in a <em>table</em> that clearly shows inputs, expected outputs, and a brief rationale. </p>
+    <p> For <c>count_words</c>, we might define: </p>
+
+    <table xml:id="count-words-examples">
+      <title>Examples of <c>count_words</c> Function Behavior</title>
+      <tabular halign="left">
+        <col width="20%" />
+        <col width="25%" />
+        <col width="15%" />
+        <col width="40%" />
+        <row header="yes">
+          <cell>Case Type</cell>
+          <cell>Input</cell>
+          <cell>Expected Output</cell>
+          <cell>Notes</cell>
+        </row>
+        <row>
+          <cell>Normal usage</cell>
+          <cell>
+            <c>"Hello world"</c>
+          </cell>
+          <cell>2</cell>
+          <cell>Two words separated by one space</cell>
+        </row>
+        <row>
+          <cell>Empty string</cell>
+          <cell>
+            <c>""</c>
+          </cell>
+          <cell>0</cell>
+          <cell>No content, so no words</cell>
+        </row>
+        <row>
+          <cell>Whitespace only</cell>
+          <cell>
+            <c>" "</c>
+          </cell>
+          <cell>0</cell>
+          <cell>Spaces but no actual words</cell>
+        </row>
+        <row>
+          <cell>Multiple words</cell>
+          <cell>
+            <c>" Java is awesome"</c>
+          </cell>
+          <cell>3</cell>
+          <cell>Splitting by space yields 3 tokens</cell>
+        </row>
+      </tabular>
+    </table>
+
+    <p> Each row is a distinct scenario. The <em>Case Type</em> column labels normal, edge, or error
+      cases; the <em>Input</em> and <em>Expected Output</em> columns specify exactly what we feed
+      the function and what we want back; and the <em>Notes</em> column briefly explains the
+      reasoning or highlights potential pitfalls. </p>
+    <p> A table like this makes it easy to see if you’ve covered all the important situations. For
+      instance, if you left out <c>""</c> (the empty string), you might miss that edge case. </p>
+  </subsection>
+
+
+  <!-- ======================================
+       5. Turning Table Rows into Tests
        ====================================== -->
   <subsection xml:id="testing-with-assert">
-    <title>Testing with <c>assert</c></title>
-    <p> Python comes with a built-in statement called <c>assert</c> that you can use to test
-      conditions. If the condition is <c>False</c>, Python will raise an <c>AssertionError</c> and
-      stop the program. If the condition is <c>True</c>, it does nothing—meaning the test passed. </p>
-    <p> Let's create a function named <c>test_count_words</c> to hold our checks: </p>
+    <title>Turning Table Rows into Tests</title>
+    <p> Once you have your table of examples, the next step is to turn each row into an <alert>automated
+      test</alert> in Python. Typically, this involves writing a test function that uses <c>assert</c>
+      statements. For our <c>count_words</c> table, here’s one approach: </p>
     <listing>
       <program language="python">
         def test_count_words():
-        # Typical case
+        # "Hello world" -> 2
         assert count_words("Hello world") == 2
 
-        # Empty string
+        # "" (empty string) -> 0
         assert count_words("") == 0
 
-        # A string with multiple words
-        assert count_words("OpenAI is awesome") == 3
-
-        # A string of spaces only
+        # " " (whitespace only) -> 0
         assert count_words(" ") == 0
 
-        # Extra spaces between words
-        assert count_words("One two three") == 3
+        # " Java is awesome" -> 3
+        assert count_words(" Java is awesome") == 3
 
         print("test_count_words PASSED")
       </program>
     </listing>
-    <p> Once we run <c>test_count_words()</c>, each <c>assert</c> verifies our function returns the <em>
-      expected</em> value. If all checks pass, we see <c>test_count_words PASSED</c>. If something
-      is wrong, we get an <c>AssertionError</c> that tells us which check failed. </p>
+    <p> Each <c>assert</c> corresponds to one row in our table. If all of them pass, we’ll see <c>test_count_words
+      PASSED</c>. If any <c>assert</c> fails, Python raises an <c>AssertionError</c>, telling us
+      which scenario isn’t behaving as expected. </p>
   </subsection>
+
 
   <!-- ======================================
        6. Seeing an Assertion Fail
        ====================================== -->
   <subsection xml:id="seeing-assertion-fail">
     <title>Seeing an Assertion Fail</title>
-    <p> Suppose we introduced a small bug. For example, if we accidentally returned <c>len(words) -
-      1</c> in <c>count_words</c>: </p>
+    <p> Suppose we introduced a bug. For example, if we accidentally returned <c>len(words) - 1</c>
+      in <c>count_words</c>: </p>
     <listing>
       <program language="python">
         def count_words(text):
@@ -181,24 +224,27 @@
         return len(words) - 1 # BUG: subtract 1 for no reason
       </program>
     </listing>
-    <p> Now, when you call <c>test_count_words()</c>, Python will raise an <c>AssertionError</c> for
-      any test that expects 2 or 3 words but instead gets 1 or 2. You might see something like: </p>
+    <p> Now, when you call <c>test_count_words()</c>, Python raises an <c>AssertionError</c> for any
+      test expecting 2 or 3 words but getting 1 or 2. You might see: </p>
     <listing>
       <program>
         AssertionError
       </program>
     </listing>
-    <p> This indicates the test for <c>count_words("Hello world")</c> failed—our function returned <c>1</c> instead of <c>2</c>. By printing out intermediate values or carefully reviewing the
-      code, we can spot the bug and fix it quickly. </p>
+    <p> This indicates <c>count_words("Hello world")</c> returned <c>1</c> instead of <c>2</c>. By
+      printing out intermediate values or carefully reviewing the code, we can spot the bug and fix
+      it quickly. </p>
   </subsection>
+
 
   <!-- ======================================
        7. A Simple "Test Runner"
        ====================================== -->
   <subsection xml:id="simple-test-runner">
     <title>A Simple "Test Runner"</title>
-    <p> As your code grows, you might have more than one test function—like <c>test_count_words</c>, <c>test_calculate_total_price</c>, etc. Running them one at a time can get boring. A small trick
-      is to gather them in a <c>run_tests()</c> function and call them all: </p>
+    <p> As your code grows, you might have more than one test function—like <c>test_count_words</c>
+      or <c>test_calculate_total_price</c>. Running them one at a time can get tedious. A small
+      trick is to gather them in a <c>run_tests()</c> function and call them all: </p>
     <listing>
       <program language="python">
         def run_tests():
@@ -207,14 +253,14 @@
         # test_calculate_total_price()
         # test_any_other_function()
 
-        # By default, let's run all tests if this file is run directly:
         if __name__ == "__main__":
         run_tests()
       </program>
     </listing>
-    <p> If everything passes, you'll see each test's “PASSED” message. If any fail, an <c>
-      AssertionError</c> pops up, and you know exactly which function to fix first. </p>
+    <p> If everything passes, you’ll see each test’s “PASSED” message. If any fail, <c>
+      AssertionError</c> pops up, telling you which function to fix first. </p>
   </subsection>
+
 
   <!-- ======================================
        8. Connection to the Design Recipe
@@ -222,8 +268,8 @@
   <subsection xml:id="connection-to-design-recipe">
     <title>Connection to the Design Recipe</title>
     <p>
-      In the broader Design Recipe, these examples and tests come right after you've stated each
-      function's data definitions and purpose. The tests:
+      In the broader Design Recipe, these examples and tests come right after you’ve stated each
+      function’s data definitions and purpose. The tests:
     </p>
     <ul>
       <li><em>Reinforce the contract:</em> If your docstring says <c>count_words("Hello world")</c>
@@ -233,7 +279,10 @@
       <li><em>Enable quick iteration:</em> Anytime we modify <c>count_words</c>, we re-run the tests
         to confirm it still works.</li>
     </ul>
+    <p> Notice how the table-based examples reflect <em>all</em> these considerations, making it
+      easier to confirm your function meets the contract under varied conditions. </p>
   </subsection>
+
 
   <!-- ======================================
        9. Looking Ahead (Optional Frameworks)
@@ -241,97 +290,96 @@
   <subsection xml:id="looking-ahead-frameworks">
     <title>Looking Ahead: Beyond <c>assert</c></title>
     <p> For larger projects, manually writing your own test functions is still helpful, but Python
-      also provides powerful tools like <c>unittest</c> and <c>pytest</c>. These: </p>
+      also provides powerful tools like <c>unittest</c> and <c>pytest</c>: </p>
     <ul>
-      <li>Automatically discover test functions (so you don't have to write a <c>run_tests</c>
+      <li>They can automatically discover test functions (so you don’t have to write a <c>run_tests</c>
         manually).</li>
-      <li>Give more detailed error messages when tests fail.</li>
-      <li>Support advanced features like grouping tests or running only certain ones.</li>
+      <li>They give more detailed error messages when tests fail.</li>
+      <li>They support advanced features like grouping tests or running only certain ones.</li>
     </ul>
-    <p> Later in the course, we'll show you how to <em>import</em> and use <c>pytest</c> once you're
+    <p> Later in the course, we’ll show you how to <em>import</em> and use <c>pytest</c> once you’re
       more comfortable with Python modules, error handling, and exceptions. For now, using simple <c>
       assert</c> checks in a single file is an excellent way to build testable, reliable code
       without overwhelming complexity. </p>
   </subsection>
+
 
   <!-- ======================================
        10. Exercises & Checkpoints
        ====================================== -->
   <subsection xml:id="exercises-checkpoints">
     <title>Exercises &amp; Checkpoints</title>
-
     <exercise>
-      <title>1. Write and Test <c>count_letters</c></title>
+      <title>1. Write and Test <c>count_letters</c> with a Table</title>
       <statement>
-        <p>Create a function named <c>count_letters(text)</c> that returns how many letters (a-z or
-          A-Z) appear in the given string. For instance:</p>
-        <ul>
-          <li><c>count_letters("Hello!")</c> → <c>5</c></li>
-          <li><c>count_letters("")</c> → <c>0</c></li>
-          <li><c>count_letters("123 !!")</c> → <c>0</c></li>
-        </ul>
-        <p>Write at least four <c>assert</c> tests in a <c>test_count_letters()</c> function. Then,
-          run them to confirm your function works. (Hint: you can use <c>str.isalpha()</c> to check
-          if a character is a letter.)</p>
+        <p> Create a function named <c>count_letters(text)</c> that returns how many letters (a–z or
+          A–Z) appear in the given string. Then, build a <alert>test table</alert> covering at least
+          four scenarios (e.g., typical input, all digits, empty string, string with punctuation).
+          Convert each row into a simple <c>assert</c>-based test. </p>
       </statement>
     </exercise>
 
     <exercise>
       <title>2. Edge Cases for <c>count_letters</c></title>
       <statement>
-        <p>Think of one “weird” input for <c>count_letters</c> that might reveal a bug (for example,
-          a string with emojis or a long string of whitespace). Add an <c>assert</c> test for it and
-          see if your code handles it correctly.</p>
+        <p> Think of one “weird” input for <c>count_letters</c> that might reveal a bug (for
+          instance, a string with emojis or a long string of whitespace). Add an <c>assert</c> test
+          for it and see if your code handles it correctly. </p>
       </statement>
     </exercise>
 
     <exercise>
       <title>3. Debugging a Broken Test</title>
       <statement>
-        <p>Intentionally break <c>count_letters</c> by skipping the last letter or ignoring
+        <p> Intentionally break <c>count_letters</c> by skipping the last letter or ignoring
           uppercase letters. Run your tests to see which one fails first. Fix the bug and verify the
-          tests pass again.</p>
+          tests pass again. </p>
       </statement>
     </exercise>
 
     <exercise>
       <title>4. Reflect on the Process</title>
       <statement>
-        <p>In a short paragraph, describe how it feels to have automated tests for your functions.
+        <p>
+          In a short paragraph, describe how it feels to have automated tests for your functions.
           Do you find bugs more quickly? Do you have more or less confidence when changing your
-          code? Write down your reflections.</p>
+          code? Write down your reflections.
+        </p>
       </statement>
     </exercise>
   </subsection>
+
 
   <!-- ======================================
        11. Conclusion & Next Steps
        ====================================== -->
   <subsection xml:id="conclusion-next-steps">
     <title>Conclusion &amp; Next Steps</title>
-    <p> By turning your function examples into automated tests—even using Python's simple <c>assert</c>—you
+    <p> By turning your function examples into automated tests—even using Python’s simple <c>assert</c>—you
       gain powerful protection against accidental mistakes and regressions. This practice fits
-      neatly into the Design Recipe: once you declare a function's purpose, data definitions, and
-      contract, you transform your examples into quick checks that confirm you're on the right
+      neatly into the Design Recipe: once you declare a function’s purpose, data definitions, and
+      contract, you transform your examples into quick checks that confirm you’re on the right
       track. </p>
-    <p> In the next section, we'll take a closer look at <em>invalid inputs</em> and how to handle
-      them. You've already seen Python raise an <c>AssertionError</c> when something goes wrong;
-      soon, you'll learn to raise and handle other <em>exceptions</em> more gracefully to make your
+    <p> In the next section, we’ll take a closer look at <em>invalid inputs</em> and how to handle
+      them. You’ve already seen Python raise an <c>AssertionError</c> when something goes wrong;
+      soon, you’ll learn to raise and handle other <em>exceptions</em> more gracefully, making your
       programs more robust. </p>
   </subsection>
 
+
+  <!-- ======================================
+       12. Additional Exercises (Parsons, MC, etc.)
+       ====================================== -->
   <subsection xml:id="ch-examples-tests-exercises">
     <title>Examples &amp; Tests Exercises</title>
 
     <!-- =========================================================
-       1. PARSONS PROBLEM: Audrey's Testing Realization
-       ========================================================= -->
+         1. PARSONS PROBLEM: Audrey's Testing Realization
+         ========================================================= -->
     <exercise xml:id="parsons-audrey-tests-story" language="natural">
       <title>Parsons: Audrey's Realization on Examples &amp; Tests</title>
-      <statement>
-        Rearrange these story beats to see how Audrey learned that <alert>writing examples &amp; tests</alert>
-        early can prevent major headaches.
-      </statement>
+      <statement> Rearrange these story beats to see how Audrey learned that <alert>writing examples
+        &amp; tests</alert> early can prevent major headaches. </statement>
       <blocks layout="vertical" randomize="yes">
         <block order="1">
           <choice correct="yes">
@@ -358,21 +406,20 @@
         </block>
         <block order="5">
           <choice correct="yes">
-            <cline>Now she can quickly catch mistakes for inputs like <c>""</c> or <c>"Hello
-              world"</c> without guesswork.</cline>
+            <cline>Now she can quickly catch mistakes for inputs like <c>""</c> or <c>"Hello world"</c>
+              without guesswork.</cline>
           </choice>
         </block>
       </blocks>
     </exercise>
 
     <!-- =========================================================
-       2. PARSONS PROBLEM: Building a test function
-       ========================================================= -->
+         2. PARSONS PROBLEM: Building a test function
+         ========================================================= -->
     <exercise xml:id="parsons-build-a-test" language="python">
       <title>Parsons: Building a Simple test_count_words</title>
-      <statement> Rearrange these lines to create a coherent <c>test_count_words</c> function
-        that checks typical and edge cases for <c>count_words</c>. </statement>
-      <!-- We'll create vertical blocks representing lines in a test function. -->
+      <statement> Rearrange these lines to create a coherent <c>test_count_words</c> function that
+        checks typical and edge cases for <c>count_words</c>. </statement>
       <blocks layout="vertical" randomize="yes">
         <block order="1">
           <choice correct="yes">
@@ -381,37 +428,37 @@
         </block>
         <block order="2">
           <choice correct="yes">
-            <cline> # Typical case</cline>
+            <cline># Typical case</cline>
           </choice>
         </block>
         <block order="3">
           <choice correct="yes">
-            <cline> assert count_words("Hello world") == 2</cline>
+            <cline>assert count_words("Hello world") == 2</cline>
           </choice>
         </block>
         <block order="4">
           <choice correct="yes">
-            <cline> # Edge case: empty string</cline>
+            <cline># Edge case: empty string</cline>
           </choice>
         </block>
         <block order="5">
           <choice correct="yes">
-            <cline> assert count_words("") == 0</cline>
+            <cline>assert count_words("") == 0</cline>
           </choice>
         </block>
         <block order="6">
           <choice correct="yes">
-            <cline> # Edge case: string with extra spaces</cline>
+            <cline># Edge case: string with extra spaces</cline>
           </choice>
         </block>
         <block order="7">
           <choice correct="yes">
-            <cline> assert count_words(" OpenAI is awesome ") == 3</cline>
+            <cline>assert count_words("  Java is awesome ") == 3</cline>
           </choice>
         </block>
         <block order="8">
           <choice correct="yes">
-            <cline> print("test_count_words PASSED")</cline>
+            <cline>print("test_count_words PASSED")</cline>
           </choice>
         </block>
       </blocks>
@@ -433,8 +480,8 @@
     </exercise>
 
     <!-- =========================================================
-       3. MULTIPLE-CHOICE (Graded)
-       ========================================================= -->
+         3. MULTIPLE-CHOICE (Graded)
+         ========================================================= -->
     <exercise xml:id="mc-why-create-examples-first">
       <title>Why Create Examples First?</title>
       <statement> This section highlights creating examples before (or during) implementation. Which
@@ -460,7 +507,7 @@
         </choice>
         <choice>
           <statement>
-            It makes your program run 10x faster.
+            It makes your program run 10× faster.
           </statement>
           <feedback>
             Speed is not the primary concern here; correctness and clarity are the benefits.
@@ -471,7 +518,7 @@
             Python disallows writing code before you define at least three examples.
           </statement>
           <feedback>
-            Python doesn't enforce example-driven development; it's just a best practice,
+            Python doesn’t enforce example-driven development; it’s just a best practice,
             not a language rule.
           </feedback>
         </choice>
@@ -479,16 +526,16 @@
     </exercise>
 
     <!-- =========================================================
-       4. TRUE/FALSE (Graded)
-       ========================================================= -->
+         4. TRUE/FALSE (Graded)
+         ========================================================= -->
     <exercise xml:id="tf-all-tests-pass">
       <title>All Tests Pass = No Bugs?</title>
       <statement correct="no">
         Once all your tests pass, you have 100% certainty there are no bugs left in the code.
       </statement>
       <feedback>
-        Even thorough testing can't guarantee absolute freedom from all bugs.
-        Tests reduce risk but don't prove total correctness.
+        Even thorough testing can’t guarantee absolute freedom from all bugs.
+        Tests reduce risk but don’t prove total correctness.
       </feedback>
     </exercise>
 
@@ -502,8 +549,7 @@
           <p>
             <alert>Data Definition (from Section 1):</alert>
           </p>
-          <p> A <c>Song</c> is a Python list of the form <c>[title, rating, play_count]</c>,
-            where: </p>
+          <p>A <c>Song</c> is a Python list of the form <c>[title, rating, play_count]</c>, where:</p>
           <ul>
             <li><c>title</c> is a string (non-empty).</li>
             <li><c>rating</c> is an integer in <c>[1..5]</c>.</li>
@@ -518,27 +564,30 @@
             <c>def update_rating(library: list, song_title: str, new_rating: int) -&gt; bool:</c>
           </p>
           <ul>
-            <li><em>Purpose Statement:</em> Updates the rating of the song titled <c>song_title</c>
-              in <c>library</c> if it exists, returning <c>True</c> if found and
-              updated, or <c>False</c> otherwise.</li>
-            <li>Precondition: <c>library</c> is a list of <c>Song</c> entries, each with
-              a valid <c>rating</c> in [1..5].</li>
-            <li>Error Case: If <c>new_rating</c> is outside [1..5], or <c>song_title</c>
-              is empty, we might raise <c>ValueError</c>.</li>
+            <li>
+              <em>Purpose Statement:</em> Updates the rating of the song titled <c>song_title</c> in <c>
+              library</c> if it exists, returning <c>True</c> if found and updated, or <c>False</c>
+              otherwise. </li>
+            <li>
+              <em>Precondition:</em> <c>library</c> is a list of <c>Song</c> entries, each with a
+              valid <c>rating</c> in [1..5]. </li>
+            <li>
+              <em>Error Case:</em> If <c>new_rating</c> is outside [1..5], or <c>song_title</c> is
+              empty, we might raise <c>ValueError</c>. </li>
           </ul>
         </blockquote>
-        <p> Now, according to Section 3 of the Design Recipe, we must craft <alert>Examples &amp;
-          Tests</alert> <em>before or during implementation</em> to clarify and confirm how <c>
+        <p> Now, according to Section 3 of the Design Recipe, we must craft <alert>Examples
+          &amp; Tests</alert> <em>before or during implementation</em> to clarify and confirm how <c>
           update_rating</c> should behave. <alert>In your answer, do the following</alert>: </p>
         <ol>
-          <li> Provide at least <alert>3 examples</alert> of calling <c>update_rating</c>
-            (one typical case, one edge case, and one error/invalid case). </li>
-          <li> Convert each example into a <c>pytest</c>-style or <c>assert</c>-based <alert>
-            test</alert>, explaining <em>why</em> you chose these particular inputs and what
-            outcome you expect (<c>True</c>, <c>False</c>, or an exception). </li>
+          <li> Provide at least <alert>3 examples</alert> of calling <c>update_rating</c> (one
+            typical case, one edge case, and one error/invalid case). </li>
+          <li> Convert each example into a <c>pytest</c>-style or <c>assert</c>-based <alert>test</alert>,
+            explaining <em>why</em> you chose these particular inputs and what outcome you expect (<c>
+            True</c>, <c>False</c>, or an exception). </li>
           <li>
-            Briefly justify how these tests follow from the data definition and signature (e.g.,
-            referencing rating constraints or checking for empty titles).
+            Briefly justify how these tests follow from the data definition and signature
+            (e.g., referencing rating constraints or checking for empty titles).
           </li>
         </ol>
         <p>
@@ -551,22 +600,27 @@
           <alert>Sample Answer (One Possible Approach):</alert>
         </p>
         <ol>
-          <li><alert>Examples</alert>: <ul>
-              <li><em>Typical Case:</em> <c>update_rating(library, "Thriller", 4)</c> where <c>library
-            = [["Imagine", 5, 120], ["Thriller", 2, 100]]</c>. Expect <c>True</c>; rating
-            changes from 2 to 4. </li>
-              <li><em>Edge Case:</em> <c>update_rating([], "Imagine", 5)</c> on an empty
-            library. Expect <c>False</c> (no songs). </li>
-              <li><em>Error/Invalid Case:</em> <c>update_rating(library, "Hey Jude", 10)</c>,
-            with <c>10</c> outside [1..5], expecting <c>ValueError</c> or some error
-            scenario. </li>
+          <li>
+            <alert>Examples:</alert>
+            <ul>
+              <li>
+                <em>Typical Case:</em> <c>update_rating(library, "Thriller", 4)</c>, where <c>library
+                = [["Imagine", 5, 120], ["Thriller", 2, 100]]</c>. Expect <c>True</c>; rating
+                changes from 2 to 4. </li>
+              <li>
+                <em>Edge Case:</em> <c>update_rating([], "Imagine", 5)</c> on an empty library.
+                Expect <c>False</c> (no songs). </li>
+              <li>
+                <em>Error/Invalid Case:</em> <c>update_rating(library, "Hey Jude", 10)</c>, with <c>
+                10</c> outside [1..5], expecting <c>ValueError</c>. </li>
             </ul>
           </li>
-          <li><alert>Tests</alert> (using <c>assert</c> or a test framework): <pre><c>def test_update_rating():
+          <li>
+            <alert>Tests</alert> (using <c>assert</c> or a test framework): <pre><c>def test_update_rating():
     # Typical
     library = [
-      ["Imagine", 5, 120],
-      ["Thriller", 2, 100]
+        ["Imagine", 5, 120],
+        ["Thriller", 2, 100]
     ]
     result = update_rating(library, "Thriller", 4)
     assert result == True
@@ -585,18 +639,20 @@
         pass  # correct behavior
 </c></pre>
           </li>
-          <li><alert>Justification</alert>: <ul>
-              <li>From the data definition, <c>rating</c> must be in [1..5], so we test an
-            out-of-range rating. </li>
-              <li>The signature says we return <c>bool</c> (<c>True</c> or <c>False</c>)
-            for valid calls, so we confirm that typical and edge-case calls return the correct
-            boolean. </li>
-              <li>We include <c>ValueError</c> handling because the signature/purpose says we
-            raise an error if <c>new_rating</c> is invalid. </li>
+          <li>
+            <alert>Justification:</alert>
+            <ul>
+              <li> From the data definition, <c>rating</c> must be in [1..5], so we test an
+                out-of-range rating. </li>
+              <li> The signature says we return <c>bool</c> (<c>True</c> or <c>False</c>) for valid
+                calls, so we confirm typical and edge-case calls produce correct booleans. </li>
+              <li> We include <c>ValueError</c> handling because the signature/purpose states we
+                raise an error if <c>new_rating</c> is invalid. </li>
             </ul>
           </li>
         </ol>
       </solution>
     </exercise>
   </subsection>
+
 </section>
