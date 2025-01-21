@@ -6,9 +6,9 @@
        ====================================== -->
   <subsection xml:id="overview-objectives-example-tests">
     <title>Overview and Objectives</title>
-    <p> In the previous sections, you learned about defining data (Step&nbsp;1) and writing clear
-      method signatures and purpose statements (Steps&nbsp;2) as part of the Design
-      Recipe. Now, we move on to <alert>Step&nbsp;3: Writing Examples &amp; Tests</alert>. </p>
+    <p> In the previous sections, you learned about defining data (Step 1) and writing clear
+      method signatures and purpose statements (Steps 2) as part of the Design
+      Recipe. Now, we move on to <alert>Step 3: Writing Examples &amp; Tests</alert>. </p>
 
     <p>
       The key idea is straightforward: after clarifying what your function should do, you
@@ -542,12 +542,12 @@
     <exercise xml:id="sa-ch3-examples-tests">
       <title>Short Answer: Designing Examples &amp; Tests for <c>update_rating</c></title>
       <statement>
-        <p> Imagine we have already created a <alert>Data Definition</alert> (Section&nbsp;1) and a <alert>Method
-          Signature &amp; Purpose Statement</alert> (Section&nbsp;2) for <c>update_rating(library,
+        <p> Imagine we have already created a <alert>Data Definition</alert> (Section 1) and a <alert>Method
+          Signature &amp; Purpose Statement</alert> (Section 2) for <c>update_rating(library,
           song_title, new_rating)</c>. Here are the deliverables from previous steps: </p>
         <blockquote>
           <p>
-            <alert>Data Definition (from Section&nbsp;1):</alert>
+            <alert>Data Definition (from Section 1):</alert>
           </p>
           <p>A <c>Song</c> is a Python list of the form <c>[title, rating, play_count]</c>, where:</p>
           <ul>
@@ -558,7 +558,7 @@
         </blockquote>
         <blockquote>
           <p>
-            <alert>Method Signature &amp; Purpose (from Section&nbsp;2):</alert>
+            <alert>Method Signature &amp; Purpose (from Section 2):</alert>
           </p>
           <p>
             <c>def update_rating(library: list, song_title: str, new_rating: int) -&gt; bool:</c>
@@ -576,7 +576,7 @@
               empty, we might raise <c>ValueError</c>. </li>
           </ul>
         </blockquote>
-        <p> Now, according to Section&nbsp;3 of the Design Recipe, we must craft <alert>Examples
+        <p> Now, according to Section 3 of the Design Recipe, we must craft <alert>Examples
           &amp; Tests</alert> <em>before or during implementation</em> to clarify and confirm how <c>
           update_rating</c> should behave. <alert>In your answer, do the following</alert>: </p>
         <ol>

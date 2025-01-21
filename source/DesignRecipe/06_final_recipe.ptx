@@ -6,12 +6,12 @@
        ====================================== -->
   <subsection xml:id="overview-and-motivation-step0">
     <title>Overview &amp; Motivation</title>
-    <p> We've journeyed through every phase of the Design Recipe: defining data (Step&nbsp;1),
-      writing method signatures &amp; purpose statements (Steps&nbsp;2), creating examples &amp;
-      tests (Step&nbsp;3), building skeletons (Step&nbsp;4), and finalizing our implementations
-      (Step&nbsp;5). At first glance, it may appear we've covered everything. But we saved one
-      essential piece for last: <alert>Step&nbsp;0: Understand &amp; Restate the Problem</alert>. </p>
-    <p> Why “Step&nbsp;0”? Because it should <em>precede</em> every other step—yet it's often the
+    <p> We've journeyed through every phase of the Design Recipe: defining data (Step 1),
+      writing method signatures &amp; purpose statements (Steps 2), creating examples &amp;
+      tests (Step 3), building skeletons (Step 4), and finalizing our implementations
+      (Step 5). At first glance, it may appear we've covered everything. But we saved one
+      essential piece for last: <alert>Step 0: Understand &amp; Restate the Problem</alert>. </p>
+    <p> Why “Step 0”? Because it should <em>precede</em> every other step—yet it's often the
       most overlooked. After all, isn't reading the assignment or prompt enough to “know” what
       you're doing? As we'll see, merely reading the problem isn't the same as <em>truly
       understanding</em> it. Hidden assumptions, ambiguous details, and unclear requirements can
@@ -35,7 +35,7 @@
       of elegant loops or conditionals can avoid a rewrite.
     </p>
     <p>
-      <alert>Step&nbsp;0</alert> challenges you to slow down, clarify, and confirm the real problem
+      <alert>Step 0</alert> challenges you to slow down, clarify, and confirm the real problem
       before writing a single line of code. This can feel harder than coding because: </p>
     <ul>
       <li>
@@ -48,7 +48,7 @@
         available. </li>
     </ul>
     <p>
-      Novices often skip Step&nbsp;0 under time pressure or excitement to “just build something.”
+      Novices often skip Step 0 under time pressure or excitement to “just build something.”
       But failing to clarify the problem from the start almost guarantees bigger headaches later.
     </p>
   </subsection>
@@ -82,7 +82,7 @@
       <li>Some items might have different discount rates—accessories get 10%, electronics 5%, etc.</li>
       <li>The user might want a breakdown of each discount rather than just a single total.</li>
     </ul>
-    <p> None of these interpretations is <em>wrong</em> in general. Step&nbsp;0 helps you pinpoint
+    <p> None of these interpretations is <em>wrong</em> in general. Step 0 helps you pinpoint
       the <em>specific</em> interpretation that your friend or the assignment truly requires. By
       clarifying it up front, you avoid building a solution that only partially addresses the real
       need. </p>
@@ -95,7 +95,7 @@
     <title>Practical Techniques for Step 0</title>
     <p>
       If a prompt ever seems “too obvious to clarify,” you may be overlooking important details.
-      Here are a few methods to excel at Step&nbsp;0:
+      Here are a few methods to excel at Step 0:
     </p>
     <ol>
       <li>
@@ -125,7 +125,7 @@
   <subsection xml:id="consequences-of-skipping-step0">
     <title>Consequences of Skipping Step 0</title>
     <p>
-      Skipping Step&nbsp;0 might feel efficient at first, but it often leads to:
+      Skipping Step 0 might feel efficient at first, but it often leads to:
     </p>
     <ul>
       <li>
@@ -139,7 +139,7 @@
         interpretation, you’ll have to redo them once you finally learn the real requirements. </li>
     </ul>
     <p>
-      In short, skipping Step&nbsp;0 is a recipe for confusion and rework—all because the
+      In short, skipping Step 0 is a recipe for confusion and rework—all because the
       fundamental problem wasn’t fully understood from the start.
     </p>
   </subsection>
@@ -149,29 +149,29 @@
        ====================================== -->
   <subsection xml:id="integrating-step0">
     <title>Integrating Step 0 with the Full Design Recipe</title>
-    <p> After seeing Steps&nbsp;1–5 in action, it should be clear that Step&nbsp;0 <alert>feeds</alert>
+    <p> After seeing Steps 1–5 in action, it should be clear that Step 0 <alert>feeds</alert>
       everything else. Once you clarify the problem: </p>
     <ul>
       <li>
-        <p><alert>Data Definitions (Step&nbsp;1)</alert> become more accurate, reflecting the
+        <p><alert>Data Definitions (Step 1)</alert> become more accurate, reflecting the
           real-world entities you need.</p>
       </li>
       <li>
-        <p><alert>Method Signatures &amp; Purpose Statements (Step&nbsp;2)</alert> are no longer
+        <p><alert>Method Signatures &amp; Purpose Statements (Step 2)</alert> are no longer
           guesswork—each parameter and return type flows from the clarified requirements.</p>
       </li>
       <li>
-        <p><alert>Examples &amp; Tests (Step&nbsp;3)</alert> target the correct scenarios and edge
+        <p><alert>Examples &amp; Tests (Step 3)</alert> target the correct scenarios and edge
           cases, rather than random guesses. <em>We now recommend using a <strong>table-based
-          approach</strong> in Step&nbsp;3 to systematically list out typical, edge, and error
+          approach</strong> in Step 3 to systematically list out typical, edge, and error
           scenarios.</em></p>
       </li>
       <li>
-        <p><alert>Skeleton / Method Template (Step&nbsp;4)</alert> covers the necessary logic,
+        <p><alert>Skeleton / Method Template (Step 4)</alert> covers the necessary logic,
           without last-minute surprises.</p>
       </li>
       <li>
-        <p><alert>Implementation &amp; Refinement (Step&nbsp;5)</alert> aligns with the real
+        <p><alert>Implementation &amp; Refinement (Step 5)</alert> aligns with the real
           problem, reducing the risk of major rework.</p>
       </li>
     </ul>
@@ -187,15 +187,15 @@
   <subsection xml:id="final-push-why-worth-it">
     <title>One Final Push: Why It's Worth the “Extra Work”</title>
     <p> Throughout this course, we’ve emphasized how each step of the Design Recipe can feel like
-      “extra work” at first—<em>especially</em> Step&nbsp;0. But if you misunderstand the
+      “extra work” at first—<em>especially</em> Step 0. But if you misunderstand the
       fundamental problem, no amount of well-tested code can fix that. </p>
     <p>
-      <alert>Step&nbsp;0</alert> is the keystone: it saves you from solving the wrong problem or
+      <alert>Step 0</alert> is the keystone: it saves you from solving the wrong problem or
       solving the right problem in an ill-suited way. Yes, it costs time up front to restate
       requirements and ask questions, but that investment pays off by preventing large-scale
       rewrites and frustration later. </p>
     <p>
-      With Step&nbsp;0 in place, you’ll:
+      With Step 0 in place, you’ll:
     </p>
     <ul>
       <li>
@@ -249,7 +249,7 @@
       <statement>
         <p>
           Take a past assignment (or an online coding challenge) and rewrite its problem
-          statement using Step&nbsp;0 techniques:
+          statement using Step 0 techniques:
         </p>
         <ul>
           <li>Paraphrase in your own words</li>
@@ -283,7 +283,7 @@
   <subsection xml:id="conclusion-full-picture">
     <title>Conclusion: The Full Picture</title>
     <p>
-      With Step&nbsp;0 now added to your toolkit, the Design Recipe is complete. Let’s recap:
+      With Step 0 now added to your toolkit, the Design Recipe is complete. Let’s recap:
     </p>
     <ol>
       <li><alert>Step 0:</alert> Understand &amp; Restate the Problem</li>
@@ -293,13 +293,13 @@
       <li><alert>Step 4:</alert> Skeleton / Method Template</li>
       <li><alert>Step 5:</alert> Implementation, Testing &amp; Refinement</li>
     </ol>
-    <p> Notice how each step depends on the prior ones. If you skip Step&nbsp;0, you risk designing
-      for the wrong problem. If you skip Step&nbsp;1, your method signatures and tests might not
+    <p> Notice how each step depends on the prior ones. If you skip Step 0, you risk designing
+      for the wrong problem. If you skip Step 1, your method signatures and tests might not
       align. By walking through these in order—especially with a <em>table-based approach</em> for
       Examples &amp; Tests—you build solutions that are reliable and maintainable, truly addressing
       the problem at hand. </p>
     <p>
-      We hope this final “Step&nbsp;0” section convinces you that fully understanding the task
+      We hope this final “Step 0” section convinces you that fully understanding the task
       is more than just re-reading an assignment. With the complete Design Recipe,
       you’re equipped to tackle projects of any size or complexity—less guesswork,
       fewer surprises, and more confidence in your solutions.
@@ -363,7 +363,7 @@
          ============================================================ -->
     <exercise xml:id="mc-step0-importance">
       <title>Why “Understand &amp; Restate the Problem” First?</title>
-      <statement> Section&nbsp;6 emphasizes Step&nbsp;0 of the Design Recipe: fully clarifying the
+      <statement> Section 6 emphasizes Step 0 of the Design Recipe: fully clarifying the
         problem before coding. Which answer <alert>best</alert> captures why this is necessary? </statement>
       <choices randomize="yes">
         <choice correct="yes">
@@ -372,7 +372,7 @@
             leading to major rewrites if they turn out to be incorrect.
           </statement>
           <feedback>
-            Correct! Step&nbsp;0 prevents costly rewrites by clarifying requirements early.
+            Correct! Step 0 prevents costly rewrites by clarifying requirements early.
           </feedback>
         </choice>
         <choice>
@@ -380,7 +380,7 @@
             It forces the compiler to auto-generate all data definitions.
           </statement>
           <feedback>
-            No. Step&nbsp;0 is a human-centered activity; compilers don’t generate definitions from
+            No. Step 0 is a human-centered activity; compilers don’t generate definitions from
             it.
           </feedback>
         </choice>
@@ -425,7 +425,7 @@
       <title>Short Answer: Restate a Vague Prompt</title>
       <statement>
         <p> Suppose you receive a prompt: <em>"Write a function that manages customer data."</em>
-          That’s all the instructions you have. In the spirit of Step&nbsp;0, produce a <alert>
+          That’s all the instructions you have. In the spirit of Step 0, produce a <alert>
           restatement</alert> that includes: </p>
         <ul>
           <li>Key assumptions you must clarify (<em>What is a “customer”?</em>)</li>
@@ -461,7 +461,7 @@
     <exercise xml:id="mc-step0-impact">
       <title>The Impact of Step 0 on Later Steps</title>
       <statement> How does <alert>Step 0: Understand &amp; Restate the Problem</alert> affect the
-        rest of the Design Recipe (Steps&nbsp;1–5)? </statement>
+        rest of the Design Recipe (Steps 1–5)? </statement>
       <choices randomize="yes">
         <choice correct="yes">
           <statement>
@@ -478,7 +478,7 @@
             It eliminates the need for a skeleton once you know the problem well.
           </statement>
           <feedback>
-            You still benefit from a skeleton in Step&nbsp;4, even with a good restatement.
+            You still benefit from a skeleton in Step 4, even with a good restatement.
           </feedback>
         </choice>
         <choice>
@@ -487,7 +487,7 @@
             misunderstandings automatically.
           </statement>
           <feedback>
-            Misunderstandings often lead to big rewrites. Step&nbsp;0 is not optional if you
+            Misunderstandings often lead to big rewrites. Step 0 is not optional if you
             want to avoid chaos.
           </feedback>
         </choice>
@@ -496,7 +496,7 @@
             It forces you to skip docstrings, since the problem is already understood.
           </statement>
           <feedback>
-            You still need docstrings. Step&nbsp;0 ensures they match the correct problem.
+            You still need docstrings. Step 0 ensures they match the correct problem.
           </feedback>
         </choice>
       </choices>

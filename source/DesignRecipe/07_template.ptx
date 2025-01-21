@@ -307,8 +307,8 @@ def function_name(param1: Type, param2: Type) -> ReturnType:
 
       <!-- Explanation for novices -->
       <p>
-        After clarifying the problem (Step&nbsp;0), defining your data (Step&nbsp;1), and writing 
-        your function's signature/purpose (Step&nbsp;2), you're ready to illustrate <em>specific</em> 
+        After clarifying the problem (Step 0), defining your data (Step 1), and writing 
+        your function's signature/purpose (Step 2), you're ready to illustrate <em>specific</em> 
         behavior with <alert>Examples &amp; Tests</alert>. The best way to ensure you've covered 
         all scenarios—normal, edge, and (optionally) error cases—is to list them in a <strong>table</strong>. 
         Each row typically includes:
@@ -383,7 +383,7 @@ def test_count_words():
       <listing xml:id="step3-template-structure">
         <caption>Recommended Structure for Examples &amp; Tests</caption>
         <program language="text">
-# STEP 3: Examples & Tests
+# STEP 3: Examples &amp; Tests
 
 ## 1) Table of Test Cases
 | Case / Type   | Input(s)                 | Expected Output | Notes/Rationale                       |
@@ -503,7 +503,6 @@ def function_name(param1: Type, param2: Type) -> ReturnType:
           </li>
         </ul>
       </p>
-Xbox. My heart goes out here. You know. 
     </subsubsection>
 
 
