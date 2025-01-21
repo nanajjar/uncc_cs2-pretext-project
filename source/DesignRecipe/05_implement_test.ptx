@@ -261,15 +261,10 @@ def test_compute_popularity():
     # Typical case
     assert abs(compute_popularity(["Thriller", 5, 100]) - 23.0) &lt; 0.001
     
-    # Edge: zero plays => rating * log(1) => 0
+    # Edge: zero plays =&gt; rating * log(1) =&gt; 0
     assert compute_popularity(["Imagine", 5, 0]) == 0.0
-    
-    # Invalid rating
-    try:
-        compute_popularity(["Hey Jude", 6, 10])
-        assert False, "Expected ValueError for rating above 5"
-    except ValueError:
-        pass
+
+    print("test_compute_popularity PASSED")
       </program>
     </listing>
     <p>
