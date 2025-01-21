@@ -78,7 +78,7 @@
     <p> For instance: <ul>
         <li><c>count_words("Hello world")</c> should return <c>2</c>.</li>
         <li><c>count_words("")</c> (empty string) should return <c>0</c>.</li>
-        <li><c>count_words("OpenAI is awesome")</c> should return <c>3</c>.</li>
+        <li><c>count_words(" Java is awesome")</c> should return <c>3</c>.</li>
       </ul>
     </p>
     <p>
@@ -158,7 +158,7 @@
         <row>
           <cell>Multiple words</cell>
           <cell>
-            <c>"OpenAI is awesome"</c>
+            <c>" Java is awesome"</c>
           </cell>
           <cell>3</cell>
           <cell>Splitting by space yields 3 tokens</cell>
@@ -195,8 +195,8 @@
         # " " (whitespace only) -> 0
         assert count_words(" ") == 0
 
-        # "OpenAI is awesome" -> 3
-        assert count_words("OpenAI is awesome") == 3
+        # " Java is awesome" -> 3
+        assert count_words(" Java is awesome") == 3
 
         print("test_count_words PASSED")
       </program>
@@ -453,7 +453,7 @@
         </block>
         <block order="7">
           <choice correct="yes">
-            <cline>assert count_words(" OpenAI is awesome ") == 3</cline>
+            <cline>assert count_words("  Java is awesome ") == 3</cline>
           </choice>
         </block>
         <block order="8">
