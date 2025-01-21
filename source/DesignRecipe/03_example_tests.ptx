@@ -169,8 +169,7 @@
        ====================================== -->
   <subsection xml:id="seeing-assertion-fail">
     <title>Seeing an Assertion Fail</title>
-    <p> Suppose we introduced a small bug. For example, if we accidentally returned <c>len(words) -
-      1</c> in <c>count_words</c>: </p>
+    <p> Suppose we introduced a small bug. For example, if we accidentally returned <c>len(words) - 1</c> in <c>count_words</c>: </p>
     <listing>
       <program language="python">
         def count_words(text):
@@ -496,8 +495,8 @@
       <title>Short Answer: Designing Examples &amp; Tests for <c>update_rating</c></title>
       <statement>
         <p> Imagine we have already created a <alert>Data Definition</alert> (Section 1) and a <alert>Method
-          Signature &amp; Purpose Statement</alert> (Section 2) for <c>update_rating(library,
-          song_title, new_rating)</c>. Here are the deliverables from previous steps: </p>
+          Signature &amp; Purpose Statement</alert> (Section 2) for <c>update_rating(library, song_title, new_rating)</c>. 
+          Here are the deliverables from previous steps: </p>
         <blockquote>
           <p>
             <alert>Data Definition (from Section 1):</alert>
@@ -528,8 +527,8 @@
           </ul>
         </blockquote>
         <p> Now, according to Section 3 of the Design Recipe, we must craft <alert>Examples &amp;
-          Tests</alert> <em>before or during implementation</em> to clarify and confirm how <c>
-          update_rating</c> should behave. <alert>In your answer, do the following</alert>: </p>
+          Tests</alert> <em>before or during implementation</em> to clarify and confirm how <c>update_rating</c> should behave. 
+          <alert>In your answer, do the following</alert>: </p>
         <ol>
           <li> Provide at least <alert>3 examples</alert> of calling <c>update_rating</c>
             (one typical case, one edge case, and one error/invalid case). </li>
