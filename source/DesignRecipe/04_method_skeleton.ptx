@@ -15,7 +15,7 @@
       <li>Wrote explicit <em>Method Signatures &amp; Purpose Statements</em></li>
       <li>Created <em>Examples &amp; Tests</em> to clarify behavior</li>
     </ol>
-    <p> In this section, we move to Step 5 of the Design Recipe: creating a <alert>method template
+    <p> In this section, we move to Step 4 of the Design Recipe: creating a <alert>method template
       or skeleton</alert>. This step helps you outline the logical flow of your function before
       diving into final code, ensuring that each piece of your plan has a clear place and purpose. </p>
     <p> Students often jump straight to coding loops and conditionals as soon as they have a sense
@@ -260,7 +260,7 @@
        ====================================== -->
   <subsection xml:id="transition-to-implementation">
     <title>Transition to Implementation</title>
-    <p> Once your skeleton lines up with your tests and contract, you're ready for Step 6: <alert>filling
+    <p> Once your skeleton lines up with your tests and contract, you're ready for Step 5: <alert>filling
       in the method with real code</alert>. Each comment in the outline becomes one or more lines
       of Python. If you discover new edge cases or data nuances along the way, you can still revise
       the skeleton before finishing the details. </p>
@@ -270,7 +270,7 @@
       success gives you confidence to tackle the next piece.
     </p>
     <p>
-      By the end of Step 6, you'll have a fully working, validated, and test-backed function
+      By the end of Step 5, you'll have a fully working, validated, and test-backed function
       that matches your data definitions, contract, and examples. That's the power of
       systematically following the Design Recipe.
     </p>
@@ -345,7 +345,7 @@
       stage—input validation, looping or branching, return values—you make sure your function
       aligns with your data definitions, contracts, and test cases.
     </p>
-    <p> In the next section (<alert>Step 6: Implementation</alert>), we'll fill in these skeletons
+    <p> In the next section (<alert>Step 5: Implementation</alert>), we'll fill in these skeletons
       with real code. You'll see how to handle special cases gracefully, deal with exceptions where
       needed, and confirm your solutions pass all the tests you drafted in Section 3. The Design
       Recipe remains your reliable guide for building code that's robust, maintainable, and a lot
