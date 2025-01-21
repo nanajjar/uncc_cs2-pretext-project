@@ -27,7 +27,7 @@
     <title>Why Step 0 Is Often the Hardest</title>
     <p> When you're given a programming task—whether a homework prompt or a real-world feature
       request—it's tempting to think, <em>“All I need to do is parse some data,
-        loop over it, and produce output. Let’s just start coding!”</em>
+        loop over it, and produce output. Let's just start coding!”</em>
     </p>
     <p>
       But the moment you dive into code, you lock in assumptions about data formats, edge cases,
@@ -136,11 +136,11 @@
         envisions it as <c>[price, quantity]</c> or a dictionary. Your logic and tests will clash. </li>
       <li>
         <alert>Wasted Testing Effort:</alert> If your examples or tests assume the “wrong”
-        interpretation, you’ll have to redo them once you finally learn the real requirements. </li>
+        interpretation, you'll have to redo them once you finally learn the real requirements. </li>
     </ul>
     <p>
       In short, skipping Step 0 is a recipe for confusion and rework—all because the
-      fundamental problem wasn’t fully understood from the start.
+      fundamental problem wasn't fully understood from the start.
     </p>
   </subsection>
 
@@ -176,7 +176,7 @@
       </li>
     </ul>
     <p>
-      By the time you’re filling in your skeleton with code, you’ll be confident you’re
+      By the time you're filling in your skeleton with code, you'll be confident you're
       solving the right problem.
     </p>
   </subsection>
@@ -186,7 +186,7 @@
        ====================================== -->
   <subsection xml:id="final-push-why-worth-it">
     <title>One Final Push: Why It's Worth the “Extra Work”</title>
-    <p> Throughout this course, we’ve emphasized how each step of the Design Recipe can feel like
+    <p> Throughout this course, we've emphasized how each step of the Design Recipe can feel like
       “extra work” at first—<em>especially</em> Step 0. But if you misunderstand the
       fundamental problem, no amount of well-tested code can fix that. </p>
     <p>
@@ -195,17 +195,17 @@
       requirements and ask questions, but that investment pays off by preventing large-scale
       rewrites and frustration later. </p>
     <p>
-      With Step 0 in place, you’ll:
+      With Step 0 in place, you'll:
     </p>
     <ul>
       <li>
         <em>Collaborate better:</em> Everyone (teammates, instructors, stakeholders) sees a clear
         restatement of the problem. </li>
       <li>
-        <em>Code more efficiently:</em> You’ll only implement what’s truly needed, skipping needless
+        <em>Code more efficiently:</em> You'll only implement what's truly needed, skipping needless
         features or half-guessed logic. </li>
       <li>
-        <em>Avoid hidden gotchas:</em> By identifying likely edge cases, you won’t face last-minute
+        <em>Avoid hidden gotchas:</em> By identifying likely edge cases, you won't face last-minute
         surprises. </li>
     </ul>
   </subsection>
@@ -228,7 +228,7 @@
           <li>How is the alert sent (email, console print, push notification)?</li>
           <li>How should we store or track the logins (list, database, logs)?</li>
         </ul>
-        <p>If you can’t find definitive answers, propose assumptions and note them explicitly.</p>
+        <p>If you can't find definitive answers, propose assumptions and note them explicitly.</p>
       </statement>
     </exercise>
 
@@ -283,7 +283,7 @@
   <subsection xml:id="conclusion-full-picture">
     <title>Conclusion: The Full Picture</title>
     <p>
-      With Step 0 now added to your toolkit, the Design Recipe is complete. Let’s recap:
+      With Step 0 now added to your toolkit, the Design Recipe is complete. Let's recap:
     </p>
     <ol>
       <li><alert>Step 0:</alert> Understand &amp; Restate the Problem</li>
@@ -301,7 +301,7 @@
     <p>
       We hope this final “Step 0” section convinces you that fully understanding the task
       is more than just re-reading an assignment. With the complete Design Recipe,
-      you’re equipped to tackle projects of any size or complexity—less guesswork,
+      you're equipped to tackle projects of any size or complexity—less guesswork,
       fewer surprises, and more confidence in your solutions.
     </p>
     <p>
@@ -345,7 +345,7 @@
         </block>
         <block order="4">
           <choice correct="yes">
-            <cline>Audrey’s code can’t handle that; she never restated the problem or asked
+            <cline>Audrey's code can't handle that; she never restated the problem or asked
               clarifying questions.</cline>
           </choice>
         </block>
@@ -380,13 +380,13 @@
             It forces the compiler to auto-generate all data definitions.
           </statement>
           <feedback>
-            No. Step 0 is a human-centered activity; compilers don’t generate definitions from
+            No. Step 0 is a human-centered activity; compilers don't generate definitions from
             it.
           </feedback>
         </choice>
         <choice>
           <statement>
-            It’s only important for typed languages like Java, not for Python.
+            It's only important for typed languages like Java, not for Python.
           </statement>
           <feedback> No. Misunderstanding a problem can derail projects in <em>any</em> language. </feedback>
         </choice>
@@ -425,7 +425,7 @@
       <title>Short Answer: Restate a Vague Prompt</title>
       <statement>
         <p> Suppose you receive a prompt: <em>"Write a function that manages customer data."</em>
-          That’s all the instructions you have. In the spirit of Step 0, produce a <alert>
+          That's all the instructions you have. In the spirit of Step 0, produce a <alert>
           restatement</alert> that includes: </p>
         <ul>
           <li>Key assumptions you must clarify (<em>What is a “customer”?</em>)</li>
@@ -483,7 +483,7 @@
         </choice>
         <choice>
           <statement>
-            It’s optional if you trust your intuition; the rest of the steps can fix
+            It's optional if you trust your intuition; the rest of the steps can fix
             misunderstandings automatically.
           </statement>
           <feedback>

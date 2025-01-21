@@ -54,7 +54,7 @@
         <em>"If I call it on <c>""</c> (empty string), I expect <c>0</c>."</em>
       </li>
     </ul>
-    <p> These examples clarify the function’s behavior in specific situations. When you turn them
+    <p> These examples clarify the function's behavior in specific situations. When you turn them
       into <em>automated tests</em>, you can re-check them quickly every time you change your code.
       This prevents a common headache: <em>"I fixed a bug in one place, but I accidentally broke
       something else!"</em>
@@ -69,7 +69,7 @@
        ====================================== -->
   <subsection xml:id="count-words-example">
     <title>A New Example: Counting Words</title>
-    <p> Let’s illustrate with a small, self-contained function: <c>count_words</c>. Suppose it: </p>
+    <p> Let's illustrate with a small, self-contained function: <c>count_words</c>. Suppose it: </p>
     <ol>
       <li>Takes a string of text</li>
       <li>Splits it into words separated by spaces</li>
@@ -78,11 +78,11 @@
     <p> For instance: <ul>
         <li><c>count_words("Hello world")</c> should return <c>2</c>.</li>
         <li><c>count_words("")</c> (empty string) should return <c>0</c>.</li>
-        <li><c>count_words(" Java is awesome")</c> should return <c>3</c>.</li>
+        <li><c>count_words("Java is awesome")</c> should return <c>3</c>.</li>
       </ul>
     </p>
     <p>
-      Let’s write a rough version of the function:
+      Let's write a rough version of the function:
     </p>
     <listing>
       <program language="python">
@@ -112,8 +112,8 @@
        ====================================== -->
   <subsection xml:id="examples-before-during">
     <title>Writing Examples with a Table</title>
-    <p> In the Design Recipe, you create examples right after you define your function’s contract.
-      That way, the function’s behavior is explicit <em>before</em> you dive into coding (or at
+    <p> In the Design Recipe, you create examples right after you define your function's contract.
+      That way, the function's behavior is explicit <em>before</em> you dive into coding (or at
       least very early). Instead of writing these examples as a quick bullet list, we can arrange
       them in a <em>table</em> that clearly shows inputs, expected outputs, and a brief rationale. </p>
     <p> For <c>count_words</c>, we might define: </p>
@@ -170,7 +170,7 @@
       cases; the <em>Input</em> and <em>Expected Output</em> columns specify exactly what we feed
       the function and what we want back; and the <em>Notes</em> column briefly explains the
       reasoning or highlights potential pitfalls. </p>
-    <p> A table like this makes it easy to see if you’ve covered all the important situations. For
+    <p> A table like this makes it easy to see if you've covered all the important situations. For
       instance, if you left out <c>""</c> (the empty string), you might miss that edge case. </p>
   </subsection>
 
@@ -182,7 +182,7 @@
     <title>Turning Table Rows into Tests</title>
     <p> Once you have your table of examples, the next step is to turn each row into an <alert>automated
       test</alert> in Python. Typically, this involves writing a test function that uses <c>assert</c>
-      statements. For our <c>count_words</c> table, here’s one approach: </p>
+      statements. For our <c>count_words</c> table, here's one approach: </p>
     <listing>
       <program language="python">
         def test_count_words():
@@ -201,9 +201,9 @@
         print("test_count_words PASSED")
       </program>
     </listing>
-    <p> Each <c>assert</c> corresponds to one row in our table. If all of them pass, we’ll see <c>test_count_words
-      PASSED</c>. If any <c>assert</c> fails, Python raises an <c>AssertionError</c>, telling us
-      which scenario isn’t behaving as expected. </p>
+    <p> Each <c>assert</c> corresponds to one row in our table. If all of them pass, we'll see 
+    <c>test_count_words PASSED</c>. If any <c>assert</c> fails, Python raises an <c>AssertionError</c>, telling us
+      which scenario isn't behaving as expected. </p>
   </subsection>
 
 
@@ -257,8 +257,8 @@
         run_tests()
       </program>
     </listing>
-    <p> If everything passes, you’ll see each test’s “PASSED” message. If any fail, <c>
-      AssertionError</c> pops up, telling you which function to fix first. </p>
+    <p> If everything passes, you'll see each test's “PASSED” message. If any fail, 
+    <c>AssertionError</c> pops up, telling you which function to fix first. </p>
   </subsection>
 
 
@@ -268,8 +268,8 @@
   <subsection xml:id="connection-to-design-recipe">
     <title>Connection to the Design Recipe</title>
     <p>
-      In the broader Design Recipe, these examples and tests come right after you’ve stated each
-      function’s data definitions and purpose. The tests:
+      In the broader Design Recipe, these examples and tests come right after you've stated each
+      function's data definitions and purpose. The tests:
     </p>
     <ul>
       <li><em>Reinforce the contract:</em> If your docstring says <c>count_words("Hello world")</c>
@@ -292,12 +292,12 @@
     <p> For larger projects, manually writing your own test functions is still helpful, but Python
       also provides powerful tools like <c>unittest</c> and <c>pytest</c>: </p>
     <ul>
-      <li>They can automatically discover test functions (so you don’t have to write a <c>run_tests</c>
+      <li>They can automatically discover test functions (so you don't have to write a <c>run_tests</c>
         manually).</li>
       <li>They give more detailed error messages when tests fail.</li>
       <li>They support advanced features like grouping tests or running only certain ones.</li>
     </ul>
-    <p> Later in the course, we’ll show you how to <em>import</em> and use <c>pytest</c> once you’re
+    <p> Later in the course, we'll show you how to <em>import</em> and use <c>pytest</c> once you're
       more comfortable with Python modules, error handling, and exceptions. For now, using simple <c>
       assert</c> checks in a single file is an excellent way to build testable, reliable code
       without overwhelming complexity. </p>
@@ -355,14 +355,14 @@
        ====================================== -->
   <subsection xml:id="conclusion-next-steps">
     <title>Conclusion &amp; Next Steps</title>
-    <p> By turning your function examples into automated tests—even using Python’s simple <c>assert</c>—you
+    <p> By turning your function examples into automated tests—even using Python's simple <c>assert</c>—you
       gain powerful protection against accidental mistakes and regressions. This practice fits
-      neatly into the Design Recipe: once you declare a function’s purpose, data definitions, and
-      contract, you transform your examples into quick checks that confirm you’re on the right
+      neatly into the Design Recipe: once you declare a function's purpose, data definitions, and
+      contract, you transform your examples into quick checks that confirm you're on the right
       track. </p>
-    <p> In the next section, we’ll take a closer look at <em>invalid inputs</em> and how to handle
-      them. You’ve already seen Python raise an <c>AssertionError</c> when something goes wrong;
-      soon, you’ll learn to raise and handle other <em>exceptions</em> more gracefully, making your
+    <p> In the next section, we'll take a closer look at <em>invalid inputs</em> and how to handle
+      them. You've already seen Python raise an <c>AssertionError</c> when something goes wrong;
+      soon, you'll learn to raise and handle other <em>exceptions</em> more gracefully, making your
       programs more robust. </p>
   </subsection>
 
@@ -518,7 +518,7 @@
             Python disallows writing code before you define at least three examples.
           </statement>
           <feedback>
-            Python doesn’t enforce example-driven development; it’s just a best practice,
+            Python doesn't enforce example-driven development; it's just a best practice,
             not a language rule.
           </feedback>
         </choice>
@@ -534,8 +534,8 @@
         Once all your tests pass, you have 100% certainty there are no bugs left in the code.
       </statement>
       <feedback>
-        Even thorough testing can’t guarantee absolute freedom from all bugs.
-        Tests reduce risk but don’t prove total correctness.
+        Even thorough testing can't guarantee absolute freedom from all bugs.
+        Tests reduce risk but don't prove total correctness.
       </feedback>
     </exercise>
 
@@ -543,8 +543,8 @@
       <title>Short Answer: Designing Examples &amp; Tests for <c>update_rating</c></title>
       <statement>
         <p> Imagine we have already created a <alert>Data Definition</alert> (Section 1) and a <alert>Method
-          Signature &amp; Purpose Statement</alert> (Section 2) for <c>update_rating(library,
-          song_title, new_rating)</c>. Here are the deliverables from previous steps: </p>
+          Signature &amp; Purpose Statement</alert> (Section 2) for <c>update_rating(library, song_title, new_rating)</c>. 
+          Here are the deliverables from previous steps: </p>
         <blockquote>
           <p>
             <alert>Data Definition (from Section 1):</alert>
@@ -565,8 +565,8 @@
           </p>
           <ul>
             <li>
-              <em>Purpose Statement:</em> Updates the rating of the song titled <c>song_title</c> in <c>
-              library</c> if it exists, returning <c>True</c> if found and updated, or <c>False</c>
+              <em>Purpose Statement:</em> Updates the rating of the song titled <c>song_title</c> in <c> ibrary</c> if it exists, 
+              returning <c>True</c> if found and updated, or <c>False</c>
               otherwise. </li>
             <li>
               <em>Precondition:</em> <c>library</c> is a list of <c>Song</c> entries, each with a
@@ -583,8 +583,7 @@
           <li> Provide at least <alert>3 examples</alert> of calling <c>update_rating</c> (one
             typical case, one edge case, and one error/invalid case). </li>
           <li> Convert each example into a <c>pytest</c>-style or <c>assert</c>-based <alert>test</alert>,
-            explaining <em>why</em> you chose these particular inputs and what outcome you expect (<c>
-            True</c>, <c>False</c>, or an exception). </li>
+            explaining <em>why</em> you chose these particular inputs and what outcome you expect (<c>True</c>, <c>False</c>, or an exception). </li>
           <li>
             Briefly justify how these tests follow from the data definition and signature
             (e.g., referencing rating constraints or checking for empty titles).

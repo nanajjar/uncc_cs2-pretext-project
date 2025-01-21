@@ -310,7 +310,7 @@ def function_name(param1: Type, param2: Type) -> ReturnType:
         After clarifying the problem (Step 0), defining your data (Step 1), and writing 
         your function's signature/purpose (Step 2), you're ready to illustrate <em>specific</em> 
         behavior with <alert>Examples &amp; Tests</alert>. The best way to ensure you've covered 
-        all scenarios—normal, edge, and (optionally) error cases—is to list them in a <strong>table</strong>. 
+        all scenarios—normal, edge, and (optionally) error cases—is to list them in a <alert>table</alert>. 
         Each row typically includes:
       </p>
       <ul>
@@ -335,7 +335,7 @@ def function_name(param1: Type, param2: Type) -> ReturnType:
 | Normal usage  | "Hello world"      | 2               | 2 words separated by a space   |
 | Empty string  | ""                 | 0               | No words at all                |
 | Whitespace    | "   "              | 0               | Spaces only, so 0 words        |
-| Multiple words| "OpenAI is cool"   | 3               | 3 words: "OpenAI", "is", "cool"|
+| Multiple words| "CS is cool"       | 3               | 3 words: "CS", "is", "cool"    |
         </program>
       </listing>
 
@@ -365,7 +365,7 @@ def test_count_words():
     assert count_words("   ") == 0
 
     # Multiple words
-    assert count_words("OpenAI is cool") == 3
+    assert count_words("CS is cool") == 3
 
     print("test_count_words PASSED")
         </program>
@@ -379,7 +379,7 @@ def test_count_words():
       </p>
 
       <!-- Template Form -->
-      <p><strong>TEMPLATE FOR STEP 3:</strong></p>
+      <p><alert>TEMPLATE FOR STEP 3:</alert></p>
       <listing xml:id="step3-template-structure">
         <caption>Recommended Structure for Examples &amp; Tests</caption>
         <program language="text">
@@ -409,7 +409,7 @@ def test_my_function():
       </listing>
 
       <p>
-        By separating the <strong>table of examples</strong> from the <strong>automated test code</strong>, 
+        By separating the <alert>table of examples</alert> from the <alert>automated test code</alert>, 
         you ensure that every scenario you identify is explicitly tested. This also makes it easy to 
         review: if someone asks "Have you tested an empty string?" you can point them to the row in the 
         table and the corresponding <c>assert</c> statement in your test file.
@@ -556,12 +556,7 @@ def function_name(param1: Type, param2: Type) -> ReturnType:
     result = initialize()
     
     # 3. Main Logic
-    try:
-        # Core implementation
-        pass
-    except Exception as e:
-        # Error handling
-        pass
+    # Core implementation
     
     # 4. Return
     return result

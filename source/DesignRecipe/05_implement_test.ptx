@@ -168,8 +168,8 @@ def test_update_rating():
     print("test_update_rating PASSED")
         </program>
       </listing>
-      <p> Then you simply run <c>test_update_rating()</c> and watch for any <c>
-        AssertionError</c>. If everything passes, you'll see no error—just a silent, successful
+      <p> Then you simply run <c>test_update_rating()</c> and watch for any 
+      <c>AssertionError</c>. If everything passes, you'll see no error—just a silent, successful
         test. Some people like to print a “PASSED!” message at the end so they know everything
         worked. </p>
       <p>
@@ -179,9 +179,8 @@ def test_update_rating():
 
     <subsubsection xml:id="refining-code">
       <title>Refining Your Code</title>
-      <p> If you see a test fail—maybe the function returned <c>True</c> instead of <c>
-        False</c> or raised an unexpected exception—don't panic. This is exactly why we test
-        early and often. </p>
+      <p> If you see a test fail—maybe the function returned <c>True</c> instead of <c>False</c> or raised an unexpected exception—don't panic. 
+      This is exactly why we test early and often. </p>
       <p>
         You'll check:
       </p>
@@ -524,8 +523,8 @@ def test_compute_popularity():
        ============================================================ -->
       <exercise xml:id="parsons-refine-bugfix" language="python">
         <title>Parsons: Refining Code After a Bug</title>
-        <statement> Audrey runs her tests and finds a bug: <c>update_rating</c> crashes if <c>
-          library</c> is <c>None</c>. She decides to refine her code. Rearrange these lines
+        <statement> Audrey runs her tests and finds a bug: <c>update_rating</c> crashes if 
+        <c>library</c> is <c>None</c>. She decides to refine her code. Rearrange these lines
           to integrate a quick fix without breaking existing logic. </statement>
         <blocks layout="vertical" randomize="yes">
           <block order="1">
@@ -641,8 +640,9 @@ def test_compute_popularity():
             <alert>Sample Response (One Possible Refinement):</alert>
           </p>
           <ul>
-            <li> I modify <c>count_words</c> to strip the input before splitting or check if <c>
-              text.strip()</c> is empty, returning 0 in that case. For example: <pre><c>if text.strip() == "":
+            <li> I modify <c>count_words</c> to strip the input before splitting or check if 
+            <c>text.strip()</c> is empty, returning 0 in that case. For example: 
+            <pre><c>if text.strip() == "":
     return 0
 words = text.strip().split()
 return len(words)</c></pre>

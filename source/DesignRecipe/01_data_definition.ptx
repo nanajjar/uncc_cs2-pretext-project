@@ -542,8 +542,8 @@
           <li><c>author</c> is a non-empty string (e.g. "Jane Austen").</li>
           <li><c>page_count</c> is an integer &gt;= 1.</li>
         </ul>
-        <p> You could refine constraints (e.g., max pages = 9999) or store extra fields like <c>
-          genre</c> and <c>publication_year</c>. The crucial idea is documenting each field
+        <p> You could refine constraints (e.g., max pages = 9999) or store extra fields like <c>genre</c> and <c>publication_year</c>. 
+        The crucial idea is documenting each field
           and its valid range or type. </p>
       </solution>
     </exercise>

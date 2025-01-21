@@ -76,8 +76,7 @@
       data assumptions in one big chunk of code led to repeated mistakes. Eventually, she documented
       the function properly: </p>
     <blockquote>
-      <p><alert>Goal:</alert> Update the rating for a given <c>song_title</c> in <c>
-        library</c>.</p>
+      <p><alert>Goal:</alert> Update the rating for a given <c>song_title</c> in <c>library</c>.</p>
       <p>
         <alert>Preconditions:</alert>
       </p>
@@ -117,8 +116,8 @@
     </listing>
     <p> A few comments and <c>pass</c> statements create a roadmap for her final
       implementation. Now, Audrey (and anyone else reading her code) can see exactly where each step
-      belongs: from handling incorrect inputs to deciding when to return <c>True</c> or <c>
-      False</c>. This level of clarity makes subsequent coding (and debugging) far more
+      belongs: from handling incorrect inputs to deciding when to return <c>True</c> or 
+      <c>False</c>. This level of clarity makes subsequent coding (and debugging) far more
       straightforward. </p>
   </subsection>
 
@@ -205,8 +204,8 @@
     <p> From Section 3, you know that <em>tests</em> confirm each function's behavior under normal
       use and edge cases. Writing a skeleton helps you align your logic with those tests: </p>
     <ul>
-      <li><alert>Validate Inputs:</alert> If your tests confirm that invalid inputs trigger <c>
-        ValueError</c>, your skeleton should include a “Validate inputs” step.</li>
+      <li><alert>Validate Inputs:</alert> If your tests confirm that invalid inputs trigger 
+      <c>ValueError</c>, your skeleton should include a “Validate inputs” step.</li>
       <li><alert>Loop Behavior:</alert> If you have a test ensuring the function finds the right
         item in a list, your skeleton's loop step must handle that scenario.</li>
       <li><alert>Return Values:</alert> If your tests check for <c>True</c> vs. <c>False</c>,
@@ -248,10 +247,9 @@
         pass
       </program>
     </listing>
-    <p> Meanwhile, our tests from Section 3 might include an edge case where <c>rating = 5,
-      play_count = 0</c> (expecting <c>0</c>), a typical case for <c>rating = 5,
-      play_count = 100</c>, and invalid inputs that raise <c>ValueError</c>. Each bullet in
-      the skeleton lines up with those tests. If we neglected to handle <c>play_count &lt; 0</c>,
+    <p> Meanwhile, our tests from Section 3 might include an edge case where <c>rating = 5, play_count = 0</c> 
+      (expecting <c>0</c>), a typical case for <c>rating = 5, play_count = 100</c>, and invalid inputs that raise <c>ValueError</c>. 
+      Each bullet in the skeleton lines up with those tests. If we neglected to handle <c>play_count &lt; 0</c>,
       our skeleton would be missing a crucial step—and a test would (hopefully) fail. </p>
   </subsection>
 
@@ -522,11 +520,11 @@
             <c>def remove_song(library: list, song_title: str) -&gt; bool:</c>
           </p>
           <ul>
-            <li><em>Purpose:</em> Remove the first song with <c>title == song_title</c> from <c>
-              library</c>, returning <c>True</c> if successful or <c>False</c> if the
+            <li><em>Purpose:</em> Remove the first song with <c>title == song_title</c> from 
+            <c>library</c>, returning <c>True</c> if successful or <c>False</c> if the
               song is not found. </li>
-            <li><em>Precondition:</em> <c>library</c> is a list of <c>Song</c> items. <c>
-              song_title</c> is non-empty. </li>
+            <li><em>Precondition:</em> <c>library</c> is a list of <c>Song</c> items. 
+            <c>song_title</c> is non-empty. </li>
             <li><em>Error Cases:</em> Possibly raise <c>ValueError</c> if <c>song_title</c>
               is empty. </li>
           </ul>
@@ -580,8 +578,7 @@
           <alert>Relating to earlier sections:</alert>
         </p>
         <ul>
-          <li><em>Data Definition (Ch.1):</em> We ensure each item is a <c>Song</c> and <c>
-            song_title</c> is valid (non-empty). </li>
+          <li><em>Data Definition (Ch.1):</em> We ensure each item is a <c>Song</c> and <c>song_title</c> is valid (non-empty). </li>
           <li><em>Signature &amp; Purpose (Ch.2):</em> We plan to return <c>bool</c> and
             possibly raise <c>ValueError</c> if <c>song_title</c> is empty. </li>
           <li><em>Examples &amp; Tests (Ch.3):</em> We note the scenario for "removing an existing
