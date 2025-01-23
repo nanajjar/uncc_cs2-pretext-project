@@ -164,11 +164,14 @@ public class Test1
             <title>Input with Variables</title>
             
             <p>Variables are a powerful abstraction in programming because the same algorithm can be used with different input values saved in variables.  
-            The code below will say hello to anyone who types in their name for different name values. Click on run and then type in your name. Then, try run again and type in a friend’s name. 
-            The code works for any name: behold, the power of variables!</p>
-
-    <raw format="html" xml:space="preserve">&lt;iframe height="89%" width="100%" style="max-width:90%; margin-left:5%"  src="https://trinket.io/embed/java/4f8c844bafd4" scrolling="no" frameborder="no" allowtransparency="true" allowfullscreen="true" sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"&gt;&lt;/iframe&gt;</raw>
-
+            The code below will say hello to anyone who types in their name for different name values. 
+            The code works for any text: behold, the power of variables!</p>
+             <note>
+            <p>Interactive code blocks do not support user input.  To try this code out, copy and paste it into the Scratch ActiveCode window (the pencil icon next to profile icon on the top right of the navigation bar) 
+            and click on run, you should see that it uses the text that is typed into the "Input for Program" as the user input.
+            Change the text in the input box by typing your name, try and run again to get a feel for how the Scanner input works in Java. </p>
+        </note>
+    
 
               <program xml:id="scanner_editor" language="java">
 
