@@ -429,21 +429,42 @@
 
   <subsection xml:id="ch1_javaDataTypes_list">
     <title>List</title>
+    <p>
+      Let's explore the differences between lists in Python and the equivalent data structures in Java. 
+      In Python, we use lists, which are very flexible: they can grow or shrink in size, and they can hold different types of data (like numbers, strings, or even a mix of types). 
+      In Java, there are two similar data structures: arrays and ArrayLists.
+
+    </p>
+    <p>
+      Java arrays are similar to Python lists but with an important difference - they have a fixed size once they are created. 
+      And since Java is a typed language all elements in an array must be of the same data type (e.g., all integers or all strings).
+  Arrays are useful when you know exactly how many elements you need to store.
+    </p>
+    <p>
+   On the other hand, Java ArrayLists function similarly to Python lists, as they can dynamically grow or shrink as needed. 
+   Unlike arrays, ArrayLists are part of Java's java.util library, so you must import the library to use them. 
+   It's important to note that ArrayLists can only store objects, not primitive types. 
+   However, Java provides wrapper classes (like Integer for int) to bridge this gap and allow primitives to be used in an object-oriented manner.
+               
+
+
+    </p>
+
 
     <p>
-      Next, let's look at a program which reads numbers from a file and produces a histogram showing the frequency of the numbers.
-      The data file we will use has one number between 0 and 9 on each line of the file.
-      Here is a simple Python program that creates and prints a histogram.
+      To see how the two types of arrays work, let's take this Python program that uses a list of numbers and produces a histogram showing the frequency of the numbers as an example. 
+      Typically, data is read from a data source like a file. For simplicity instead of reading numbers from a file, we will work with a predefined list where each number is between 0 and 9. 
+      Here is a simple Python program that creates and prints a histogram:
     </p>
 
     <program language="python">
       <code>
         def main():
             count = [0]*10
-            data = open('test.dat')
+            data = [3, 7, 3, 2, 9, 0, 1, 7, 8, 3, 4, 4, 9, 6, 6, 2, 3, 5, 8, 7]
 
-            for line in data:
-                count[int(line)] = count[int(line)] + 1
+            for number in data:
+                count[number] = count[number] + 1
 
             idx = 0
             for num in count:
@@ -456,64 +477,29 @@
 
     <p>
       Test running the program.
-      It will read this data:
-    </p>
-
-    <pre>
-      .. datafile:: test.dat
-
-         1
-         2
-         3
-         9
-         1
-    </pre>
-
-    <p>
-      Lets review what is happening in this little program.
-      First, we create a list and initialize the first 10 positions in the list to be 0.
-      Next we open the data file called "test.dat".
-      Third, we have a loop that reads each line of the file.
-      As we read each line we convert it to an integer and increment the counter at the position in the list indicated by the number on the line we just read.
-      Finally we iterate over each element in the list, printing out both the position in the list and the total value stored in that position.
     </p>
 
     <p>
-      To write the Java version of this program we will have to introduce several new Java concepts.
-      First, you will see the Java equivalent of a list, called an <c>ArrayList</c>.
-      Next, you will see three different kinds of loops used in Java.
-      Two of the loops we will use are going to be very familiar, the third one is different from what you are used to in Python but is easy when you understand the syntax:
+      Let's review what is happening in this little program. 
+      First, we create a list (or array in Java) and initialize the first 10 positions in the list to be 0. 
+      Next, we use a predefined list (or array in Java) of numbers. 
+      Third, we have a loop that iterates over each number in the list. 
+      As we process each number, we increment the counter at the position in the list indicated by the number we just processed. 
+      Finally, we iterate over each element in the list, printing out both the position in the list and the total value stored in that position.
+        </p>
+
+    <p>
+      To write the Java version of this program, we will first use an array. 
+      Additionally, you will see two different kinds of loops used in Java. 
+      One of these loops will look familiar, the enhanced for loop, is a powerful and concise way to iterate over arrays in Java that is very similar to the for loop in Python. 
+      The second for loop is slightly different from what you are used to in Python but is easy to understand once you see the syntax:
+
     </p>
 
     <p>
       <ul>
-        <li>
-          <p>
-            <c>while (condition) { code }</c>
-          </p>
-          <ul>
-            <li>
-              <p>
-                The <c>code</c> will be repeatedly executed until the <c>condition</c> becomes false.
-              </p>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <p>
-            <c>for (initialization statement; condition; loop statement) { code }</c>
-          </p>
-          <ul>
-            <li>
-              <p>
-                The <c>code</c> will be repeatedly executed until the <c>condition</c> becomes false.
-                As shown in the example below, the <c>initialization statement</c> and <c>loop statement</c> make this form useful for iterating over a range of numbers,
-                similar to how you might use <c>for i in range(10)</c> in Python.
-              </p>
-            </li>
-          </ul>
-        </li>
-        <li>
+
+             <li>
           <p>
             <c>for (Type variable : collection) { code }</c>
           </p>
@@ -523,127 +509,78 @@
                 The <c>code</c> will be executed once for each element in the <c>collection</c>.
                 Each execution, <c>variable</c> will be assigned to the next element of <c>collection</c>.
                 Known as the "for-each" loop.
-                This form is useful for iterating over members of a collection, similar to how you might use <c>for a in array</c> in Python.
+                This form is useful for iterating over all members of a collection, similar to how you might use <c>for a in sequence</c> in Python.
               </p>
             </li>
           </ul>
         </li>
+            <li>
+        
+          <p>
+            <c>for (initialization statement; condition; loop statement) { code }</c>
+          </p>
+          <ul><li>
+              <p>
+                The <c>code</c> will be repeatedly executed until the <c>condition</c> becomes false.
+                As shown in the example below, the <c>initialization statement</c> and <c>loop statement</c> make this form useful for iterating over a range of numbers,
+                similar to how you might use <c>for i in range(10)</c> in Python.
+              </p>
+            </li>
+          </ul>
+        </li>
+       
       </ul>
     </p>
 
-    <p>Here is the Java code needed to write the exact same program:</p>
+    <p>Here is the Java code needed to write the exact same program using arrays:</p>
 
-    <program language="java" interactive="activecode">
-      <input>    
-        import java.util.Scanner;
-        import java.util.ArrayList;
-        import java.io.File;
-        import java.io.IOException;
-
+    <program language="java" interactive="activecode" label="array_histo">
+      <code>    
         public class Histo {
 
-            public static void main(String[] args) {
-                Scanner data = null;
-                ArrayList&lt;Integer&gt; count;
-                Integer idx;
-
-                try {
-                        data = new Scanner(new File("test.dat"));
-                }
-                catch ( IOException e) {
-                    System.out.println("Unable to open data file");
-                    e.printStackTrace();
-                    System.exit(0);
-                }
-
-                count = new ArrayList&lt;Integer&gt;(10);
-                for (Integer i = 0; i &lt; 10; i++) {
-                    count.add(i,0);
-                }
-
-                while(data.hasNextInt()) {
-                    idx = data.nextInt();
-                    count.set(idx,count.get(idx)+1);
-                }
-
-                idx = 0;
-                for(Integer i : count) {
-                    System.out.println(idx + " occured " + i + " times.");
-                    idx++;
-                }
+          public static void main(String[] args) {
+            int[] count = new int[10];
+            int[] numbers = {3, 7, 3, 2, 9, 0, 1, 7, 8, 3, 4, 4, 9, 6, 6, 2, 3, 5, 8, 7};
+            
+            for (int number : numbers) {
+              count[number]++;
             }
+
+            for (int i = 0; i &lt; count.length; i++) {
+              System.out.println(i + " occurred " + count[i] + " times.");
+            }
+          }
         }
-      </input>
+      </code>
     </program>
 
     <p>
-      Before going any further, I suggest you try to compile the above program and run it on some test data that you create.
+      Before going any further, I suggest you try to compile the above program and run it to see how it behaves.
     </p>
 
     <p>
       Now, let's look at what is happening in the Java source.
       As usual, we declare the variables we are going to use at the beginning of the method.
-      In this example we are declaring a <c>Scanner</c> variable called <c>data</c>, an integer called <c>idx</c> and an <c>ArrayList</c> called <c>count</c>.
-      However, there is a new twist to the <c>ArrayList</c> declaration.
-      Unlike Python where lists can contain just about anything, in Java we let the compiler know what kind of objects our array list is going to contain.
-      In this case the <c>ArrayList</c> will contain <c>Integers</c>.
-      The syntax we use to declare what kind of object the list will contain is the <c>&lt;Type&gt;</c> syntax.
+      In this example we are declaring two arrays.
+      The first  <c>int []</c> variable called <c>count</c>, a second <c>int []</c> called <c>numbers</c>.
+      However, there is a new twist to the <c>array</c> declaration.
+      In Java, array declarations are more explicit, requiring you to specify the data type and size. 
+      Python on the other hand offers more flexibility with list creation as we don't have to specify a type or initial size.
+      In this case the <c>array</c> will contain <c>int</c> values.
+      After declaring the variable, use the new keyword with the type and the size of the array (the number of elements it can hold). 
+      This will actually create the array in memory.
     </p>
 
     <p>
-      Technically, you don't *have* to declare what is going to be in an array list.
-      The compiler will allow you to leave the <c>&lt;Type&gt;</c> off the declaration.
-      If you don't tell Java what kind of object is going to be on the list Java will give you a warning message like this:
-    </p>
-
-    <pre>
-      Note: Histo.java uses unchecked or unsafe operations.
-      Note: Recompile with -Xlint:unchecked for details.
-    </pre>
-
-    <p>
-      Without the <c>&lt;Integer&gt;</c> part of the declaration Java simply assumes that <em>any</em> object can be on the list.
-      However, without resorting to an ugly notation called casting, you cannot do anything with the objects on a list like this!
-      So, if you forget you will surely see more errors later in your code.
-      (Try it and see what you get)
-    </p>
-    <p>
-      Lines 13—20 are required to open the file.
-      Why so many lines to open a file in Java?
-      The additional code mainly comes from the fact that Java forces you to reckon with the possibility that the file you want to open is not going to be there.
-      If you attempt to open a file that is not there you will get an error.
-      A try/catch construct allows us to try things that are risky, and gracefully recover from an error if one occurs.
-      The following example shows the general structure of a try/catch block.
-    </p>
-
-    <pre>
-        try {
-           Put some risky code in here, like opening a file
-        }
-        catch (Exception e) {
-           If an error happens in the try block an exception is thrown.
-           We will catch that exception here!
-        }
-    </pre>
-
-    <p>
-      Notice that in line 16 we are catching an <c>IOException</c>.
-      In fact, we will see later that we can have multiple catch blocks to catch different types of exceptions.
-      If we want to be lazy and catch any old exception we can catch an <c>Exception</c> which is the parent of all exceptions.
-      However, catching <c>Exception</c> is a terrible practice, since you may inadvertently catch exceptions you do not intend to, making it harder to identify bugs in your program.
+      The first loop in this example is similar to the Python for loop where the object of the loop is a Sequence.
+      In Java we can use this kind of for loop over all kinds of sequences, which are generally called Collection classes in Java.
+      The for loop <c>for(int number : numbers)</c> is equivalent to the Python loop <c>for i in count: </c> This loop iterates over all of the elements in the array called numbers.
+      Each time through the loop the int variable <c>number</c> is bound to the next element of the <c>array</c>.
     </p>
 
     <p>
-      On line 22 we create our <c>ArrayList</c> and give it an initial size of 10.
-      Strictly speaking, it is not necessary to give the <c>ArrayList</c> any size.
-      It will grow or shrink dynamically as needed, just like a list in Python.
-      On line 23 we start the first of three loops.
-      The for loop on lines 23-25 serves the same purpose as the Python statement <c>count = [0]*10</c>, that is it initializes the first 10 positions in the <c>ArrayList</c> to hold the value 0.
-    </p>
-
-    <p>
-      The syntax of this for loop probably looks very strange to you, but in fact it is not too different from what happens in Python using range.
-      In fact <c>for (Integer i = 0; i &lt; 10; i++)</c> is exactly equivalent to the Python <c>for i in range(10)</c> The first statement inside the parenthesis declares and initializes a loop variable <c>i</c>.
+      The syntax of the second for loop probably looks very strange to you, but in fact it is not too different from what happens in Python using range.
+      In fact <c>for (int i = 0; i &lt; 10; i++)</c> is exactly equivalent to the Python <c>for i in range(10)</c> The first statement inside the parenthesis declares and initializes a loop variable <c>i</c>.
       The second statement is a Boolean expression that is our exit condition.
       In other words we will keep looping as long as this expression evaluates to true.
       The third clause is used to increment the value of the loop variable at the end of iteration through the loop.
@@ -668,92 +605,168 @@
             <c>for i in range(100,0,-1)</c>
           </p>
         </li>
-        <li>
-          <p>
-            <c>for x,y in zip(range(10),range(0,20,2))</c>
-            [hint, you can separate statements in the same clause with a ,]
-          </p>
-        </li>
       </ul>
     </p>
 
     <p>
-      The next loop (lines 27-30) shows a typical Java pattern for reading data from a file.
-      Java while loops and Python while loops are identical in their logic.
-      In this case, we will continue to process the body of the loop as long as <c>data.hasNextInt()</c> returns true.
+      This example shows us that arrays in Java provide a fixed-size data structure for storing elements of the same type, which makes them efficient but somewhat limited in flexibility. 
+      Once an array is created, its size cannot be changed, meaning you need to know the required size beforehand or implement additional logic to handle resizing. 
+      This rigidity can be a drawback when working with collections of unknown or dynamically changing size. 
+      To address this limitation, Java offers the ArrayList class, which provides a more adaptable alternative for managing collections of data.
+    </p>
+  <p>
+
+
+  The ArrayList implementation is a more dynamic approach to handling collections in Java. 
+  While the histogram example does not require resizing the collection (as we know there are only 10 possible numbers, 0 through 9), 
+  using an ArrayList showcases its flexibility and provides a Python-like experience in Java. 
+  </p>
+      <p>Now, here's how we can implement the histogram using an ArrayList:</p>
+
+      <program language="java"  label="arraylist_histo" interactive="activecode">
+<code>
+  import java.util.ArrayList;
+
+public class HistogramArrayList {
+    public static void main(String[] args) {
+        
+        ArrayList&lt;Integer&gt; count = new ArrayList&lt; &gt;();
+        for (int i = 0; i &lt; 10; i++) {
+            count.add(0);  // Initialize with 0
+        }
+
+        int[] numbers = {3, 7, 3, 2, 9, 0, 1, 7, 8, 3, 4, 4, 9, 6, 6, 2, 3, 5, 8, 7};
+
+        for (int number : numbers) {
+            count.set(number, count.get(number) + 1);
+        }
+
+        for (int i = 0; i &lt; count.size(); i++) {
+            System.out.println(i + " occurred " + count.get(i) + " times.");
+        }
+    }
+}
+</code>
+</program>
+
+
+<p>
+    Let's break down the implementation step by step:
+</p>
+  
+  <pre>   ArrayList&lt;Integer&gt; count = new ArrayList&lt; &gt;();
+</pre>
+
+   <p>
+     To start we create our <c>ArrayList</c> and give it an initial size of 10.
+      Strictly speaking, it is not necessary to give the <c>ArrayList</c> any size.
+      It will grow or shrink dynamically as needed, just like a list in Python.
     </p>
 
+
+
+<pre>
+for (int i = 0; i &lt; 10; i++) {
+    count.add(0);  // Initialize all positions with 0
+}
+  </pre>
+  <p>
+    This serves the same purpose as the Python statement <c>count = [0]*10</c>, that is it initializes the first 10 positions in the <c>ArrayList</c> to hold the value 0.
+Unlike Python lists, where we can initialize a list with [0] * 10, ArrayList in Java requires us to explicitly populate it.
+Here, we use a for loop to add 10 zeros to the ArrayList. Each call to count.add(0) appends a zero to the list. 
+  </p>
+
+   <p>
+      Technically, you don't *have* to declare what is going to be in an array list.
+      The compiler will allow you to leave the <c>&lt;Type&gt;</c> off the declaration.
+      If you don't tell Java what kind of object is going to be on the list Java will give you a warning message like this:
+    </p>
+ <pre>
+      Note: Histo.java uses unchecked or unsafe operations.
+      Note: Recompile with -Xlint:unchecked for details.
+    </pre>
     <p>
-      Line 29 illustrates another important difference between Python and Java.
-      Notice that in Java we can not write <c>count[idx] = count[idx] + 1</c>.
-      This is because in Java there is no overloading of operators.
-      Everything except the most basic math and logical operations is done using methods.
-      So, to set the value of an <c>ArrayList</c> element we use the <c>set</c> method.
+      Without the <c>&lt;Integer&gt;</c> part of the declaration Java simply assumes that <em>any</em> object can be on the list.
+      However, without resorting to an ugly notation called casting, you cannot do anything with the objects on a list like this!
+      So, if you forget you will surely see more errors later in your code.
+      (Try it and see what you get!)
+    </p>
+
+
+    <p>
+  The next step is counting the occurrences and updating the list with the counts of each number:
+</p>
+<pre>
+  for (int number : numbers) {
+    count.set(number, count.get(number) + 1);
+}
+  </pre>
+
+  <p>
+  So, to set the value of an <c>ArrayList</c> element we use the <c>set</c> method.
       The first parameter of <c>set</c> indicates the index or position in the <c>ArrayList</c> we are going to change.
       The next parameter is the value we want to set.
-      Notice that, once again, we cannot use the indexing square bracket operator to retrieve a value from the list, but we must use the <c>get</c> method.
+      Notice that, we cannot use the indexing square bracket operator to retrieve a value from the list, but we must use the <c>get</c> method.
+</p>
+
+
+<p>
+  <ul>
+    <li>
+      <p>
+        <c>count.get(number)</c>: Retrieves the current value at the index corresponding to the number. 
+        For example, if the number <c>3</c> is encountered, <c>count.get(3)</c> retrieves the current count at index <c>3</c>.
+      </p>
+    </li>
+    <li>
+      <p>
+        <c>count.set(number, count.get(number) + 1)</c>: Updates the value at the index by incrementing it. For instance, if <c>count.get(3)</c> is <c>2</c>, this operation sets the value at index <c>3</c> to <c>3</c>.
+          This is similar to the Python logic <c>count[number] += 1</c>, but in Java, we explicitly call <c>.get()</c> to retrieve the value and <c>.set()</c> to update it.
+      </p>
+    </li>
+  </ul>
+</p>
+<p>
+    The for loop in this example is structured similar to how we did it for the array example.
     </p>
 
-    <p>
-      The last loop in this example is similar to the Python for loop where the object of the loop is a Sequence.
-      In Java we can use this kind of for loop over all kinds of sequences, which are called Collection classes in Java.
-      The for loop on line 33 <c>for(Integer i : count)</c> is equivalent to the Python loop <c>for i in count: </c> This loop iterates over all of the elements in the ArrayList called count.
-      Each time through the loop the Integer variable <c>i</c> is bound to the next element of the <c>ArrayList</c>.
-      If you tried the experiment of removing the <c>&lt;Integer&gt;</c> part of the <c>ArrayList</c> declaration you probably noticed that you had an error on this line.
-      Why?
-    </p>
+<p>
+  The next step is displaying the counts:
+</p>
+
+<pre>
+  for (int i = 0; i &lt; count.size(); i++) {
+    System.out.println(i + " occurred " + count.get(i) + " times.");
+}
+  </pre>
+
+<p>
+  Here, we iterate through each index of the <c>ArrayList</c>. <c>count.get(i)</c> retrieves the value at index <c>i</c> (the count of occurrences for the number <c>i</c>).
+The output is formatted to show the number (<c>i</c>) and the count of occurrences.
+
+</p>
+
+    
+
+
+ 
+
+    
   </subsection>
 
   <subsection xml:id="ch1_javaDataTypes_arrays">
-    <title>Arrays</title>
+    <title>Why we have both</title>
 
     <p>
-      As I said at the outset of this section, we are going to use Java <c>ArrayLists</c> because they are easier to use and more closely match the way that Python lists behave.
-      However, if you look at Java code on the internet or even in your Core Java books you are going to see examples of something called arrays.
-      In fact you have already seen one example of an array declared in the 'Hello World' program.
-      Lets rewrite this program to use primitive arrays rather than array lists.
-    </p>
+    In this course, you will primarily work with Java <c>ArrayLists</c> because they offer several advantages: they are dynamic, meaning they can grow or shrink as needed; 
+    they are easier to use with built-in methods for common operations; and they closely resemble the behavior of Python lists, making them more intuitive for those with prior Python experience. 
+</p><p>
+However, as you dive deeper into Java programming, you will notice that arrays are frequently used in a wide variety of code examples, especially in online resources and traditional Java textbooks. 
+Arrays are a fundamental part of Java, offering a more low-level approach to storing and managing data. They are fixed in size, require explicit indexing, 
+and provide a closer connection to how data is handled in memory, which is why understanding arrays is essential for developing a deeper comprehension of how Java works under the hood.
+ </p>
 
-    <program language="java">
-      <code>
-        import java.util.Scanner;
-        import java.io.File;
-        import java.io.IOException;
-
-        public class HistoArray {
-            public static void main(String[] args) {
-                Scanner data = null;
-                Integer[] count = {0,0,0,0,0,0,0,0,0,0};
-                Integer idx;
-
-                try {
-                    data = new Scanner(new File("test.dat"));
-                }
-                catch ( IOException e) {
-                    System.out.println("Unable to open data file");
-                    e.printStackTrace();
-                    System.exit(0);
-                }
-
-                while(data.hasNextInt()) {
-                    idx = data.nextInt();
-                    count[idx] = count[idx] + 1;
-                }
-
-                idx = 0;
-                for(Integer i : count) {
-                    System.out.println(idx + " occured " + i + " times.");
-                    idx++;
-                }
-            }
-        }
-      </code>
-    </program>
-
-    <p>
-      The main difference between this example and the previous example is that we declare <c>count</c> to be an <c>Array</c> of integers.
-      We also can initialize short arrays directly using the syntax shown on line 8.
-      Then notice that on line 22 we can use the square bracket notation to index into an array.
-    </p>
+  
+   
   </subsection>
 </section>
