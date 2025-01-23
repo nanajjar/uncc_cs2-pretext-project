@@ -166,7 +166,27 @@ public class Test1
             <p>Variables are a powerful abstraction in programming because the same algorithm can be used with different input values saved in variables.  
             The code below will say hello to anyone who types in their name for different name values. Click on run and then type in your name. Then, try run again and type in a friend’s name. 
             The code works for any name: behold, the power of variables!</p>
-            
+
+              <program xml:id="scanner_editor" interactive="activecode" language="java">
+
+        <input>
+
+import java.util.Scanner;
+
+public class Main
+{
+    public static void main(String[] args)
+    {
+        System.out.println("Please type in a name in the input box below.");
+        Scanner scan = new Scanner(System.in);
+        String name = scan.nextLine();
+        System.out.println("Hello " + name);
+        scan.close();
+     }
+ }
+
+        </input>
+            </program>
             <p>We'll learn more about the Scanner class as we progress. For more information on using the Scanner class can be found here <url href="https://www.w3schools.com/java/java_user_input.asp" visual="https://www.w3schools.com/java/java_user_input.asp">https://www.w3schools.com/java/java_user_input.asp</url></p>
         </subsection>
   <subsection xml:id="_operators">
@@ -334,7 +354,7 @@ public class Test1
     <exercise label="q3_4_1">
         <statement>
 
-            <p>1-4-10: What is the result of 158 % 10?</p>
+            <p>What is the result of 158 % 10?</p>
 
         </statement>
 <choices>
@@ -372,7 +392,7 @@ public class Test1
     <exercise label="q3_4_2">
         <statement>
 
-            <p>1-4-11: What is the result of 3 % 8?</p>
+            <p> What is the result of 3 % 8?</p>
 
         </statement>
 <choices>
