@@ -31,7 +31,11 @@ along with PreTeXt.  If not, see <http://www.gnu.org/licenses/>.
         <platform host="runestone"/>
         <!-- knowled checkpoints interfere with ActiveCode problems -->
         <knowl exercise-inline="no" example="no" listing="yes"/>
+         <!-- Choices at https://github.com/PreTeXtBook/CSS_core -->
+
         <css style="wide" toc="wide" banner="wide" navbar="wide" shell="wide" />
+        <!-- for scratch code language -->
+        <calculator activecode="java"/>
         <tableofcontents focused="yes" />
         
     </html>
