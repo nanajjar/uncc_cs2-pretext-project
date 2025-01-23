@@ -22,6 +22,7 @@
     <css colors="green_plum" />
     <!-- <css shell="crc" toc="crc"  banner="crc" navbar = 'crc'/> -->
     <css style="wide" toc="wide" banner="wide" navbar="wide" shell="wide" />
+    <calculator activecode="java"/>
 
 </html>
 
