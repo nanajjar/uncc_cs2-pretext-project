@@ -533,8 +533,8 @@
 
     <p>Here is the Java code needed to write the exact same program:</p>
 
-    <program language="java">
-      <code>
+    <program language="java" interactive="activecode">
+      <input>    
         import java.util.Scanner;
         import java.util.ArrayList;
         import java.io.File;
@@ -573,7 +573,7 @@
                 }
             }
         }
-      </code>
+      </input>
     </program>
 
     <p>
