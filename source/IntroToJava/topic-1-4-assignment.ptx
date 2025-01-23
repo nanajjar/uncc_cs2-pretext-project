@@ -167,7 +167,10 @@ public class Test1
             The code below will say hello to anyone who types in their name for different name values. Click on run and then type in your name. Then, try run again and type in a friend’s name. 
             The code works for any name: behold, the power of variables!</p>
 
-              <program xml:id="scanner_editor" interactive="activecode" language="java">
+    <raw format="html" xml:space="preserve">&lt;iframe height="89%" width="100%" style="max-width:90%; margin-left:5%"  src="https://trinket.io/embed/java/4f8c844bafd4" scrolling="no" frameborder="no" allowtransparency="true" allowfullscreen="true" sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"&gt;&lt;/iframe&gt;</raw>
+
+
+              <program xml:id="scanner_editor" language="java">
 
         <input>
 
