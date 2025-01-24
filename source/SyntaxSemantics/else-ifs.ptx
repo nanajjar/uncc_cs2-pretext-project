@@ -27,7 +27,10 @@ else
     <image source="ch-javaintro/Condition-three.png" width="50%"/>
   </figure>
     <note>
-            <p>Another way to handle 3 or more conditional cases is to use the <c>switch</c> and <c>break</c> keywords, but these will not be on the exam.  For a tutorial on using switch see <url href="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/switch.html" visual="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/switch.html">https://docs.oracle.com/javase/tutorial/java/nutsandbolts/switch.html</url>.</p>
+            <p>Another way to handle 3 or more conditional cases is to use the <c>switch</c> and <c>break</c> keywords. 
+            However, in the context of this book, we will not be utilizing them. 
+            Instead, we will focus on conditional logic using if-else statements, which provide similar functionality as they are more versatile for handling complex conditions. 
+            For a tutorial on using switch see <url href="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/switch.html" visual="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/switch.html">https://docs.oracle.com/javase/tutorial/java/nutsandbolts/switch.html</url>.</p>
         </note>
 
   <subsection xml:id="_summary-19">
