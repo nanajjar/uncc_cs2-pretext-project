@@ -22,10 +22,11 @@ How to Design Programs with Object Oriented Programming - From Python to Java   
 
     <!-- Include chapters -->
     <xi:include href="./DesignRecipe/toctree.ptx" />
+
     <xi:include href="./SyntaxSemantics/toctree.ptx" />
-      <xi:include href="./IntroToJava/toctree.ptx" />
-    <xi:include href="./ObjectOrientedProgramming/toctree.ptx" />
-    <xi:include href="./Tools/toctree.ptx" />
+      <!-- <xi:include href="./IntroToJava/toctree.ptx" /> -->
+    <!-- <xi:include href="./ObjectOrientedProgramming/toctree.ptx" /> -->
+    <!-- <xi:include href="./Tools/toctree.ptx" /> -->
 
 
     <backmatter>

@@ -3,7 +3,7 @@
 <section xml:id="_expressions-and-assignment-statements">
   <title>Expressions and Assignment Statements</title>
   <introduction>
-    <p>In this lesson, you will learn about assignment statements and expressions that contain math operators and variables.</p>
+    <p>In this section, we will review assignment statements and expressions that contain math operators and variables.</p>
   </introduction>
   <subsection xml:id="_assignment-statements">
             <title>Assignment Statements</title>
@@ -16,7 +16,7 @@
     <video xml:id="MZwIgM__5C8" youtube="MZwIgM__5C8" width="82%"/>
                 <p>As we saw in the video, we can set one variable’s value to a <em>copy</em> of the value of another variable like <c>y = x;</c>.  This won’t change the value of the variable that you are copying from.</p>
             
-            <p>Let’s step through the following code in the <raw format="html" xml:space="preserve"><a href="http://www.pythontutor.com/visualize.html#code=public+class+Test2%0A%7B%0A+++public+static+void+main(String%5B%5D+args%29%0A+++%7B%0A+++++int+x+%3D+3%3B%0A+++++int+y+%3D+2%3B%0A+++++System.out.println(x%29%3B%0A+++++System.out.println(y%29%3B%0A+++++x+%3D+y%3B%0A+++++System.out.println(x%29%3B%0A+++++System.out.println(y%29%3B%0A+++++y+%3D+5%3B%0A+++++System.out.println(x%29%3B%0A+++++System.out.println(y%29%3B%0A+++%7D%0A%7D&amp;mode=display&amp;origin=opt-frontend.js&amp;cumulative=false&amp;heapPrimitives=false&amp;textReferences=false&amp;py=java&amp;rawInputLstJSON=%5B%5D&amp;curInstr=0" target="_blank"  style="text-decoration:underline">Java visualizer</a></raw> to see the values in memory. Click on the Next button at the bottom of the code to see how the values of the variables change. You can run the visualizer on any Active Code in this e-book by just clicking on the Code Lens button at the top of each Active Code.</p>
+            <p>Let's step through the following code in the <raw format="html" xml:space="preserve"><a href="http://www.pythontutor.com/visualize.html#code=public+class+Test2%0A%7B%0A+++public+static+void+main(String%5B%5D+args%29%0A+++%7B%0A+++++int+x+%3D+3%3B%0A+++++int+y+%3D+2%3B%0A+++++System.out.println(x%29%3B%0A+++++System.out.println(y%29%3B%0A+++++x+%3D+y%3B%0A+++++System.out.println(x%29%3B%0A+++++System.out.println(y%29%3B%0A+++++y+%3D+5%3B%0A+++++System.out.println(x%29%3B%0A+++++System.out.println(y%29%3B%0A+++%7D%0A%7D&amp;mode=display&amp;origin=opt-frontend.js&amp;cumulative=false&amp;heapPrimitives=false&amp;textReferences=false&amp;py=java&amp;rawInputLstJSON=%5B%5D&amp;curInstr=0" target="_blank"  style="text-decoration:underline">Java visualizer</a></raw> to see the values in memory. Click on the Next button at the bottom of the code to see how the values of the variables change. You can run the visualizer on any Active Code in this e-book by just clicking on the Code Lens button at the top of each Active Code.</p>
 
 <program xml:id="asgn_viz1" interactive="codelens" language="java">
     <input>
@@ -193,7 +193,7 @@ public class Main
 
         </input>
             </program>
-            <p>We'll learn more about the Scanner class as we progress. For more information on using the Scanner class can be found here <url href="https://www.w3schools.com/java/java_user_input.asp" visual="https://www.w3schools.com/java/java_user_input.asp">https://www.w3schools.com/java/java_user_input.asp</url></p>
+            <p>We'll learn more about the Scanner class as we progress. More information on using the Scanner class can be found here <url href="https://www.w3schools.com/java/java_user_input.asp" visual="https://www.w3schools.com/java/java_user_input.asp">https://www.w3schools.com/java/java_user_input.asp</url></p>
         </subsection>
   <subsection xml:id="_operators">
             <title>Operators</title>
