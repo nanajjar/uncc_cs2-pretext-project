@@ -103,7 +103,7 @@
       In Java we have a couple of ways to write this
     </p>
 
-    <program language="java">
+    <program language="java" >
       <code>
         public class ElseIf {
             public static void main(String args[]) {

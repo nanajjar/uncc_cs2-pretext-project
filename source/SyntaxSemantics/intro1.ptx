@@ -10,7 +10,7 @@
   </p>
 
   <p>
-    We will use Python as a starting point for our journey into Java.
+    
     We will begin by looking at a very simple Java program, just to see what the language looks like and how we get a program to run.
     Next, we will look at the main constructs that are common to most programming languages:
     <ul>
@@ -29,14 +29,14 @@
           Displaying text output
         </p>
       </li>
-      <li>
+       <li>
         <p>
-          Conditionals
+          Expressions and Statements
         </p>
       </li>
       <li>
         <p>
-          Loops
+          Conditionals
         </p>
       </li>
     </ul>

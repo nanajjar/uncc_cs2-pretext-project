@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <section xml:id="ch1_firstLookJava">
-  <title>Lets look at a Java Program</title>
+  <title>A Deeper Dive into a Java Program</title>
 
   <p>
     A time-honored tradition in Computer Science is to write a program called “hello world.”
