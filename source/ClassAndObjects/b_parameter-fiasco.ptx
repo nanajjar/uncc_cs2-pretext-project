@@ -1,0 +1,205 @@
+<section xml:id="multi-parameter-problem">
+  <title>Method Parameters</title>
+
+  <p> Remember how methods helped us avoid copying and pasting code? That was great! But as our
+    programs grow bigger, we're running into a new problem: <em>too many separate variables</em>
+    that really belong together. </p>
+
+  <!-- ======================================================
+       The Problem: Too Many Separate Pieces
+       ====================================================== -->
+  <subsection xml:id="the-problem-too-many-separate-pieces">
+    <title>The Problem: Too Many Separate Pieces</title>
+
+    <p>
+      Think of it like packing for school. Instead of one backpack, imagine carrying:
+    </p>
+
+    <ul>
+      <li>
+        <p>Your math textbook in one hand</p>
+      </li>
+      <li>
+        <p>Your pencil case in another</p>
+      </li>
+      <li>
+        <p>Your calculator in your pocket</p>
+      </li>
+      <li>
+        <p>Your notebook under your arm</p>
+      </li>
+      <li>
+        <p>Your lunch box... somehow?</p>
+      </li>
+    </ul>
+
+    <p> Sure, you <em>could</em> do it, but it's awkward and things might fall! This is exactly
+      what's happening in our game code: </p>
+
+    <listing xml:id="separate-variables-example">
+      <caption>Many Separate Variables</caption>
+      <program language="java"><![CDATA[
+int playerHealth  = 100;
+int playerGold    = 50;
+int playerXp      = 0;
+int playerMana    = 75;
+int playerStamina = 90;
+]]></program>
+    </listing>
+
+    <p> All these variables describe one thing (<em>the player</em>), but we're carrying them
+      separately. This leads to clumsy method calls: </p>
+
+    <listing xml:id="too-many-params">
+      <program language="java"><![CDATA[
+// We have to pass everything one by one
+public static int increaseHealth(int currentHealth, int healAmount) {
+    return currentHealth + healAmount;
+}
+
+public static int increaseGold(int currentGold, int goldReward) {
+    return currentGold + goldReward;
+}
+
+// Using them gets tedious
+playerHealth = increaseHealth(playerHealth, 5);
+playerGold   = increaseGold(playerGold, 10);
+]]></program>
+    </listing>
+  </subsection>
+
+  <!-- ======================================================
+       Why This Is A Problem
+       ====================================================== -->
+  <subsection xml:id="why-this-is-a-problem">
+    <title>Why This Is A Problem</title>
+
+    <p>Here’s why juggling so many separate variables causes trouble:</p>
+
+    <ol>
+      <li>
+        <p><strong>Too Many Parameters</strong>: What if we need a method that changes both health <em>
+          and</em> gold? We'd need something like:</p>
+        <listing xml:id="award-victory-future">
+          <program language="java"><![CDATA[
+public static void awardVictory(int health, int gold, int xp, int mana /* ... */) {
+    // ...
+}
+]]></program>
+        </listing>
+        <p>
+          That's a lot to keep track of!
+        </p>
+      </li>
+
+      <li>
+        <p><strong>Easy Mistakes</strong>: The compiler can't help us if we mix up the order:</p>
+        <listing xml:id="swapped-params">
+          <program language="java"><![CDATA[
+// Oops! Accidentally swapped health and gold
+awardVictory(playerGold, playerHealth);  // This will compile! 😱
+]]></program>
+        </listing>
+        <p>It compiles, but it's obviously wrong—Java doesn't know they're reversed.</p>
+      </li>
+
+      <li>
+        <p><strong>Multiple Players</strong>: It gets worse with two players:</p>
+        <listing xml:id="two-players">
+          <program language="java"><![CDATA[
+int player1Health = 100;
+int player1Gold   = 50;
+
+int player2Health = 100;
+int player2Gold   = 50;
+
+// ... this is getting out of hand!
+]]></program>
+        </listing>
+      </li>
+    </ol>
+  </subsection>
+
+  <!-- ======================================================
+       The Solution: Grouping Related Things Together
+       ====================================================== -->
+  <subsection xml:id="the-solution-grouping-related-things">
+    <title>The Solution: Grouping Related Things Together</title>
+
+    <p> Just like how a backpack keeps all your school supplies together, Java has a way to keep
+      related variables together: it’s called a <em>class</em>. </p>
+    <p> Instead of juggling separate variables, we can create a <c>Player</c> class that keeps track
+      of its own stats: </p>
+
+    <listing xml:id="player-class-preview">
+      <caption>A Preview of a Player Class</caption>
+      <program language="java"><![CDATA[
+// This is a preview - we'll learn how to write this soon!
+Player p1 = new Player(100, 50, 0, 75, 90);
+p1.increaseHealth(5); // So much simpler!
+]]></program>
+    </listing>
+
+    <p>
+      Think of a class like a blueprint for creating objects that:
+    </p>
+    <ul>
+      <li>
+        <p>Keep their related data together (like health, gold, etc.)</p>
+      </li>
+      <li>
+        <p>Include methods that work with that data</p>
+      </li>
+      <li>
+        <p>Protect their data from accidental misuse</p>
+      </li>
+    </ul>
+  </subsection>
+
+  <!-- ======================================================
+       What's Coming Next?
+       ====================================================== -->
+  <subsection xml:id="whats-coming-next">
+    <title>What's Coming Next?</title>
+
+    <p>In our next section, we'll learn:</p>
+    <ul>
+      <li>
+        <p>How to create our own classes (like that <c>Player</c> example)</p>
+      </li>
+      <li>
+        <p>How to keep data safe inside our classes</p>
+      </li>
+      <li>
+        <p>How to write methods that belong to our classes</p>
+      </li>
+    </ul>
+  </subsection>
+
+  <!-- ======================================================
+       Practice Thinking About It
+       ====================================================== -->
+  <subsection xml:id="practice-thinking-about-it">
+    <title>Practice Thinking About It</title>
+
+    <p>
+      <strong>1. Group Related Things</strong><br /> If you were making a <c>BankAccount</c>, what
+      information would belong together? Think: <em>balance, account number, interest rate...</em>
+    </p>
+
+    <p>
+      <strong>2. Spot the Problem</strong><br /> How many things could go wrong with: </p>
+    <listing xml:id="transfer-money">
+      <program language="java"><![CDATA[
+public static void transferMoney(int fromBalance, int toBalance, int amount)
+]]></program>
+    </listing>
+
+    <p> What if someone mixes up the order of <c>fromBalance</c> and <c>toBalance</c>? </p>
+
+    <p>
+      <em>Next up:</em> We'll see how to solve these problems by learning about classes – a way to
+      keep related data and methods together, just like a backpack keeps your school supplies
+      organized! </p>
+  </subsection>
+</section>

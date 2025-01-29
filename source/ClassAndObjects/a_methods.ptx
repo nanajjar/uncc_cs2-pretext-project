@@ -128,14 +128,10 @@ public class IntroMethods1 {
     </p>
     <listing xml:id="basic-method-syntax">
       <caption>Basic Method Syntax</caption>
-      <program language="java">
-        <input>
-public static returnType methodName(parameters) {
+      <program language="java"><input>public static returnType methodName(parameters) {
     // method body
     return something; // if needed
-}
-        </input>
-      </program>
+}</input></program>
     </listing>
 
     <p>
@@ -197,21 +193,11 @@ public static returnType methodName(parameters) {
 
     <p> For example, in <c>public static int addNumbers(int first, int second)</c>: </p>
     <ul>
-      <li>
-        <p>It's <c>public</c> so other code can use it</p>
-      </li>
-      <li>
-        <p>It's <c>static</c> so we can call it directly from <c>main</c></p>
-      </li>
-      <li>
-        <p>It returns an <c>int</c></p>
-      </li>
-      <li>
-        <p>It's named <c>addNumbers</c></p>
-      </li>
-      <li>
-        <p>It takes two <c>int</c> parameters named <c>first</c> and <c>second</c></p>
-      </li>
+      <li><p>It's <c>public</c> so other code can use it</p></li>
+      <li><p>It's <c>static</c> so we can call it directly from <c>main</c></p></li>
+      <li><p>It returns an <c>int</c></p></li>
+      <li><p>It's named <c>addNumbers</c></p></li>
+      <li><p>It takes two <c>int</c> parameters named <c>first</c> and <c>second</c></p></li>
     </ul>
 
     <p>
@@ -370,8 +356,7 @@ Gold: 70
 
     <ul>
       <li>
-        <p>What if we add more player stats? <c>awardVictory(health, gold, xp, mana, stamina,
-          luck...)</c></p>
+        <p>What if we add more player stats? <c>awardVictory(health, gold, xp, mana, stamina, luck...)</c></p>
       </li>
       <li>
         <p>What if we need two players? <c>awardVictory(player1Health, player1Gold, player1Xp...)</c></p>
