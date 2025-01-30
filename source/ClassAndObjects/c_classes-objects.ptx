@@ -329,8 +329,7 @@ public class Player {
 }
 ]]></program>
       </listing>
-      <p> When you call <c>player1.heal(5)</c>, Java secretly passes <c>player1</c> to the method as <c>
-        this</c>. You can think of it like: </p>
+      <p> When you call <c>player1.heal(5)</c>, Java secretly passes <c>player1</c> to the method as <c>this</c>. You can think of it like: </p>
       <listing xml:id="this-keyword-internal">
         <program language="java"><![CDATA[
 // What you write:
@@ -653,5 +652,190 @@ public class Monster {
     </ul>
 
     <p>See you in the next chapter!</p>
+  </subsection>
+
+  <subsection xml:id="exercises-classes-objects">
+    <title>Exercises: Classes and Objects</title>
+
+    <!-- 1) MULTIPLE-CHOICE: WHY CLASSES HELP WITH MULTIPLE PLAYERS -->
+    <exercise xml:id="mc-why-classes">
+      <title>Multiple Choice: Why Use Classes?</title>
+      <statement>
+        <p> In this section, we introduced the idea of creating a <c>Player</c> class to hold
+          related stats (health, gold, etc.). Which statement <em>best</em> captures why this is
+          beneficial for handling multiple players in a game? </p>
+      </statement>
+      <choices randomize="yes">
+        <choice>
+          <statement> Because Java won’t compile if you declare more than three <c>int</c> variables
+            outside a class. </statement>
+          <feedback>
+            That’s not true; Java doesn’t limit the number of variables outside a class.
+          </feedback>
+        </choice>
+        <choice correct="yes">
+          <statement> Each <c>Player</c> object bundles its own stats, reducing confusion and
+            preventing you from mixing up <c>player1Health</c> and <c>player2Health</c>. </statement>
+          <feedback>
+            Exactly! Grouping related data (and methods) in a class makes it far less error-prone
+            than many separate variables.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            Because static methods can only accept one parameter, so we must use a class to handle
+            multiple stats.
+          </statement>
+          <feedback>
+            Static methods can accept multiple parameters; that’s not the main reason classes are
+            helpful.
+          </feedback>
+        </choice>
+        <choice>
+          <statement> Classes automatically remove the need to type <c>public</c> or <c>static</c>
+            in your code. </statement>
+          <feedback> Classes don’t remove <c>public</c> or <c>static</c> usage; you still control
+            that in the class definition. </feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- 2) TRUE/FALSE: EACH OBJECT HAS ITS OWN DATA -->
+    <exercise xml:id="tf-each-object-own-data" type="truefalse">
+      <title>True/False: Separate Data in Each Object</title>
+      <statement correct="yes"> If you create two <c>Player</c> objects, <c>p1</c> and <c>p2</c>,
+        each has its own <c>health</c> and <c>gold</c> fields. Calling <c>p1.heal(5)</c> affects
+        only <c>p1</c>, and does not affect <c>p2</c>. </statement>
+      <feedback> Each instance has its own copy of the fields, so operations on <c>p1</c>
+        do not change <c>p2</c>. </feedback>
+    </exercise>
+
+    <!-- 3) PARSONS: BUILD A MINIMAL CLASS -->
+    <exercise xml:id="parsons-minimal-class" language="java">
+      <title>Parsons: A Minimal Player Class</title>
+      <statement>
+        <p> Rearrange the following lines to form a <em>complete, minimal</em> <c>Player</c> class
+          that compiles and runs. It should have: </p>
+        <ul>
+          <li>A <c>health</c> field</li>
+          <li>A constructor that sets <c>health</c></li>
+          <li>A method <c>heal(int amount)</c> that adds to <c>health</c></li>
+          <li>A <c>main</c> method creating a <c>Player</c>, calling <c>heal</c>, and printing <c>
+            health</c></li>
+        </ul>
+        <p>
+          Only one arrangement will compile and run correctly.
+        </p>
+      </statement>
+      <blocks layout="vertical" randomize="yes">
+        <block order="1">
+          <choice correct="yes">
+            <cline>public class Player {</cline>
+          </choice>
+        </block>
+        <block order="2">
+          <choice correct="yes">
+            <cline> int health;</cline>
+          </choice>
+        </block>
+        <block order="3">
+          <choice correct="yes">
+            <cline> public Player(int startHealth) {</cline>
+          </choice>
+        </block>
+        <block order="4">
+          <choice correct="yes">
+            <cline> health = startHealth;</cline>
+          </choice>
+        </block>
+        <block order="5">
+          <choice correct="yes">
+            <cline> }</cline>
+          </choice>
+        </block>
+        <block order="6">
+          <choice correct="yes">
+            <cline> public void heal(int amount) {</cline>
+          </choice>
+        </block>
+        <block order="7">
+          <choice correct="yes">
+            <cline> health += amount;</cline>
+          </choice>
+        </block>
+        <block order="8">
+          <choice correct="yes">
+            <cline> }</cline>
+          </choice>
+        </block>
+        <block order="9">
+          <choice correct="yes">
+            <cline> public static void main(String[] args) {</cline>
+          </choice>
+        </block>
+        <block order="10">
+          <choice correct="yes">
+            <cline> Player p = new Player(10);</cline>
+          </choice>
+        </block>
+        <block order="11">
+          <choice correct="yes">
+            <cline> p.heal(5);</cline>
+          </choice>
+        </block>
+        <block order="12">
+          <choice correct="yes">
+            <cline> System.out.println(p.health);</cline>
+          </choice>
+        </block>
+        <block order="13">
+          <choice correct="yes">
+            <cline> }</cline>
+          </choice>
+        </block>
+        <block order="14">
+          <choice correct="yes">
+            <cline>}</cline>
+          </choice>
+        </block>
+      </blocks>
+    </exercise>
+
+    <!-- 4) SHORT ANSWER: WHAT IS 'this'? -->
+    <exercise xml:id="sa-this-keyword">
+      <title>Short Answer: What Is the <c>this</c> Keyword?</title>
+      <statement>
+        <p> In the code example, <c>this</c> appears inside <c>heal</c> to refer to the current
+          object's fields (e.g., <c>this.health</c>). In <em>1–2 sentences</em>, explain what <c>
+          this</c> refers to when an instance method is called (e.g., <c>p1.heal(5)</c>). </p>
+      </statement>
+      <response />
+      <solution>
+        <p>
+          <strong>Sample Solution:</strong> When we call <c>p1.heal(5)</c>, <c>this</c> inside the <c>
+          heal</c> method refers to <c>p1</c>. In other words, <c>this</c> is the specific <c>Player</c>
+          object on which the method was invoked. </p>
+      </solution>
+    </exercise>
+
+    <!-- 5) REFLECTION: WHY NO RETURN TYPE FOR CONSTRUCTOR? -->
+    <exercise xml:id="reflection-constructor-no-return">
+      <title>Reflection: Why No Return Type for a Constructor?</title>
+      <statement>
+        <p> Java constructors look like methods but don’t have a return type. In <em>2–3 sentences</em>,
+          explain why constructors lack a <c>void</c> or <c>Player</c> return type. Hint: think
+          about how <c>new Player(...)</c> already returns a fully constructed object without
+          needing an explicit <c>return</c> statement. </p>
+      </statement>
+      <response />
+      <solution>
+        <p>
+          <strong>Sample Solution:</strong> A constructor’s job is to initialize a new object. The <c>
+          new</c> keyword allocates memory and then calls the constructor to set fields. By
+          definition, constructors implicitly return the new object reference—so Java syntax doesn’t
+          require (or allow) a named return type. </p>
+      </solution>
+    </exercise>
+
   </subsection>
 </section>

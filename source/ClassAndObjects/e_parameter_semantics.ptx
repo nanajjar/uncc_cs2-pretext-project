@@ -645,4 +645,214 @@ System.out.println(hero.getHealth());  // Should be 150
       <p>Remember: Changes only "stick" when you modify the actual object through its reference!</p>
     </subsubsection>
   </subsection>
+
+  <subsection xml:id="exercises-primitives-vs-refs">
+    <title>Exercises: Primitive &amp; Reference Types</title>
+
+    <!-- 1) MULTIPLE-CHOICE: PRIMITIVES VS. REFERENCES IN MEMORY -->
+    <exercise xml:id="mc-primitives-vs-refs">
+      <title>Multiple Choice: Primitives vs. References</title>
+      <statement>
+        <p>
+          Which statement best describes how primitives differ from reference types (objects) in
+          Java?
+        </p>
+      </statement>
+      <choices randomize="yes">
+        <choice>
+          <statement>
+            Primitives are allocated on the heap, while references are allocated on the stack.
+          </statement>
+          <feedback>
+            The real distinction is that primitives store actual values,
+            while references store addresses. This statement is an oversimplification
+            (and not always accurate about stack vs. heap).
+          </feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>
+            Primitives store their actual value in each variable; reference variables store an
+            address pointing to shared data elsewhere.
+          </statement>
+          <feedback>
+            Correct! Primitive variables each hold an independent value (like a sticky note),
+            while references point to the same underlying object (like a locker number).
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            Primitives can never be copied, but references can be freely copied.
+          </statement>
+          <feedback> Actually, primitives <em>are</em> copied (by value). You can also copy a
+            reference variable (resulting in two variables pointing to the same object). </feedback>
+        </choice>
+        <choice>
+          <statement> You must call <c>new</c> to create primitives, but objects are created
+            automatically. </statement>
+          <feedback> It’s the opposite: primitives don’t use <c>new</c>; objects typically do. </feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- 2) MULTIPLE-CHOICE: COPYING REFERENCES -->
+    <exercise xml:id="mc-copying-references">
+      <title>Multiple Choice: Copying References</title>
+      <statement>
+        <p>
+          Consider the following code:
+        </p>
+        <listing>
+          <program language="java"><![CDATA[
+Player p1 = new Player(100);
+Player p2 = p1;
+p2.damage(10);
+System.out.println(p1.getHealth());
+]]></program>
+        </listing>
+        <p> Which outcome is <em>most</em> likely? </p>
+      </statement>
+      <choices randomize="yes">
+        <choice>
+          <statement> The code does not compile, because you cannot assign <c>p1</c> to <c>p2</c>
+            without using <c>new</c>. </statement>
+          <feedback>
+            It does compile. Assigning references is allowed.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            <c>p1</c>’s health is still 100, because <c>p2</c> is a separate Player. </statement>
+          <feedback> No, <c>p2 = p1</c> means both variables refer to the <em>same</em> Player. </feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>
+            <c>p1</c>’s health is 90, because <c>p1</c> and <c>p2</c> point to the same object. </statement>
+          <feedback> Correct. Damage via <c>p2</c> affects the same underlying Player that <c>p1</c>
+            sees. </feedback>
+        </choice>
+        <choice>
+          <statement> The code throws a runtime error on <c>p2.damage(10)</c> because <c>p2</c> has
+            no reference. </statement>
+          <feedback> That would only happen if <c>p2</c> were <c>null</c>, but here it’s given the
+            same reference as <c>p1</c>. </feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- 3) TRUE/FALSE: PASSED PRIMITIVES DON'T CHANGE ORIGINAL -->
+    <exercise xml:id="tf-primitive-pass-method" type="truefalse">
+      <title>True/False: Passing Primitives to Methods</title>
+      <statement correct="yes"> If you pass an <c>int</c> to a method and modify it inside the
+        method, the original <c>int</c> in the caller remains unchanged. </statement>
+      <feedback>
+        Exactly. Primitives are passed by value, so changes affect only the copy, not the caller's
+        variable.
+      </feedback>
+    </exercise>
+
+    <!-- 4) TRUE/FALSE: REFERENCE PARAMETERS AFFECT THE SAME OBJECT -->
+    <exercise xml:id="tf-object-pass-method" type="truefalse">
+      <title>True/False: Passing Object References to Methods</title>
+      <statement correct="yes"> If you pass an object reference (like a <c>Player</c>) to a method
+        and the method calls <c>player.damage(10)</c>, the caller’s object is affected. </statement>
+      <feedback>
+        Correct! Even though Java is pass-by-value for the reference, that “value” is the address,
+        so changes to the object persist.
+      </feedback>
+    </exercise>
+
+    <!-- 5) SHORT ANSWER: EXPLAIN "LOCKER NUMBER" ANALOGY -->
+    <exercise xml:id="sa-locker-analogy">
+      <title>Short Answer: Explaining the "Locker Number" Analogy</title>
+      <statement>
+        <p> In <em>1–3 sentences</em>, use the "locker number" analogy to explain why two variables
+          like <c>p1</c> and <c>p2</c> might show the same change when you call <c>p2.damage(10)</c>
+          .
+      </p>
+      </statement>
+      <response />
+      <solution>
+        <p>
+          <strong>Sample Solution:</strong> When you assign <c>p2 = p1</c>, you give <c>p2</c> the
+          same "locker number" that <c>p1</c> already had. So, <c>p1</c> and <c>p2</c> are both
+          opening the same locker (the same Player object). If <c>p2.damage(10)</c> changes what's
+          in that locker, <c>p1</c> sees the change as well. </p>
+      </solution>
+    </exercise>
+
+    <!-- 6) PARSONS: WRONG vs RIGHT METHOD FOR MODIFICATION -->
+    <exercise xml:id="parsons-primitive-vs-ref" language="java">
+      <title>Parsons: Wrong vs Right Method for Updating Health</title>
+      <statement>
+        <p> Rearrange the lines below to form a short Java class with two methods: <c>wrongHeal</c>
+          (using an <c>int</c> parameter) and <c>rightHeal</c> (using a <c>Player</c> parameter).
+          One method won't actually change the player's health, and the other will. Put the lines in
+          a valid order with proper braces. </p>
+      </statement>
+      <blocks layout="vertical" randomize="yes">
+        <block order="1">
+          <choice correct="yes">
+            <cline>public class HealingTest {</cline>
+          </choice>
+        </block>
+
+        <block order="2">
+          <choice correct="yes">
+            <cline> public static void wrongHeal(int health, int amount) {</cline>
+          </choice>
+        </block>
+        <block order="3">
+          <choice correct="yes">
+            <cline> health += amount; // Only changes the copy</cline>
+          </choice>
+        </block>
+        <block order="4">
+          <choice correct="yes">
+            <cline> }</cline>
+          </choice>
+        </block>
+
+        <block order="5">
+          <choice correct="yes">
+            <cline> public static void rightHeal(Player p, int amount) {</cline>
+          </choice>
+        </block>
+        <block order="6">
+          <choice correct="yes">
+            <cline> p.heal(amount); // Actually changes Player's health</cline>
+          </choice>
+        </block>
+        <block order="7">
+          <choice correct="yes">
+            <cline> }</cline>
+          </choice>
+        </block>
+
+        <block order="8">
+          <choice correct="yes">
+            <cline>}</cline>
+          </choice>
+        </block>
+      </blocks>
+    </exercise>
+
+    <!-- 7) REFLECTION: PASS-BY-VALUE FOR PRIMITIVES VS REFERENCES -->
+    <exercise xml:id="reflection-pass-by-value">
+      <title>Reflection: Pass-by-Value for Primitives vs. References</title>
+      <statement>
+        <p> In <em>2–3 sentences</em>, reflect on why Java is said to be “pass-by-value” even when
+          calling a method with an object reference. Consider what’s being copied and how that leads
+          to changes in the original object. </p>
+      </statement>
+      <response />
+      <solution>
+        <p>
+          <strong>Sample Solution:</strong> Java always copies the variable’s value. For primitives,
+          that value is the actual number. For objects, the value is the reference (like a locker
+          number). Copying the same “locker number” means both copies point to the same object, so
+          changes in the method remain visible to the caller. </p>
+      </solution>
+    </exercise>
+
+  </subsection>
 </section>

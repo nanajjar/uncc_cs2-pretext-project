@@ -261,8 +261,7 @@ playerGold = 50;    // Original stays 50
         <p>Could we return both values somehow? (Not directly—methods return one thing)</p>
       </li>
       <li>
-        <p>Could we... <i>wait</i>... what if we return the new value and store it
-          back? (Yes!)</p>
+        <p>Could we... <i>wait</i>... what if we return the new value and store it back? (Yes!)</p>
       </li>
     </ul>
 
@@ -356,10 +355,10 @@ Gold: 70
 
     <ul>
       <li>
-        <p>What if we add more player stats? <c>awardVictory(health, gold, xp, mana, stamina, luck...)</c></p>
+        <p>What if we add more player stats? <c>awardVictory(health, gold, xp, mana, stamina, luck)</c></p>
       </li>
       <li>
-        <p>What if we need two players? <c>awardVictory(player1Health, player1Gold, player1Xp...)</c></p>
+        <p>What if we need two players? <c>awardVictory(player1Health, player1Gold, player1Xp)</c></p>
       </li>
       <li>
         <p>What if we accidentally mix up the order? <c>awardVictory(gold, health)</c>—oops!</p>
@@ -375,9 +374,8 @@ Gold: 70
           <p>We identified repeated logic → used methods.</p>
         </li>
         <li>
-          <p>But we still juggle many separate variables. The next step? “Bundle them in one
-      container.” In Java, that container is a <i>class</i>. Then we can do <c>
-      player1.heal(5)</c> without passing <c>(health1, xp1, gold1, … )</c>.</p>
+          <p>But we still juggle many separate variables. The next step? "Bundle them in one
+      container." In Java, that container is a <i>class</i>. Then we can do <c>player1.heal(5)</c> without passing <c>health1, xp1, gold1</c>.</p>
         </li>
       </ul>
     </p>
@@ -567,6 +565,182 @@ public static returnType methodName(type1 param1, type2 param2) {
         <p>Implement and verify</p>
       </li>
     </ol>
+  </subsection>
+
+  <subsection xml:id="exercises-introducing-methods">
+    <title>Exercises: Introducing Methods</title>
+
+    <!-- 1. MULTIPLE-CHOICE EXERCISE -->
+    <exercise xml:id="mc-repeated-code">
+      <title>Multiple Choice: The Repeated Code Problem</title>
+      <statement>
+        <p> In the example where we repeatedly wrote <c>playerHealth += 5; playerGold += 10;</c> for
+          each victory, which of the following best explains why that repeated code is problematic? </p>
+      </statement>
+      <choices randomize="yes">
+        <choice>
+          <statement>Java prohibits writing the same code more than once in a file.</statement>
+          <feedback>
+            Java doesn't forbid that—it simply becomes difficult to maintain.
+          </feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>Whenever we need to change the reward amounts, we must edit multiple places,
+            risking inconsistencies.</statement>
+          <feedback>Exactly! Repetition leads to fragile code and potential errors when updating the
+            logic.</feedback>
+        </choice>
+        <choice>
+          <statement>Copy-pasting code only matters in Python, not in Java.</statement>
+          <feedback>
+            Repetition is a problem in any language—it makes maintenance harder.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>We can only use repeated code if we mark it <c>static</c> first.</statement>
+          <feedback>
+            <c>static</c> doesn’t address the real issue of maintenance overhead when logic changes. </feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- 2. PARSONS PROBLEM EXERCISE -->
+    <exercise xml:id="parsons-victory-game" language="java">
+      <title>Parsons: Convert Repeated Logic to Methods</title>
+      <statement>
+        <p> Rearrange the following lines to form a <em>single, valid</em> Java program named <c>
+          VictoryGame</c>. It should: </p>
+        <ul>
+          <li>Have a class <c>VictoryGame</c>.</li>
+          <li>Define two methods: <c>awardVictoryHealth</c> and <c>awardVictoryGold</c>, each
+            returning the updated <c>int</c>.</li>
+          <li>Use these methods in <c>main</c> to update <c>playerHealth</c> and <c>playerGold</c>
+            from <c>10</c> and <c>50</c> to <c>15</c> and <c>60</c>, respectively.</li>
+          <li>Print the final health and gold to the console.</li>
+        </ul>
+        <p>
+          There is only one sensible ordering in which all braces match and the code compiles and
+          runs.
+          Arrange the blocks carefully!
+        </p>
+      </statement>
+      <blocks layout="vertical" randomize="yes">
+        <block order="1">
+          <choice correct="yes">
+            <cline>public class VictoryGame {</cline>
+          </choice>
+        </block>
+        <block order="2">
+          <choice correct="yes">
+            <cline>public static int awardVictoryHealth(int health) {</cline>
+          </choice>
+        </block>
+        <block order="3">
+          <choice correct="yes">
+            <cline> return health + 5;</cline>
+          </choice>
+        </block>
+        <block order="4">
+          <choice correct="yes">
+            <cline>}</cline>
+          </choice>
+        </block>
+        <block order="5">
+          <choice correct="yes">
+            <cline>public static int awardVictoryGold(int gold) {</cline>
+          </choice>
+        </block>
+        <block order="6">
+          <choice correct="yes">
+            <cline> return gold + 10;</cline>
+          </choice>
+        </block>
+        <block order="7">
+          <choice correct="yes">
+            <cline>}</cline>
+          </choice>
+        </block>
+        <block order="8">
+          <choice correct="yes">
+            <cline>public static void main(String[] args) {</cline>
+          </choice>
+        </block>
+        <block order="9">
+          <choice correct="yes">
+            <cline> int playerHealth = 10;</cline>
+          </choice>
+        </block>
+        <block order="10">
+          <choice correct="yes">
+            <cline> int playerGold = 50;</cline>
+          </choice>
+        </block>
+        <block order="11">
+          <choice correct="yes">
+            <cline> playerHealth = awardVictoryHealth(playerHealth);</cline>
+          </choice>
+        </block>
+        <block order="12">
+          <choice correct="yes">
+            <cline> playerGold = awardVictoryGold(playerGold);</cline>
+          </choice>
+        </block>
+        <block order="13">
+          <choice correct="yes">
+            <cline> System.out.println("Health: " + playerHealth);</cline>
+          </choice>
+        </block>
+        <block order="14">
+          <choice correct="yes">
+            <cline> System.out.println("Gold: " + playerGold);</cline>
+          </choice>
+        </block>
+        <block order="15">
+          <choice correct="yes">
+            <cline>}</cline>
+          </choice>
+        </block>
+        <block order="16">
+          <choice correct="yes">
+            <cline>}</cline>
+          </choice>
+        </block>
+      </blocks>
+    </exercise>
+    
+    <!-- 3. TRUE/FALSE EXERCISE -->
+    <exercise xml:id="tf-pass-by-value" type="truefalse">
+      <title>True/False: Java's Pass-by-Value</title>
+      <statement correct="yes"> In Java, when we pass an <c>int</c> or <c>double</c> to a method,
+        the method receives a copy of that value, not the original variable. </statement>
+      <feedback>
+        Java always passes primitive types by value, so changing the parameter inside
+        the method does not affect the original variable outside the method.
+      </feedback>
+    </exercise>
+
+    <!-- 4. SHORT ANSWER EXERCISE -->
+    <exercise xml:id="sa-why-void-failed">
+      <title>Short Answer: Why Did the <c>void</c> Method Fail to Update Player Stats?</title>
+      <statement>
+        <p> In the example, we tried <c>public static void awardVictory(int health, int gold)</c>
+          hoping it would directly update <c>playerHealth</c> and <c>playerGold</c>, but it didn’t
+          work as intended. In <em>2–3 sentences</em>, explain <strong>why</strong>
+        <c>void</c>
+          methods didn’t update the original variables, and <strong>how</strong> returning a new
+          value instead solves the problem. </p>
+      </statement>
+      <response />
+      <solution>
+        <p>
+          <strong>Sample Solution:</strong> Java passes <c>health</c> and <c>gold</c> as copies, so
+          changing them in the <c>void</c> method does not affect the original <c>playerHealth</c>
+          or <c>playerGold</c>. By returning the updated values (e.g., <c>return currentHealth + 5;</c>),
+          we can reassign <c>playerHealth</c> to that new value in the <c>main</c> method, ensuring
+          the original variable changes. </p>
+      </solution>
+    </exercise>
+
   </subsection>
 
   <!-- ======================================================

@@ -675,4 +675,262 @@ public class BankAccount {
       <li>Test edge cases!</li>
     </ul>
   </subsection>
+
+  <subsection xml:id="exercises-encapsulation-abstraction">
+    <title>Exercises: Encapsulation &amp; Abstraction</title>
+
+    <!-- 1) MULTIPLE-CHOICE: Understanding Encapsulation vs. Abstraction -->
+    <exercise xml:id="mc-encapsulation-abstraction">
+      <title>Multiple Choice: Encapsulation vs. Abstraction</title>
+      <statement>
+        <p>Which statement best distinguishes <strong>encapsulation</strong> from <strong>
+          abstraction</strong>?</p>
+      </statement>
+      <choices randomize="yes">
+        <choice correct="yes">
+          <statement>
+            <strong>Encapsulation</strong> protects data by bundling it with methods and restricting
+            direct access, while <strong>abstraction</strong> hides complex implementation details
+            behind a simpler interface. </statement>
+          <feedback>Exactly. Encapsulation is about bundling and protection, whereas abstraction is
+            about hiding complexity.</feedback>
+        </choice>
+        <choice>
+          <statement> Encapsulation means we cannot write constructors; abstraction means we cannot
+            have any <c>private</c> fields. </statement>
+          <feedback> Incorrect. Constructors and <c>private</c> fields are independent of these
+            definitions. </feedback>
+        </choice>
+        <choice>
+          <statement>
+            Encapsulation forces all data to be global, while abstraction forbids using methods
+            longer than 5 lines.
+          </statement>
+          <feedback>
+            No. Encapsulation encourages hiding data, not making it global, and there's no rule
+            about method line limits.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            There is no real difference. Both terms refer to exactly the same concept in Java.
+          </statement>
+          <feedback>
+            They are related but distinct concepts.
+          </feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- 2) TRUE/FALSE: Private Fields and Direct Access -->
+    <exercise xml:id="tf-private-fields" type="truefalse">
+      <title>True/False: Private Fields</title>
+      <statement correct="yes"> Marking a field <c>private</c> means code outside the class cannot
+        access it directly, forcing all modifications through the class’s methods. </statement>
+      <feedback>
+        Correct! Making a field private enforces that only the class itself can read or write that
+        field, which is a key part of encapsulation.
+      </feedback>
+    </exercise>
+
+    <!-- 3) SHORT ANSWER: Invariants & Negative Health -->
+    <exercise xml:id="sa-invariants-negative-health">
+      <title>Short Answer: Handling Negative Health</title>
+      <statement>
+        <p> In the section, we saw that a <c>Player</c> class can prevent negative health by
+          restricting access to its <c>health</c> field. In <em>1–2 sentences</em>, explain how you
+          would enforce the “health ≥ 0” rule if someone tries <c>p1.setHealth(-999)</c> or <c>
+          p1.takeDamage(1000)</c>. </p>
+      </statement>
+      <response />
+      <solution>
+        <p>
+          <strong>Sample Solution:</strong> I’d make <c>health</c> private and provide methods like <c>
+          setHealth</c> or <c>takeDamage</c> that check if the new health would be negative, then
+          set it to 0 instead. This ensures outsiders can’t directly write <c>p1.health</c> = -999,
+          preserving the invariant “health ≥ 0.” </p>
+      </solution>
+    </exercise>
+
+    <!-- 4) PARSONS: Rewriting Scattered Code to Encapsulated Code -->
+    <exercise xml:id="parsons-encapsulate-code" language="java">
+      <title>Parsons: Encapsulate the Player's Data</title>
+      <statement>
+        <p> Below is a short snippet of “scattered” code for a game. Rearrange the following lines
+          to create a <strong>single, valid</strong> <c>Player</c> class with <c>private</c> fields
+          and methods <c>heal</c> and <c>takeDamage</c> enforcing “health ≥ 0.” </p>
+        <p><em>Hint:</em> This code should compile as one class. There is only one correct
+          arrangement of braces and method definitions.</p>
+      </statement>
+      <blocks layout="vertical" randomize="yes">
+
+        <block order="1">
+          <choice correct="yes">
+            <cline>public class Player {</cline>
+          </choice>
+        </block>
+        <block order="2">
+          <choice correct="yes">
+            <cline> private int health;</cline>
+          </choice>
+        </block>
+        <block order="3">
+          <choice correct="yes">
+            <cline> public Player(int startHealth) {</cline>
+          </choice>
+        </block>
+        <block order="4">
+          <choice correct="yes">
+            <cline> if (startHealth &lt; 0) {</cline>
+          </choice>
+        </block>
+        <block order="5">
+          <choice correct="yes">
+            <cline> startHealth = 0;</cline>
+          </choice>
+        </block>
+        <block order="6">
+          <choice correct="yes">
+            <cline> }</cline>
+          </choice>
+        </block>
+        <block order="7">
+          <choice correct="yes">
+            <cline> health = startHealth;</cline>
+          </choice>
+        </block>
+        <block order="8">
+          <choice correct="yes">
+            <cline> }</cline>
+          </choice>
+        </block>
+
+        <block order="9">
+          <choice correct="yes">
+            <cline> public void heal(int amount) {</cline>
+          </choice>
+        </block>
+        <block order="10">
+          <choice correct="yes">
+            <cline> if (amount > 0) {</cline>
+          </choice>
+        </block>
+        <block order="11">
+          <choice correct="yes">
+            <cline> health += amount;</cline>
+          </choice>
+        </block>
+        <block order="12">
+          <choice correct="yes">
+            <cline> }</cline>
+          </choice>
+        </block>
+        <block order="13">
+          <choice correct="yes">
+            <cline> }</cline>
+          </choice>
+        </block>
+
+        <block order="14">
+          <choice correct="yes">
+            <cline> public void takeDamage(int dmg) {</cline>
+          </choice>
+        </block>
+        <block order="15">
+          <choice correct="yes">
+            <cline> health -= dmg;</cline>
+          </choice>
+        </block>
+        <block order="16">
+          <choice correct="yes">
+            <cline> if (health &lt; 0) {</cline>
+          </choice>
+        </block>
+        <block order="17">
+          <choice correct="yes">
+            <cline> health = 0;</cline>
+          </choice>
+        </block>
+        <block order="18">
+          <choice correct="yes">
+            <cline> }</cline>
+          </choice>
+        </block>
+        <block order="19">
+          <choice correct="yes">
+            <cline> }</cline>
+          </choice>
+        </block>
+
+        <block order="20">
+          <choice correct="yes">
+            <cline>}</cline>
+          </choice>
+        </block>
+
+      </blocks>
+    </exercise>
+
+    <!-- 5) MULTIPLE-CHOICE: Valid Approaches to Enforcing Constraints -->
+    <exercise xml:id="mc-ways-constraints">
+      <title>Multiple Choice: Ways to Enforce Constraints</title>
+      <statement>
+        <p>
+          In “Different Ways to Enforce Rules,” we saw strategies like constructor checks,
+          method guards, and range enforcement. Which approach forcibly rejects or denies an
+          invalid operation, often returning success/failure as a boolean?
+        </p>
+      </statement>
+      <choices randomize="yes">
+        <choice>
+          <statement>Constructor Checks</statement>
+          <feedback>
+            Constructor checks can fix or adjust invalid data at creation, but they don’t inherently
+            “reject” an operation with a boolean return.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>Range Enforcement</statement>
+          <feedback>
+            Range enforcement might clamp or adjust the data, but it’s not necessarily rejecting
+            with success/failure.
+          </feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>Complete Rejection (returning success/failure)</statement>
+          <feedback>
+            Right! “Complete Rejection” is where a method returns false if the operation fails,
+            rather than automatically fixing or adjusting it.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>Method Guards</statement>
+          <feedback>
+            Method guards can correct or clamp input, but they don’t always return success/failure.
+          </feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- 6) REFLECTION: OOP vs. Non-OOP Approaches -->
+    <exercise xml:id="reflection-oop-vs-non-oop">
+      <title>Reflection: OOP vs. Non-OOP Approaches</title>
+      <statement>
+        <p> Think back to the “Two Ways: Keep or Package Pieces” example. In <em>2–4 sentences</em>,
+          explain how making a <c>Player</c> class with private data and methods (like <c>heal</c>)
+          helps prevent the mistakes we saw in the scattered code (where direct global variables
+          were easy to misuse). </p>
+      </statement>
+      <response />
+      <solution>
+        <p>
+          <strong>Sample Solution:</strong> A <c>Player</c> class keeps all relevant data and logic
+          together, so we can’t just accidentally do <c>playerHealth = -999</c> or pass the wrong
+          variable order. <c>private</c> fields force changes through safe methods that enforce
+          “health ≥ 0.” This cuts down on guesswork and makes the code clearer by grouping data and
+          actions in one place. </p>
+      </solution>
+    </exercise>
+
+  </subsection>
 </section>
