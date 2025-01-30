@@ -267,8 +267,7 @@ public static void transferMoney(int fromBalance, int toBalance, int amount)
     <exercise xml:id="sa-multiple-players">
       <title>Short Answer: Handling Multiple Players</title>
       <statement>
-        <p> In the section, we saw how having <c>player1Health, player2Health, player1Gold,
-          player2Gold</c>, and so on can get “out of hand.” In <em>1–2 sentences</em>, explain why
+        <p> In the section, we saw how having <c>player1Health, player2Health, player1Gold, player2Gold</c>, and so on can get “out of hand.” In <em>1–2 sentences</em>, explain why
           managing multiple players with separate variables becomes difficult. Feel free to
           reference the “backpack” analogy. </p>
       </statement>
@@ -287,8 +286,7 @@ public static void transferMoney(int fromBalance, int toBalance, int amount)
     <exercise xml:id="mc-transfer-money">
       <title>Multiple Choice: The transferMoney Example</title>
       <statement>
-        <p> Consider the method signature <c>public static void transferMoney(int fromBalance, int
-          toBalance, int amount)</c>. Which of the following <em>best</em> describes the biggest
+        <p> Consider the method signature <c>public static void transferMoney(int fromBalance, int toBalance, int amount)</c>. Which of the following <em>best</em> describes the biggest
           risk with this approach? </p>
       </statement>
       <choices randomize="yes">
@@ -335,8 +333,7 @@ public static void transferMoney(int fromBalance, int toBalance, int amount)
         <p>
           <strong>Sample Solution:</strong> One object can store all the player’s related data, so
           we don’t have to pass a dozen parameters whenever we modify or read stats. It also reduces
-          the risk of mixing up parameter order. Once we have an object, we can define methods like <c>
-          p1.increaseHealth(5)</c> that automatically update the right fields, making the code more
+          the risk of mixing up parameter order. Once we have an object, we can define methods like <c>p1.increaseHealth(5)</c> that automatically update the right fields, making the code more
           organized and less error-prone. </p>
       </solution>
     </exercise>

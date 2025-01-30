@@ -614,7 +614,7 @@ backup.health -= 50;  // Does this affect hero?
     </p>
   </subsection>
 
-  <subsection xml:id="practice-encap-abs">
+  <!-- <subsection xml:id="practice-encap-abs">
     <title>Practice: Put It All Together</title>
     <ol>
       <li>
@@ -674,7 +674,7 @@ public class BankAccount {
       <li>Use abstraction to hide the details</li>
       <li>Test edge cases!</li>
     </ul>
-  </subsection>
+  </subsection> -->
 
   <subsection xml:id="exercises-encapsulation-abstraction">
     <title>Exercises: Encapsulation &amp; Abstraction</title>
@@ -739,14 +739,12 @@ public class BankAccount {
       <statement>
         <p> In the section, we saw that a <c>Player</c> class can prevent negative health by
           restricting access to its <c>health</c> field. In <em>1–2 sentences</em>, explain how you
-          would enforce the “health ≥ 0” rule if someone tries <c>p1.setHealth(-999)</c> or <c>
-          p1.takeDamage(1000)</c>. </p>
+          would enforce the “health ≥ 0” rule if someone tries <c>p1.setHealth(-999)</c> or <c>p1.takeDamage(1000)</c>. </p>
       </statement>
       <response />
       <solution>
         <p>
-          <strong>Sample Solution:</strong> I’d make <c>health</c> private and provide methods like <c>
-          setHealth</c> or <c>takeDamage</c> that check if the new health would be negative, then
+          <strong>Sample Solution:</strong> I’d make <c>health</c> private and provide methods like <c>setHealth</c> or <c>takeDamage</c> that check if the new health would be negative, then
           set it to 0 instead. This ensures outsiders can’t directly write <c>p1.health</c> = -999,
           preserving the invariant “health ≥ 0.” </p>
       </solution>
