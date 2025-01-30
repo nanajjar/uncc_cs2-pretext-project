@@ -1,0 +1,536 @@
+<section xml:id="how-java-stores-data">
+  <title>Primitive &amp; Reference Types</title>
+
+  <!-- ======================================================
+       Introduction
+       ====================================================== -->
+  <p>To write effective Java code, we need to understand how Java actually stores different types of
+    data in memory. This explains why sometimes changing a value in a method affects the original
+    variable, and other times it doesn’t.</p>
+
+  <!-- ======================================================
+       5.1 Two Ways Java Stores Data
+       ====================================================== -->
+  <subsection xml:id="two-ways-java-stores-data">
+    <title>Two Ways Java Stores Data</title>
+    <p>Java has two fundamentally different ways of handling data:</p>
+    <ol>
+      <li>
+        <p><strong>Primitive Types</strong> (<c>int</c>, <c>double</c>, <c>boolean</c>, etc.)</p>
+        <ul>
+          <li>Stored directly in memory as their actual value</li>
+          <li>When copied, you get a completely independent copy</li>
+          <li>Examples: numbers, true/false values</li>
+          <li>The name of type starts with lowercase letter</li>
+        </ul>
+      </li>
+      <li>
+        <p><strong>Reference Types</strong> (Objects)</p>
+        <ul>
+          <li>Stored as a reference (like an address) that points to data elsewhere in memory</li>
+          <li>When copied, you copy the reference but both still point to the same data</li>
+          <li>Examples: <c>String</c>, <c>ArrayList</c>, your own classes</li>
+          <li>The name of type starts with uppercase letter</li>
+        </ul>
+      </li>
+    </ol>
+
+    <p>Think of it like this:</p>
+    <subsubsection xml:id="analogy-school-lockers">
+      <title>Real World Analogy: School Lockers</title>
+      <p><strong>Primitives</strong> are like writing on a sticky note:</p>
+      <ul>
+        <li>The actual number is right there on the note</li>
+        <li>If you copy the note, each person has their own independent copy</li>
+        <li>Changing one copy doesn’t affect the other</li>
+      </ul>
+      <p><strong>Objects</strong> are like using a school locker:</p>
+      <ul>
+        <li>Instead of carrying everything, you just carry the locker number</li>
+        <li>If you share that locker number, you’re both using the same locker</li>
+        <li>When one person changes something in the locker, everyone with that number sees the
+          change</li>
+      </ul>
+    </subsubsection>
+
+    <p>Let’s see both perspectives in code:</p>
+    <listing xml:id="primitives-vs-objects">
+      <program language="java"><![CDATA[
+// PRIMITIVES: Direct values
+int x = 42;          // x stores 42 directly
+int y = x;           // y gets its own copy of 42
+y = 100;             // changing y doesn't affect x
+System.out.println(x);  // still prints 42
+
+// OBJECTS: References to data
+Player p1 = new Player(100);  // p1 stores a reference to the Player
+Player p2 = p1;               // p2 gets a copy of that reference
+p2.reduceHealth(50);          // affects the one shared Player
+System.out.println(p1.getHealth()); // prints 50 - both see the change
+]]></program>
+    </listing>
+
+    <p>In memory, it looks like this:</p>
+    <figure>
+      <caption>Memory Layout for Primitives and References</caption>
+      <p><em>Primitives:</em> x holds [42], y holds [100].<br />
+         <em>Objects:</em> p1 and p2 both
+        point to the same <c>Player</c> data.</p>
+    </figure>
+
+    <p>This fundamental difference affects everything from variable assignment to method parameters,
+      which we’ll explore next.</p>
+  </subsection>
+
+  <!-- ======================================================
+       5.2 How Primitives Work: Independent Copies
+       ====================================================== -->
+  <subsection xml:id="how-primitives-work">
+    <title>How Primitives Work: Independent Copies</title>
+    <p>Remember our sticky note analogy? Let’s see exactly how primitives work with a game score
+      example:</p>
+    <listing xml:id="score-example">
+      <program language="java"><![CDATA[
+// Initial score
+int score = 100;               // "100" on first sticky note
+
+// Try to create a backup
+int backupScore = score;       // Copy "100" to a new sticky note
+
+// Change the backup
+backupScore = 50;             // Now only the backup says "50"
+
+// Check both scores
+System.out.println("Original: " + score);       // 100
+System.out.println("Backup: " + backupScore);   // 50
+]]></program>
+    </listing>
+
+    <p>Let’s watch how memory changes at each step:</p>
+    <figure>
+      <caption>Memory Steps for Primitives</caption>
+      <p> Step 1: <c>score</c> is 100<br /> Step 2: <c>backupScore</c> is a new copy of 100<br />
+        Step 3: Changing <c>backupScore</c> doesn’t affect <c>score</c>
+      </p>
+    </figure>
+
+    <p>This works the same for all primitive types:</p>
+    <listing xml:id="other-primitives">
+      <program language="java"><![CDATA[
+double price = 9.99;
+double salePrice = price; // copy
+salePrice = 7.99;         // only changes salePrice
+
+boolean gameOver = false;
+boolean lastState = gameOver; // copy
+lastState = true;             // only changes lastState
+]]></program>
+    </listing>
+
+    <p><strong>🚫 Common Mistake</strong>: Thinking variables are connected.</p>
+    <listing>
+      <program language="java"><![CDATA[
+int lives = 3;
+int extraLives = lives;  // new copy
+extraLives--;            // only changes extraLives
+System.out.println(lives); // still 3!
+]]></program>
+    </listing>
+    <p>With primitives, each variable has its own independent sticky note. Changes to one never
+      affect the other!</p>
+  </subsection>
+
+  <!-- ======================================================
+       5.3 How Objects Work: Sharing Access Through References
+       ====================================================== -->
+  <subsection xml:id="how-objects-work">
+    <title>How Objects Work: Sharing Access Through References</title>
+    <p>Remember our locker analogy? Let’s see how it works with a simple game character:</p>
+    <listing xml:id="simple-player-class">
+      <program language="java"><![CDATA[
+public class Player {
+    private int health;
+    public Player(int h) { health = h; }
+    public void damage(int amt) { health -= amt; }
+    public int getHealth() { return health; }
+}
+]]></program>
+    </listing>
+
+    <p>When you create and share a <c>Player</c> object, here’s what happens:</p>
+    <listing xml:id="sharing-player">
+      <program language="java"><![CDATA[
+// Step 1: Create new Player
+Player hero = new Player(100);   // "Locker #123" with 100 health
+
+// Step 2: Share the locker number
+Player sidekick = hero;          // Also points to #123
+
+// Step 3: Either reference can affect the same object
+sidekick.damage(25);             // affects the shared player's health
+System.out.println(hero.getHealth()); // prints 75
+]]></program>
+    </listing>
+
+    <p>In memory, it looks like this:</p>
+    <figure>
+      <caption>References to the Same Object</caption>
+      <p>
+        <c>hero</c> and <c>sidekick</c> both point to the same <c>Player</c> data. Reducing health
+        via <c>sidekick</c> changes <c>hero</c>'s state too. </p>
+    </figure>
+  </subsection>
+
+  <!-- ======================================================
+       5.4 Methods with References: Right vs. Wrong
+       ====================================================== -->
+  <subsection xml:id="methods-with-references">
+    <title>Methods with References: The Right and Wrong Ways</title>
+    <p>Look at a game scenario: damaging multiple players with an area-effect spell:</p>
+    <listing>
+      <program language="java"><![CDATA[
+public class Player {
+    private int health;
+    private String name;
+
+    public Player(String name, int health) {
+        this.name = name;
+        this.health = health;
+    }
+    public void damage(int amt) {
+        health = Math.max(0, health - amt);
+    }
+    public int getHealth() { return health; }
+}
+
+// Two approaches:
+public class Game {
+    // ❌ WRONG WAY: passing copies of int
+    public static void wrongAreaDamage(int health1, int health2, int dmg) {
+        health1 -= dmg;
+        health2 -= dmg;
+    }
+
+    // ✅ RIGHT WAY: passing references to Player
+    public static void rightAreaDamage(Player p1, Player p2, int dmg) {
+        p1.damage(dmg);
+        p2.damage(dmg);
+    }
+}
+]]></program>
+    </listing>
+
+    <p>Here’s what happens:</p>
+    <listing>
+      <program language="java"><![CDATA[
+Player hero = new Player("Hero", 100);
+Player ally = new Player("Ally", 80);
+
+// Wrong way
+Game.wrongAreaDamage(hero.getHealth(), ally.getHealth(), 30);
+// hero & ally unchanged!
+System.out.println(hero.getHealth()); // 100
+System.out.println(ally.getHealth()); // 80
+
+// Right way
+Game.rightAreaDamage(hero, ally, 30);
+// both are damaged
+System.out.println(hero.getHealth()); // 70
+System.out.println(ally.getHealth()); // 50
+]]></program>
+    </listing>
+
+    <p><strong>🚫 Common Mistakes</strong>:</p>
+    <listing>
+      <program language="java"><![CDATA[
+// Mistake 1: Passing a number instead of the Player reference
+healPlayer(hero.getHealth(), 50);  // Wrong, we want the Player, not its health
+healPlayer(hero, 50);              // Correct
+
+// Mistake 2: Thinking new variables = new objects
+Player backup = hero;              // same object, different variable
+Player clone  = new Player(hero.getHealth());  // new object
+]]></program>
+    </listing>
+  </subsection>
+
+  <!-- ======================================================
+       5.5 What Happens Inside Methods
+       ====================================================== -->
+  <subsection xml:id="inside-methods-semantics">
+    <title>What Really Happens Inside Methods</title>
+    <p>Let’s watch exactly what happens in both the wrong and right approaches:</p>
+
+    <subsubsection xml:id="wrong-way-passing-health">
+      <title>Wrong Way: Passing Health Value</title>
+      <p>When you pass a primitive <em>value</em>, the method only sees a copy:</p>
+      <figure>
+        <caption>Memory Steps (Passing int Health)</caption>
+        <p> 1. Original <c>health</c> is 100 in the main.<br /> 2. Method gets a copy of 100.<br />
+          3. Method changes the copy to 95.<br /> 4. Original remains 100 (copy discarded). </p>
+      </figure>
+    </subsubsection>
+
+    <subsubsection xml:id="right-way-passing-player">
+      <title>Right Way: Passing Player Reference</title>
+      <p>When you pass the <em>Player</em> reference, the method can change the real data:</p>
+      <figure>
+        <caption>Memory Steps (Passing Player)</caption>
+        <p> 1. <c>hero</c> points to locker with health 100.<br /> 2. Method’s parameter also points
+          to same locker.<br /> 3. <c>reduceHealth</c> changes that locker to 95.<br /> 4. Both
+          references see 95 now. </p>
+      </figure>
+
+      <tabular>
+        <row header="yes">
+          <cell>Action</cell>
+          <cell>Wrong Way</cell>
+          <cell>Right Way</cell>
+        </row>
+        <row>
+          <cell>What's passed?</cell>
+          <cell>A copy of <c>100</c></cell>
+          <cell>A "locker number" (reference)</cell>
+        </row>
+        <row>
+          <cell>Method sees</cell>
+          <cell>New sticky note, not original</cell>
+          <cell>Same data in memory</cell>
+        </row>
+        <row>
+          <cell>Changes affect</cell>
+          <cell>Only the copy</cell>
+          <cell>The real player's health</cell>
+        </row>
+        <row>
+          <cell>After method</cell>
+          <cell>Original unchanged</cell>
+          <cell>Original object is modified</cell>
+        </row>
+      </tabular>
+    </subsubsection>
+  </subsection>
+
+  <!-- ======================================================
+       5.6 Sharing Multiple Lockers
+       ====================================================== -->
+  <subsection xml:id="sharing-multiple-lockers">
+    <title>Sharing Multiple Lockers: Group Methods</title>
+    <p>Think of a method that works with multiple objects like a person with multiple locker
+      numbers. Let’s see what happens in a boss battle scenario:</p>
+    <listing>
+      <program language="java"><![CDATA[
+public static void bossFight(Player hero, Player boss, int damage) {
+    // Inside method: copies of the references
+    hero.damage(damage);     // hero is changed
+    boss.damage(damage*2);   // boss is changed more
+}
+
+// Example usage:
+Player hero = new Player("Hero", 100);  // locker #1
+Player boss = new Player("Boss", 200);  // locker #2
+
+bossFight(hero, boss, 30);
+]]></program>
+    </listing>
+
+    <p> Both references are copied, but each copy still points to the original lockers. We can
+      modify both <c>hero</c> and <c>boss</c> inside the method. </p>
+  </subsection>
+
+  <!-- ======================================================
+       5.7 Summary
+       ====================================================== -->
+  <subsection xml:id="semantics-summary">
+    <title>Summary: What You Need to Remember</title>
+    <p>
+      Let’s wrap up with the most important points and common mistakes to avoid.
+    </p>
+
+    <subsubsection xml:id="key-concepts-primitives-objects">
+      <title>Key Concepts</title>
+      <ol>
+        <li>
+          <p>
+            <strong>Primitives are Like Sticky Notes</strong>
+          </p>
+          <listing>
+            <program><![CDATA[
+int x = 42;
+int y = x;    // new note with 42
+y = 10;       // only affects y
+]]></program>
+          </listing>
+        </li>
+        <li>
+          <p>
+            <strong>Objects are Like Lockers</strong>
+          </p>
+          <listing>
+            <program><![CDATA[
+Player p1 = new Player(100); // new locker
+Player p2 = p1;              // share locker
+Player p3 = new Player(100); // different locker
+]]></program>
+          </listing>
+        </li>
+      </ol>
+    </subsubsection>
+
+    <subsubsection xml:id="common-mistakes-list">
+      <title>Common Mistakes to Avoid</title>
+      <p><strong>Mistake 1:</strong> Passing a number instead of the locker reference</p>
+      <listing>
+        <program language="java"><![CDATA[
+// ❌ WRONG
+void healPlayer(int health, int amount) {
+    health += amount; // changes only local copy
+}
+
+// ✅ RIGHT
+void healPlayer(Player player, int amount) {
+    player.heal(amount); // changes real player
+}
+]]></program>
+      </listing>
+
+      <p><strong>Mistake 2:</strong> Thinking new variables mean new objects</p>
+      <listing>
+        <program language="java"><![CDATA[
+// ❌ WRONG
+Player backup = hero;  // same locker!
+
+// ✅ RIGHT
+Player clone = new Player(hero.getHealth()); // new locker
+]]></program>
+      </listing>
+
+      <p><strong>Mistake 3:</strong> Misunderstanding pass-by-value</p>
+      <listing>
+        <program language="java"><![CDATA[
+// Java always copies the value, but:
+// For primitives: copies the int/double
+// For objects: copies the reference
+primitiveMethod(score);    // gets a copy of 'score' number
+objectMethod(player);       // gets a copy of 'player' reference
+]]></program>
+      </listing>
+    </subsubsection>
+
+    <p>Remember:</p>
+    <ul>
+      <li><strong>Primitives:</strong> each variable has its own value</li>
+      <li><strong>Objects:</strong> variables can share access to the same data</li>
+      <li><strong>Methods:</strong> get copies of what you pass, but for objects that still means
+        shared data</li>
+    </ul>
+  </subsection>
+
+  <!-- ======================================================
+       5.8 Practice Exercises
+       ====================================================== -->
+  <subsection xml:id="practice-5-8">
+    <title>Practice Exercises</title>
+    <p>Try these exercises to reinforce your understanding. For each one, predict what will happen <em>
+      before</em> running the code!</p>
+
+    <subsubsection xml:id="gold-stealing-game">
+      <title>Exercise 1: Gold Stealing Game</title>
+      <listing>
+        <program language="java"><![CDATA[
+class Player {
+    private int gold;
+    private String name;
+    
+    public Player(String name, int startingGold) {
+        this.name = name;
+        this.gold = startingGold;
+    }
+    public int getGold() { return gold; }
+    // TODO: Add methods needed for gold stealing
+}
+
+class Game {
+    // TODO: Implement this method
+    public static void stealGold(Player thief, Player victim, int amount) {
+        // Your code here: Move gold from victim to thief
+    }
+    
+    public static void main(String[] args) {
+        Player robin = new Player("Robin", 0);       // starts with 0 gold
+        Player sheriff = new Player("Sheriff", 100); // has 100 gold
+        
+        stealGold(robin, sheriff, 50);
+        System.out.println("Robin's gold: " + robin.getGold());     // should be 50
+        System.out.println("Sheriff's gold: " + sheriff.getGold()); // should be 50
+    }
+}
+]]></program>
+      </listing>
+      <p><em>Hint</em>: You’ll need to add methods to <c>Player</c> to modify gold. Decide how to
+        safely do that!</p>
+    </subsubsection>
+
+    <subsubsection xml:id="spell-system">
+      <title>Exercise 2: Spell System</title>
+      <listing>
+        <program language="java"><![CDATA[
+class Spell {
+    private int charges;
+    public Spell(int charges) { this.charges = charges; }
+    // TODO: Add method to use a charge
+}
+
+class Player {
+    private int mana;
+    public Player(int startingMana) {
+        this.mana = startingMana;
+    }
+
+    // TODO: Implement castSpell
+    public void castSpell(Spell spell) {
+        // reduce player's mana
+        // reduce spell's charges
+    }
+}
+
+// Test:
+Player mage = new Player(100);
+Spell fireball = new Spell(3);
+mage.castSpell(fireball);  // affects both mage AND fireball
+]]></program>
+      </listing>
+    </subsubsection>
+
+    <subsubsection xml:id="spot-the-bug">
+      <title>Exercise 3: Spot the Bug</title>
+      <listing>
+        <program language="java"><![CDATA[
+class Player {
+    private int health = 100;
+    
+    // Bug: This method won't work! Why?
+    public static void wrongHeal(int health, int amount) {
+        health += amount;  // changes the copy
+    }
+
+    // TODO: Write the correct version
+    public static void rightHeal(Player player, int amount) {
+        // ...
+    }
+}
+
+// Test code:
+Player hero = new Player();
+wrongHeal(hero.getHealth(), 50);
+System.out.println(hero.getHealth());  // Still 100! Why?
+
+rightHeal(hero, 50);
+System.out.println(hero.getHealth());  // Should be 150
+]]></program>
+      </listing>
+      <p><strong>Remember:</strong> changes only "stick" when you modify the actual object through
+        its reference!</p>
+    </subsubsection>
+  </subsection>
+</section>

@@ -5,5 +5,5 @@
   <xi:include href="./b_parameter-fiasco.ptx" />
   <xi:include href="./c_classes-objects.ptx" />
   <xi:include href="./d_encapsulation.ptx" />
-  <!-- <xi:include href="./e_parameter_semantics.ptx" /> -->
+  <xi:include href="./e_parameter_semantics.ptx" />
 </chapter>
