@@ -241,19 +241,19 @@ myAccount.balance = myAccount.balance + 100;  // Easy to make mistakes!
       <listing>
         <program language="java"><![CDATA[
 public class Player {
-    private int health;
-    private final int MAX_HEALTH = 100;
+  private int health;
+  private int maxHealth = 100;
 
-    public void setHealth(int newHealth) {
-        // Check all our rules:
-        if (newHealth < 0) {
-            health = 0;
-        } else if (newHealth > MAX_HEALTH) {
-            health = MAX_HEALTH;
-        } else {
-            health = newHealth;
-        }
+  public void setHealth(int newHealth) {
+    // Check all our rules:
+    if (newHealth < 0) {
+      health = 0;
+    } else if (newHealth > maxHealth) {
+      health = maxHealth;
+    } else {
+      health = newHealth;
     }
+  }
 }
 ]]></program>
       </listing>
@@ -355,24 +355,42 @@ public boolean withdraw(int amount) {
     <listing>
       <program language="java"><![CDATA[
 public class Restaurant {
-    private Grill grill;
-    private Inventory inventory;
-    private List<Recipe> recipes;
-
+    // Store kitchen details inside the class (encapsulation)
+    private double grillTemp;   // Current temperature of grill
+    private int burgerCount;    // How many burgers we can make
+    private int grillSpace;     // How many burgers fit on grill
+    
     // Simple interface for customers:
-    public Burger orderCheeseburger() {
-        // Complex steps hidden from customer:
-        if (!inventory.hasIngredients("burger")) {
-            throw new OutOfStockException();
+    public boolean orderCheeseburger() {
+        // First check if we can make the burger
+        if (burgerCount <= 0) {
+            return false;    // Can't make burger - out of ingredients
         }
-        grill.setTemp(375);
-        grill.cook(inventory.getPatty(), Time.MINUTES(4));
-        return assembleBurger();
+        
+        // Complex steps hidden from customer:
+        setGrillTemp(375);              // Heat the grill
+        boolean success = cookPatty();   // Try to cook the burger
+        
+        if (success) {
+            burgerCount = burgerCount - 1;  // Use up ingredients
+            return true;                     // Burger ready!
+        }
+        return false;                        // Something went wrong
+    }
+    
+    // Helper method - customers don't need to see this
+    private boolean cookPatty() {
+        if (grillSpace > 0) {           // If there's room on grill
+            grillSpace = grillSpace - 1; // Take up one spot
+            return true;                 // Cooking successful
+        }
+        return false;                    // Grill is full
     }
 }
 
-// Customer just says:
-restaurant.orderCheeseburger();  // Don't care about the details!
+// Customer just needs to know:
+Restaurant store = new Restaurant();
+boolean gotBurger = store.orderCheeseburger();  // Don't care about the details!
 ]]></program>
     </listing>
 
@@ -468,48 +486,51 @@ class Building {
       <caption>BankAccount Class Example</caption>
       <program language="java"><![CDATA[
 public class BankAccount {
-    // Step 1: Protect the data (Encapsulation)
-    private double balance;
-    private List<Transaction> history;  // Track all changes
-    private double interestRate;
+  // Step 1: Protect the data (Encapsulation)
+  private double balance;
+  private double interestRate;
 
-    // Step 2: Control object creation
-    public BankAccount(double initBalance) {
-        if (initBalance < 0) {
-            initBalance = 0;  // Start at 0 if negative
-        }
-        this.balance = initBalance;
-        this.history = new ArrayList<>();
-        this.interestRate = 0.01;  // 1% interest
+  // Step 2: Control object creation
+  public BankAccount(double initBalance) {
+    if (initBalance < 0) {
+      initBalance = 0;  // Start at 0 if negative
+    }
+    this.balance = initBalance;
+    this.interestRate = 0.01;  // 1% interest
+  }
+
+  // Step 3: Simple interface, complex implementation (Abstraction)
+  public boolean deposit(double amount) {
+    // Validate input
+    if (amount < 0) {
+      return false;  // Can't deposit negative amounts
     }
 
-    // Step 3: Simple interface, complex implementation (Abstraction)
-    public boolean deposit(double amount) {
-        // Validate input
-        if (amount < 0) {
-            return false;  // Can't deposit negative amounts
-        }
+    // Update balance
+    balance += amount;
+    return true; // success
+  }
 
-        // Complex logic hidden from users:
-        balance += amount;
-        history.add(new Transaction("deposit", amount));
-        checkForInterest();
-        notifyOwner("Deposit: $" + amount);
-        return true; // success
+  public boolean withdraw(double amount) {
+    // Validate input
+    if (amount < 0 || amount > balance) {
+      return false;  // Invalid amount
     }
 
-    // Step 4: Hide implementation details
-    private void checkForInterest() {
-        if (balance > 1000) {
-            double interest = balance * interestRate;
-            balance += interest;
-            history.add(new Transaction("interest", interest));
-        }
-    }
+    // Update balance
+    balance -= amount;
+    return true;
+  }
 
-    private void notifyOwner(String message) {
-        // Send email, update app, etc.
-    }
+  // Step 4: Safe way to check balance
+  public double getBalance() {
+    return balance;
+  }
+
+  // Step 5: Hidden interest calculation
+  private void addInterest() {
+    balance += balance * interestRate;
+  }
 }
 ]]></program>
     </listing>
@@ -651,7 +672,6 @@ public class Player {
           <program language="java"><![CDATA[
 public class BankAccount {
     private double balance;
-    private List<String> transactions;
 
     public void deposit(double amount) {
         // TODO: Add validation and logging

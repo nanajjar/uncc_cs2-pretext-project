@@ -268,24 +268,42 @@ That's abstraction in code:
 
 ```java
 public class Restaurant {
-    private Grill grill;              // Kitchen equipment
-    private Inventory inventory;       // Available ingredients
-    private List<Recipe> recipes;      // How to make each item
+    // Store kitchen details inside the class (encapsulation)
+    private double grillTemp;   // Current temperature of grill
+    private int burgerCount;    // How many burgers we can make
+    private int grillSpace;     // How many burgers fit on grill
     
     // Simple interface for customers:
-    public Burger orderCheeseburger() {
-        // Complex steps hidden from customer:
-        if (!inventory.hasIngredients("burger")) {
-            throw new OutOfStockException();
+    public boolean orderCheeseburger() {
+        // First check if we can make the burger
+        if (burgerCount <= 0) {
+            return false;    // Can't make burger - out of ingredients
         }
-        grill.setTemp(375);
-        grill.cook(inventory.getPatty(), Time.MINUTES(4));
-        return assembleBurger();
+        
+        // Complex steps hidden from customer:
+        setGrillTemp(375);              // Heat the grill
+        boolean success = cookPatty();   // Try to cook the burger
+        
+        if (success) {
+            burgerCount = burgerCount - 1;  // Use up ingredients
+            return true;                     // Burger ready!
+        }
+        return false;                        // Something went wrong
+    }
+    
+    // Helper method - customers don't need to see this
+    private boolean cookPatty() {
+        if (grillSpace > 0) {           // If there's room on grill
+            grillSpace = grillSpace - 1; // Take up one spot
+            return true;                 // Cooking successful
+        }
+        return false;                    // Grill is full
     }
 }
 
-// Customer just says:
-restaurant.orderCheeseburger();  // Don't care about the details!
+// Customer just needs to know:
+Restaurant store = new Restaurant();
+boolean gotBurger = store.orderCheeseburger();  // Don't care about the details!
 ```
 
 Abstraction lets us:
