@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <section xml:id="encapsulation-and-abstraction">
   <title>Encapsulation &amp; Abstraction</title>
 
@@ -11,8 +12,7 @@
     <p>
       <strong>Way 1: Keep pieces and rules separate (Traditional Approach)</strong>
     </p>
-    <listing>
-      <program language="java"><![CDATA[
+      <program language="java">
   // Everything is scattered and global
   class GameState {
     // Data just floating around
@@ -37,14 +37,12 @@
       healMonster(monsterHealth);    // Wrong parameter!
     }
   }
-  ]]></program>
-    </listing>
+  </program>
 
     <p>
       <strong>Way 2: Package pieces with their rules</strong>
     </p>
-    <listing>
-      <program language="java"><![CDATA[
+      <program language="java">
 public class Player {
     private int health = 100;
 
@@ -55,8 +53,7 @@ public class Player {
 
 // Clear which player we're modifying
 hero.heal(20);
-]]></program>
-    </listing>
+</program>
 
     <p> The second way is called <em>Object-Oriented Programming</em> (OOP). It bundles data with
       the code that works on that data. Java helps us do this through: </p>
@@ -64,19 +61,15 @@ hero.heal(20);
     <ol>
       <li>
         <p><strong>Encapsulation</strong>: Protect data from invalid changes</p>
-        <listing>
-          <program><![CDATA[
+          <program>
 private int health;  // Only accessible through methods
-]]></program>
-        </listing>
+</program>
       </li>
       <li>
         <p><strong>Abstraction</strong>: Hide complex details behind simple commands</p>
-        <listing>
-          <program><![CDATA[
+          <program>
 player.heal(5);     // Don't care HOW it heals
-]]></program>
-        </listing>
+</program>
       </li>
     </ol>
     <p>Let's learn to write code this way!</p>
@@ -87,16 +80,14 @@ player.heal(5);     // Don't care HOW it heals
     <p> Our <c>Player</c> class works, but it has a problem: anyone can break the rules. In a real
       game, this could be disastrous: </p>
 
-    <listing xml:id="break-rules">
-      <program language="java"><![CDATA[
+      <program language="java" xml:id="break-rules">
 Player hero = new Player(100, 50);
 
 // During gameplay:
 hero.health = -999;     // Player becomes invincible!
 hero.gold = 1000000;    // Instant millionaire...
 monster.health = 0;     // Kill without fighting
-]]></program>
-    </listing>
+</program>
 
     <p>
       We need three things:
@@ -104,33 +95,27 @@ monster.health = 0;     // Kill without fighting
     <ol>
       <li>
         <p><strong>Protection</strong>: Stop direct access to data</p>
-        <listing>
-          <program><![CDATA[
+          <program>
 private int health;  // Now hero.health = -999 won't compile!
-]]></program>
-        </listing>
+</program>
       </li>
       <li>
         <p><strong>Controls</strong>: Provide safe ways to modify data</p>
-        <listing>
-          <program><![CDATA[
+          <program>
 public void heal(int amount) {
-    if (amount > 0) {         // Only positive healing allowed
+    if (amount &gt; 0) {         // Only positive healing allowed
         health += amount;     // Safely change health
     }
 }
-]]></program>
-        </listing>
+</program>
       </li>
       <li>
         <p><strong>Rules</strong>: Enforce game mechanics</p>
-        <listing>
-          <program><![CDATA[
+          <program>
 public void takeDamage(int amount) {
     health = Math.max(0, health - amount);  // Never go below 0
 }
-]]></program>
-        </listing>
+</program>
       </li>
     </ol>
 
@@ -171,9 +156,8 @@ public void takeDamage(int amount) {
 
     <subsubsection xml:id="bundling-related-data">
       <title>Bundling: Keeping Related Things Together</title>
-      <listing>
         <caption>BankAccount Example</caption>
-        <program language="java"><![CDATA[
+        <program language="java">
 public class BankAccount {
     // Things that every account needs:
     private double balance;      // How much money you have
@@ -187,16 +171,15 @@ public class BankAccount {
         balance = balance + earned;
     }
 }
-]]></program>
-      </listing>
+</program>
+      
       <p> Notice how the interest calculation uses both <c>balance</c> and <c>interestRate</c>? They
         belong together! </p>
     </subsubsection>
 
     <subsubsection xml:id="protection-making-changes-safely">
       <title>Protection: Making Sure Data Changes Safely</title>
-      <listing>
-        <program language="java"><![CDATA[
+        <program language="java">
 public class Player {
     private int health;  // Only Player methods can change this
 
@@ -209,8 +192,7 @@ public class Player {
         }
     }
 }
-]]></program>
-      </listing>
+</program>
       <p>
         Now players can't have negative health, which might break game rules!
       </p>
@@ -219,44 +201,39 @@ public class Player {
     <!-- Fix for the interface subsection -->
     <subsubsection xml:id="interface-making-class-easy-use">
       <title>Interface: Making Your Class Easy to Use</title>
-      <listing>
-        <program language="java"><![CDATA[
+
+        <program language="java">
 BankAccount myAccount = new BankAccount("12345");
 myAccount.deposit(100);     // Put money in
 myAccount.withdraw(50);     // Take money out
 double money = myAccount.getBalance();  // Check how much you have
-]]></program>
-      </listing>
+</program>
       <p>Compare to trying to work with raw data:</p>
-      <listing>
-        <program><![CDATA[
+        <program>
 myAccount.balance = myAccount.balance + 100;  // Easy to make mistakes!
-]]></program>
-      </listing>
+</program>
       <p>Good method names act like clear labels on buttons!</p>
     </subsubsection>
 
     <subsubsection xml:id="invariants-rules-that-stay-true">
       <title>Invariants: Rules That Must Always Be True</title>
-      <listing>
-        <program language="java"><![CDATA[
+        <program language="java">
 public class Player {
   private int health;
   private int maxHealth = 100;
 
   public void setHealth(int newHealth) {
     // Check all our rules:
-    if (newHealth < 0) {
+    if (newHealth &lt; 0) {
       health = 0;
-    } else if (newHealth > maxHealth) {
+    } else if (newHealth &gt; maxHealth) {
       health = maxHealth;
     } else {
       health = newHealth;
     }
   }
 }
-]]></program>
-      </listing>
+</program>
       <p>These rules are always enforced—no accidental breakage!</p>
     </subsubsection>
 
@@ -288,53 +265,45 @@ public class Player {
     <ol>
       <li>
         <p><strong>Constructor Checks</strong>: Stop invalid objects from being created</p>
-        <listing>
-          <program language="java"><![CDATA[
+          <program language="java">
 public Player(int startHealth) {
-    if (startHealth < 0) {
+    if (startHealth &lt; 0) {
         startHealth = 1;  // Fix invalid input
     }
     health = startHealth;
 }
-]]></program>
-        </listing>
+</program>
       </li>
       <li>
         <p><strong>Method Guards</strong>: Fix invalid inputs</p>
-        <listing>
-          <program language="java"><![CDATA[
+          <program language="java">
 public void heal(int amount) {
-    if (amount < 0) {
+    if (amount &lt; 0) {
         amount = 0;  // Ignore negative healing
     }
     health += amount;
 }
-]]></program>
-        </listing>
+</program>
       </li>
       <li>
         <p><strong>Range Enforcement</strong>: Keep values in bounds</p>
-        <listing>
-          <program language="java"><![CDATA[
+          <program language="java">
 public void setHealth(int newHealth) {
     health = Math.max(0, Math.min(newHealth, MAX_HEALTH));
 }
-]]></program>
-        </listing>
+</program>
       </li>
       <li>
         <p><strong>Complete Rejection</strong>: Return success/failure</p>
-        <listing>
-          <program language="java"><![CDATA[
+          <program language="java">
 public boolean withdraw(int amount) {
-    if (amount > balance) {
+    if (amount &gt; balance) {
         return false;  // Can't withdraw more than you have
     }
     balance -= amount;
     return true; // success
 }
-]]></program>
-        </listing>
+</program>
       </li>
     </ol>
     <p>Choose based on what makes sense for your situation.</p>
@@ -348,12 +317,11 @@ public boolean withdraw(int amount) {
     <ul>
       <li>You order “a cheeseburger”</li>
       <li>Kitchen handles complex details (grill temp, cooking time, etc.)</li>
-      <li>You don’t need to know <em>HOW</em> they make it</li>
+      <li>You don't need to know <em>HOW</em> they make it</li>
     </ul>
 
-    <p> That’s <strong>abstraction</strong> in code: </p>
-    <listing>
-      <program language="java"><![CDATA[
+    <p> That's <strong>abstraction</strong> in code: </p>
+      <program language="java">
 public class Restaurant {
     // Store kitchen details inside the class (encapsulation)
     private double grillTemp;   // Current temperature of grill
@@ -363,7 +331,7 @@ public class Restaurant {
     // Simple interface for customers:
     public boolean orderCheeseburger() {
         // First check if we can make the burger
-        if (burgerCount <= 0) {
+        if (burgerCount &lt;= 0) {
             return false;    // Can't make burger - out of ingredients
         }
         
@@ -380,7 +348,7 @@ public class Restaurant {
     
     // Helper method - customers don't need to see this
     private boolean cookPatty() {
-        if (grillSpace > 0) {           // If there's room on grill
+        if (grillSpace &gt; 0) {           // If there's room on grill
             grillSpace = grillSpace - 1; // Take up one spot
             return true;                 // Cooking successful
         }
@@ -391,8 +359,7 @@ public class Restaurant {
 // Customer just needs to know:
 Restaurant store = new Restaurant();
 boolean gotBurger = store.orderCheeseburger();  // Don't care about the details!
-]]></program>
-    </listing>
+</program>
 
     <p>
       Abstraction lets us:
@@ -415,9 +382,8 @@ boolean gotBurger = store.orderCheeseburger();  // Don't care about the details!
       Together they create reliable, easy-to-use code!
     </p>
 
-    <listing>
       <caption>Encapsulation + Abstraction Example</caption>
-      <program language="java"><![CDATA[
+      <program language="java">
 public class Player {
     private int health;            // Encapsulation
     private double healBonus;      // (protect the data)
@@ -429,8 +395,7 @@ public class Player {
         updateHealth(amount);      // Users don't see these steps
     }
 }
-]]></program>
-    </listing>
+</program>
   </subsection>
 
   <subsection xml:id="looking-ahead-more-oop-features">
@@ -438,8 +403,7 @@ public class Player {
     <p>
       You might notice some repetition in our game:
     </p>
-    <listing>
-      <program language="java"><![CDATA[
+      <program language="java">
 class Player {
     private int health;
     public void takeDamage(int amount) { ... }
@@ -454,8 +418,7 @@ class Building {
     private int health;
     public void takeDamage(int amount) { ... }
 }
-]]></program>
-    </listing>
+</program>
 
     <p>
       Writing the same health/damage code for every destructible thing seems wasteful! OOP has two
@@ -482,9 +445,7 @@ class Building {
     <p> Let's build a <c>BankAccount</c> that's both safe and easy to use. We'll add features step
       by step: </p>
 
-    <listing xml:id="bankaccount-sample">
-      <caption>BankAccount Class Example</caption>
-      <program language="java"><![CDATA[
+      <program language="java" xml:id="bankaccount-sample">
 public class BankAccount {
   // Step 1: Protect the data (Encapsulation)
   private double balance;
@@ -492,7 +453,7 @@ public class BankAccount {
 
   // Step 2: Control object creation
   public BankAccount(double initBalance) {
-    if (initBalance < 0) {
+    if (initBalance &lt; 0) {
       initBalance = 0;  // Start at 0 if negative
     }
     this.balance = initBalance;
@@ -502,7 +463,7 @@ public class BankAccount {
   // Step 3: Simple interface, complex implementation (Abstraction)
   public boolean deposit(double amount) {
     // Validate input
-    if (amount < 0) {
+    if (amount &lt; 0) {
       return false;  // Can't deposit negative amounts
     }
 
@@ -513,7 +474,7 @@ public class BankAccount {
 
   public boolean withdraw(double amount) {
     // Validate input
-    if (amount < 0 || amount > balance) {
+    if (amount &lt; 0 || amount &gt; balance) {
       return false;  // Invalid amount
     }
 
@@ -532,18 +493,15 @@ public class BankAccount {
     balance += balance * interestRate;
   }
 }
-]]></program>
-    </listing>
+</program>
 
     <p>
       <strong>Try using it:</strong>
     </p>
-    <listing>
-      <program language="java"><![CDATA[
+      <program language="java">
 BankAccount acct = new BankAccount(100);
 acct.deposit(50);   // Simple to use!
-]]></program>
-    </listing>
+</program>
 
     <p>
       <strong>What's happening behind the scenes?</strong>
@@ -584,20 +542,18 @@ acct.deposit(50);   // Simple to use!
     </ol>
     <p>OOP helps enforce these:</p>
 
-    <listing>
-      <program language="java"><![CDATA[
+      <program language="java">
   // Design Recipe says: "health must be ≥ 0"
   public class Player {
     private int health;   // Data definition + protection
 
     public void heal(int amt) {  // Methods enforce constraints
-      if (amt < 0) return;     // No negative healing
+      if (amt &lt; 0) return;     // No negative healing
       health = Math.min(100,   // Can't exceed max
                health + amt);
     }
   }
-  ]]></program>
-    </listing>
+  </program>
 
     <p>
       The compiler becomes your ally:
@@ -614,13 +570,11 @@ acct.deposit(50);   // Simple to use!
     <p>
       When we do:
     </p>
-    <listing>
-      <program language="java"><![CDATA[
+      <program language="java">
 Player hero = new Player(100);
 Player backup = hero;
 backup.health -= 50;  // Does this affect hero?
-]]></program>
-    </listing>
+</program>
 
     <p>
       We need to understand:
@@ -746,7 +700,7 @@ public class BankAccount {
     <exercise xml:id="tf-private-fields" type="truefalse">
       <title>True/False: Private Fields</title>
       <statement correct="yes"> Marking a field <c>private</c> means code outside the class cannot
-        access it directly, forcing all modifications through the class’s methods. </statement>
+        access it directly, forcing all modifications through the class's methods. </statement>
       <feedback>
         Correct! Making a field private enforces that only the class itself can read or write that
         field, which is a key part of encapsulation.
@@ -764,8 +718,8 @@ public class BankAccount {
       <response />
       <solution>
         <p>
-          <strong>Sample Solution:</strong> I’d make <c>health</c> private and provide methods like <c>setHealth</c> or <c>takeDamage</c> that check if the new health would be negative, then
-          set it to 0 instead. This ensures outsiders can’t directly write <c>p1.health</c> = -999,
+          <strong>Sample Solution:</strong> I'd make <c>health</c> private and provide methods like <c>setHealth</c> or <c>takeDamage</c> that check if the new health would be negative, then
+          set it to 0 instead. This ensures outsiders can't directly write <c>p1.health</c> = -999,
           preserving the invariant “health ≥ 0.” </p>
       </solution>
     </exercise>
@@ -830,7 +784,7 @@ public class BankAccount {
         </block>
         <block order="10">
           <choice correct="yes">
-            <cline> if (amount > 0) {</cline>
+            <cline> if (amount &gt; 0) {</cline>
           </choice>
         </block>
         <block order="11">
@@ -903,14 +857,14 @@ public class BankAccount {
         <choice>
           <statement>Constructor Checks</statement>
           <feedback>
-            Constructor checks can fix or adjust invalid data at creation, but they don’t inherently
+            Constructor checks can fix or adjust invalid data at creation, but they don't inherently
             “reject” an operation with a boolean return.
           </feedback>
         </choice>
         <choice>
           <statement>Range Enforcement</statement>
           <feedback>
-            Range enforcement might clamp or adjust the data, but it’s not necessarily rejecting
+            Range enforcement might clamp or adjust the data, but it's not necessarily rejecting
             with success/failure.
           </feedback>
         </choice>
@@ -924,7 +878,7 @@ public class BankAccount {
         <choice>
           <statement>Method Guards</statement>
           <feedback>
-            Method guards can correct or clamp input, but they don’t always return success/failure.
+            Method guards can correct or clamp input, but they don't always return success/failure.
           </feedback>
         </choice>
       </choices>
@@ -943,7 +897,7 @@ public class BankAccount {
       <solution>
         <p>
           <strong>Sample Solution:</strong> A <c>Player</c> class keeps all relevant data and logic
-          together, so we can’t just accidentally do <c>playerHealth = -999</c> or pass the wrong
+          together, so we can't just accidentally do <c>playerHealth = -999</c> or pass the wrong
           variable order. <c>private</c> fields force changes through safe methods that enforce
           “health ≥ 0.” This cuts down on guesswork and makes the code clearer by grouping data and
           actions in one place. </p>
