@@ -1,0 +1,345 @@
+<section xml:id="multi-parameter-problem">
+  <title>Method Parameters</title>
+
+  <p> Remember how methods helped us avoid copying and pasting code? That was great! But as our
+    programs grow bigger, we're running into a new problem: <em>too many separate variables</em>
+    that really belong together. </p>
+
+  <!-- ======================================================
+       The Problem: Too Many Separate Pieces
+       ====================================================== -->
+  <subsection xml:id="the-problem-too-many-separate-pieces">
+    <title>The Problem: Too Many Separate Pieces</title>
+
+    <p>
+      Think of it like packing for school. Instead of one backpack, imagine carrying:
+    </p>
+
+    <ul>
+      <li>
+        <p>Your math textbook in one hand</p>
+      </li>
+      <li>
+        <p>Your pencil case in another</p>
+      </li>
+      <li>
+        <p>Your calculator in your pocket</p>
+      </li>
+      <li>
+        <p>Your notebook under your arm</p>
+      </li>
+      <li>
+        <p>Your lunch box... somehow?</p>
+      </li>
+    </ul>
+
+    <p> Sure, you <em>could</em> do it, but it's awkward and things might fall! This is exactly
+      what's happening in our game code: </p>
+
+    <listing xml:id="separate-variables-example">
+      <caption>Many Separate Variables</caption>
+      <program language="java"><![CDATA[
+int playerHealth  = 100;
+int playerGold    = 50;
+int playerXp      = 0;
+int playerMana    = 75;
+int playerStamina = 90;
+]]></program>
+    </listing>
+
+    <p> All these variables describe one thing (<em>the player</em>), but we're carrying them
+      separately. This leads to clumsy method calls: </p>
+
+    <listing xml:id="too-many-params">
+      <program language="java"><![CDATA[
+// We have to pass everything one by one
+public static int increaseHealth(int currentHealth, int healAmount) {
+    return currentHealth + healAmount;
+}
+
+public static int increaseGold(int currentGold, int goldReward) {
+    return currentGold + goldReward;
+}
+
+// Using them gets tedious
+playerHealth = increaseHealth(playerHealth, 5);
+playerGold   = increaseGold(playerGold, 10);
+]]></program>
+    </listing>
+  </subsection>
+
+  <!-- ======================================================
+       Why This Is A Problem
+       ====================================================== -->
+  <subsection xml:id="why-this-is-a-problem">
+    <title>Why This Is A Problem</title>
+
+    <p>Here’s why juggling so many separate variables causes trouble:</p>
+
+    <ol>
+      <li>
+        <p><strong>Too Many Parameters</strong>: What if we need a method that changes both health <em>
+          and</em> gold? We'd need something like:</p>
+        <listing xml:id="award-victory-future">
+          <program language="java"><![CDATA[
+public static void awardVictory(int health, int gold, int xp, int mana /* ... */) {
+    // ...
+}
+]]></program>
+        </listing>
+        <p>
+          That's a lot to keep track of!
+        </p>
+      </li>
+
+      <li>
+        <p><strong>Easy Mistakes</strong>: The compiler can't help us if we mix up the order:</p>
+        <listing xml:id="swapped-params">
+          <program language="java"><![CDATA[
+// Oops! Accidentally swapped health and gold
+awardVictory(playerGold, playerHealth);  // This will compile! 😱
+]]></program>
+        </listing>
+        <p>It compiles, but it's obviously wrong—Java doesn't know they're reversed.</p>
+      </li>
+
+      <li>
+        <p><strong>Multiple Players</strong>: It gets worse with two players:</p>
+        <listing xml:id="two-players">
+          <program language="java"><![CDATA[
+int player1Health = 100;
+int player1Gold   = 50;
+
+int player2Health = 100;
+int player2Gold   = 50;
+
+// ... this is getting out of hand!
+]]></program>
+        </listing>
+      </li>
+    </ol>
+  </subsection>
+
+  <!-- ======================================================
+       The Solution: Grouping Related Things Together
+       ====================================================== -->
+  <subsection xml:id="the-solution-grouping-related-things">
+    <title>The Solution: Grouping Related Things Together</title>
+
+    <p> Just like how a backpack keeps all your school supplies together, Java has a way to keep
+      related variables together: it’s called a <em>class</em>. </p>
+    <p> Instead of juggling separate variables, we can create a <c>Player</c> class that keeps track
+      of its own stats: </p>
+
+    <listing xml:id="player-class-preview">
+      <caption>A Preview of a Player Class</caption>
+      <program language="java"><![CDATA[
+// This is a preview - we'll learn how to write this soon!
+Player p1 = new Player(100, 50, 0, 75, 90);
+p1.increaseHealth(5); // So much simpler!
+]]></program>
+    </listing>
+
+    <p>
+      Think of a class like a blueprint for creating objects that:
+    </p>
+    <ul>
+      <li>
+        <p>Keep their related data together (like health, gold, etc.)</p>
+      </li>
+      <li>
+        <p>Include methods that work with that data</p>
+      </li>
+      <li>
+        <p>Protect their data from accidental misuse</p>
+      </li>
+    </ul>
+  </subsection>
+
+  <!-- ======================================================
+       What's Coming Next?
+       ====================================================== -->
+  <subsection xml:id="whats-coming-next">
+    <title>What's Coming Next?</title>
+
+    <p>In our next section, we'll learn:</p>
+    <ul>
+      <li>
+        <p>How to create our own classes (like that <c>Player</c> example)</p>
+      </li>
+      <li>
+        <p>How to keep data safe inside our classes</p>
+      </li>
+      <li>
+        <p>How to write methods that belong to our classes</p>
+      </li>
+    </ul>
+  </subsection>
+
+  <!-- ======================================================
+       Practice Thinking About It
+       ====================================================== -->
+  <subsection xml:id="practice-thinking-about-it">
+    <title>Practice Thinking About It</title>
+
+    <p>
+      <strong>1. Group Related Things</strong><br /> If you were making a <c>BankAccount</c>, what
+      information would belong together? Think: <em>balance, account number, interest rate...</em>
+    </p>
+
+    <p>
+      <strong>2. Spot the Problem</strong><br /> How many things could go wrong with: </p>
+    <listing xml:id="transfer-money">
+      <program language="java"><![CDATA[
+public static void transferMoney(int fromBalance, int toBalance, int amount)
+]]></program>
+    </listing>
+
+    <p> What if someone mixes up the order of <c>fromBalance</c> and <c>toBalance</c>? </p>
+
+    <p>
+      <em>Next up:</em> We'll see how to solve these problems by learning about classes – a way to
+      keep related data and methods together, just like a backpack keeps your school supplies
+      organized! </p>
+  </subsection>
+
+  <subsection xml:id="exercises-method-parameters">
+    <title>Exercises: Method Parameters</title>
+
+    <!-- 1) MULTIPLE-CHOICE: WHY JUGGLING TOO MANY PIECES IS BAD -->
+    <exercise xml:id="mc-too-many-pieces">
+      <title>Multiple Choice: Why Too Many Separate Pieces Is a Problem</title>
+      <statement>
+        <p>
+          In the "Method Parameters" section, we compared carrying many separate school items
+          to storing many separate player stats. Which statement below best captures why this
+          approach can cause issues?
+        </p>
+      </statement>
+      <choices randomize="yes">
+        <choice>
+          <statement> Because Java forbids having more than three <c>int</c> variables in a class. </statement>
+          <feedback> Java doesn't have a hard limit on the number of <c>int</c> variables; the issue
+            is about code organization. </feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>
+            It becomes easy to mix up or misuse parameters, and methods end up with too many
+            arguments to manage safely.
+          </statement>
+          <feedback>
+            Correct. Too many separate variables means large parameter lists and accidental ordering
+            mistakes.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            We can’t compile if we have more than two parameters in a method header.
+          </statement>
+          <feedback>
+            Not true; Java methods can have many parameters, but it’s still risky or unwieldy to do
+            so.
+          </feedback>
+        </choice>
+        <choice>
+          <statement> Passing multiple <c>int</c> variables will permanently corrupt memory in Java. </statement>
+          <feedback>
+            Java won't corrupt memory. The real danger is logical mistakes with too many separate
+            pieces.
+          </feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- 2) TRUE/FALSE: SWAPPED PARAMETERS -->
+    <exercise xml:id="tf-swapped-parameters" type="truefalse">
+      <title>True/False: Swapped Parameters</title>
+      <statement correct="yes"> If two method parameters have the same type, swapping them by
+        accident (e.g., passing <c>playerGold</c> where <c>playerHealth</c> is expected) will still
+        compile and could lead to unexpected behavior at runtime. </statement>
+      <feedback>
+        The compiler won't stop you if the swapped parameters are both the same type,
+        making it a silent but dangerous error.
+      </feedback>
+    </exercise>
+
+    <!-- 3) SHORT ANSWER: MULTIPLE PLAYERS HEADACHE -->
+    <exercise xml:id="sa-multiple-players">
+      <title>Short Answer: Handling Multiple Players</title>
+      <statement>
+        <p> In the section, we saw how having <c>player1Health, player2Health, player1Gold,
+          player2Gold</c>, and so on can get “out of hand.” In <em>1–2 sentences</em>, explain why
+          managing multiple players with separate variables becomes difficult. Feel free to
+          reference the “backpack” analogy. </p>
+      </statement>
+      <response />
+      <solution>
+        <p>
+          <strong>Sample Solution:</strong> Each player has several stats to track, so using a
+          separate variable for each stat (like <c>player1Health</c>, <c>player2Health</c>, etc.)
+          quickly leads to long parameter lists and confusion. Bundling them into a single structure
+          (a “backpack” or a <c>Player</c> class) simplifies both method calls and data
+          organization. </p>
+      </solution>
+    </exercise>
+
+    <!-- 4) MULTIPLE-CHOICE: TRANSFER MONEY PITFALL -->
+    <exercise xml:id="mc-transfer-money">
+      <title>Multiple Choice: The transferMoney Example</title>
+      <statement>
+        <p> Consider the method signature <c>public static void transferMoney(int fromBalance, int
+          toBalance, int amount)</c>. Which of the following <em>best</em> describes the biggest
+          risk with this approach? </p>
+      </statement>
+      <choices randomize="yes">
+        <choice correct="yes">
+          <statement> Mixing up <c>fromBalance</c> and <c>toBalance</c> is easy to do, and the
+            compiler won’t catch it. </statement>
+          <feedback> Precisely. Since all parameters are <c>int</c>, swapping them won't trigger a
+            compile error. </feedback>
+        </choice>
+        <choice>
+          <statement>
+            The code will always trigger a compile-time error if someone calls the function with the
+            wrong order.
+          </statement>
+          <feedback> That’s incorrect; it <em>will compile</em> unless types differ. </feedback>
+        </choice>
+        <choice>
+          <statement> It’s impossible to pass three parameters to a <c>void</c> method in Java. </statement>
+          <feedback>
+            Not true. Java allows as many parameters as you want.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            If the method is static, it can’t accept multiple parameters.
+          </statement>
+          <feedback> A <c>static</c> method can still have multiple parameters. This is not the main
+            concern. </feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- 5) REFLECTION/DISCUSSION: CLASS PREVIEW -->
+    <exercise xml:id="reflection-class-preview">
+      <title>Reflection: Preview of Classes</title>
+      <statement>
+        <p> We saw a hint of a <c>Player</c> class that might hold <c>health</c>, <c>gold</c>, <c>xp</c>,
+          etc. In <em>2–3 sentences</em>, describe why bundling these stats into a single object
+          could make code easier to maintain, <strong>before</strong> we even learn the full syntax
+          of classes. </p>
+      </statement>
+      <response />
+      <solution>
+        <p>
+          <strong>Sample Solution:</strong> One object can store all the player’s related data, so
+          we don’t have to pass a dozen parameters whenever we modify or read stats. It also reduces
+          the risk of mixing up parameter order. Once we have an object, we can define methods like <c>
+          p1.increaseHealth(5)</c> that automatically update the right fields, making the code more
+          organized and less error-prone. </p>
+      </solution>
+    </exercise>
+
+  </subsection>
+</section>

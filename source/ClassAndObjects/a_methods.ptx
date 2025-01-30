@@ -1,0 +1,768 @@
+<section xml:id="introducing-methods">
+  <title>Introducing Methods</title>
+
+  <!-- ======================================================
+       Prerequisites
+       ====================================================== -->
+  <p>
+    <em>Prerequisites</em>: </p>
+  <ul>
+    <li>
+      <p>Basic Java syntax (if statements, loops)</p>
+    </li>
+    <li>
+      <p>Understanding of variables and types</p>
+    </li>
+    <li>
+      <p>Familiarity with the Design Recipe approach</p>
+    </li>
+  </ul>
+
+  <p>
+    Think of methods like your favorite recipes - write them once, use them many times!
+    Just as you wouldn't want to write down a cookie recipe every time you bake, Java
+    methods let us write code once and reuse it wherever needed.
+  </p>
+  <p>
+    <i>Note</i>: You might hear these called “functions” in other languages like
+    Python or JavaScript. In Java, we typically say “methods” when the code belongs to a class. </p>
+  <p>
+    In this chapter, we'll learn:
+  </p>
+  <ul>
+    <li>
+      <p>How to spot code that could be turned into methods (using our Design Recipe skills)</p>
+    </li>
+    <li>
+      <p>How Java handles method parameters (it's like passing notes in class!)</p>
+    </li>
+    <li>
+      <p>Why methods are just the first step toward organizing our code</p>
+    </li>
+  </ul>
+
+  <rule />
+
+  <!-- ======================================================
+       1. Why Do We Need Methods?
+       ====================================================== -->
+  <subsection xml:id="why-do-we-need-methods">
+    <title>Why Do We Need Methods?</title>
+    <p>
+      Let's start with a real problem. Imagine you're making a simple game where a player
+      gains health and gold after winning fights:
+    </p>
+
+    <listing xml:id="intro-methods1">
+      <title>Repeated Logic Example</title>
+      <program language="java"><![CDATA[
+public class IntroMethods1 {
+    public static void main(String[] args) {
+        int playerHealth = 10;
+        int playerGold   = 50;
+
+        // First victory
+        playerHealth += 5;
+        playerGold   += 10;
+
+        // Second victory
+        playerHealth += 5;
+        playerGold   += 10;
+
+        System.out.println("Health: " + playerHealth);
+        System.out.println("Gold:   " + playerGold);
+    }
+}
+]]></program>
+    </listing>
+
+    <p>
+      <i>Hold up!</i> Did you notice we wrote the same code twice? Just like copying
+      homework isn't the best idea, copying code can lead to problems. What if we need to change how
+      much gold a player gets? We'd have to find and update every copy! </p>
+    <p>
+      <i>Key Insight</i>: When you find yourself copy-pasting code, it's usually a
+      sign you need a method! </p>
+
+    <subsubsection xml:id="quick-check">
+      <title>Quick Check ✓</title>
+      <p>
+      Before moving on, make sure you can answer:
+      </p>
+      <ul>
+        <li>
+          <p>Why is copy-pasting code problematic?</p>
+        </li>
+        <li>
+          <p>What happens if the reward amount changes?</p>
+        </li>
+        <li>
+          <p>How does this relate to the Design Recipe's "repeated logic" warning?</p>
+        </li>
+      </ul>
+    </subsubsection>
+  </subsection>
+
+  <!-- ======================================================
+       2. Creating Your First Method
+       ====================================================== -->
+  <subsection xml:id="creating-your-first-method">
+    <title>Creating Your First Method</title>
+    <p>
+      Think of a method like a vending machine:
+    </p>
+    <ul>
+      <li>
+        <p>You put something in (<c>parameters</c>)</p>
+      </li>
+      <li>
+        <p>It does some work (<c>method body</c>)</p>
+      </li>
+      <li>
+        <p>You get something back (<c>return value</c>)</p>
+      </li>
+    </ul>
+
+    <p>
+      Here's the basic recipe:
+    </p>
+    <listing xml:id="basic-method-syntax">
+      <caption>Basic Method Syntax</caption>
+      <program language="java"><input>public static returnType methodName(parameters) {
+    // method body
+    return something; // if needed
+}</input></program>
+    </listing>
+
+    <p>
+      Let's break this down:
+    </p>
+    <ul>
+      <li>
+        <p><c>public</c> - Makes the method accessible to other code. Think of it like making a
+          public library that anyone can use.</p>
+      </li>
+      <li>
+        <p><c>static</c> - Means this method belongs to the class itself, not to any specific
+          instance. We'll explore this more when we learn about objects and classes.</p>
+      </li>
+      <li>
+        <p><c>returnType</c> - Specifies what kind of value the method gives back: 
+          <ul>
+            <li>
+              <p>Use <c>void</c> if it doesn't return anything</p>
+            </li>
+            <li>
+              <p>Use <c>int</c>, <c>double</c>, <c>String</c>, etc. if it returns that type of
+          value</p>
+            </li>
+          </ul>
+        </p>
+      </li>
+      <li>
+        <p><c>methodName</c> - The name we use to call the method. Like variable names: 
+          <ul>
+            <li>
+              <p>Must start with a lowercase letter</p>
+            </li>
+            <li>
+              <p>Use camelCase for multiple words (like <c>calculateTotal</c>)</p>
+            </li>
+            <li>
+              <p>Should clearly describe what the method does</p>
+            </li>
+          </ul>
+        </p>
+      </li>
+      <li>
+        <p><c>parameters</c> - The inputs the method needs to do its job: 
+          <ul>
+            <li>
+              <p>Each parameter needs both a type and a name</p>
+            </li>
+            <li>
+              <p>Can have zero or more parameters</p>
+            </li>
+            <li>
+              <p>Multiple parameters are separated by commas</p>
+            </li>
+          </ul>
+        </p>
+      </li>
+    </ul>
+
+    <p> For example, in <c>public static int addNumbers(int first, int second)</c>: </p>
+    <ul>
+      <li><p>It's <c>public</c> so other code can use it</p></li>
+      <li><p>It's <c>static</c> so we can call it directly from <c>main</c></p></li>
+      <li><p>It returns an <c>int</c></p></li>
+      <li><p>It's named <c>addNumbers</c></p></li>
+      <li><p>It takes two <c>int</c> parameters named <c>first</c> and <c>second</c></p></li>
+    </ul>
+
+    <p>
+      <i>Example</i>: </p>
+    <listing xml:id="add-two-numbers">
+      <program language="java"><![CDATA[
+public static int addTwoNumbers(int a, int b) {
+    int sum = a + b;
+    return sum;  // must match the 'int' return type
+}
+]]></program>
+    </listing>
+
+    <p>
+      <i>Compiler moment</i>: If you accidentally do </p>
+    <listing xml:id="compiler-moment-example">
+      <program language="java"><![CDATA[
+public static int addTwoNumbers(String a, int b) { ... }
+]]></program>
+    </listing>
+    <p> the compiler flags an <i>incompatible type</i> error when you try <c>addTwoNumbers(3,
+      5)</c>. It expects <c>(String, int)</c>, not <c>(int, int)</c>. The compiler is your “early
+      alert system” for mismatched parameter types. </p>
+  </subsection>
+
+  <!-- ======================================================
+       3. Trying a `void` Method—Why Doesn't It Work?
+       ====================================================== -->
+  <subsection xml:id="trying-void-method">
+    <title>Trying a <c>void</c> Method—Why Doesn't It Work?</title>
+    <p>
+      Let's trace what happens when we run this code:
+    </p>
+    <listing xml:id="award-victory-void">
+      <program language="java"><![CDATA[
+public static void awardVictory(int health, int gold) {
+    // health is now a COPY of playerHealth (10)
+    health += 5;  // health becomes 15, but only inside this method
+    // gold is a COPY of playerGold (50)
+    gold += 10;   // gold becomes 60, but only inside this method
+    // When method ends, copies are discarded!
+}
+
+// In main:
+playerHealth = 10;  // Original stays 10
+playerGold = 50;    // Original stays 50
+]]></program>
+    </listing>
+
+    <p> Think about it: If you make a photocopy of a document and write on the copy, does it
+      change the original? That's what Java does with <c>int</c> parameters—it makes copies! </p>
+
+    <p>
+      <i>The Fiasco</i>: What options do we have? Let's think through this like the
+      Design Recipe taught us... </p>
+    <ul>
+      <li>
+        <p>Could we use <c>void</c> and hope Java changes the originals? (No—we just saw why!)</p>
+      </li>
+      <li>
+        <p>Could we return both values somehow? (Not directly—methods return one thing)</p>
+      </li>
+      <li>
+        <p>Could we... <i>wait</i>... what if we return the new value and store it back? (Yes!)</p>
+      </li>
+    </ul>
+
+    <p>
+      <title>Pass-By-Value Visualization</title>
+      <tabular>
+        <row header="yes">
+          <cell>In main()</cell>
+          <cell>In method()</cell>
+        </row>
+        <row>
+          <cell>playerHealth = 10</cell>
+          <cell>health = 10 (copy)</cell>
+        </row>
+        <row>
+          <cell>playerHealth still 10</cell>
+          <cell>health += 5</cell>
+        </row>
+        <row>
+          <cell>(unchanged)</cell>
+          <cell>(copy discarded)</cell>
+        </row>
+      </tabular>
+    </p>
+  </subsection>
+
+  <!-- ======================================================
+       4. Returning New Values to Fix It
+       ====================================================== -->
+  <subsection xml:id="returning-new-values">
+    <title>Returning New Values to Fix It</title>
+    <p> (<i>Implementation, Step 3 &amp; 4:</i> We refine and retest) </p>
+    <p> We can fix it by <i>returning</i> the new integer and storing it in the
+      caller. Let’s do two separate methods for clarity: </p>
+
+    <listing xml:id="intro-methods3">
+      <program language="java"><![CDATA[
+public class IntroMethods3 {
+    // Return updated health
+    public static int increaseHealth(int currentHealth, int healAmount) {
+        return currentHealth + healAmount;
+    }
+
+    // Return updated gold
+    public static int increaseGold(int currentGold, int goldReward) {
+        return currentGold + goldReward;
+    }
+
+    public static void main(String[] args) {
+        int playerHealth = 10;
+        int playerGold   = 50;
+
+        // First victory
+        playerHealth = increaseHealth(playerHealth, 5);
+        playerGold   = increaseGold(playerGold, 10);
+
+        // Second victory
+        playerHealth = increaseHealth(playerHealth, 5);
+        playerGold   = increaseGold(playerGold, 10);
+
+        System.out.println("Health: " + playerHealth);
+        System.out.println("Gold:   " + playerGold);
+    }
+}
+]]></program>
+    </listing>
+
+    <p>
+      <i>Output</i>: </p>
+    <console>
+      <output>
+Health: 20
+Gold: 70
+      </output>
+    </console>
+
+    <p> Now, each method returns the updated <c>int</c>, and we assign it back into <c>
+      playerHealth</c> or <c>playerGold</c>. If you wanted “gold +12” instead of “+10,” you’d edit <c>
+      increaseGold()</c> in <i>one</i> place. </p>
+  </subsection>
+
+  <!-- ======================================================
+       5. Many Fields → Multiple Parameters Fiasco
+       ====================================================== -->
+  <subsection xml:id="many-fields-params-fiasco">
+    <title>Many Fields → Multiple Parameters Fiasco</title>
+    <p>
+      Remember how the Design Recipe warned us about code that's “trying to do too much”?
+      Let's count the ways this approach can go wrong:
+    </p>
+
+    <ul>
+      <li>
+        <p>What if we add more player stats? <c>awardVictory(health, gold, xp, mana, stamina, luck)</c></p>
+      </li>
+      <li>
+        <p>What if we need two players? <c>awardVictory(player1Health, player1Gold, player1Xp)</c></p>
+      </li>
+      <li>
+        <p>What if we accidentally mix up the order? <c>awardVictory(gold, health)</c>—oops!</p>
+      </li>
+    </ul>
+
+    <p> The compiler can't save us here—it sees <c>(int, int)</c> and thinks "looks good!" even
+      if we've mixed up which <c>int</c> is which. There must be a better way... </p>
+    <p>
+      <i>Design Recipe perspective</i>: 
+      <ul>
+        <li>
+          <p>We identified repeated logic → used methods.</p>
+        </li>
+        <li>
+          <p>But we still juggle many separate variables. The next step? "Bundle them in one
+      container." In Java, that container is a <i>class</i>. Then we can do <c>player1.heal(5)</c> without passing <c>health1, xp1, gold1</c>.</p>
+        </li>
+      </ul>
+    </p>
+    <p> We’ll see that in the upcoming <i>Introducing Classes</i> lesson, including
+      how <i>encapsulation</i> protects those fields from accidental misuse. </p>
+  </subsection>
+
+  <!-- ======================================================
+       6. What We've Learned
+       ====================================================== -->
+  <subsection xml:id="what-weve-learned-methods">
+    <title>What We've Learned</title>
+    <p>
+      <i>Big Ideas</i>: </p>
+    <ul>
+      <li>
+        <p>Methods help us avoid copying code</p>
+      </li>
+      <li>
+        <p>Java makes copies of numbers we pass to methods</p>
+      </li>
+      <li>
+        <p>When methods need to update values, they should return them</p>
+      </li>
+      <li>
+        <p>Too many parameters = time to learn about classes!</p>
+      </li>
+    </ul>
+
+    <p>
+      <i>Coming Up Next</i>: We'll learn about classes – a way to keep related data
+      and methods together, like keeping all your school supplies in one backpack instead of
+      carrying them separately! </p>
+  </subsection>
+
+  <!-- ======================================================
+       7. Your Turn
+       ====================================================== -->
+  <subsection xml:id="your-turn-methods">
+    <title>Your Turn</title>
+    <p>
+      Try these exercises to practice what you've learned. Remember: it's okay if you don't get
+      it perfect the first time – that's how we learn!
+    </p>
+    <ol>
+      <li>
+        <p><i>Convert Fahrenheit</i><br /> Define <c>public static double
+          convertFtoC(double tempF)</c>, returning the Celsius result. Test by printing <c>
+          convertFtoC(32)</c>. </p>
+      </li>
+      <li>
+        <p><i>Improve Award Victory</i><br /> Suppose we want gold only on every <i>
+          second</i> victory in a row. Write a method that returns the new “victory streak,”
+          letting the caller track how many consecutive wins. </p>
+      </li>
+      <li>
+        <p><i>XP Gains</i><br /> Each victory also awards +20 xp. Show how you
+          might incorporate xp into the method calls, being mindful of pass-by-value issues. </p>
+      </li>
+    </ol>
+
+    <p>
+      Here's some starter code to get you going:
+    </p>
+
+    <listing xml:id="method-practice">
+      <caption>Method Practice Exercises</caption>
+      <program language="java">
+        <input>
+public class MethodPractice {
+    public static double convertFtoC(double tempF) {
+        // Your code here
+        // Formula: (F - 32) * 5/9
+        return 0.0; // placeholder
+    }
+
+    public static int awardVictoryStreak(int currentStreak) {
+        // Your code here
+        // Return updated streak count
+        return 0; // placeholder
+    }
+
+    public static void main(String[] args) {
+        // Test your methods here
+        System.out.println("32°F = " + convertFtoC(32) + "°C");
+    }
+}
+        </input>
+      </program>
+    </listing>
+  </subsection>
+
+  <!-- ======================================================
+       8. Common Pitfalls to Watch Out For
+       ====================================================== -->
+  <subsection xml:id="common-pitfalls-methods">
+    <title>Common Pitfalls to Watch Out For</title>
+    <ul>
+      <li>
+        <p>
+          <i>Forgetting to Return</i>: If your method declares a return type, every
+          path must return something </p>
+        <listing xml:id="bad-method">
+          <program language="java"><![CDATA[
+public static int bad(int x) {
+    if (x > 0) {
+        return x;
+    }
+    // Error! What if x <= 0?
+}
+]]></program>
+        </listing>
+      </li>
+      <li>
+        <p>
+          <i>Return Type Mismatch</i>: </p>
+        <listing xml:id="type-mismatch">
+          <program language="java"><![CDATA[
+public static int oops() {
+    return 3.14; // Error! Can't return double where int expected
+}
+]]></program>
+        </listing>
+      </li>
+      <li>
+        <p>
+          <i>Parameter Type Confusion</i>: </p>
+        <listing xml:id="param-confusion">
+          <program language="java"><![CDATA[
+public static void example(int x) { }
+
+double d = 3.14;
+example(d);  // Error! Can't pass double where int expected
+]]></program>
+        </listing>
+      </li>
+    </ul>
+  </subsection>
+
+  <!-- ======================================================
+       9. Quick Reference
+       ====================================================== -->
+  <subsection xml:id="quick-reference-methods">
+    <title>Quick Reference</title>
+    <p>
+      <i>Method Syntax</i>: </p>
+    <listing xml:id="method-syntax-ref">
+      <program language="java"><![CDATA[
+public static returnType methodName(type1 param1, type2 param2) {
+    // method body
+    return value;  // if non-void
+}
+]]></program>
+    </listing>
+    <p>
+      <i>Key Points</i>: </p>
+    <ul>
+      <li>
+        <p>Methods reduce code duplication</p>
+      </li>
+      <li>
+        <p>Parameters are passed by value (copies)</p>
+      </li>
+      <li>
+        <p>Return type must match declaration</p>
+      </li>
+      <li>
+        <p><c>void</c> methods don't return anything</p>
+      </li>
+      <li>
+        <p><c>static</c> methods belong to the class</p>
+      </li>
+    </ul>
+    <p>
+      <i>Design Recipe Steps</i>: </p>
+    <ol>
+      <li>
+        <p>Identify repeated code</p>
+      </li>
+      <li>
+        <p>Write method signature</p>
+      </li>
+      <li>
+        <p>Test with examples</p>
+      </li>
+      <li>
+        <p>Implement and verify</p>
+      </li>
+    </ol>
+  </subsection>
+
+  <subsection xml:id="exercises-introducing-methods">
+    <title>Exercises: Introducing Methods</title>
+
+    <!-- 1. MULTIPLE-CHOICE EXERCISE -->
+    <exercise xml:id="mc-repeated-code">
+      <title>Multiple Choice: The Repeated Code Problem</title>
+      <statement>
+        <p> In the example where we repeatedly wrote <c>playerHealth += 5; playerGold += 10;</c> for
+          each victory, which of the following best explains why that repeated code is problematic? </p>
+      </statement>
+      <choices randomize="yes">
+        <choice>
+          <statement>Java prohibits writing the same code more than once in a file.</statement>
+          <feedback>
+            Java doesn't forbid that—it simply becomes difficult to maintain.
+          </feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>Whenever we need to change the reward amounts, we must edit multiple places,
+            risking inconsistencies.</statement>
+          <feedback>Exactly! Repetition leads to fragile code and potential errors when updating the
+            logic.</feedback>
+        </choice>
+        <choice>
+          <statement>Copy-pasting code only matters in Python, not in Java.</statement>
+          <feedback>
+            Repetition is a problem in any language—it makes maintenance harder.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>We can only use repeated code if we mark it <c>static</c> first.</statement>
+          <feedback>
+            <c>static</c> doesn’t address the real issue of maintenance overhead when logic changes. </feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- 2. PARSONS PROBLEM EXERCISE -->
+    <exercise xml:id="parsons-victory-game" language="java">
+      <title>Parsons: Convert Repeated Logic to Methods</title>
+      <statement>
+        <p> Rearrange the following lines to form a <em>single, valid</em> Java program named <c>
+          VictoryGame</c>. It should: </p>
+        <ul>
+          <li>Have a class <c>VictoryGame</c>.</li>
+          <li>Define two methods: <c>awardVictoryHealth</c> and <c>awardVictoryGold</c>, each
+            returning the updated <c>int</c>.</li>
+          <li>Use these methods in <c>main</c> to update <c>playerHealth</c> and <c>playerGold</c>
+            from <c>10</c> and <c>50</c> to <c>15</c> and <c>60</c>, respectively.</li>
+          <li>Print the final health and gold to the console.</li>
+        </ul>
+        <p>
+          There is only one sensible ordering in which all braces match and the code compiles and
+          runs.
+          Arrange the blocks carefully!
+        </p>
+      </statement>
+      <blocks layout="vertical" randomize="yes">
+        <block order="1">
+          <choice correct="yes">
+            <cline>public class VictoryGame {</cline>
+          </choice>
+        </block>
+        <block order="2">
+          <choice correct="yes">
+            <cline>public static int awardVictoryHealth(int health) {</cline>
+          </choice>
+        </block>
+        <block order="3">
+          <choice correct="yes">
+            <cline> return health + 5;</cline>
+          </choice>
+        </block>
+        <block order="4">
+          <choice correct="yes">
+            <cline>}</cline>
+          </choice>
+        </block>
+        <block order="5">
+          <choice correct="yes">
+            <cline>public static int awardVictoryGold(int gold) {</cline>
+          </choice>
+        </block>
+        <block order="6">
+          <choice correct="yes">
+            <cline> return gold + 10;</cline>
+          </choice>
+        </block>
+        <block order="7">
+          <choice correct="yes">
+            <cline>}</cline>
+          </choice>
+        </block>
+        <block order="8">
+          <choice correct="yes">
+            <cline>public static void main(String[] args) {</cline>
+          </choice>
+        </block>
+        <block order="9">
+          <choice correct="yes">
+            <cline> int playerHealth = 10;</cline>
+          </choice>
+        </block>
+        <block order="10">
+          <choice correct="yes">
+            <cline> int playerGold = 50;</cline>
+          </choice>
+        </block>
+        <block order="11">
+          <choice correct="yes">
+            <cline> playerHealth = awardVictoryHealth(playerHealth);</cline>
+          </choice>
+        </block>
+        <block order="12">
+          <choice correct="yes">
+            <cline> playerGold = awardVictoryGold(playerGold);</cline>
+          </choice>
+        </block>
+        <block order="13">
+          <choice correct="yes">
+            <cline> System.out.println("Health: " + playerHealth);</cline>
+          </choice>
+        </block>
+        <block order="14">
+          <choice correct="yes">
+            <cline> System.out.println("Gold: " + playerGold);</cline>
+          </choice>
+        </block>
+        <block order="15">
+          <choice correct="yes">
+            <cline>}</cline>
+          </choice>
+        </block>
+        <block order="16">
+          <choice correct="yes">
+            <cline>}</cline>
+          </choice>
+        </block>
+      </blocks>
+    </exercise>
+    
+    <!-- 3. TRUE/FALSE EXERCISE -->
+    <exercise xml:id="tf-pass-by-value" type="truefalse">
+      <title>True/False: Java's Pass-by-Value</title>
+      <statement correct="yes"> In Java, when we pass an <c>int</c> or <c>double</c> to a method,
+        the method receives a copy of that value, not the original variable. </statement>
+      <feedback>
+        Java always passes primitive types by value, so changing the parameter inside
+        the method does not affect the original variable outside the method.
+      </feedback>
+    </exercise>
+
+    <!-- 4. SHORT ANSWER EXERCISE -->
+    <exercise xml:id="sa-why-void-failed">
+      <title>Short Answer: Why Did the <c>void</c> Method Fail to Update Player Stats?</title>
+      <statement>
+        <p> In the example, we tried <c>public static void awardVictory(int health, int gold)</c>
+          hoping it would directly update <c>playerHealth</c> and <c>playerGold</c>, but it didn’t
+          work as intended. In <em>2–3 sentences</em>, explain <strong>why</strong>
+        <c>void</c>
+          methods didn’t update the original variables, and <strong>how</strong> returning a new
+          value instead solves the problem. </p>
+      </statement>
+      <response />
+      <solution>
+        <p>
+          <strong>Sample Solution:</strong> Java passes <c>health</c> and <c>gold</c> as copies, so
+          changing them in the <c>void</c> method does not affect the original <c>playerHealth</c>
+          or <c>playerGold</c>. By returning the updated values (e.g., <c>return currentHealth + 5;</c>),
+          we can reassign <c>playerHealth</c> to that new value in the <c>main</c> method, ensuring
+          the original variable changes. </p>
+      </solution>
+    </exercise>
+
+  </subsection>
+
+  <!-- ======================================================
+       10. Bonus: More on Naming
+       ====================================================== -->
+  <subsubsection xml:id="bonus-more-on-naming">
+    <title>Bonus: More on Naming</title>
+    <p>
+      <ul>
+        <li>
+          <p><i>Method names</i> typically start with a lowercase letter and use
+            “camelCase” for additional words: <c>increaseGold()</c>, <c>addTwoNumbers()</c>.</p>
+        </li>
+        <li>
+          <p>They must follow Java’s identifier rules (no spaces, can’t start with a digit,
+            etc.).</p>
+        </li>
+      </ul>
+    </p>
+    <p> If you forget these rules, or pass arguments of the wrong type, your <i>compiler</i>
+      is your first line of defense—<i>helping</i> you spot errors early, in true
+      design-recipe spirit. </p>
+  </subsubsection>
+
+</section>

@@ -1,0 +1,936 @@
+<section xml:id="encapsulation-and-abstraction">
+  <title>Encapsulation &amp; Abstraction</title>
+
+  <p>
+    Think about organizing a game's code. There are two ways to do it:
+  </p>
+
+  <!-- Comparison of two approaches: python vs. java -->
+  <subsection xml:id="two-ways">
+    <title>Two Ways: Keep or Package Pieces</title>
+    <p>
+      <strong>Way 1: Keep pieces and rules separate (Traditional Approach)</strong>
+    </p>
+    <listing>
+      <program language="java"><![CDATA[
+  // Everything is scattered and global
+  class GameState {
+    // Data just floating around
+    static int playerHealth = 100;
+    static int monsterHealth = 100;
+    static int potionCount = 3;
+
+    // Rules are separate from data
+    static void healPlayer(int amount) {
+      playerHealth += amount;    // Which player's health?
+      potionCount--;            // Easy to forget this!
+    }
+
+    static void healMonster(int amount) {
+      monsterHealth += amount;   // Copy-pasted code
+    }
+
+    public static void main(String[] args) {
+      // Easy to make mistakes:
+      playerHealth = -50;        // Negative health?
+      potionCount = healPlayer(20);  // Wrong return type!
+      healMonster(monsterHealth);    // Wrong parameter!
+    }
+  }
+  ]]></program>
+    </listing>
+
+    <p>
+      <strong>Way 2: Package pieces with their rules</strong>
+    </p>
+    <listing>
+      <program language="java"><![CDATA[
+public class Player {
+    private int health = 100;
+
+    public void heal(int amount) {
+        health += amount;  // This Player's health
+    }
+}
+
+// Clear which player we're modifying
+hero.heal(20);
+]]></program>
+    </listing>
+
+    <p> The second way is called <em>Object-Oriented Programming</em> (OOP). It bundles data with
+      the code that works on that data. Java helps us do this through: </p>
+
+    <ol>
+      <li>
+        <p><strong>Encapsulation</strong>: Protect data from invalid changes</p>
+        <listing>
+          <program><![CDATA[
+private int health;  // Only accessible through methods
+]]></program>
+        </listing>
+      </li>
+      <li>
+        <p><strong>Abstraction</strong>: Hide complex details behind simple commands</p>
+        <listing>
+          <program><![CDATA[
+player.heal(5);     // Don't care HOW it heals
+]]></program>
+        </listing>
+      </li>
+    </ol>
+    <p>Let's learn to write code this way!</p>
+  </subsection>
+
+  <subsection xml:id="beyond-simple-classes">
+    <title>Beyond Simple Classes</title>
+    <p> Our <c>Player</c> class works, but it has a problem: anyone can break the rules. In a real
+      game, this could be disastrous: </p>
+
+    <listing xml:id="break-rules">
+      <program language="java"><![CDATA[
+Player hero = new Player(100, 50);
+
+// During gameplay:
+hero.health = -999;     // Player becomes invincible!
+hero.gold = 1000000;    // Instant millionaire...
+monster.health = 0;     // Kill without fighting
+]]></program>
+    </listing>
+
+    <p>
+      We need three things:
+    </p>
+    <ol>
+      <li>
+        <p><strong>Protection</strong>: Stop direct access to data</p>
+        <listing>
+          <program><![CDATA[
+private int health;  // Now hero.health = -999 won't compile!
+]]></program>
+        </listing>
+      </li>
+      <li>
+        <p><strong>Controls</strong>: Provide safe ways to modify data</p>
+        <listing>
+          <program><![CDATA[
+public void heal(int amount) {
+    if (amount > 0) {         // Only positive healing allowed
+        health += amount;     // Safely change health
+    }
+}
+]]></program>
+        </listing>
+      </li>
+      <li>
+        <p><strong>Rules</strong>: Enforce game mechanics</p>
+        <listing>
+          <program><![CDATA[
+public void takeDamage(int amount) {
+    health = Math.max(0, health - amount);  // Never go below 0
+}
+]]></program>
+        </listing>
+      </li>
+    </ol>
+
+    <p>
+      This is where OOP shines: we can make the compiler help enforce our rules. Let's see how!
+    </p>
+  </subsection>
+
+  <subsection xml:id="understanding-encapsulation">
+    <title>Understanding Encapsulation</title>
+    <p>
+      <strong>Encapsulation</strong> has two key parts: </p>
+    <ol>
+      <li>
+        <p>Bundling related data and methods together in a class</p>
+      </li>
+      <li>
+        <p>Protecting that data so it can only be changed in valid ways</p>
+      </li>
+    </ol>
+
+    <p>
+      When we encapsulate properly:
+    </p>
+    <ul>
+      <li>
+        <p>Related code stays together (easier to understand)</p>
+      </li>
+      <li>
+        <p>Data can only be changed through methods (maintains validity)</p>
+      </li>
+      <li>
+        <p>Implementation details can be changed without affecting other code</p>
+      </li>
+    </ul>
+
+    <p>Let's see how Java helps us achieve this:</p>
+
+    <subsubsection xml:id="bundling-related-data">
+      <title>Bundling: Keeping Related Things Together</title>
+      <listing>
+        <caption>BankAccount Example</caption>
+        <program language="java"><![CDATA[
+public class BankAccount {
+    // Things that every account needs:
+    private double balance;      // How much money you have
+    private String accountNum;   // Like your account number at a real bank
+    private double interestRate; // How much interest you earn
+
+    // The code that works with these values:
+    public void addInterest() {
+        // Calculate interest using the account's own values
+        double earned = balance * interestRate;
+        balance = balance + earned;
+    }
+}
+]]></program>
+      </listing>
+      <p> Notice how the interest calculation uses both <c>balance</c> and <c>interestRate</c>? They
+        belong together! </p>
+    </subsubsection>
+
+    <subsubsection xml:id="protection-making-changes-safely">
+      <title>Protection: Making Sure Data Changes Safely</title>
+      <listing>
+        <program language="java"><![CDATA[
+public class Player {
+    private int health;  // Only Player methods can change this
+
+    // Safe way to take damage - health can't go below 0
+    public void takeDamage(int amount) {
+        if (amount > health) {
+            health = 0;        // Player is defeated
+        } else {
+            health = health - amount;
+        }
+    }
+}
+]]></program>
+      </listing>
+      <p>
+        Now players can't have negative health, which might break game rules!
+      </p>
+    </subsubsection>
+
+    <!-- Fix for the interface subsection -->
+    <subsubsection xml:id="interface-making-class-easy-use">
+      <title>Interface: Making Your Class Easy to Use</title>
+      <listing>
+        <program language="java"><![CDATA[
+BankAccount myAccount = new BankAccount("12345");
+myAccount.deposit(100);     // Put money in
+myAccount.withdraw(50);     // Take money out
+double money = myAccount.getBalance();  // Check how much you have
+]]></program>
+      </listing>
+      <p>Compare to trying to work with raw data:</p>
+      <listing>
+        <program><![CDATA[
+myAccount.balance = myAccount.balance + 100;  // Easy to make mistakes!
+]]></program>
+      </listing>
+      <p>Good method names act like clear labels on buttons!</p>
+    </subsubsection>
+
+    <subsubsection xml:id="invariants-rules-that-stay-true">
+      <title>Invariants: Rules That Must Always Be True</title>
+      <listing>
+        <program language="java"><![CDATA[
+public class Player {
+    private int health;
+    private final int MAX_HEALTH = 100;
+
+    public void setHealth(int newHealth) {
+        // Check all our rules:
+        if (newHealth < 0) {
+            health = 0;
+        } else if (newHealth > MAX_HEALTH) {
+            health = MAX_HEALTH;
+        } else {
+            health = newHealth;
+        }
+    }
+}
+]]></program>
+      </listing>
+      <p>These rules are always enforced—no accidental breakage!</p>
+    </subsubsection>
+
+    <!-- Fix for the vending machine analogy -->
+    <p>Think about a vending machine:</p>
+    <ul>
+      <li><p>It bundles the snacks, prices, and coin slot together</p></li>
+      <li><p>It protects the snacks behind glass</p></li>
+      <li><p>It has a simple interface (insert money, press B4)</p></li>
+      <li><p>It maintains rules (no money = no snack)</p></li>
+    </ul>
+    
+    <p>When we write classes this way:</p>
+    <ul>
+      <li><p>Related data and code stay together</p></li>
+      <li><p>Data can't be changed incorrectly</p></li>
+      <li><p>Other code has clear ways to interact</p></li>
+      <li><p>Rules are always followed</p></li>
+    </ul>
+    
+    <p>Now you're not just hiding data—you're building a reliable, easy-to-use machine!</p>
+  </subsection>
+
+  <subsection xml:id="different-ways-to-enforce-rules">
+    <title>Different Ways to Enforce Rules</title>
+    <p>
+      When protecting data, we have several tools:
+    </p>
+    <ol>
+      <li>
+        <p><strong>Constructor Checks</strong>: Stop invalid objects from being created</p>
+        <listing>
+          <program language="java"><![CDATA[
+public Player(int startHealth) {
+    if (startHealth < 0) {
+        startHealth = 1;  // Fix invalid input
+    }
+    health = startHealth;
+}
+]]></program>
+        </listing>
+      </li>
+      <li>
+        <p><strong>Method Guards</strong>: Fix invalid inputs</p>
+        <listing>
+          <program language="java"><![CDATA[
+public void heal(int amount) {
+    if (amount < 0) {
+        amount = 0;  // Ignore negative healing
+    }
+    health += amount;
+}
+]]></program>
+        </listing>
+      </li>
+      <li>
+        <p><strong>Range Enforcement</strong>: Keep values in bounds</p>
+        <listing>
+          <program language="java"><![CDATA[
+public void setHealth(int newHealth) {
+    health = Math.max(0, Math.min(newHealth, MAX_HEALTH));
+}
+]]></program>
+        </listing>
+      </li>
+      <li>
+        <p><strong>Complete Rejection</strong>: Return success/failure</p>
+        <listing>
+          <program language="java"><![CDATA[
+public boolean withdraw(int amount) {
+    if (amount > balance) {
+        return false;  // Can't withdraw more than you have
+    }
+    balance -= amount;
+    return true; // success
+}
+]]></program>
+        </listing>
+      </li>
+    </ol>
+    <p>Choose based on what makes sense for your situation.</p>
+  </subsection>
+
+  <subsection xml:id="abstraction-what-users-need">
+    <title>Abstraction: What Users Need vs. What Code Does</title>
+    <p>
+      Imagine walking into a restaurant:
+    </p>
+    <ul>
+      <li>You order “a cheeseburger”</li>
+      <li>Kitchen handles complex details (grill temp, cooking time, etc.)</li>
+      <li>You don’t need to know <em>HOW</em> they make it</li>
+    </ul>
+
+    <p> That’s <strong>abstraction</strong> in code: </p>
+    <listing>
+      <program language="java"><![CDATA[
+public class Restaurant {
+    private Grill grill;
+    private Inventory inventory;
+    private List<Recipe> recipes;
+
+    // Simple interface for customers:
+    public Burger orderCheeseburger() {
+        // Complex steps hidden from customer:
+        if (!inventory.hasIngredients("burger")) {
+            throw new OutOfStockException();
+        }
+        grill.setTemp(375);
+        grill.cook(inventory.getPatty(), Time.MINUTES(4));
+        return assembleBurger();
+    }
+}
+
+// Customer just says:
+restaurant.orderCheeseburger();  // Don't care about the details!
+]]></program>
+    </listing>
+
+    <p>
+      Abstraction lets us:
+    </p>
+    <ol>
+      <li>Hide complex details (<c>grill</c>, <c>inventory</c>, cooking steps)</li>
+      <li>Show simple interfaces (just “orderCheeseburger”)</li>
+      <li>Change implementation without affecting users</li>
+    </ol>
+
+    <p>
+      Why is this different from encapsulation?
+    </p>
+    <ul>
+      <li><strong>Encapsulation</strong>: Protects data from invalid changes</li>
+      <li><strong>Abstraction</strong>: Hides complexity behind simple interfaces</li>
+    </ul>
+
+    <p>
+      Together they create reliable, easy-to-use code!
+    </p>
+
+    <listing>
+      <caption>Encapsulation + Abstraction Example</caption>
+      <program language="java"><![CDATA[
+public class Player {
+    private int health;            // Encapsulation
+    private double healBonus;      // (protect the data)
+
+    public void heal(int amount) { // Abstraction
+        // Complex healing logic hidden from users:
+        applyHealingBuffs();
+        checkStatusEffects();
+        updateHealth(amount);      // Users don't see these steps
+    }
+}
+]]></program>
+    </listing>
+  </subsection>
+
+  <subsection xml:id="looking-ahead-more-oop-features">
+    <title>Looking Ahead: More OOP Features</title>
+    <p>
+      You might notice some repetition in our game:
+    </p>
+    <listing>
+      <program language="java"><![CDATA[
+class Player {
+    private int health;
+    public void takeDamage(int amount) { ... }
+}
+
+class Monster {
+    private int health;
+    public void takeDamage(int amount) { ... }
+}
+
+class Building {
+    private int health;
+    public void takeDamage(int amount) { ... }
+}
+]]></program>
+    </listing>
+
+    <p>
+      Writing the same health/damage code for every destructible thing seems wasteful! OOP has two
+      more powerful features:
+    </p>
+    <ol>
+      <li><strong>Inheritance</strong>: Write the health/damage code once, share it</li>
+      <li><strong>Polymorphism</strong>: Treat Players, Monsters, and Buildings the same when
+        dealing damage</li>
+    </ol>
+
+    <p>
+      We'll explore these later. For now, focus on:
+    </p>
+    <ul>
+      <li><strong>Encapsulation</strong>: Protect your data (like <c>private health</c>)</li>
+      <li><strong>Abstraction</strong>: Hide complex details (like how damage is calculated)</li>
+    </ul>
+    <p>These fundamentals will prepare you for advanced features ahead!</p>
+  </subsection>
+
+  <subsection xml:id="practice-encapsulation-abstraction">
+    <title>Encapsulation &amp; Abstraction in Practice</title>
+    <p> Let's build a <c>BankAccount</c> that's both safe and easy to use. We'll add features step
+      by step: </p>
+
+    <listing xml:id="bankaccount-sample">
+      <caption>BankAccount Class Example</caption>
+      <program language="java"><![CDATA[
+public class BankAccount {
+    // Step 1: Protect the data (Encapsulation)
+    private double balance;
+    private List<Transaction> history;  // Track all changes
+    private double interestRate;
+
+    // Step 2: Control object creation
+    public BankAccount(double initBalance) {
+        if (initBalance < 0) {
+            initBalance = 0;  // Start at 0 if negative
+        }
+        this.balance = initBalance;
+        this.history = new ArrayList<>();
+        this.interestRate = 0.01;  // 1% interest
+    }
+
+    // Step 3: Simple interface, complex implementation (Abstraction)
+    public boolean deposit(double amount) {
+        // Validate input
+        if (amount < 0) {
+            return false;  // Can't deposit negative amounts
+        }
+
+        // Complex logic hidden from users:
+        balance += amount;
+        history.add(new Transaction("deposit", amount));
+        checkForInterest();
+        notifyOwner("Deposit: $" + amount);
+        return true; // success
+    }
+
+    // Step 4: Hide implementation details
+    private void checkForInterest() {
+        if (balance > 1000) {
+            double interest = balance * interestRate;
+            balance += interest;
+            history.add(new Transaction("interest", interest));
+        }
+    }
+
+    private void notifyOwner(String message) {
+        // Send email, update app, etc.
+    }
+}
+]]></program>
+    </listing>
+
+    <p>
+      <strong>Try using it:</strong>
+    </p>
+    <listing>
+      <program language="java"><![CDATA[
+BankAccount acct = new BankAccount(100);
+acct.deposit(50);   // Simple to use!
+]]></program>
+    </listing>
+
+    <p>
+      <strong>What's happening behind the scenes?</strong>
+    </p>
+    <ol>
+      <li>Input validation</li>
+      <li>Balance update</li>
+      <li>Transaction logging</li>
+      <li>Interest calculation</li>
+      <li>Owner notification</li>
+    </ol>
+    <p>
+      But users don't need to know any of that! They just see:
+    </p>
+    <ul>
+      <li><c>deposit(amount)</c> → money goes in</li>
+      <li><c>withdraw(amount)</c> → money comes out</li>
+      <li><c>getBalance()</c> → check total</li>
+    </ul>
+    <p>
+      This is the power of combining encapsulation and abstraction:
+    </p>
+    <ul>
+      <li>Encapsulation keeps the data safe</li>
+      <li>Abstraction keeps the usage simple</li>
+    </ul>
+  </subsection>
+
+  <subsection xml:id="design-recipe-to-oop">
+    <title>From Design Recipe to OOP</title>
+    <p>
+      Remember the design recipe steps?
+    </p>
+    <ol>
+      <li>Data definitions</li>
+      <li>Constraints</li>
+      <li>Methods that work with that data</li>
+    </ol>
+    <p>OOP helps enforce these:</p>
+
+    <listing>
+      <program language="java"><![CDATA[
+  // Design Recipe says: "health must be ≥ 0"
+  public class Player {
+    private int health;   // Data definition + protection
+
+    public void heal(int amt) {  // Methods enforce constraints
+      if (amt < 0) return;     // No negative healing
+      health = Math.min(100,   // Can't exceed max
+               health + amt);
+    }
+  }
+  ]]></program>
+    </listing>
+
+    <p>
+      The compiler becomes your ally:
+    </p>
+    <ul>
+      <li>Private fields → Can't break data definitions</li>
+      <li>Methods → Enforce constraints automatically</li>
+      <li>Tests → Verify that rules work</li>
+    </ul>
+  </subsection>
+
+  <subsection xml:id="whats-next-object-references">
+    <title>What's Next: Objects in Memory</title>
+    <p>
+      When we do:
+    </p>
+    <listing>
+      <program language="java"><![CDATA[
+Player hero = new Player(100);
+Player backup = hero;
+backup.health -= 50;  // Does this affect hero?
+]]></program>
+    </listing>
+
+    <p>
+      We need to understand:
+    </p>
+    <ul>
+      <li>How Java stores objects</li>
+      <li>What happens when we copy them</li>
+      <li>How method calls work with objects</li>
+    </ul>
+    <p>
+      That's our next topic: Object References!
+    </p>
+  </subsection>
+
+  <subsection xml:id="practice-encap-abs">
+    <title>Practice: Put It All Together</title>
+    <ol>
+      <li>
+        <p>
+          <strong>Unbreakable Player</strong>
+        </p>
+        <listing>
+          <program language="java"><![CDATA[
+public class Player {
+    private int health;
+    private int maxHealth = 100;
+
+    public void heal(int amount) {
+        // TODO: Implement healing that:
+        // 1. Rejects negative amounts
+        // 2. Won't exceed maxHealth
+        // 3. Returns true if healing worked
+    }
+
+    public boolean takeDamage(int amount) {
+        // TODO: Implement damage that:
+        // 1. Won't go below 0
+        // 2. Returns true if player still alive
+    }
+}
+]]></program>
+        </listing>
+      </li>
+      <li>
+        <p>
+          <strong>Safe Bank Account</strong>
+        </p>
+        <listing>
+          <program language="java"><![CDATA[
+public class BankAccount {
+    private double balance;
+    private List<String> transactions;
+
+    public void deposit(double amount) {
+        // TODO: Add validation and logging
+    }
+
+    public boolean withdraw(double amount) {
+        // TODO: Add validation and logging
+    }
+}
+]]></program>
+        </listing>
+      </li>
+    </ol>
+    <p>
+      For each challenge:
+    </p>
+    <ul>
+      <li>Think about what could go wrong</li>
+      <li>Use encapsulation to prevent it</li>
+      <li>Use abstraction to hide the details</li>
+      <li>Test edge cases!</li>
+    </ul>
+  </subsection>
+
+  <subsection xml:id="exercises-encapsulation-abstraction">
+    <title>Exercises: Encapsulation &amp; Abstraction</title>
+
+    <!-- 1) MULTIPLE-CHOICE: Understanding Encapsulation vs. Abstraction -->
+    <exercise xml:id="mc-encapsulation-abstraction">
+      <title>Multiple Choice: Encapsulation vs. Abstraction</title>
+      <statement>
+        <p>Which statement best distinguishes <strong>encapsulation</strong> from <strong>
+          abstraction</strong>?</p>
+      </statement>
+      <choices randomize="yes">
+        <choice correct="yes">
+          <statement>
+            <strong>Encapsulation</strong> protects data by bundling it with methods and restricting
+            direct access, while <strong>abstraction</strong> hides complex implementation details
+            behind a simpler interface. </statement>
+          <feedback>Exactly. Encapsulation is about bundling and protection, whereas abstraction is
+            about hiding complexity.</feedback>
+        </choice>
+        <choice>
+          <statement> Encapsulation means we cannot write constructors; abstraction means we cannot
+            have any <c>private</c> fields. </statement>
+          <feedback> Incorrect. Constructors and <c>private</c> fields are independent of these
+            definitions. </feedback>
+        </choice>
+        <choice>
+          <statement>
+            Encapsulation forces all data to be global, while abstraction forbids using methods
+            longer than 5 lines.
+          </statement>
+          <feedback>
+            No. Encapsulation encourages hiding data, not making it global, and there's no rule
+            about method line limits.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            There is no real difference. Both terms refer to exactly the same concept in Java.
+          </statement>
+          <feedback>
+            They are related but distinct concepts.
+          </feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- 2) TRUE/FALSE: Private Fields and Direct Access -->
+    <exercise xml:id="tf-private-fields" type="truefalse">
+      <title>True/False: Private Fields</title>
+      <statement correct="yes"> Marking a field <c>private</c> means code outside the class cannot
+        access it directly, forcing all modifications through the class’s methods. </statement>
+      <feedback>
+        Correct! Making a field private enforces that only the class itself can read or write that
+        field, which is a key part of encapsulation.
+      </feedback>
+    </exercise>
+
+    <!-- 3) SHORT ANSWER: Invariants & Negative Health -->
+    <exercise xml:id="sa-invariants-negative-health">
+      <title>Short Answer: Handling Negative Health</title>
+      <statement>
+        <p> In the section, we saw that a <c>Player</c> class can prevent negative health by
+          restricting access to its <c>health</c> field. In <em>1–2 sentences</em>, explain how you
+          would enforce the “health ≥ 0” rule if someone tries <c>p1.setHealth(-999)</c> or <c>
+          p1.takeDamage(1000)</c>. </p>
+      </statement>
+      <response />
+      <solution>
+        <p>
+          <strong>Sample Solution:</strong> I’d make <c>health</c> private and provide methods like <c>
+          setHealth</c> or <c>takeDamage</c> that check if the new health would be negative, then
+          set it to 0 instead. This ensures outsiders can’t directly write <c>p1.health</c> = -999,
+          preserving the invariant “health ≥ 0.” </p>
+      </solution>
+    </exercise>
+
+    <!-- 4) PARSONS: Rewriting Scattered Code to Encapsulated Code -->
+    <exercise xml:id="parsons-encapsulate-code" language="java">
+      <title>Parsons: Encapsulate the Player's Data</title>
+      <statement>
+        <p> Below is a short snippet of “scattered” code for a game. Rearrange the following lines
+          to create a <strong>single, valid</strong> <c>Player</c> class with <c>private</c> fields
+          and methods <c>heal</c> and <c>takeDamage</c> enforcing “health ≥ 0.” </p>
+        <p><em>Hint:</em> This code should compile as one class. There is only one correct
+          arrangement of braces and method definitions.</p>
+      </statement>
+      <blocks layout="vertical" randomize="yes">
+
+        <block order="1">
+          <choice correct="yes">
+            <cline>public class Player {</cline>
+          </choice>
+        </block>
+        <block order="2">
+          <choice correct="yes">
+            <cline> private int health;</cline>
+          </choice>
+        </block>
+        <block order="3">
+          <choice correct="yes">
+            <cline> public Player(int startHealth) {</cline>
+          </choice>
+        </block>
+        <block order="4">
+          <choice correct="yes">
+            <cline> if (startHealth &lt; 0) {</cline>
+          </choice>
+        </block>
+        <block order="5">
+          <choice correct="yes">
+            <cline> startHealth = 0;</cline>
+          </choice>
+        </block>
+        <block order="6">
+          <choice correct="yes">
+            <cline> }</cline>
+          </choice>
+        </block>
+        <block order="7">
+          <choice correct="yes">
+            <cline> health = startHealth;</cline>
+          </choice>
+        </block>
+        <block order="8">
+          <choice correct="yes">
+            <cline> }</cline>
+          </choice>
+        </block>
+
+        <block order="9">
+          <choice correct="yes">
+            <cline> public void heal(int amount) {</cline>
+          </choice>
+        </block>
+        <block order="10">
+          <choice correct="yes">
+            <cline> if (amount > 0) {</cline>
+          </choice>
+        </block>
+        <block order="11">
+          <choice correct="yes">
+            <cline> health += amount;</cline>
+          </choice>
+        </block>
+        <block order="12">
+          <choice correct="yes">
+            <cline> }</cline>
+          </choice>
+        </block>
+        <block order="13">
+          <choice correct="yes">
+            <cline> }</cline>
+          </choice>
+        </block>
+
+        <block order="14">
+          <choice correct="yes">
+            <cline> public void takeDamage(int dmg) {</cline>
+          </choice>
+        </block>
+        <block order="15">
+          <choice correct="yes">
+            <cline> health -= dmg;</cline>
+          </choice>
+        </block>
+        <block order="16">
+          <choice correct="yes">
+            <cline> if (health &lt; 0) {</cline>
+          </choice>
+        </block>
+        <block order="17">
+          <choice correct="yes">
+            <cline> health = 0;</cline>
+          </choice>
+        </block>
+        <block order="18">
+          <choice correct="yes">
+            <cline> }</cline>
+          </choice>
+        </block>
+        <block order="19">
+          <choice correct="yes">
+            <cline> }</cline>
+          </choice>
+        </block>
+
+        <block order="20">
+          <choice correct="yes">
+            <cline>}</cline>
+          </choice>
+        </block>
+
+      </blocks>
+    </exercise>
+
+    <!-- 5) MULTIPLE-CHOICE: Valid Approaches to Enforcing Constraints -->
+    <exercise xml:id="mc-ways-constraints">
+      <title>Multiple Choice: Ways to Enforce Constraints</title>
+      <statement>
+        <p>
+          In “Different Ways to Enforce Rules,” we saw strategies like constructor checks,
+          method guards, and range enforcement. Which approach forcibly rejects or denies an
+          invalid operation, often returning success/failure as a boolean?
+        </p>
+      </statement>
+      <choices randomize="yes">
+        <choice>
+          <statement>Constructor Checks</statement>
+          <feedback>
+            Constructor checks can fix or adjust invalid data at creation, but they don’t inherently
+            “reject” an operation with a boolean return.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>Range Enforcement</statement>
+          <feedback>
+            Range enforcement might clamp or adjust the data, but it’s not necessarily rejecting
+            with success/failure.
+          </feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>Complete Rejection (returning success/failure)</statement>
+          <feedback>
+            Right! “Complete Rejection” is where a method returns false if the operation fails,
+            rather than automatically fixing or adjusting it.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>Method Guards</statement>
+          <feedback>
+            Method guards can correct or clamp input, but they don’t always return success/failure.
+          </feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- 6) REFLECTION: OOP vs. Non-OOP Approaches -->
+    <exercise xml:id="reflection-oop-vs-non-oop">
+      <title>Reflection: OOP vs. Non-OOP Approaches</title>
+      <statement>
+        <p> Think back to the “Two Ways: Keep or Package Pieces” example. In <em>2–4 sentences</em>,
+          explain how making a <c>Player</c> class with private data and methods (like <c>heal</c>)
+          helps prevent the mistakes we saw in the scattered code (where direct global variables
+          were easy to misuse). </p>
+      </statement>
+      <response />
+      <solution>
+        <p>
+          <strong>Sample Solution:</strong> A <c>Player</c> class keeps all relevant data and logic
+          together, so we can’t just accidentally do <c>playerHealth = -999</c> or pass the wrong
+          variable order. <c>private</c> fields force changes through safe methods that enforce
+          “health ≥ 0.” This cuts down on guesswork and makes the code clearer by grouping data and
+          actions in one place. </p>
+      </solution>
+    </exercise>
+
+  </subsection>
+</section>

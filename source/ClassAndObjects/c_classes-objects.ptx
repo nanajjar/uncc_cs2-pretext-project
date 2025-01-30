@@ -1,0 +1,841 @@
+<section xml:id="introducing-classes-building-up">
+  <title>Classes and Objects</title>
+
+  <p>
+    So far, we've battled this messy situation:
+  </p>
+
+  <listing xml:id="messy-situation">
+    <caption>Messy Separate Variables</caption>
+    <program language="java"><![CDATA[
+// Player 1's stats
+int player1Health = 100;
+int player1Gold = 50;
+
+// Player 2's stats (getting messy...)
+int player2Health = 100;
+int player2Gold = 50;
+
+// Whoops, which health am I changing?
+player1Health = healPlayer(player2Health, 5); // Easy mistake!
+]]></program>
+  </listing>
+
+  <p> Methods helped a bit, but we still pass variables around separately. <strong>Wouldn't it be
+    great</strong> if all these stats lived in <em>one</em> place? </p>
+
+  <subsection xml:id="a-single-entity-that-owns-its-data">
+    <title>A Single “Entity” That Owns Its Data</title>
+
+    <p> Let’s pretend we want to treat the player as a single <em>entity</em>, storing <em>all</em>
+      of that player’s stats in one “box.” We also want that “box” to have special “buttons” (like
+      “heal” or “add gold”) that automatically change <em>that</em> player’s stats. </p>
+    <p> That’s exactly what Java’s <strong>class</strong> feature will let us do. But let’s build it
+      slowly so it’s not mysterious. </p>
+  </subsection>
+
+  <subsection xml:id="step-1-empty-container-player">
+    <title>Step 1: An Empty "Container" Called <c>Player</c></title>
+
+    <p>
+      Let's start with the most basic version of this feature. Here's the smallest possible
+      container we can make:
+    </p>
+
+    <listing xml:id="empty-player-class">
+      <caption>An Empty Player Class</caption>
+      <program language="java"><![CDATA[
+public class Player {
+    // We'll fill details in soon!
+}
+]]></program>
+    </listing>
+
+    <ul>
+      <li>
+        <p><c>public class Player</c> — This line starts defining our container.</p>
+      </li>
+      <li>
+        <p>The <c>{ }</c> braces mark what belongs inside it.</p>
+      </li>
+    </ul>
+
+    <p> This might look empty and useless, but we've just done something powerful: we've created a
+      new <em>type</em> in Java. Just like <c>int</c> lets us create numbers and <c>String</c> lets
+      us create text, <c>Player</c> will let us create... well, players! We'll fill in what that
+      means exactly, but the key idea is there: Java lets us create our <em>own</em> types to
+      represent anything we need in our programs. </p>
+    <p>
+      Right now our container is empty—like an empty box. It compiles, but doesn't hold anything
+      yet. Let's fix that next.
+    </p>
+  </subsection>
+
+  <subsection xml:id="step-2-variables-inside-box">
+    <title>Step 2: Putting Variables Inside That Box</title>
+
+    <p>
+      Remember how we used to write:
+    </p>
+
+    <listing xml:id="separate-vars">
+      <program language="java"><![CDATA[
+int playerHealth;
+int playerGold;
+]]></program>
+    </listing>
+
+    <p> in our <c>main</c> method? Instead of having these floating around separately, we can put
+      them <em>inside</em> our container: </p>
+
+    <listing xml:id="player-with-fields">
+      <caption>Adding Fields to the Player</caption>
+      <program language="java"><![CDATA[
+public class Player {
+    // These belong to the Player now
+    int health;
+    int gold;
+}
+]]></program>
+    </listing>
+
+    <p> This is like saying "every Player has their own health and gold." When we create a Player
+      (using <c>new Player()</c>), Java sets aside space for both variables. They'll start at 0 by
+      default, which isn't great—we usually want to pick starting values like <c>(10, 50)</c>. We'll
+      fix that next, but first appreciate what we've done: we've moved from separate, floating
+      variables to a single container that keeps related data together. </p>
+  </subsection>
+
+  <subsection xml:id="step-3-setting-initial-values">
+    <title>Step 3: Setting Initial Values</title>
+
+    <p>
+      Remember how our variables defaulted to 0? That's not great for a game—we want to choose
+      starting values. If this was a method, we'd write something like:
+    </p>
+
+    <listing xml:id="createplayer-method-style">
+      <program language="java"><![CDATA[
+public static Player createPlayer(int startHealth, int startGold) {
+    // ... somehow make a Player with these values ...
+}
+]]></program>
+    </listing>
+
+    <p>
+      Since creating objects with initial values is something we do constantly, Java gives us
+      special syntax for it—a shorter, cleaner way to write this common task:
+    </p>
+
+    <listing xml:id="constructor-example">
+      <caption>Adding a Constructor</caption>
+      <program language="java"><![CDATA[
+public class Player {
+    int health;
+    int gold;
+
+    // Like createPlayer, but special syntax!
+    // Constructor syntax:
+    // 1. Same name as the class
+    // 2. No return type (not even void)
+    // 3. public ClassName(parameters) { ... }
+    public Player(int startHealth, int startGold) {
+        health = startHealth;  // set this Player's health
+        gold   = startGold;    // set this Player's gold
+    }
+}
+]]></program>
+    </listing>
+
+    <p> Now instead of calling <c>createPlayer(10, 50)</c>, we write: </p>
+
+    <listing xml:id="using-constructor">
+      <program language="java"><![CDATA[
+Player p = new Player(10, 50);
+]]></program>
+    </listing>
+
+    <p> What happens when you write <c>new Player(10, 50)</c>? </p>
+    <ol>
+      <li>
+        <p><c>new</c> tells Java to create space in memory</p>
+      </li>
+      <li>
+        <p>Java fills that space with default values (0 for numbers)</p>
+      </li>
+      <li>
+        <p>The constructor runs to set up the object properly</p>
+      </li>
+      <li>
+        <p>You get back a reference to your new <c>Player</c></p>
+      </li>
+    </ol>
+
+    <p> This special method is called a <strong>constructor</strong>. You might wonder: "Doesn't it
+      return a Player?" It does, but Java's grammar treats constructors specially—they implicitly
+      return the new object without needing a return type. That's why: </p>
+    <ul>
+      <li>
+        <p>The name matches the class (<c>Player</c>)</p>
+      </li>
+      <li>
+        <p>There's no return type (Java handles that for us)</p>
+      </li>
+    </ul>
+
+    <p>
+      You'll see this pattern everywhere in Java:
+    </p>
+    <listing xml:id="common-constructors">
+      <program language="java"><![CDATA[
+String name = new String("Alice");      // Make new String with "Alice"
+Scanner input = new Scanner(System.in); // Make new Scanner reading System.in
+]]></program>
+    </listing>
+
+    <p>
+      The constructor tells Java "when someone asks for a new Player, here's how to set it up."
+      Much better than default 0s!
+    </p>
+  </subsection>
+
+  <subsection xml:id="step-4-adding-operations">
+    <title>Step 4: Adding "Operations" for That Player</title>
+
+    <p> Remember how we wrote methods before? Each had a return type (like <c>int</c> or <c>void</c>)
+      and parameters in parentheses. We'll do the same here, but inside our class: </p>
+    <p>
+      Why not just use static methods? Let's compare approaches:
+    </p>
+
+    <listing xml:id="static-vs-instance">
+      <caption>Static vs. Instance Method</caption>
+      <program language="java"><![CDATA[
+////////////////////////////////////////////////
+// Static approach - explicitly pass everything
+////////////////////////////////////////////////
+public static void healPlayer(int currentHealth, int healAmount) {
+    currentHealth += healAmount;
+}
+
+////////////////////////////////////////////////
+// Instance method approach - data is inside
+////////////////////////////////////////////////
+public void heal(int amount) {
+    this.health += amount;  // 'this' refers to current Player
+}
+]]></program>
+    </listing>
+
+    <p>
+      The instance method might look simpler, but what's really happening? When you write:
+    </p>
+
+    <listing xml:id="instance-call">
+      <program language="java"><![CDATA[
+player1.heal(5);
+]]></program>
+    </listing>
+
+    <p> Java secretly translates this to something like “<em>call heal with the data belonging to
+      player1</em>.” That's what <c>this</c> means in an instance method—it's a reference to "the
+      object we're calling this method on." So: </p>
+
+    <listing xml:id="this-keyword-use">
+      <program language="java"><![CDATA[
+public void heal(int amount) {
+    this.health += amount;  // explicitly say "this object's health"
+}
+]]></program>
+    </listing>
+
+    <p>
+      is the same as:
+    </p>
+
+    <listing xml:id="this-keyword-implicit">
+      <program language="java"><![CDATA[
+public void heal(int amount) {
+    health += amount; // 'this.' is implicit
+}
+]]></program>
+    </listing>
+
+    <p>
+      The instance method approach is:
+    </p>
+    <ul>
+      <li>
+        <p>More intuitive ("tell the player to heal")</p>
+      </li>
+      <li>
+        <p>Safer (data bundle stays together)</p>
+      </li>
+      <li>
+        <p>Less typing (no need to pass every field)</p>
+      </li>
+    </ul>
+
+    <p>Much better than juggling separate variables and explicit parameters!</p>
+
+    <listing xml:id="player-with-instance-methods">
+      <caption>Player with Instance Methods</caption>
+      <program language="java"><![CDATA[
+public class Player {
+    int health;
+    int gold;
+
+    // ...constructor as before...
+    public Player(int startHealth, int startGold) {
+        health = startHealth;
+        gold   = startGold;
+    }
+
+    // The method is right next to the data it changes
+    public void heal(int amount) {
+        health += amount;  // directly use this Player's health
+    }
+
+    public void addGold(int amount) {
+        gold += amount;    // same for gold
+    }
+}
+
+// Usage:
+Player p = new Player(10, 50);
+p.heal(5);  // can't mix up which health we're changing!
+]]></program>
+    </listing>
+
+    <subsubsection xml:id="the-this-keyword">
+      <title>The 'this' Keyword: Who Am I?</title>
+      <p> When writing instance methods, you might wonder: "How does Java know which Player's health
+        to change?" The answer is the <c>this</c> keyword. </p>
+      <listing xml:id="this-keyword-confusion">
+        <caption>Example of `this` Usage</caption>
+        <program language="java"><![CDATA[
+public class Player {
+    int health;
+    // ...other fields...
+
+    public void heal(int health) {  // Uh oh, parameter named same as field!
+        health = health;    // Which health is which? 😕
+    }
+
+    // Better: use 'this' to be clear
+    public void heal(int health) {
+        this.health = health;  // "THIS object's health = parameter health"
+    }
+}
+]]></program>
+      </listing>
+      <p> When you call <c>player1.heal(5)</c>, Java secretly passes <c>player1</c> to the method as <c>this</c>. You can think of it like: </p>
+      <listing xml:id="this-keyword-internal">
+        <program language="java"><![CDATA[
+// What you write:
+player1.heal(5);
+
+// What Java effectively does:
+heal(player1, 5); // player1 becomes 'this' inside the method
+]]></program>
+      </listing>
+      <p> The <c>this</c> keyword is especially useful when: </p>
+      <ul>
+        <li>
+          <p>Parameter names match field names</p>
+        </li>
+        <li>
+          <p>You need to pass the current object to another method</p>
+        </li>
+        <li>
+          <p>You want to be extra clear about which variable you're using</p>
+        </li>
+      </ul>
+      <p>Usually you can skip writing <c>this.</c> (it's implicit), but it's there if you need it!</p>
+    </subsubsection>
+  </subsection>
+
+  <subsection xml:id="using-our-new-type">
+    <title>Using Our New Type</title>
+
+    <p> Let's add a <c>main</c> method right to our <c>Player</c> class to try it out: </p>
+    <listing xml:id="player-demo-main">
+      <caption>Testing the Player Directly</caption>
+      <program language="java"><![CDATA[
+public class Player {
+    int health;
+    int gold;
+
+    // constructor
+    public Player(int startHealth, int startGold) {
+        health = startHealth;
+        gold   = startGold;
+    }
+
+    public void heal(int amount) {
+        health += amount;
+    }
+
+    public void addGold(int amount) {
+        gold += amount;
+    }
+
+    public static void main(String[] args) {
+        // Make a new Player named "p1"
+        Player p1 = new Player(10, 50);
+
+        // Tell p1 to perform actions
+        p1.heal(5);      // "Hey p1, heal by 5"
+        p1.addGold(10);  // "Hey p1, add 10 gold"
+
+        // Look at p1's current state
+        System.out.println("p1 health: " + p1.health); // 15
+        System.out.println("p1 gold: " + p1.gold);     // 60
+
+        // We can make many players!
+        Player p2 = new Player(20, 100);
+        p2.heal(10);  // affects only p2's health
+    }
+}
+]]></program>
+    </listing>
+
+    <p>
+      Look how natural this is:
+    </p>
+    <ol>
+      <li>
+        <p><c>new Player(10, 50)</c> creates a fresh Player with starting values</p>
+      </li>
+      <li>
+        <p><c>p1.heal(5)</c> tells <em>that specific Player</em> to heal itself</p>
+      </li>
+      <li>
+        <p>Each Player keeps track of its own stats</p>
+      </li>
+    </ol>
+
+    <p>
+      Now that we've seen it in action, let's give these ideas their proper names:
+    </p>
+    <ul>
+      <li>
+        <p>A Player we create (like <c>p1</c> or <c>p2</c>) is called an <strong>object</strong> or <strong>
+          instance</strong>.</p>
+      </li>
+      <li>
+        <p>The methods inside Player (like <c>heal</c>) are called <strong>instance methods</strong>
+          because they work on a specific instance.</p>
+      </li>
+      <li>
+        <p>The setup code (like <c>Player(10, 50)</c>) is called a <strong>constructor</strong>.</p>
+      </li>
+    </ul>
+
+    <p> Think of it like this: You wrote a recipe (<c>Player</c> class), and now you can bake as
+      many cookies (<c>Player</c> objects) as you want. Each cookie has its own ingredients (<c>
+      health</c>, <c>gold</c>), but they all follow the same recipe! </p>
+  </subsection>
+
+  <subsection xml:id="one-blueprint-many-objects">
+    <title>One Blueprint, Many Objects</title>
+
+    <p>
+      Think about how games like Minecraft work:
+    </p>
+
+    <listing xml:id="one-blueprint">
+      <program language="java"><![CDATA[
+// Define the blueprint once
+public class Player {
+    int health;
+    int gold;
+    // ...constructor and methods as before...
+}
+
+// Create many different players from it
+Player steve = new Player(20, 0);    // Steve starts with 20 health, 0 gold
+Player alex  = new Player(20, 100);  // Alex starts with 20 health, 100 gold
+]]></program>
+    </listing>
+
+    <p> When <c>steve.heal(5)</c> runs, it only changes Steve's health. Alex's stats stay the same.
+      Each object is independent, just like: </p>
+    <ul>
+      <li>
+        <p>One house blueprint → many different houses</p>
+      </li>
+      <li>
+        <p>One recipe → many different cookies</p>
+      </li>
+      <li>
+        <p>One character class in a game → many different players</p>
+      </li>
+    </ul>
+
+    <p> When we say <c>Player p1 = new Player(...)</c>, we say <c>p1</c> is an “instance” of that
+      class. That’s just fancy talk for “a house built from the blueprint.” No big mystery! </p>
+    <p>
+      The class is just the instructions (“Players have health and gold”). The objects are the
+      actual things we create using those instructions. That's why we say “class is the blueprint,
+      objects are the houses.”
+    </p>
+  </subsection>
+
+  <subsection xml:id="putting-it-all-together">
+    <title>Putting It All Together</title>
+
+    <p> Let's see how all the pieces work together. Here's our complete <c>Player</c> class: </p>
+
+    <listing xml:id="complete-player">
+      <caption>Complete Player Class</caption>
+      <program language="java"><![CDATA[
+public class Player {
+    // Part 1: The Data
+    // Every Player object gets its own copy of these
+    int health;
+    int gold;
+
+    // Part 2: The Setup
+    // How to create a new Player with starting values
+    public Player(int startHealth, int startGold) {
+        health = startHealth;
+        gold = startGold;
+    }
+
+    // Part 3: The Actions
+    // Things this Player can do
+    public void heal(int amount) {
+        health += amount;
+    }
+
+    public void addGold(int amount) {
+        gold += amount;
+    }
+
+    // Part 4: Testing it out
+    public static void main(String[] args) {
+        Player hero = new Player(10, 50);   // Create hero: health=10, gold=50
+        hero.heal(5);                       // hero's health: 10 → 15
+        
+        Player enemy = new Player(20, 100); // Create enemy: health=20, gold=100
+        enemy.heal(10);                     // enemy's health: 20 → 30
+                                           // (doesn't affect hero's health!)
+    }
+}
+]]></program>
+    </listing>
+
+    <p>
+      The magic is in how it all fits together:
+    </p>
+    <ol>
+      <li>
+        <p>Create objects using the blueprint (<c>new Player(...)</c>)</p>
+      </li>
+      <li>
+        <p>Each object gets its own variables (<c>health</c>, <c>gold</c>)</p>
+      </li>
+      <li>
+        <p>Methods work on the object you call them on (<c>hero.heal(5)</c> vs <c>enemy.heal(10)</c>
+          )</p>
+      </li>
+    </ol>
+
+    <p> No more “which health am I changing?” Everything belongs to a specific <c>Player</c>! </p>
+  </subsection>
+
+  <subsection xml:id="practice-and-next-steps">
+    <title>Practice and Next Steps</title>
+
+    <p>
+      <strong>One Last Thing</strong>: Notice how anyone can write <c>p1.health = -999;</c>? That’s
+      not great—players shouldn’t have negative health! If our game allows negative health, that
+      could cause weird glitches like invincible players or healing that kills you. We’ll fix this
+      by making variables <c>private</c>, letting only the <c>Player</c> class control how they
+      change: </p>
+
+    <listing xml:id="private-fields-preview">
+      <caption>Preview of Private Fields</caption>
+      <program language="java"><![CDATA[
+public class Player {
+    private int health;  // Only Player methods can touch this now
+    private int gold;    // This too!
+
+    // Methods control how these values change
+    public void heal(int amount) {
+        if (amount > 0) {
+            health += amount;  // Only allow positive healing
+        }
+    }
+}
+]]></program>
+    </listing>
+
+    <p>
+      But first, let’s practice what we’ve learned:
+    </p>
+
+    <para>
+      <emphasis>Practice 1: Extend the Player</emphasis><br /> Add experience points to track player
+      progress: </para>
+
+    <listing xml:id="extend-player-xp">
+      <program language="java"><![CDATA[
+public class Player {
+    int health;
+    int gold;
+    int xp;      // New!
+
+    public Player(int startHealth, int startGold, int startXp) {
+        health = startHealth;
+        gold = startGold;
+        xp = startXp;
+    }
+
+    public void gainXp(int amount) {
+        xp += amount;
+    }
+
+    public static void main(String[] args) {
+        Player p = new Player(10, 50, 0);
+        p.gainXp(20);  // gained some XP!
+        System.out.println("XP: " + p.xp);  // prints 20
+    }
+}
+]]></program>
+    </listing>
+
+    <para>
+      <emphasis>Practice 2: Create a Monster</emphasis><br /> Try creating a completely different
+      type: </para>
+
+    <listing xml:id="monster-class">
+      <program language="java"><![CDATA[
+public class Monster {
+    int health;
+    String name;
+
+    public Monster(int startHealth, String startName) {
+        health = startHealth;
+        name = startName;
+    }
+
+    public void takeDamage(int dmg) {
+        health -= dmg;
+    }
+
+    public static void main(String[] args) {
+        Monster dragon = new Monster(100, "Dragon");
+        Monster goblin = new Monster(20, "Goblin");
+
+        dragon.takeDamage(25); // dragon: 100 -> 75
+        goblin.takeDamage(10); // goblin: 20 -> 10
+    }
+}
+]]></program>
+    </listing>
+
+    <p>
+      If you can write these, you've got the basics! Next up:
+    </p>
+    <ul>
+      <li>
+        <p>Making variables <c>private</c> for safety</p>
+      </li>
+      <li>
+        <p>Adding methods to read values (<c>getHealth()</c>)</p>
+      </li>
+      <li>
+        <p>Learning about references and object memory</p>
+      </li>
+    </ul>
+
+    <p>See you in the next chapter!</p>
+  </subsection>
+
+  <subsection xml:id="exercises-classes-objects">
+    <title>Exercises: Classes and Objects</title>
+
+    <!-- 1) MULTIPLE-CHOICE: WHY CLASSES HELP WITH MULTIPLE PLAYERS -->
+    <exercise xml:id="mc-why-classes">
+      <title>Multiple Choice: Why Use Classes?</title>
+      <statement>
+        <p> In this section, we introduced the idea of creating a <c>Player</c> class to hold
+          related stats (health, gold, etc.). Which statement <em>best</em> captures why this is
+          beneficial for handling multiple players in a game? </p>
+      </statement>
+      <choices randomize="yes">
+        <choice>
+          <statement> Because Java won’t compile if you declare more than three <c>int</c> variables
+            outside a class. </statement>
+          <feedback>
+            That’s not true; Java doesn’t limit the number of variables outside a class.
+          </feedback>
+        </choice>
+        <choice correct="yes">
+          <statement> Each <c>Player</c> object bundles its own stats, reducing confusion and
+            preventing you from mixing up <c>player1Health</c> and <c>player2Health</c>. </statement>
+          <feedback>
+            Exactly! Grouping related data (and methods) in a class makes it far less error-prone
+            than many separate variables.
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            Because static methods can only accept one parameter, so we must use a class to handle
+            multiple stats.
+          </statement>
+          <feedback>
+            Static methods can accept multiple parameters; that’s not the main reason classes are
+            helpful.
+          </feedback>
+        </choice>
+        <choice>
+          <statement> Classes automatically remove the need to type <c>public</c> or <c>static</c>
+            in your code. </statement>
+          <feedback> Classes don’t remove <c>public</c> or <c>static</c> usage; you still control
+            that in the class definition. </feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- 2) TRUE/FALSE: EACH OBJECT HAS ITS OWN DATA -->
+    <exercise xml:id="tf-each-object-own-data" type="truefalse">
+      <title>True/False: Separate Data in Each Object</title>
+      <statement correct="yes"> If you create two <c>Player</c> objects, <c>p1</c> and <c>p2</c>,
+        each has its own <c>health</c> and <c>gold</c> fields. Calling <c>p1.heal(5)</c> affects
+        only <c>p1</c>, and does not affect <c>p2</c>. </statement>
+      <feedback> Each instance has its own copy of the fields, so operations on <c>p1</c>
+        do not change <c>p2</c>. </feedback>
+    </exercise>
+
+    <!-- 3) PARSONS: BUILD A MINIMAL CLASS -->
+    <exercise xml:id="parsons-minimal-class" language="java">
+      <title>Parsons: A Minimal Player Class</title>
+      <statement>
+        <p> Rearrange the following lines to form a <em>complete, minimal</em> <c>Player</c> class
+          that compiles and runs. It should have: </p>
+        <ul>
+          <li>A <c>health</c> field</li>
+          <li>A constructor that sets <c>health</c></li>
+          <li>A method <c>heal(int amount)</c> that adds to <c>health</c></li>
+          <li>A <c>main</c> method creating a <c>Player</c>, calling <c>heal</c>, and printing <c>
+            health</c></li>
+        </ul>
+        <p>
+          Only one arrangement will compile and run correctly.
+        </p>
+      </statement>
+      <blocks layout="vertical" randomize="yes">
+        <block order="1">
+          <choice correct="yes">
+            <cline>public class Player {</cline>
+          </choice>
+        </block>
+        <block order="2">
+          <choice correct="yes">
+            <cline> int health;</cline>
+          </choice>
+        </block>
+        <block order="3">
+          <choice correct="yes">
+            <cline> public Player(int startHealth) {</cline>
+          </choice>
+        </block>
+        <block order="4">
+          <choice correct="yes">
+            <cline> health = startHealth;</cline>
+          </choice>
+        </block>
+        <block order="5">
+          <choice correct="yes">
+            <cline> }</cline>
+          </choice>
+        </block>
+        <block order="6">
+          <choice correct="yes">
+            <cline> public void heal(int amount) {</cline>
+          </choice>
+        </block>
+        <block order="7">
+          <choice correct="yes">
+            <cline> health += amount;</cline>
+          </choice>
+        </block>
+        <block order="8">
+          <choice correct="yes">
+            <cline> }</cline>
+          </choice>
+        </block>
+        <block order="9">
+          <choice correct="yes">
+            <cline> public static void main(String[] args) {</cline>
+          </choice>
+        </block>
+        <block order="10">
+          <choice correct="yes">
+            <cline> Player p = new Player(10);</cline>
+          </choice>
+        </block>
+        <block order="11">
+          <choice correct="yes">
+            <cline> p.heal(5);</cline>
+          </choice>
+        </block>
+        <block order="12">
+          <choice correct="yes">
+            <cline> System.out.println(p.health);</cline>
+          </choice>
+        </block>
+        <block order="13">
+          <choice correct="yes">
+            <cline> }</cline>
+          </choice>
+        </block>
+        <block order="14">
+          <choice correct="yes">
+            <cline>}</cline>
+          </choice>
+        </block>
+      </blocks>
+    </exercise>
+
+    <!-- 4) SHORT ANSWER: WHAT IS 'this'? -->
+    <exercise xml:id="sa-this-keyword">
+      <title>Short Answer: What Is the <c>this</c> Keyword?</title>
+      <statement>
+        <p> In the code example, <c>this</c> appears inside <c>heal</c> to refer to the current
+          object's fields (e.g., <c>this.health</c>). In <em>1–2 sentences</em>, explain what <c>
+          this</c> refers to when an instance method is called (e.g., <c>p1.heal(5)</c>). </p>
+      </statement>
+      <response />
+      <solution>
+        <p>
+          <strong>Sample Solution:</strong> When we call <c>p1.heal(5)</c>, <c>this</c> inside the <c>
+          heal</c> method refers to <c>p1</c>. In other words, <c>this</c> is the specific <c>Player</c>
+          object on which the method was invoked. </p>
+      </solution>
+    </exercise>
+
+    <!-- 5) REFLECTION: WHY NO RETURN TYPE FOR CONSTRUCTOR? -->
+    <exercise xml:id="reflection-constructor-no-return">
+      <title>Reflection: Why No Return Type for a Constructor?</title>
+      <statement>
+        <p> Java constructors look like methods but don’t have a return type. In <em>2–3 sentences</em>,
+          explain why constructors lack a <c>void</c> or <c>Player</c> return type. Hint: think
+          about how <c>new Player(...)</c> already returns a fully constructed object without
+          needing an explicit <c>return</c> statement. </p>
+      </statement>
+      <response />
+      <solution>
+        <p>
+          <strong>Sample Solution:</strong> A constructor’s job is to initialize a new object. The <c>
+          new</c> keyword allocates memory and then calls the constructor to set fields. By
+          definition, constructors implicitly return the new object reference—so Java syntax doesn’t
+          require (or allow) a named return type. </p>
+      </solution>
+    </exercise>
+
+  </subsection>
+</section>
