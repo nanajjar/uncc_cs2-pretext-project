@@ -9,20 +9,35 @@
   <subsection xml:id="two-ways">
     <title>Two Ways: Keep or Package Pieces</title>
     <p>
-      <strong>Way 1: Keep pieces and rules separate</strong>
+      <strong>Way 1: Keep pieces and rules separate (Traditional Approach)</strong>
     </p>
     <listing>
-      <program language="python"><![CDATA[
-# Scattered pieces and rules
-player_health = 100
-player_gold   = 50
+      <program language="java"><![CDATA[
+  // Everything is scattered and global
+  class GameState {
+    // Data just floating around
+    static int playerHealth = 100;
+    static int monsterHealth = 100;
+    static int potionCount = 3;
 
-def heal_player(health, amount):
-    return health + amount
+    // Rules are separate from data
+    static void healPlayer(int amount) {
+      playerHealth += amount;    // Which player's health?
+      potionCount--;            // Easy to forget this!
+    }
 
-# Later... which health are we changing?
-player_health = heal_player(player_health, 20)
-]]></program>
+    static void healMonster(int amount) {
+      monsterHealth += amount;   // Copy-pasted code
+    }
+
+    public static void main(String[] args) {
+      // Easy to make mistakes:
+      playerHealth = -50;        // Negative health?
+      potionCount = healPlayer(20);  // Wrong return type!
+      healMonster(monsterHealth);    // Wrong parameter!
+    }
+  }
+  ]]></program>
     </listing>
 
     <p>
