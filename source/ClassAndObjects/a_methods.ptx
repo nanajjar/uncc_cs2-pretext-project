@@ -8,7 +8,7 @@
     <em>Prerequisites</em>: </p>
   <ul>
     <li>
-      <p>Basic Java syntax (if statements, loops)</p>
+      <p>Basic Java syntax (if statements)</p>
     </li>
     <li>
       <p>Understanding of variables and types</p>
@@ -218,8 +218,7 @@ public static int addTwoNumbers(int a, int b) {
 public static int addTwoNumbers(String a, int b) { ... }
 ]]></program>
     </listing>
-    <p> the compiler flags an <i>incompatible type</i> error when you try <c>addTwoNumbers(3,
-      5)</c>. It expects <c>(String, int)</c>, not <c>(int, int)</c>. The compiler is your “early
+    <p> the compiler flags an <i>incompatible type</i> error when you try <c>addTwoNumbers(3, 5)</c>. It expects <c>(String, int)</c>, not <c>(int, int)</c>. The compiler is your “early
       alert system” for mismatched parameter types. </p>
   </subsection>
 
@@ -338,9 +337,7 @@ Gold: 70
       </output>
     </console>
 
-    <p> Now, each method returns the updated <c>int</c>, and we assign it back into <c>
-      playerHealth</c> or <c>playerGold</c>. If you wanted “gold +12” instead of “+10,” you’d edit <c>
-      increaseGold()</c> in <i>one</i> place. </p>
+    <p> Now, each method returns the updated <c>int</c>, and we assign it back into <c>playerHealth</c> or <c>playerGold</c>. If you wanted “gold +12” instead of “+10,” you’d edit <c>increaseGold()</c> in <i>one</i> place. </p>
   </subsection>
 
   <!-- ======================================================
@@ -422,9 +419,7 @@ Gold: 70
     </p>
     <ol>
       <li>
-        <p><i>Convert Fahrenheit</i><br /> Define <c>public static double
-          convertFtoC(double tempF)</c>, returning the Celsius result. Test by printing <c>
-          convertFtoC(32)</c>. </p>
+        <p><i>Convert Fahrenheit</i><br /> Define <c>public static double convertFtoC(double tempF)</c>, returning the Celsius result. Test by printing <c>convertFtoC(32)</c>. </p>
       </li>
       <li>
         <p><i>Improve Award Victory</i><br /> Suppose we want gold only on every <i>
@@ -608,8 +603,7 @@ public static returnType methodName(type1 param1, type2 param2) {
     <exercise xml:id="parsons-victory-game" language="java">
       <title>Parsons: Convert Repeated Logic to Methods</title>
       <statement>
-        <p> Rearrange the following lines to form a <em>single, valid</em> Java program named <c>
-          VictoryGame</c>. It should: </p>
+        <p> Rearrange the following lines to form a <em>single, valid</em> Java program named <c>VictoryGame</c>. It should: </p>
         <ul>
           <li>Have a class <c>VictoryGame</c>.</li>
           <li>Define two methods: <c>awardVictoryHealth</c> and <c>awardVictoryGold</c>, each

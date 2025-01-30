@@ -433,8 +433,7 @@ public class Player {
     </ul>
 
     <p> Think of it like this: You wrote a recipe (<c>Player</c> class), and now you can bake as
-      many cookies (<c>Player</c> objects) as you want. Each cookie has its own ingredients (<c>
-      health</c>, <c>gold</c>), but they all follow the same recipe! </p>
+      many cookies (<c>Player</c> objects) as you want. Each cookie has its own ingredients (<c>health</c>, <c>gold</c>), but they all follow the same recipe! </p>
   </subsection>
 
   <subsection xml:id="one-blueprint-many-objects">
@@ -720,8 +719,7 @@ public class Monster {
           <li>A <c>health</c> field</li>
           <li>A constructor that sets <c>health</c></li>
           <li>A method <c>heal(int amount)</c> that adds to <c>health</c></li>
-          <li>A <c>main</c> method creating a <c>Player</c>, calling <c>heal</c>, and printing <c>
-            health</c></li>
+          <li>A <c>main</c> method creating a <c>Player</c>, calling <c>heal</c>, and printing <c>health</c></li>
         </ul>
         <p>
           Only one arrangement will compile and run correctly.
@@ -806,14 +804,12 @@ public class Monster {
       <title>Short Answer: What Is the <c>this</c> Keyword?</title>
       <statement>
         <p> In the code example, <c>this</c> appears inside <c>heal</c> to refer to the current
-          object's fields (e.g., <c>this.health</c>). In <em>1–2 sentences</em>, explain what <c>
-          this</c> refers to when an instance method is called (e.g., <c>p1.heal(5)</c>). </p>
+          object's fields (e.g., <c>this.health</c>). In <em>1–2 sentences</em>, explain what <c>this</c> refers to when an instance method is called (e.g., <c>p1.heal(5)</c>). </p>
       </statement>
       <response />
       <solution>
         <p>
-          <strong>Sample Solution:</strong> When we call <c>p1.heal(5)</c>, <c>this</c> inside the <c>
-          heal</c> method refers to <c>p1</c>. In other words, <c>this</c> is the specific <c>Player</c>
+          <strong>Sample Solution:</strong> When we call <c>p1.heal(5)</c>, <c>this</c> inside the <c>heal</c> method refers to <c>p1</c>. In other words, <c>this</c> is the specific <c>Player</c>
           object on which the method was invoked. </p>
       </solution>
     </exercise>
@@ -830,8 +826,8 @@ public class Monster {
       <response />
       <solution>
         <p>
-          <strong>Sample Solution:</strong> A constructor’s job is to initialize a new object. The <c>
-          new</c> keyword allocates memory and then calls the constructor to set fields. By
+          <strong>Sample Solution:</strong> A constructor’s job is to initialize a new object. The 
+          <c>new</c> keyword allocates memory and then calls the constructor to set fields. By
           definition, constructors implicitly return the new object reference—so Java syntax doesn’t
           require (or allow) a named return type. </p>
       </solution>

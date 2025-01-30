@@ -11,7 +11,7 @@
        5.1 Two Ways Java Stores Data
        ====================================================== -->
   <subsection xml:id="five-one-two-ways-stores-data">
-    <title>5.1 Two Ways Java Stores Data</title>
+    <title> Two Ways Java Stores Data</title>
     <p>
       Java has two fundamentally different ways of handling data:
     </p>
@@ -25,8 +25,7 @@
       <li>
         <p><strong>Reference Types</strong> (Objects)<br /> - Stored as a reference (like an
           address) that points to data elsewhere in memory<br /> - When copied, you copy the
-          reference but both still point to the same data<br /> - Examples: <c>String</c>, <c>
-          ArrayList</c>, your own classes<br /> - The name of type starts with uppercase letter </p>
+          reference but both still point to the same data<br /> - Examples: <c>String</c>, <c>ArrayList</c>, your own classes<br/> - The name of type starts with uppercase letter </p>
       </li>
     </ol>
 
@@ -95,7 +94,7 @@ y: [100]                     └──> [Player data]
        5.2 How Primitives Work
        ====================================================== -->
   <subsection xml:id="five-two-how-primitives-work">
-    <title>5.2 How Primitives Work: Independent Copies</title>
+    <title> How Primitives Work: Independent Copies</title>
     <p>
       Remember our sticky note analogy? Let's see exactly how primitives work with a game score
       example:
@@ -179,7 +178,7 @@ System.out.println(lives);  // Still 3!
        5.3 How Objects Work
        ====================================================== -->
   <subsection xml:id="five-three-how-objects-work">
-    <title>5.3 How Objects Work: Sharing Access Through References</title>
+    <title> How Objects Work: Sharing Access Through References</title>
     <p>
       Remember our locker analogy? Let's see how it works with a simple game character:
     </p>
@@ -225,7 +224,7 @@ sidekick ────┘               sidekick ────┘
        5.4 Methods with References
        ====================================================== -->
   <subsection xml:id="five-four-methods-with-refs">
-    <title>5.4 Methods with References: The Right and Wrong Ways</title>
+    <title> Methods with References: The Right and Wrong Ways</title>
     <p>
       Let's look at a real game scenario: damaging multiple players in an area effect spell:
     </p>
@@ -314,7 +313,7 @@ ally ────┐               p2 ────┐
        5.5 Inside Methods
        ====================================================== -->
   <subsection xml:id="five-five-what-really-happens-inside-methods">
-    <title>5.5 What Really Happens Inside Methods</title>
+    <title> What Really Happens Inside Methods</title>
 
     <p>
       Let's watch exactly what happens in both the wrong and right approaches:
@@ -403,7 +402,7 @@ hero──┐                       hero──┐
        5.6 Sharing Multiple Lockers
        ====================================================== -->
   <subsection xml:id="five-six-sharing-multiple-lockers">
-    <title>5.6 Sharing Multiple Lockers: Group Methods</title>
+    <title> Sharing Multiple Lockers: Group Methods</title>
     <p>
       Think of a method that works with multiple objects like a person with multiple locker
       numbers. Let's see what happens in a boss battle:
@@ -452,7 +451,7 @@ boss & p2 ────┐
        5.7 Summary
        ====================================================== -->
   <subsection xml:id="five-seven-summary-what-you-need">
-    <title>5.7 Summary: What You Need to Remember</title>
+    <title> Summary: What You Need to Remember</title>
     <p>
       Let's wrap up with the most important points and common mistakes to avoid:
     </p>
@@ -535,8 +534,8 @@ objectMethod(player);        // Copies the locker number
   <!-- ======================================================
        5.8 Practice Exercises
        ====================================================== -->
-  <subsection xml:id="five-eight-practice-exercises">
-    <title>5.8 Practice Exercises</title>
+  <!-- <subsection xml:id="five-eight-practice-exercises">
+    <title> Practice Exercises</title>
     <p>
       Try these exercises to reinforce your understanding. For each one, predict what will happen
       before running the code!
@@ -575,8 +574,7 @@ class Game {
 }
 ]]></program>
       </listing>
-      <p> 🔍 Hint: You'll need to add methods to change a <c>Player</c>'s gold. Think about what the <c>
-        Player</c> class needs! </p>
+      <p> 🔍 Hint: You'll need to add methods to change a <c>Player</c>'s gold. Think about what the <c>Player</c> class needs! </p>
     </subsubsection>
 
     <subsubsection xml:id="exercise-2-spell-system">
@@ -644,7 +642,7 @@ System.out.println(hero.getHealth());  // Should be 150
       </ul>
       <p>Remember: Changes only "stick" when you modify the actual object through its reference!</p>
     </subsubsection>
-  </subsection>
+  </subsection> -->
 
   <subsection xml:id="exercises-primitives-vs-refs">
     <title>Exercises: Primitive &amp; Reference Types</title>
