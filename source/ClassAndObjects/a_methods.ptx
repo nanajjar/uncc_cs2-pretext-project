@@ -1,3 +1,5 @@
+<?xml version="1.0"?>
+
 <section xml:id="introducing-methods">
   <title>Introducing Methods</title>
 
@@ -24,10 +26,10 @@
     methods let us write code once and reuse it wherever needed.
   </p>
   <p>
-    <i>Note</i>: You might hear these called “functions” in other languages like
-    Python or JavaScript. In Java, we typically say “methods” when the code belongs to a class. </p>
+    <i>Note</i>: You might hear these called "functions" in other languages like
+    Python or JavaScript. In Java, we typically say "methods" when the code belongs to a class. </p>
   <p>
-    In this chapter, we'll learn:
+    In this section, we'll learn:
   </p>
   <ul>
     <li>
@@ -52,10 +54,8 @@
       Let's start with a real problem. Imagine you're making a simple game where a player
       gains health and gold after winning fights:
     </p>
-
-    <listing xml:id="intro-methods1">
       <title>Repeated Logic Example</title>
-      <program language="java"><![CDATA[
+      <program language="java" xml:id="intro-methods1">
 public class IntroMethods1 {
     public static void main(String[] args) {
         int playerHealth = 10;
@@ -73,8 +73,7 @@ public class IntroMethods1 {
         System.out.println("Gold:   " + playerGold);
     }
 }
-]]></program>
-    </listing>
+</program>
 
     <p>
       <i>Hold up!</i> Did you notice we wrote the same code twice? Just like copying
@@ -126,13 +125,11 @@ public class IntroMethods1 {
     <p>
       Here's the basic recipe:
     </p>
-    <listing xml:id="basic-method-syntax">
-      <caption>Basic Method Syntax</caption>
-      <program language="java"><input>public static returnType methodName(parameters) {
+      <program language="java" xml:id="basic-method-syntax">
+      <input>public static returnType methodName(parameters) {
     // method body
     return something; // if needed
 }</input></program>
-    </listing>
 
     <p>
       Let's break this down:
@@ -202,24 +199,20 @@ public class IntroMethods1 {
 
     <p>
       <i>Example</i>: </p>
-    <listing xml:id="add-two-numbers">
-      <program language="java"><![CDATA[
+      <program language="java" xml:id="add-two-numbers">
 public static int addTwoNumbers(int a, int b) {
     int sum = a + b;
     return sum;  // must match the 'int' return type
 }
-]]></program>
-    </listing>
+</program>
 
     <p>
       <i>Compiler moment</i>: If you accidentally do </p>
-    <listing xml:id="compiler-moment-example">
-      <program language="java"><![CDATA[
+      <program language="java" xml:id="compiler-moment-example">
 public static int addTwoNumbers(String a, int b) { ... }
-]]></program>
-    </listing>
-    <p> the compiler flags an <i>incompatible type</i> error when you try <c>addTwoNumbers(3, 5)</c>. It expects <c>(String, int)</c>, not <c>(int, int)</c>. The compiler is your “early
-      alert system” for mismatched parameter types. </p>
+</program>
+    <p> the compiler flags an <i>incompatible type</i> error when you try <c>addTwoNumbers(3, 5)</c>. It expects <c>(String, int)</c>, not <c>(int, int)</c>. The compiler is your "early
+      alert system" for mismatched parameter types. </p>
   </subsection>
 
   <!-- ======================================================
@@ -230,8 +223,7 @@ public static int addTwoNumbers(String a, int b) { ... }
     <p>
       Let's trace what happens when we run this code:
     </p>
-    <listing xml:id="award-victory-void">
-      <program language="java"><![CDATA[
+      <program xml:id="award-victory-void" language="java">
 public static void awardVictory(int health, int gold) {
     // health is now a COPY of playerHealth (10)
     health += 5;  // health becomes 15, but only inside this method
@@ -240,12 +232,16 @@ public static void awardVictory(int health, int gold) {
     // When method ends, copies are discarded!
 }
 
+
+</program>
+
+<p>
+<pre>
 // In main:
 playerHealth = 10;  // Original stays 10
 playerGold = 50;    // Original stays 50
-]]></program>
-    </listing>
-
+</pre>
+</p>
     <p> Think about it: If you make a photocopy of a document and write on the copy, does it
       change the original? That's what Java does with <c>int</c> parameters—it makes copies! </p>
 
@@ -294,10 +290,9 @@ playerGold = 50;    // Original stays 50
     <title>Returning New Values to Fix It</title>
     <p> (<i>Implementation, Step 3 &amp; 4:</i> We refine and retest) </p>
     <p> We can fix it by <i>returning</i> the new integer and storing it in the
-      caller. Let’s do two separate methods for clarity: </p>
+      caller. Let's do two separate methods for clarity: </p>
 
-    <listing xml:id="intro-methods3">
-      <program language="java"><![CDATA[
+      <program language="java" xml:id="intro-methods3" interactive="activecode" >
 public class IntroMethods3 {
     // Return updated health
     public static int increaseHealth(int currentHealth, int healAmount) {
@@ -325,19 +320,19 @@ public class IntroMethods3 {
         System.out.println("Gold:   " + playerGold);
     }
 }
-]]></program>
-    </listing>
+</program>
 
-    <p>
+    <!-- <p>
       <i>Output</i>: </p>
     <console>
       <output>
 Health: 20
 Gold: 70
       </output>
-    </console>
+    </console> -->
 
-    <p> Now, each method returns the updated <c>int</c>, and we assign it back into <c>playerHealth</c> or <c>playerGold</c>. If you wanted “gold +12” instead of “+10,” you’d edit <c>increaseGold()</c> in <i>one</i> place. </p>
+    <p> Now, each method returns the updated <c>int</c>, and we assign it back into <c>playerHealth</c> or <c>playerGold</c>. 
+    If you wanted "gold +12" instead of "+10," you'd edit <c>increaseGold()</c> in <em>one</em> place. </p>
   </subsection>
 
   <!-- ======================================================
@@ -346,7 +341,7 @@ Gold: 70
   <subsection xml:id="many-fields-params-fiasco">
     <title>Many Fields → Multiple Parameters Fiasco</title>
     <p>
-      Remember how the Design Recipe warned us about code that's “trying to do too much”?
+      Remember how the Design Recipe warned us about code that's "trying to do too much"?
       Let's count the ways this approach can go wrong:
     </p>
 
@@ -376,7 +371,7 @@ Gold: 70
         </li>
       </ul>
     </p>
-    <p> We’ll see that in the upcoming <i>Introducing Classes</i> lesson, including
+    <p> We'll see that in the upcoming <i>Introducing Classes</i> lesson, including
       how <i>encapsulation</i> protects those fields from accidental misuse. </p>
   </subsection>
 
@@ -403,7 +398,7 @@ Gold: 70
     </ul>
 
     <p>
-      <i>Coming Up Next</i>: We'll learn about classes – a way to keep related data
+      <i>Coming Up Next</i>: We'll learn about classes - a way to keep related data
       and methods together, like keeping all your school supplies in one backpack instead of
       carrying them separately! </p>
   </subsection>
@@ -415,42 +410,47 @@ Gold: 70
     <title>Your Turn</title>
     <p>
       Try these exercises to practice what you've learned. Remember: it's okay if you don't get
-      it perfect the first time – that's how we learn!
+      it perfect the first time - that's how we learn!
     </p>
     <ol>
       <li>
-        <p><i>Convert Fahrenheit</i><br /> Define <c>public static double convertFtoC(double tempF)</c>, returning the Celsius result. Test by printing <c>convertFtoC(32)</c>. </p>
+        <p><em>Convert Fahrenheit</em></p>
+        <p> Define <c>public static double convertFtoC(double tempF)</c>, returning the Celsius result. Test by printing <c>convertFtoC(32)</c>. </p>
       </li>
       <li>
-        <p><i>Improve Award Victory</i><br /> Suppose we want gold only on every <i>
-          second</i> victory in a row. Write a method that returns the new “victory streak,”
+        <p><em>Improve Award Victory</em></p>
+          <p> Suppose we want gold only on every <em>second</em> victory in a row. Write a method that returns the new "victory streak,"
           letting the caller track how many consecutive wins. </p>
       </li>
       <li>
-        <p><i>XP Gains</i><br /> Each victory also awards +20 xp. Show how you
+        <p><em>XP Gains</em></p><p> Each victory also awards +20 xp. Show how you
           might incorporate xp into the method calls, being mindful of pass-by-value issues. </p>
       </li>
     </ol>
 
     <p>
-      Here's some starter code to get you going:
-    </p>
+      Here's some starter code to get you started. 
+      To prevent compiler errors, we've included a return statement in each method with a valid data type, though the value itself may be just a placeholder. 
+      Be sure to update these return values accordingly as you implement the actual logic.    </p>
 
-    <listing xml:id="method-practice">
-      <caption>Method Practice Exercises</caption>
-      <program language="java">
+      <program language="java" xml:id="method-practice" interactive="activecode">
+
         <input>
 public class MethodPractice {
     public static double convertFtoC(double tempF) {
         // Your code here
         // Formula: (F - 32) * 5/9
+
+
         return 0.0; // placeholder
     }
 
     public static int awardVictoryStreak(int currentStreak) {
         // Your code here
+
+
         // Return updated streak count
-        return 0; // placeholder
+        return 0; // placeholder 
     }
 
     public static void main(String[] args) {
@@ -460,7 +460,6 @@ public class MethodPractice {
 }
         </input>
       </program>
-    </listing>
   </subsection>
 
   <!-- ======================================================
@@ -473,39 +472,33 @@ public class MethodPractice {
         <p>
           <i>Forgetting to Return</i>: If your method declares a return type, every
           path must return something </p>
-        <listing xml:id="bad-method">
-          <program language="java"><![CDATA[
+          <program language="java" xml:id="bad-method">
 public static int bad(int x) {
-    if (x > 0) {
+    if (x &gt; 0) {
         return x;
     }
-    // Error! What if x <= 0?
+    // Error! What if x &lt;= 0?
 }
-]]></program>
-        </listing>
+</program>
       </li>
       <li>
         <p>
           <i>Return Type Mismatch</i>: </p>
-        <listing xml:id="type-mismatch">
-          <program language="java"><![CDATA[
+          <program language="java" xml:id="type-mismatch">
 public static int oops() {
     return 3.14; // Error! Can't return double where int expected
 }
-]]></program>
-        </listing>
+</program>
       </li>
       <li>
         <p>
           <i>Parameter Type Confusion</i>: </p>
-        <listing xml:id="param-confusion">
-          <program language="java"><![CDATA[
+          <program language="java" xml:id="param-confusion">
 public static void example(int x) { }
 
 double d = 3.14;
 example(d);  // Error! Can't pass double where int expected
-]]></program>
-        </listing>
+</program>
       </li>
     </ul>
   </subsection>
@@ -517,14 +510,12 @@ example(d);  // Error! Can't pass double where int expected
     <title>Quick Reference</title>
     <p>
       <i>Method Syntax</i>: </p>
-    <listing xml:id="method-syntax-ref">
-      <program language="java"><![CDATA[
+      <program language="java" xml:id="method-syntax-ref">
 public static returnType methodName(type1 param1, type2 param2) {
     // method body
     return value;  // if non-void
 }
-]]></program>
-    </listing>
+</program>
     <p>
       <i>Key Points</i>: </p>
     <ul>
@@ -548,7 +539,7 @@ public static returnType methodName(type1 param1, type2 param2) {
       <i>Design Recipe Steps</i>: </p>
     <ol>
       <li>
-        <p>Identify repeated code</p>
+        <p>Forumulate data definitions</p>
       </li>
       <li>
         <p>Write method signature</p>
@@ -594,7 +585,7 @@ public static returnType methodName(type1 param1, type2 param2) {
         <choice>
           <statement>We can only use repeated code if we mark it <c>static</c> first.</statement>
           <feedback>
-            <c>static</c> doesn’t address the real issue of maintenance overhead when logic changes. </feedback>
+            <c>static</c> doesn't address the real issue of maintenance overhead when logic changes. </feedback>
         </choice>
       </choices>
     </exercise>
@@ -718,10 +709,10 @@ public static returnType methodName(type1 param1, type2 param2) {
       <title>Short Answer: Why Did the <c>void</c> Method Fail to Update Player Stats?</title>
       <statement>
         <p> In the example, we tried <c>public static void awardVictory(int health, int gold)</c>
-          hoping it would directly update <c>playerHealth</c> and <c>playerGold</c>, but it didn’t
-          work as intended. In <em>2–3 sentences</em>, explain <strong>why</strong>
+          hoping it would directly update <c>playerHealth</c> and <c>playerGold</c>, but it didn't
+          work as intended. In <em>2-3 sentences</em>, explain <strong>why</strong>
         <c>void</c>
-          methods didn’t update the original variables, and <strong>how</strong> returning a new
+          methods didn't update the original variables, and <strong>how</strong> returning a new
           value instead solves the problem. </p>
       </statement>
       <response />
@@ -746,10 +737,10 @@ public static returnType methodName(type1 param1, type2 param2) {
       <ul>
         <li>
           <p><i>Method names</i> typically start with a lowercase letter and use
-            “camelCase” for additional words: <c>increaseGold()</c>, <c>addTwoNumbers()</c>.</p>
+            "camelCase" for additional words: <c>increaseGold()</c>, <c>addTwoNumbers()</c>.</p>
         </li>
         <li>
-          <p>They must follow Java’s identifier rules (no spaces, can’t start with a digit,
+          <p>They must follow Java's identifier rules (no spaces, can't start with a digit,
             etc.).</p>
         </li>
       </ul>

@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <section xml:id="how-java-stores-data-primitives-vs-objects">
   <title>Primitive &amp; Reference Types</title>
 
@@ -17,15 +18,16 @@
     </p>
     <ol>
       <li>
-        <p><strong>Primitive Types</strong> (<c>int</c>, <c>double</c>, <c>boolean</c>, etc.)<br />
-          - Stored directly in memory as their actual value<br /> - When copied, you get a
-          completely independent copy<br /> - Examples: numbers, true/false values<br /> - The name
-          of type starts with lowercase letter </p>
+        <p><strong>Primitive Types</strong> (<c>int</c>, <c>double</c>, <c>boolean</c>, etc.)
+          <ul><li>
+          Stored directly in memory as their actual value</li> <li> When copied, you get a
+          completely independent copy</li><li> Examples: numbers, true/false values</li>  <li>The name
+          of type starts with lowercase letter </li></ul></p>
       </li>
       <li>
-        <p><strong>Reference Types</strong> (Objects)<br /> - Stored as a reference (like an
-          address) that points to data elsewhere in memory<br /> - When copied, you copy the
-          reference but both still point to the same data<br /> - Examples: <c>String</c>, <c>ArrayList</c>, your own classes<br/> - The name of type starts with uppercase letter </p>
+        <p><strong>Reference Types</strong> (Objects) <ul><li> Stored as a reference (like an
+          address) that points to data elsewhere in memory</li> <li> When copied, you copy the
+          reference but both still point to the same data</li><li> Examples: <c>String</c>, <c>ArrayList</c>, your own classes</li> <li> The name of type starts with uppercase letter </li></ul></p>
       </li>
     </ol>
 
@@ -58,8 +60,7 @@
 
     <p>Let's see both perspectives in code:</p>
 
-    <listing xml:id="primitives-vs-objects-code">
-      <program language="java"><![CDATA[
+      <program language="java" xml:id="primitives-vs-objects-code">
 // PRIMITIVES: Direct values
 int x = 42;          // x stores 42 directly
 int y = x;           // y gets its own copy of 42
@@ -71,18 +72,15 @@ Player p1 = new Player(100);     // p1 stores a reference to the Player
 Player p2 = p1;                  // p2 gets a copy of the reference
 p2.reduceHealth(50);            // affects the one shared Player
 System.out.println(p1.getHealth()); // prints 50 - both see the change
-]]></program>
-    </listing>
+</program>
 
     <p>In memory, it looks like this:</p>
-    <listing xml:id="primitives-vs-objects-diagram">
-      <program language="text"><![CDATA[
+      <program language="text" xml:id="primitives-vs-objects-diagram">
 Primitives:           Objects:
 x: [42]              p1 ────┐
 y: [100]                     └──> [Player data]
                      p2 ────┘
-]]></program>
-    </listing>
+</program>
 
     <p>
       This fundamental difference affects everything from variable assignment to method parameters,
@@ -100,8 +98,7 @@ y: [100]                     └──> [Player data]
       example:
     </p>
 
-    <listing xml:id="primitives-score-example">
-      <program language="java"><![CDATA[
+      <program language="java" xml:id="primitives-score-example">
 // Initial score
 int score = 100;                  // Write "100" on first sticky note
 
@@ -114,14 +111,12 @@ backupScore = 50;                 // Change only the backup note to "50"
 // Check both scores
 System.out.println("Original: " + score);      // Shows 100
 System.out.println("Backup: " + backupScore);  // Shows 50
-]]></program>
-    </listing>
+</program>
     <p>
       Let's watch how memory changes at each step:
     </p>
 
-    <listing xml:id="primitives-memory">
-      <program language="text"><![CDATA[
+      <program language="text" xml:id="primitives-memory">
   Step 1: Create score
   ┌─────────────┐
   │score: [100]   │ 
@@ -138,15 +133,13 @@ System.out.println("Backup: " + backupScore);  // Shows 50
   │score: [100]   │
   │backup:[50]    │
   └─────────────┘
-  ]]></program>
-    </listing>
+  </program>
 
     <p>
       This works the same for all primitive types:
     </p>
 
-    <listing xml:id="other-primitives-example">
-      <program language="java"><![CDATA[
+      <program language="java" xml:id="other-primitives-example">
 double price = 9.99;              // One sticky note
 double salePrize = price;         // New independent sticky note
 salePrize = 7.99;                 // Only changes salePrize
@@ -154,19 +147,16 @@ salePrize = 7.99;                 // Only changes salePrize
 boolean gameOver = false;         // One sticky note
 boolean lastState = gameOver;     // New independent sticky note
 lastState = true;                 // Only changes lastState
-]]></program>
-    </listing>
+</program>
 
     <p><strong>🚫 Common Mistake:</strong> Thinking variables are connected</p>
 
-    <listing xml:id="common-mistake-primitive">
-      <program language="java"><![CDATA[
+      <program language="java" xml:id="common-mistake-primitive">
 int lives = 3;
 int extraLives = lives;     // Creates a copy, not a connection!
 extraLives--;               // Only extraLives becomes 2
 System.out.println(lives);  // Still 3!
-]]></program>
-    </listing>
+</program>
 
     <p>
       Remember: With primitives, each variable gets its own independent sticky note. Changes to
@@ -183,21 +173,18 @@ System.out.println(lives);  // Still 3!
       Remember our locker analogy? Let's see how it works with a simple game character:
     </p>
 
-    <listing xml:id="player-class-locker-analogy">
-      <program language="java"><![CDATA[
+      <program language="java" xml:id="player-class-locker-analogy">
 public class Player {
     private int health;
     public Player(int h) { health = h; }
     public void damage(int amt) { health -= amt; }
     public int getHealth() { return health; }
 }
-]]></program>
-    </listing>
+</program>
 
     <p> When you create and share a Player object, here's what happens:</p>
 
-    <listing xml:id="sharing-player-reference">
-      <program language="java"><![CDATA[
+      <program language="java" xml:id="sharing-player-reference">
 // Step 1: Create new Player (like getting a new locker)
 Player hero = new Player(100);    // Get locker #123 with 100 health inside
 
@@ -207,17 +194,15 @@ Player sidekick = hero;           // Give sidekick the same locker number (#123)
 // Step 3: Either person can affect the shared Player
 sidekick.damage(25);             // Sidekick opens locker #123 and reduces health
 System.out.println(hero.getHealth());   // Hero checks same locker, sees 75 health
-]]></program>
-    </listing>
+</program>
 
-    <listing xml:id="object-locker-diagram">
-      <program language="text"><![CDATA[
+      <program language="text"  xml:id="object-locker-diagram">
 Before damage:                After damage:
 hero     ────┐               hero     ────┐
               └─> [100]                    └─> [75]
 sidekick ────┘               sidekick ────┘
-]]></program>
-    </listing>
+</program>
+   
   </subsection>
 
   <!-- ======================================================
@@ -229,8 +214,7 @@ sidekick ────┘               sidekick ────┘
       Let's look at a real game scenario: damaging multiple players in an area effect spell:
     </p>
 
-    <listing xml:id="damaging-players">
-      <program language="java"><![CDATA[
+      <program language="java" xml:id="damaging-players">
 public class Player {
     private int health;
     private String name;
@@ -259,13 +243,11 @@ public class Game {
         p2.damage(damage);  // Changes real player health
     }
 }
-]]></program>
-    </listing>
+</program>
 
     <p>Let's see what happens in memory when we use these:</p>
 
-    <listing xml:id="call-area-damage">
-      <program language="java"><![CDATA[
+      <program language="java" xml:id="call-area-damage">
 Player hero = new Player("Hero", 100);
 Player ally = new Player("Ally", 80);
 
@@ -278,11 +260,9 @@ System.out.println(ally.getHealth());  // Still 80
 rightAreaDamage(hero, ally, 30);
 System.out.println(hero.getHealth());  // Now 70
 System.out.println(ally.getHealth());  // Now 50
-]]></program>
-    </listing>
+</program>
 
-    <listing xml:id="refs-memory-diagram">
-      <program language="text"><![CDATA[
+      <program language="text" xml:id="refs-memory-diagram">
 Memory during rightAreaDamage:
 
 Outside method:          Inside rightAreaDamage:
@@ -290,14 +270,12 @@ hero ────┐               p1 ────┐
           └─> [H:100]            └─> [H:100] -> [H:70]
 ally ────┐               p2 ────┐
           └─> [H:80]             └─> [H:80]  -> [H:50]
-]]></program>
-    </listing>
+</program>
 
     <p>
       <strong>🚫 Common Mistakes:</strong>
     </p>
-    <listing xml:id="common-mistakes-refs">
-      <program language="java"><![CDATA[
+      <program language="java" xml:id="common-mistakes-refs">
  // Mistake 1: Passing number instead of Player
  healPlayer(hero.getHealth(), 50);   // Wrong! Passes copy of health
  healPlayer(hero, 50);               // Right! Passes player reference
@@ -305,8 +283,7 @@ ally ────┐               p2 ────┐
  // Mistake 2: Thinking new variables mean new objects
  Player backup = hero;               // Same player, two references
  Player clone = new Player(hero.getHealth()); // Different player!
-]]></program>
-    </listing>
+</program>
   </subsection>
 
   <!-- ======================================================
@@ -321,8 +298,7 @@ ally ────┐               p2 ────┐
 
     <subsubsection xml:id="wrong-way-passing-health-value">
       <title>Wrong Way: Passing Health Value</title>
-      <listing>
-        <program language="text"><![CDATA[
+        <program language="text">
 Step 1: Starting state
 ┌─────────────────┐
 │Hero's Locker      │
@@ -340,14 +316,12 @@ Step 2: Call wrongReduce(hero.getHealth(), 5)
 Hero unchanged!        Copy discarded
 
 Result: Hero still at 100 health
-]]></program>
-      </listing>
+</program>
     </subsubsection>
 
     <subsubsection xml:id="right-way-passing-player-reference">
       <title>Right Way: Passing Player Reference</title>
-      <listing>
-        <program language="text"><![CDATA[
+        <program language="text">
 Step 1: Starting state         Step 2: Inside rightReduce
 hero──┐                        hero──┐
        └→[health: 100]                └→[health: 100]
@@ -357,8 +331,7 @@ Step 3: After p.reduce(5)     Step 4: Method ends
 hero──┐                       hero──┐
        └→[health: 95]                └→[health: 95]
  p  ──┘                       (p is discarded)
-]]></program>
-      </listing>
+</program>
 
       <p>
         Quick Comparison:
@@ -408,8 +381,7 @@ hero──┐                       hero──┐
       numbers. Let's see what happens in a boss battle:
     </p>
 
-    <listing xml:id="boss-battle-code">
-      <program language="java"><![CDATA[
+      <program language="java" xml:id="boss-battle-code">
 public static void bossFight(Player hero, Player boss, int damage) {
     // Inside method: we have copies of both locker numbers
     hero.damage(damage);    // Open hero's locker, reduce health
@@ -422,24 +394,22 @@ Player boss = new Player("Boss", 200);   // Locker #2: 200 health
 
 // Share both locker numbers with bossFight
 bossFight(hero, boss, 30);
-]]></program>
-    </listing>
+</program>
 
-    <listing xml:id="multiple-lockers-diagram">
-      <program language="text"><![CDATA[
+     
+      <program language="text" xml:id="multiple-lockers-diagram">
 Before battle:                After battle:
 hero ────┐                    hero ────┐
-          └─> [H:100]                   └─> [H:70]
+           └─&gt; [H:100]                  └─&gt; [H:70]
 boss ────┐                    boss ────┐
-          └─> [H:200]                   └─> [H:140]
+           └─&gt; [H:200]                  └─&gt; [H:140]
 
 Inside bossFight method:
-hero & p1 ────┐
-               └─> [Same Hero object]
-boss & p2 ────┐
-               └─> [Same Boss object]
-]]></program>
-    </listing>
+hero &amp; p1 ────┐
+               └─&gt; [Same Hero object]
+boss &amp; p2 ────┐
+               └─&gt; [Same Boss object]
+</program>
 
     <p>
       <strong>Key Point:</strong> A method can receive multiple locker numbers (references) and
@@ -463,33 +433,28 @@ boss & p2 ────┐
           <p>
             <strong>Primitives are Like Sticky Notes</strong>
           </p>
-          <listing>
-            <program language="java"><![CDATA[
+            <program language="java">
 int x = 42;
 int y = x;     // New note with copy of 42
 y = 10;        // Only changes y's note
-]]></program>
-          </listing>
+</program>
         </li>
         <li>
           <p>
             <strong>Objects are Like Lockers</strong>
           </p>
-          <listing>
-            <program language="java"><![CDATA[
+            <program language="java">
 Player p1 = new Player(100);  // New locker
 Player p2 = p1;               // Shared locker number
 Player p3 = new Player(100);  // Different locker!
-]]></program>
-          </listing>
+</program>
         </li>
       </ol>
     </subsubsection>
 
     <subsubsection xml:id="common-mistakes-bullet">
       <title>🚫 Common Mistakes to Avoid</title>
-      <listing>
-        <program language="java"><![CDATA[
+        <program language="java">
 // Wrong: Passing the Number Instead of the Locker
 // ❌ WRONG - passes copy of health number
 void healPlayer(int health, int amount) {
@@ -508,17 +473,14 @@ backup.damage(10);     // Hero also loses health!
 
 // ✅ RIGHT way to make a separate player
 Player clone = new Player(hero.getHealth()); // New locker
-]]></program>
-      </listing>
+</program>
 
-      <listing>
-        <program language="java"><![CDATA[
+        <program language="java">
 // Wrong: Misunderstanding Pass-by-Value
 // Java always passes copies, but:
 primitiveMethod(score);      // Copies the number
 objectMethod(player);        // Copies the locker number
-]]></program>
-      </listing>
+</program>
     </subsubsection>
 
     <p>
@@ -687,7 +649,7 @@ System.out.println(hero.getHealth());  // Should be 150
         <choice>
           <statement> You must call <c>new</c> to create primitives, but objects are created
             automatically. </statement>
-          <feedback> It’s the opposite: primitives don’t use <c>new</c>; objects typically do. </feedback>
+          <feedback> It's the opposite: primitives don't use <c>new</c>; objects typically do. </feedback>
         </choice>
       </choices>
     </exercise>
@@ -699,14 +661,12 @@ System.out.println(hero.getHealth());  // Should be 150
         <p>
           Consider the following code:
         </p>
-        <listing>
-          <program language="java"><![CDATA[
+          <program language="java">
 Player p1 = new Player(100);
 Player p2 = p1;
 p2.damage(10);
 System.out.println(p1.getHealth());
-]]></program>
-        </listing>
+</program>
         <p> Which outcome is <em>most</em> likely? </p>
       </statement>
       <choices randomize="yes">
@@ -719,19 +679,19 @@ System.out.println(p1.getHealth());
         </choice>
         <choice>
           <statement>
-            <c>p1</c>’s health is still 100, because <c>p2</c> is a separate Player. </statement>
+            <c>p1</c>'s health is still 100, because <c>p2</c> is a separate Player. </statement>
           <feedback> No, <c>p2 = p1</c> means both variables refer to the <em>same</em> Player. </feedback>
         </choice>
         <choice correct="yes">
           <statement>
-            <c>p1</c>’s health is 90, because <c>p1</c> and <c>p2</c> point to the same object. </statement>
+            <c>p1</c>'s health is 90, because <c>p1</c> and <c>p2</c> point to the same object. </statement>
           <feedback> Correct. Damage via <c>p2</c> affects the same underlying Player that <c>p1</c>
             sees. </feedback>
         </choice>
         <choice>
           <statement> The code throws a runtime error on <c>p2.damage(10)</c> because <c>p2</c> has
             no reference. </statement>
-          <feedback> That would only happen if <c>p2</c> were <c>null</c>, but here it’s given the
+          <feedback> That would only happen if <c>p2</c> were <c>null</c>, but here it's given the
             same reference as <c>p1</c>. </feedback>
         </choice>
       </choices>
@@ -752,7 +712,7 @@ System.out.println(p1.getHealth());
     <exercise xml:id="tf-object-pass-method" type="truefalse">
       <title>True/False: Passing Object References to Methods</title>
       <statement correct="yes"> If you pass an object reference (like a <c>Player</c>) to a method
-        and the method calls <c>player.damage(10)</c>, the caller’s object is affected. </statement>
+        and the method calls <c>player.damage(10)</c>, the caller's object is affected. </statement>
       <feedback>
         Correct! Even though Java is pass-by-value for the reference, that “value” is the address,
         so changes to the object persist.
@@ -839,13 +799,13 @@ System.out.println(p1.getHealth());
       <title>Reflection: Pass-by-Value for Primitives vs. References</title>
       <statement>
         <p> In <em>2–3 sentences</em>, reflect on why Java is said to be “pass-by-value” even when
-          calling a method with an object reference. Consider what’s being copied and how that leads
+          calling a method with an object reference. Consider what's being copied and how that leads
           to changes in the original object. </p>
       </statement>
       <response />
       <solution>
         <p>
-          <strong>Sample Solution:</strong> Java always copies the variable’s value. For primitives,
+          <strong>Sample Solution:</strong> Java always copies the variable's value. For primitives,
           that value is the actual number. For objects, the value is the reference (like a locker
           number). Copying the same “locker number” means both copies point to the same object, so
           changes in the method remain visible to the caller. </p>
