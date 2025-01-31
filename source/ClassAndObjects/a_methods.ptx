@@ -466,6 +466,7 @@ public class MethodPractice {
                     boolean passed = getResults(expect, output,0.01, "Expected output from ConvertFtoC");
                     assertTrue(passed);
                     }
+                    @Test
                     public void testConverFtoC2() throws IOException
                     {
                     double output = MethodPractice.convertFtoC(100);
@@ -473,6 +474,7 @@ public class MethodPractice {
                     boolean passed = getResults(expect, output,0.01, "Expected output from ConvertFtoC");
                     assertTrue(passed);
                     }
+                    @Test
                     public void testConverFtoC3() throws IOException
                     {
                     double output = MethodPractice.convertFtoC(-40);
