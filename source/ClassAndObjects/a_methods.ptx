@@ -409,15 +409,13 @@ Gold: 70
   <subsection xml:id="your-turn-methods">
     <title>Your Turn</title>
     <p>
-      Try these exercises to practice what you've learned. Remember: it's okay if you don't get
+      Try this exercise to practice what you've learned. Remember: it's okay if you don't get
       it perfect the first time - that's how we learn!
     </p>
-    <ol>
-      <li>
-        <p><em>Convert Fahrenheit</em></p>
+   
         <p> Define <c>public static double convertFtoC(double tempF)</c>, returning the Celsius result. Test by printing <c>convertFtoC(32)</c>. </p>
-      </li>
-      <li>
+
+      <!-- <li>
         <p><em>Improve Award Victory</em></p>
           <p> Suppose we want gold only on every <em>second</em> victory in a row. Write a method that returns the new "victory streak,"
           letting the caller track how many consecutive wins. </p>
@@ -425,13 +423,13 @@ Gold: 70
       <li>
         <p><em>XP Gains</em></p><p> Each victory also awards +20 xp. Show how you
           might incorporate xp into the method calls, being mindful of pass-by-value issues. </p>
-      </li>
-    </ol>
+      </li> 
+    </ol>-->
 
     <p>
       Here's some starter code to get you started. 
-      To prevent compiler errors, we've included a return statement in each method with a valid data type, though the value itself may be just a placeholder. 
-      Be sure to update these return values accordingly as you implement the actual logic.    </p>
+      To prevent compiler errors, we've included a return statement with a valid data type, though the value itself may be just a placeholder. 
+      Be sure to update the return value accordingly as you implement the actual logic.    </p>
 
       <program language="java" xml:id="method-practice" interactive="activecode">
 
@@ -445,17 +443,9 @@ public class MethodPractice {
         return 0.0; // placeholder
     }
 
-    public static int awardVictoryStreak(int currentStreak) {
-        // Your code here
-
-
-        // Return updated streak count
-        return 0; // placeholder 
-    }
-
     public static void main(String[] args) {
         // Test your methods here
-        System.out.println("32°F = " + convertFtoC(32) + "°C"); 
+        System.out.println("32F = " + convertFtoC(32) + "C"); 
     }
 }
         </input>
@@ -467,14 +457,7 @@ public class MethodPractice {
 
                     public class RunestoneTests extends CodeTestHelper
                     {
-                    @Test
-                    <!-- public void testMain() throws IOException
-                    {
-                    String output = getMethodOutput("main");
-                    String expect = "32°F = 0.0°C";
-                    boolean passed = getResults(expect, output, "Expected output from main", true);
-                    assertTrue(passed);
-                    } -->
+                 
                      @Test
                     public void testConverFtoC() throws IOException
                     {
@@ -497,27 +480,7 @@ public class MethodPractice {
                     boolean passed = getResults(expect, output,0.01, "Expected output from ConvertFtoC");
                     assertTrue(passed);
                     }
-                    public void testAwardVictoryStreak() throws IOException
-                    {
-                    double output = MethodPractice.awardVictoryStreak(0);
-                    double expect = 1;
-                    boolean passed = getResults(expect, output,0.01, "Expected output from ConvertFtoC");
-                    assertTrue(passed);
-                    }
-                    public void testAwardVictoryStreak2() throws IOException
-                    {
-                    double output = MethodPractice.awardVictoryStreak(4);
-                    double expect = 5;
-                    boolean passed = getResults(expect, output,0.01, "Expected output from ConvertFtoC");
-                    assertTrue(passed);
-                    }
-                    public void testAwardVictoryStreak3() throws IOException
-                    {
-                    double output = MethodPractice.awardVictoryStreak(-1);
-                    double expect = 0;
-                    boolean passed = getResults(expect, output,0.01, "Expected output from ConvertFtoC");
-                    assertTrue(passed);
-                    }
+                  
                    }
                     
 </tests>
