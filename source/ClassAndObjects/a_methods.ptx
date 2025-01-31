@@ -423,8 +423,8 @@ Gold: 70
       <li>
         <p><em>XP Gains</em></p><p> Each victory also awards +20 xp. Show how you
           might incorporate xp into the method calls, being mindful of pass-by-value issues. </p>
-      </li> -->
-    </ol>
+      </li> 
+    </ol>-->
 
     <p>
       Here's some starter code to get you started. 
