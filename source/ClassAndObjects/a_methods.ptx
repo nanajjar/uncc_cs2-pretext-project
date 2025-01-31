@@ -371,7 +371,7 @@ Gold: 70
         </li>
       </ul>
     </p>
-    <p> We'll see that in the upcoming <i>Introducing Classes</i> lesson, including
+    <p> We'll see that in the upcoming <i>Introducing Classes</i> section, including
       how <i>encapsulation</i> protects those fields from accidental misuse. </p>
   </subsection>
 
@@ -455,10 +455,36 @@ public class MethodPractice {
 
     public static void main(String[] args) {
         // Test your methods here
-        System.out.println("32°F = " + convertFtoC(32) + "°C");
+        System.out.println("32°F = " + convertFtoC(32) + "°C"); 
     }
 }
         </input>
+        <tests>
+                    // should pass if/when they run code
+                    import static org.junit.Assert.*;
+                    import org.junit.*;;
+                    import java.io.*;
+
+                    public class RunestoneTests extends CodeTestHelper
+                    {
+                    @Test
+                    public void testMain() throws IOException
+                    {
+                    String output = getMethodOutput("main");
+                    String expect = "32°F = 0.0°C";
+                    boolean passed = getResults(expect, output, "Expected output from main", true);
+                    assertTrue(passed);
+                    }
+                     @Test
+                    public void testMain() throws IOException
+                    {
+                    double output = MethodPractice.convertFtoC(212);
+                    double expect = 100.0
+                    boolean passed = getResults(expect, output, "Expected output from main", true);
+                    assertTrue(passed);
+                    }
+                    }
+</tests>
       </program>
   </subsection>
 
