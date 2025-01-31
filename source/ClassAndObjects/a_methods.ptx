@@ -476,10 +476,10 @@ public class MethodPractice {
                     assertTrue(passed);
                     }
                      @Test
-                    public void testMain() throws IOException
+                    public void testConverFtoC() throws IOException
                     {
                     double output = MethodPractice.convertFtoC(212);
-                    double expect = 100.0
+                    double expect = 100.0;
                     boolean passed = getResults(expect, output, "Expected output from main", true);
                     assertTrue(passed);
                     }
