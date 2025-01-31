@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+
+<section xml:id="oo_intro">
+    <title> Object Oriented Programming </title>
+
+    <p>
+        
+Java is an object-oriented programming language. 
+That means that one of the primary ways of organizing our programs is in terms of objects. 
+Objects are a kind of value that combines data and the code that operates on that data into a single unit. 
+</p>
+    
+<p>
+Objects are defined in Java by writing classes which provide a blueprint for creating objects of a certain kind, describing the data and code that all instances of that class have.
+Sometimes classes and objects are used to model things in the real world, such as if we made a Student class to represent students in a school. 
+Other times classes are just ways of organizing different parts of our programs that may not correspond to anything in the world outside the computer.
+But in Java all programs are built out of classes. This is why, as you saw in the previous chapter, every Java programs starts with public class: the first thing we have to do when we write a Java program is define at least one class.
+You have already seen how to define classes in Java. It's unavoidable for even the simplest of programs.
+ </p>
+
+    <objectives>
+    <ul>
+        <li>
+            <p>
+                Recognize classes and objects.
+            </p>
+        </li>
+        <li>
+            <p>
+                Describe the relationship between classes and objects.
+            </p>
+        </li>
+        <li>
+            <p>
+                Describe the difference between objects and data of primitive type.
+            </p>
+        </li>
+        <li>
+            <p>
+                Describe the difference between static and and instance elements of a class.
+            </p>
+        </li>
+        <li>
+            <p>
+               Design a simple class in Java.
+            </p>
+        </li>
+        <li>
+            <p>
+                List the basic principles of object-oriented programming.
+            </p>
+        </li>
+    </ul>
+</objectives>
+</section>
