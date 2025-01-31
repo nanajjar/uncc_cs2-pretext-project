@@ -480,7 +480,7 @@ public class MethodPractice {
                     {
                     double output = MethodPractice.convertFtoC(212);
                     double expect = 100.0;
-                    boolean passed = getResults(expect, output, "Expected output from main", true);
+                    boolean passed = getResults(expect, output,0.01, "Expected output from ConvertFtoC");
                     assertTrue(passed);
                     }
                     }
