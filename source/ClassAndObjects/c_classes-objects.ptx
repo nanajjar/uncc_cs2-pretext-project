@@ -274,7 +274,11 @@ public class Player {
     }
 }
 
-// Usage:
+
+</program>
+      <program language="java" xml:id="player-with-instance-methods_use">
+
+// Create an object using the Player class:
 Player p = new Player(10, 50);
 p.heal(5);  // can't mix up which health we're changing!
 </program>
