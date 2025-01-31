@@ -43,6 +43,8 @@
       <strong>Way 2: Package pieces with their rules</strong>
     </p>
       <program language="java">
+      // Organize things into classes
+      // We define our own data types
 public class Player {
     private int health = 100;
 
@@ -51,9 +53,23 @@ public class Player {
     }
 }
 
-// Clear which player we're modifying
-hero.heal(20);
 </program>
+
+  <program language="java">
+    // Organize things into classes
+    // We have a separate class for running the program
+    class GameState {
+   
+    public static void main(String[] args) {
+      Player hero = new Player(20);
+      Player villan = new Player(10);
+
+     // Clear which player we're modifying
+      hero.heal(20);
+      villan.heal(5);
+    }
+  }
+  </program>
 
     <p> The second way is called <em>Object-Oriented Programming</em> (OOP). It bundles data with
       the code that works on that data. Java helps us do this through: </p>

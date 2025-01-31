@@ -331,7 +331,7 @@ heal(player1, 5); // player1 becomes 'this' inside the method
     <title>Using Our New Type</title>
 
     <p> Let's add a <c>main</c> method right to our <c>Player</c> class to try it out: </p>
-      <program language="java" xml:id="player-demo-main">
+      <program language="java" xml:id="player-demo-main"  interactive="activecode">
 public class Player {
     int health;
     int gold;
@@ -453,7 +453,7 @@ Player alex  = new Player(20, 100);  // Alex starts with 20 health, 100 gold
 
     <p> Let's see how all the pieces work together. Here's our complete <c>Player</c> class: </p>
 
-      <program language="java" xml:id="complete-player">
+      <program language="java" xml:id="complete-player" interactive="activecode">
 public class Player {
     // Part 1: The Data
     // Every Player object gets its own copy of these
