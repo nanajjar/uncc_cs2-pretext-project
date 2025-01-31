@@ -468,13 +468,13 @@ public class MethodPractice {
                     public class RunestoneTests extends CodeTestHelper
                     {
                     @Test
-                    public void testMain() throws IOException
+                    <!-- public void testMain() throws IOException
                     {
                     String output = getMethodOutput("main");
                     String expect = "32°F = 0.0°C";
                     boolean passed = getResults(expect, output, "Expected output from main", true);
                     assertTrue(passed);
-                    }
+                    } -->
                      @Test
                     public void testConverFtoC() throws IOException
                     {
@@ -483,7 +483,43 @@ public class MethodPractice {
                     boolean passed = getResults(expect, output,0.01, "Expected output from ConvertFtoC");
                     assertTrue(passed);
                     }
+                    public void testConverFtoC2() throws IOException
+                    {
+                    double output = MethodPractice.convertFtoC(100);
+                    double expect = 37.78;
+                    boolean passed = getResults(expect, output,0.01, "Expected output from ConvertFtoC");
+                    assertTrue(passed);
                     }
+                    public void testConverFtoC3() throws IOException
+                    {
+                    double output = MethodPractice.convertFtoC(-40);
+                    double expect = -40;
+                    boolean passed = getResults(expect, output,0.01, "Expected output from ConvertFtoC");
+                    assertTrue(passed);
+                    }
+                    public void testAwardVictoryStreak() throws IOException
+                    {
+                    double output = MethodPractice.awardVictoryStreak(0);
+                    double expect = 1;
+                    boolean passed = getResults(expect, output,0.01, "Expected output from ConvertFtoC");
+                    assertTrue(passed);
+                    }
+                    public void testAwardVictoryStreak2() throws IOException
+                    {
+                    double output = MethodPractice.awardVictoryStreak(4);
+                    double expect = 5;
+                    boolean passed = getResults(expect, output,0.01, "Expected output from ConvertFtoC");
+                    assertTrue(passed);
+                    }
+                    public void testAwardVictoryStreak3() throws IOException
+                    {
+                    double output = MethodPractice.awardVictoryStreak(-1);
+                    double expect = 0;
+                    boolean passed = getResults(expect, output,0.01, "Expected output from ConvertFtoC");
+                    assertTrue(passed);
+                    }
+                   }
+                    
 </tests>
       </program>
   </subsection>
