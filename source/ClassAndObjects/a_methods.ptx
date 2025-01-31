@@ -467,14 +467,7 @@ public class MethodPractice {
 
                     public class RunestoneTests extends CodeTestHelper
                     {
-                    @Test
-                    <!-- public void testMain() throws IOException
-                    {
-                    String output = getMethodOutput("main");
-                    String expect = "32°F = 0.0°C";
-                    boolean passed = getResults(expect, output, "Expected output from main", true);
-                    assertTrue(passed);
-                    } -->
+                 
                      @Test
                     public void testConverFtoC() throws IOException
                     {
