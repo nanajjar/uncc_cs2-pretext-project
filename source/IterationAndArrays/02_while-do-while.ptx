@@ -1,0 +1,338 @@
+<?xml version="1.0"?>
+<section xml:id="while-and-do-while-loops">
+  <title>While and Do-While Loops</title>
+
+  <p>
+    You've seen <c>for</c> loops for cases where you know (or can easily express) the number of iterations you need.
+    But sometimes, you want to keep looping <em>as long as</em> a certain condition remains true—without necessarily knowing how many times that will be. 
+    In Java, there are two “indefinite loops” for that scenario: <c>while</c> and <c>do-while</c>. They both run until their condition becomes false, but they differ slightly in when the condition is checked.
+  </p>
+
+  <subsection xml:id="the-while-loop">
+    <title>The <c>while</c> Loop</title>
+    <p>
+      A <c>while</c> loop checks its condition <em>before</em> each iteration. The structure is:
+    </p>
+    <program language="java">
+      <input>
+while (condition) {
+    // Loop body statements
+}
+      </input>
+    </program>
+    <p>
+      Consider this example that prints numbers <c>0</c> through <c>4</c>:
+    </p>
+    <program xml:id="while-demo" language="java" interactive="activecode">
+      <input>
+public class WhileDemo {
+    public static void main(String[] args) {
+        // (1) Initialize
+        int i = 0;
+
+        // (2) while (Boolean condition)
+        while (i &lt; 5) {
+            // (3) Body
+            System.out.println("i = " + i);
+
+            // (4) Update
+            i++;
+        }
+    }
+}
+      </input>
+      <tests>
+import static org.junit.Assert.*;
+import org.junit.Test;
+import java.io.*;
+
+public class RunestoneTests extends CodeTestHelper {
+    @Test
+    public void testWhileDemo() throws IOException {
+        String output = getMethodOutput("main");
+        String expected = "i = 0\n" +
+                          "i = 1\n" +
+                          "i = 2\n" +
+                          "i = 3\n" +
+                          "i = 4\n";
+        boolean result = getResults(expected, output, "Your while loop output is incorrect", true);
+        assertTrue(result);
+    }
+}
+      </tests>
+    </program>
+    <p>
+      Notice we have the same four elements as a <c>for</c> loop: initialization (<c>i = 0</c>), condition (<c>i &lt; 5</c>), the loop body, and an update (<c>i++</c>).
+      One common pitfall is forgetting the update, which can cause an <em>infinite loop</em>.
+    </p>
+  </subsection>
+
+  <subsection xml:id="the-do-while-loop">
+    <title>The <c>do-while</c> Loop</title>
+    <p>
+      Unlike <c>while</c>, a <c>do-while</c> loop checks the condition <em>after</em> running the body once. This guarantees the loop body runs at least once, no matter what. Its syntax is:
+    </p>
+    <program language="java">
+      <input>
+do {
+    // Loop body statements
+} while (condition);
+      </input>
+    </program>
+    <p>
+      Here's a simple version that again prints numbers <c>0</c> through <c>4</c>. Notice the condition is tested at the end:
+    </p>
+    <program xml:id="do-while-demo" language="java" interactive="activecode">
+      <input>
+public class DoWhileDemo {
+    public static void main(String[] args) {
+        int i = 0;
+        do {
+            System.out.println("i = " + i);
+            i++;
+        } while (i &lt; 5);  // condition is checked after each pass
+    }
+}
+      </input>
+      <tests>
+import static org.junit.Assert.*;
+import org.junit.Test;
+import java.io.*;
+
+public class RunestoneTests extends CodeTestHelper {
+    @Test
+    public void testDoWhileDemo() throws IOException {
+        String output = getMethodOutput("main");
+        String expected = "i = 0\n" +
+                          "i = 1\n" +
+                          "i = 2\n" +
+                          "i = 3\n" +
+                          "i = 4\n";
+        boolean result = getResults(expected, output, "Your do-while loop output is incorrect", true);
+        assertTrue(result);
+    }
+}
+      </tests>
+    </program>
+    <p>
+      <strong>Watch out</strong> for the <em>semicolon</em> that follows <c>while(...)</c> in a do-while loop—it's mandatory, and forgetting it leads to a compile error.
+    </p>
+  </subsection>
+
+  <subsection xml:id="choosing-loop-type">
+    <title>Choosing Between while and do-while</title>
+    <p>
+      While both loops handle indefinite iteration, choosing the right one improves code clarity. Consider these guidelines:
+    </p>
+    <ul>
+      <li><strong>Use <c>while</c> when</strong> the loop might not need to run at all. For example, processing user input until a valid entry is provided.</li>
+      <li><strong>Use <c>do-while</c> when</strong> the loop body must execute at least once. For example, displaying a menu and waiting for user selection.</li>
+    </ul>
+    <p>
+      Readability is enhanced when the loop structure matches the logical flow. A <c>do-while</c> clearly signals that the code inside runs once before checking, reducing cognitive load.
+    </p>
+    <p>
+      <strong>Example:</strong> Consider input validation. A <c>while</c> loop checks before prompting:
+    </p>
+    <program language="java">
+      <input>
+// Using while
+System.out.print("Enter positive number: ");
+int num = in.nextInt();
+while (num &lt;= 0) {
+    System.out.print("Invalid. Enter positive: ");
+    num = in.nextInt();
+}
+      </input>
+    </program>
+    <p>
+      A <c>do-while</c> isn't suitable here as we don't want to process invalid input. Conversely, for a menu:
+    </p>
+    <program language="java">
+      <input>
+// Using do-while
+char choice;
+do {
+    displayMenu();
+    choice = in.next().charAt(0);
+    processChoice(choice);
+} while (choice != 'Q');
+      </input>
+    </program>
+    <p>
+      The <c>do-while</c> ensures the menu is displayed at least once, improving readability.
+    </p>
+  </subsection>
+
+  <subsection xml:id="exercises-while-do-while">
+    <title>Interactive Exercises: While &amp; Do-While</title>
+    <p>
+      Let's solidify your understanding with a few practice exercises.
+      Each focuses on fixing or writing a small loop, highlighting common usage patterns or pitfalls.
+    </p>
+
+    <!-- EXERCISE 1: Fix an infinite while loop -->
+    <exercise xml:id="fix-infinite-while" adaptive="yes" interactive="activecode">
+      <statement>
+        <p>
+          <strong>Exercise 1:</strong> The <c>while</c> loop below is missing an update to <c>count</c> and thus loops forever. 
+          Modify it to print exactly these numbers: <c>0</c>, <c>1</c>, <c>2</c>, and <c>3</c>.
+        </p>
+      </statement>
+      <program xml:id="fix-infinite-while-editor" language="java" interactive="activecode">
+        <input>
+public class FixInfiniteWhile {
+    public static void main(String[] args) {
+        int count = 0;
+        while (count &lt; 4) {
+            System.out.println(count);
+            // TODO: Insert an update here so the loop stops at 3
+        }
+    }
+}
+        </input>
+        <tests>
+import static org.junit.Assert.*;
+import org.junit.Test;
+import java.io.*;
+
+public class RunestoneTests extends CodeTestHelper {
+    @Test
+    public void testFixInfiniteWhile() throws IOException {
+        String output = getMethodOutput("main");
+        String expect = "0\n1\n2\n3\n";
+        boolean passed = getResults(expect, output, "Expected output mismatch for while loop fix", true);
+        assertTrue(passed);
+    }
+}
+        </tests>
+      </program>
+    </exercise>
+
+    <!-- EXERCISE 2: Use while loop to sum user input -->
+    <exercise xml:id="while-sum-user" adaptive="yes" interactive="activecode">
+      <statement>
+        <p>
+          <strong>Exercise 2:</strong> Imagine we want to keep summing user inputs until the user enters a negative number.
+          Write a <c>while</c> loop that reads an integer from the scanner on each iteration:
+        </p>
+        <ul>
+          <li>Add the number to your total if it's &gt;= 0</li>
+          <li>Stop immediately when you see a negative number (don't add it)</li>
+        </ul>
+        <p>
+          Then print the total. The code skeleton below has a <c>Scanner</c> and a <c>total</c> variable ready.
+        </p>
+      </statement>
+      <program xml:id="while-sum-user-editor" language="java" interactive="activecode">
+        <input>
+import java.util.Scanner;
+
+public class WhileSumUser {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        int total = 0;
+
+        // TODO: Repeatedly read an int from 'in'
+        //   - If it's &gt;= 0, add to 'total'.
+        //   - If negative, break immediately.
+
+        System.out.println("Sum: " + total);
+    }
+}
+        </input>
+        <tests>
+import static org.junit.Assert.*;
+import org.junit.Test;
+import java.io.*;
+
+public class RunestoneTests extends CodeTestHelper {
+
+    private String runProgram(String... inputs) throws IOException {
+        return getMethodOutput("main", String.join("\n", inputs)+"\n");
+    }
+
+    @Test
+    public void testPositiveSequence() throws IOException {
+        String output = runProgram("5","10","4","-1");
+        boolean contains = output.contains("19");
+        assertTrue("Sum of 5+10+4=19, got:\n" + output, contains);
+    }
+
+    @Test
+    public void testZeroAndStop() throws IOException {
+        String output = runProgram("0","-2");
+        boolean contains = output.contains("0");
+        assertTrue("Sum of just 0 is 0, got:\n" + output, contains);
+    }
+
+    @Test
+    public void testSinglePositiveThenNegative() throws IOException {
+        String output = runProgram("100","-3");
+        boolean contains = output.contains("100");
+        assertTrue("Sum should be 100, got:\n" + output, contains);
+    }
+}
+        </tests>
+      </program>
+    </exercise>
+
+    <!-- EXERCISE 3: Simple do-while fix -->
+    <exercise xml:id="exercise-do-while-simple" adaptive="yes" interactive="activecode">
+      <statement>
+        <p>
+          <strong>Exercise 3:</strong> The code below aims to print <c>"Hello!"</c> exactly once using a <c>do-while</c> loop.
+          But it's missing the correct update or condition. Fix it so it prints <c>"Hello!"</c> once and stops.
+        </p>
+      </statement>
+      <program xml:id="exercise-do-while-simple-editor" language="java" interactive="activecode">
+        <input>
+public class DoWhileSimple {
+    public static void main(String[] args) {
+        int times = 0;
+        do {
+            System.out.println("Hello!");
+            // TODO: Possibly update 'times' or condition
+        } while (times &lt; ???);  
+        // Loop should run exactly once, then stop.
+    }
+}
+        </input>
+        <tests>
+import static org.junit.Assert.*;
+import org.junit.Test;
+import java.io.*;
+
+public class RunestoneTests extends CodeTestHelper {
+    @Test
+    public void testDoWhileSimple() throws IOException {
+        String output = getMethodOutput("main");
+        String expected = "Hello!\n";
+        boolean passed = getResults(expected, output, "Should print 'Hello!' exactly once.", true);
+        assertTrue(passed);
+    }
+}
+        </tests>
+      </program>
+    </exercise>
+  </subsection>
+
+  <subsection xml:id="summary-while-do-while">
+    <title>Summary: While and Do-While Loops</title>
+    <p>
+      You now have two more loop constructs for situations where you don't know up front how many times you'll loop:
+    </p>
+    <ul>
+      <li>
+        <c>while</c>: Checks its condition <em>first</em>. If it's false from the start, the body never runs.
+      </li>
+      <li>
+        <c>do-while</c>: Checks its condition <em>after</em> the body, so it always runs at least once.
+      </li>
+    </ul>
+    <p>
+      Both rely on an effective <strong>update</strong> step to avoid infinite loops.
+      Next up, we'll learn how to combine these loops with <strong>arrays</strong> to handle sets of data more elegantly.
+    </p>
+  </subsection>
+</section>
