@@ -506,13 +506,9 @@ public class Player {
     </ol>
 
     <p> No more “which health am I changing?” Everything belongs to a specific <c>Player</c>! </p>
-  </subsection>
 
-  <!-- <subsection xml:id="practice-and-next-steps">
-    <title>Practice and Next Steps</title>
-
-    <p>
-      <strong>One Last Thing</strong>: Notice how anyone can write <c>p1.health = -999;</c>? That's
+      <p>
+      <em>One Last Thing</em>: Notice how anyone can write <c>p1.health = -999;</c>? That's
       not great—players shouldn't have negative health! If our game allows negative health, that
       could cause weird glitches like invincible players or healing that kills you. We'll fix this
       by making variables <c>private</c>, letting only the <c>Player</c> class control how they
@@ -525,12 +521,18 @@ public class Player {
 
     // Methods control how these values change
     public void heal(int amount) {
-        if (amount > 0) {
+        if (amount &gt; 0) {
             health += amount;  // Only allow positive healing
         }
     }
 }
 </program>
+  </subsection>
+
+  <!-- <subsection xml:id="practice-and-next-steps">
+    <title>Practice and Next Steps</title>
+
+  
 
     <p>
       But first, let's practice what we've learned:
