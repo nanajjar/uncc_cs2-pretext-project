@@ -4,5 +4,7 @@
   <xi:include href="./01_intro-iteration.ptx" />
   <xi:include href="./02_while-do-while.ptx" />
   <xi:include href="./03_intro-arrays.ptx" />
+  <xi:include href="./04_construct-iterable.ptx" />
+  <xi:include href="./05_for-each-loops.ptx" />
 
 </chapter>

@@ -1,0 +1,405 @@
+<section xml:id="foreach-loops">
+  <title>For–Each Loops: Syntactic Sugar for Iteration</title>
+
+  <introduction>
+    <p>
+      In the previous section, we built a custom iteration class (<c>MyIterator</c>) that
+      encapsulated an array and a current index—essentially acting as a "bookmark" into the data.
+      That approach frees us from manually writing <c>for</c> loops (with index checks) everywhere.
+    </p>
+    <p>
+      However, imagine if you could simply hand off your array to a built-in mechanism that
+      knows how to iterate without exposing the raw index. In Java, the enhanced <c>for</c> loop
+      (often called the for–each loop) provides exactly this convenience. It's a form of
+      <term>syntactic sugar</term>—a concise way to perform iteration without writing out all
+      the loop–control details.
+    </p>
+    <p>
+      Our goal in this section is to show you how to use the for–each loop with arrays, compare
+      its behavior to the iteration logic you already built, and discuss subtle pitfalls to
+      watch out for. Later, as you learn about interfaces and inheritance, you'll see how to
+      adapt your custom classes so that they plug directly into the for–each syntax.
+    </p>
+    <p>
+      <term>Expectations:</term> By the end of this section, you will be able to:
+    </p>
+    <ul>
+      <li><p>Use the enhanced <c>for</c> loop to iterate over arrays succinctly</p></li>
+      <li><p>Recognize that for–each loops hide index details (like <c>hasNext()</c>, <c>next()</c> calls)</p></li>
+      <li><p>Explain common pitfalls and limitations of for–each loops</p></li>
+      <li><p>Relate this "syntactic sugar" back to our earlier design of <c>MyIterator</c></p></li>
+    </ul>
+  </introduction>
+
+  <subsection xml:id="using-foreach-with-arrays">
+    <title>Using For–Each Loops with Arrays</title>
+    <p>
+      Consider a simple array of integers. Traditionally, you might iterate like this:
+    </p>
+    <program language="java">
+      <input>
+int[] numbers = {5, 10, 15, 20};
+for (int i = 0; i &lt; numbers.length; i++) {
+    System.out.println("Index " + i + ": " + numbers[i]);
+}
+      </input>
+    </program>
+
+    <p>
+      In a for–each loop, we can omit the manual index management:
+    </p>
+    <program language="java">
+      <input>
+int[] numbers = {5, 10, 15, 20};
+for (int num : numbers) {
+    System.out.println("Number: " + num);
+}
+      </input>
+    </program>
+
+    <p>
+      The syntax <c>for (int num : numbers)</c> is short for “Loop over each element of <c>numbers</c>, 
+      assign it to <c>num</c>, then run the body.” It's the same fundamental iteration—just no
+      explicit index variable or <c>length</c> checks. Think of it like Java calling <c>hasNext()</c>
+      and <c>next()</c> behind the scenes for each element.
+    </p>
+
+    <p>
+      **Visual Concept**: 
+    </p>
+    <program language="text">
+Numbers array:   [  5  |  10  |  15  |  20  ]
+Indices:           0      1      2      3
+For–each loop =>  first pass: num=5
+                  second pass: num=10
+                  third pass: num=15
+                  fourth pass: num=20
+    </program>
+
+    <p>
+      Each iteration, <c>num</c> becomes one element of <c>numbers</c>. Once it exhausts the
+      array, the loop ends automatically—no extra condition or index update required.
+    </p>
+  </subsection>
+
+
+  <subsection xml:id="pitfalls-and-limitations">
+    <title>Common Pitfalls &amp; Limitations</title>
+    <p>
+      The for–each loop is convenient, but let's highlight where it can trip you up:
+    </p>
+    <ul>
+      <li>
+        <strong>No Direct Index Access</strong>:
+        You can't easily figure out <em>which</em> index you're on inside the loop. If you need
+        to know “am I on the 5th element?” or “access <c>i+1</c>,” you must revert to a standard
+        <c>for</c> loop or maintain a separate counter. 
+        <p><em>Example:</em> <c>for(int x : arr)</c> doesn't let you do <c>arr[i+1]</c>.</p>
+      </li>
+      <li>
+        <strong>No Easy Way to Remove/Insert</strong>:
+        Because arrays are fixed-size and for–each doesn't provide the index, you can't remove
+        or insert elements mid-loop (like you might in a dynamic list). You can modify the
+        element values themselves, but you can't skip or reorder them easily using for–each.
+      </li>
+      <li>
+        <strong>Accidental Shadowing or Reassignment</strong>:
+        Remember that <c>num</c> in <c>for (int num : numbers)</c> is a separate variable. If you
+        reassign <c>num</c> inside the loop, it won't affect <c>numbers</c>. 
+        <p><em>Example:</em> 
+        <code>for (int x : arr) { x = 99; }</code> doesn't actually set <c>arr[anything]</c> to 99;
+        you're merely changing the local variable <c>x</c>.
+        </p>
+      </li>
+      <li>
+        <strong>Breaking Early or Skipping Elements</strong>:
+        If you need to exit after you find a certain element, you can do so with a
+        <c>break</c> inside the for–each body—but skipping certain indices or iterating in reverse
+        is better handled by a classic <c>for</c> loop or a <c>while</c>.
+      </li>
+    </ul>
+    <p>
+      Overall, for–each loops excel at “visit every element in a forward direction with minimal fuss.”
+      If you want more control—like indexing, reordering, or partial iteration—then a classic
+      <c>for</c> or <c>while</c> might be better. 
+    </p>
+  </subsection>
+
+
+  <subsection xml:id="connecting-foreach-to-custom-iterator">
+    <title>Relating For–Each to Our <c>MyIterator</c> Class</title>
+    <p>
+      Recall that our <c>MyIterator</c> class had methods <c>hasNext()</c> and <c>next()</c> to
+      manage iteration. Java's for–each loop uses a similar idea but in a more official way:
+    </p>
+    <p>
+      - If a class implements <c>Iterable</c>&lt;T&gt;, it must provide 
+        <c>public Iterator&lt;T&gt; iterator()</c>.  
+      - That <c>Iterator&lt;T&gt;</c> must have <c>boolean hasNext()</c> and <c>T next()</c>.  
+      - Then <c>for (T item : iterableObject)</c> automatically calls <c>hasNext()</c> / <c>next()</c>
+        behind the scenes for each item.
+    </p>
+    <p>
+      Our <c>MyIterator</c> is close to that pattern. Later, once we learn about interfaces and
+      generics, we can rework <c>MyIterator</c> to <em>formally</em> implement 
+      <c>Iterator&lt;Integer&gt;</c>. We could also create a separate class that implements
+      <c>Iterable&lt;Integer&gt;</c> (returning a new <c>MyIterator</c> in its <c>iterator()</c>
+      method). Then for–each would just “magically” work. 
+    </p>
+    <p>
+      Thus, the for–each loop is essentially “syntactic sugar” for iterators, as you can see in
+      the pseudo-code below:
+    </p>
+    <program language="java">
+      <input>
+// Pseudo-code of what for (T item : collection) is doing:
+Iterator&lt;T&gt; it = collection.iterator();
+while (it.hasNext()) {
+    T item = it.next();
+    // loop body
+}
+      </input>
+    </program>
+    <p>
+      Because our <c>MyIterator</c> was built from first principles, you have a deeper
+      appreciation for what happens under the hood!
+    </p>
+  </subsection>
+
+
+  <subsection xml:id="foreach-advanced-example">
+    <title>Example: Summing Even Values &amp; Using <c>break</c></title>
+    <p>
+      Let's show a slightly more advanced for–each example—summing only the <em>first few even values</em>.
+      Suppose we have:
+    </p>
+    <program language="java">
+      <input>
+int[] data = {2, 11, 4, 6, 9, 2};
+int totalEven = 0;
+
+for (int val : data) {
+    if (val % 2 == 0) {
+        totalEven += val;
+    }
+    // If we only want to sum the first 3 array elements total:
+    // This won't help if we need to stop after the 3rd element. 
+    // for-each doesn't give an index. 
+}
+System.out.println("Sum of even numbers: " + totalEven);
+      </input>
+    </program>
+    <p>
+      That sums all even numbers <c>(2 + 4 + 6 + 2 = 14)</c>. However, if we needed to stop after
+      the 3rd element in the array or skip certain positions, we'd realize for–each can't easily
+      do that. We'd have to add an external counter or break logic:
+    </p>
+    <program language="java">
+      <input>
+int count = 0;
+int sumEvens = 0;
+for (int val : data) {
+    sumEvens += (val % 2 == 0) ? val : 0;
+    count++;
+    if (count == 3) { 
+       break; // we processed 3 elements, let's stop
+    }
+}
+System.out.println("Sum of even numbers in the FIRST 3 elements: " + sumEvens);
+      </input>
+    </program>
+    <p>
+      That works but starts feeling awkward. If you need to break frequently or refer to indexes,
+      a classic <c>for</c> loop is often simpler. 
+    </p>
+    <p>
+      <strong>Key takeaway:</strong> For–each loops are clean and short for “iterate all elements,” 
+      but less flexible when partial iteration or index-based operations are required.
+    </p>
+  </subsection>
+
+
+  <subsection xml:id="interactive-foreach-exercises">
+    <title>Interactive Exercises: Practicing For–Each Loops</title>
+    <p>
+      Let's put your new skills to the test! The following exercises reinforce 
+      how for–each loops can simplify your code for straightforward iteration tasks.
+    </p>
+
+    <!-- Exercise 1 (Given in original) -->
+    <exercise xml:id="foreach-sum" interactive="activecode">
+      <statement>
+        <p>
+          <term>Exercise 1:</term> Write a program that uses a for–each loop to compute and print
+          the sum of the elements in the following array:
+        </p>
+        <program language="java">
+          <input>
+int[] values = {3, 7, 2, 5};
+          </input>
+        </program>
+        <p>
+          The expected output is: <c>Sum is: 17</c>
+        </p>
+      </statement>
+      <program language="java" xml:id="foreach-sum-editor" interactive="activecode">
+        <input>
+public class ForEachSum {
+    public static void main(String[] args) {
+        int[] values = {3, 7, 2, 5};
+        int sum = 0;
+        
+        // TODO: Use a for-each loop to add each value to sum.
+
+        System.out.println("Sum is: " + sum);
+    }
+}
+        </input>
+        <tests>
+import static org.junit.Assert.*;
+import org.junit.Test;
+import java.io.*;
+
+public class RunestoneTests extends CodeTestHelper {
+    @Test
+    public void testForEachSum() throws IOException {
+        String output = getMethodOutput("main");
+        assertTrue("Expected sum is 17", output.contains("17"));
+    }
+}
+        </tests>
+      </program>
+    </exercise>
+
+
+    <!-- Exercise 2 (Given in original) -->
+    <exercise xml:id="foreach-greeting" interactive="activecode">
+      <statement>
+        <p>
+          <term>Exercise 2:</term> Given the following array of names, use a for–each loop to
+          print a personalized greeting for each name. For example, if the array contains
+          <c>{"Alice", "Bob", "Charlie"}</c>, the output should be:
+        </p>
+        <pre>
+Hello, Alice
+Hello, Bob
+Hello, Charlie
+        </pre>
+      </statement>
+      <program language="java" xml:id="foreach-greeting-editor" interactive="activecode">
+        <input>
+public class ForEachGreeting {
+    public static void main(String[] args) {
+        String[] names = {"Alice", "Bob", "Charlie"};
+        
+        // TODO: Use a for-each loop to print "Hello, " + name
+    }
+}
+        </input>
+        <tests>
+import static org.junit.Assert.*;
+import org.junit.Test;
+import java.io.*;
+
+public class RunestoneTests extends CodeTestHelper {
+    @Test
+    public void testForEachGreeting() throws IOException {
+        String output = getMethodOutput("main");
+        assertTrue("Expected greeting for Alice", output.contains("Hello, Alice"));
+        assertTrue("Expected greeting for Bob", output.contains("Hello, Bob"));
+        assertTrue("Expected greeting for Charlie", output.contains("Hello, Charlie"));
+    }
+}
+        </tests>
+      </program>
+    </exercise>
+
+    <!-- Exercise 3: Modify Each Element? -->
+    <exercise xml:id="foreach-modification" interactive="activecode">
+      <statement>
+        <p>
+          <term>Exercise 3:</term> <em>Can We Modify Each Element?</em>  
+          Suppose we have <c>int[] scores = {2, 4, 6};</c> and want to double each value. 
+          Try using a for–each loop, then print the array. 
+          <strong>Observe</strong> whether the final array actually changed or not. 
+          Then fix the code (hint: we must use a standard for loop or some trick).
+        </p>
+      </statement>
+      <program language="java" xml:id="foreach-modification-editor" interactive="activecode">
+        <input>
+public class ForEachModification {
+    public static void main(String[] args) {
+        int[] scores = {2, 4, 6};
+        
+        // Attempt #1: Try to double each element in a for-each loop
+        for (int s : scores) {
+            s = s * 2; // or s *= 2
+        }
+        
+        // Print the array
+        System.out.println("After for-each doubling attempt:");
+        for (int s : scores) {
+            System.out.println(s);
+        }
+
+        // TODO: Notice the array didn't change. Fix it by using
+        // a standard for loop with 'scores[i] = ...' to actually
+        // modify the array.
+        // for ...
+
+        System.out.println("\nAfter using a standard for loop to double:");
+        for (int s : scores) {
+            System.out.println(s);
+        }
+    }
+}
+        </input>
+        <tests>
+import static org.junit.Assert.*;
+import org.junit.Test;
+import java.io.*;
+
+public class RunestoneTests extends CodeTestHelper {
+    @Test
+    public void testModification() throws IOException {
+        String output = getMethodOutput("main");
+        // We expect after the final fix, the array has 4,8,12
+        assertTrue("The final lines should contain '4' '8' '12' after doubling\n" + output,
+            output.contains("4") &amp;&amp; output.contains("8") &amp;&amp; output.contains("12"));
+    }
+}
+        </tests>
+      </program>
+      <p>
+        <em>Reflection:</em> Reassigning the loop variable <c>s</c> doesn't
+        change the original array—it's just a copy. If we want to modify the array's
+        contents, a standard <c>for</c> loop with an index is needed.
+      </p>
+    </exercise>
+
+  </subsection>
+
+
+  <!-- SUMMARY -->
+  <subsection xml:id="summary-foreach">
+    <title>Summary: For–Each Loops</title>
+    <p>
+      In this section, we explored the enhanced <c>for</c> loop—a concise, intuitive way
+      to iterate over arrays. We learned that:
+    </p>
+    <ul>
+      <li><p>The for–each loop automatically retrieves each element without needing an index variable or boundary checks.</p></li>
+      <li><p>It's <term>syntactic sugar</term> that conceals the repeated logic of <c>hasNext()</c> and <c>next()</c> calls.</p></li>
+      <li><p>Our custom iterator design parallels how for–each loops work under the hood.</p></li>
+      <li><p>For–each loops are best for “visit every element, forward only,” with minimal fuss. If you need random access, skipping, or partial iteration, you might revert to a traditional loop.</p></li>
+      <li><p>Reassigning the loop variable in a for–each does not alter the array. To <em>modify</em> array elements, you must use an indexed loop.</p></li>
+    </ul>
+    <p>
+      With this knowledge, you can write cleaner, more expressive loops in your Java programs
+      when you just need to process each element. 
+      In the next chapter, we'll delve deeper into classes and objects (including interfaces and
+      inheritance) and see how the standard <c>Iterator</c> and <c>Iterable</c> interfaces power
+      Java's for–each loop across various collections—beyond just arrays.
+    </p>
+  </subsection>
+</section>

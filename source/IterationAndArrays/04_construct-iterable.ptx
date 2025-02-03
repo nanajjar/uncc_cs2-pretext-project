@@ -1,0 +1,556 @@
+<section xml:id="custom-iteration-class">
+  <title>MyIterator Class (Design Recipe)</title>
+
+  <introduction>
+    <p>
+      In previous sections, we used raw loops (<c>for</c> or <c>while</c>) to traverse arrays.
+      But what if we want an <em>object</em> that encapsulates iteration state and behavior, so
+      other code can ask “Is there a next element?” or “Reset to the start?” without fiddling
+      with array indices? In this section, we'll <term>apply the Design Recipe</term> step by
+      step to create such a class: <c>MyIterator</c>.
+    </p>
+    <p>
+      We'll do this using only the Java features we've learned so far—no formal
+      <c>Iterable</c> interface, no generics, etc. By the end, you'll see how systematically
+      walking through the design process (clarifying the problem, enumerating test cases, writing
+      a skeleton, etc.) yields a robust, well-tested solution. Then, in a future chapter, we'll
+      integrate classes like <c>MyIterator</c> with official <c>Iterator</c> and <c>Iterable</c>
+      interfaces to enable Java's for–each loop syntax.
+    </p>
+  </introduction>
+
+
+  <subsection xml:id="an-authentic-example">
+    <title>An Authentic Example: Building <c>MyIterator</c> With the Design Recipe</title>
+
+    <subsubsection xml:id="step0-problem">
+      <title>Step 0: Understand &amp; Restate the Problem</title>
+      <p>
+        <term>Problem Prompt (Paraphrased):</term><br/>
+        “We want a Java class that can traverse an array of integers, returning one element at a
+        time. Instead of writing a <c>for</c> loop everywhere, the rest of our code should just
+        ask: 'Is there a next element?' and 'Give it to me if so.' The class should track where
+        we are in the array and avoid out-of-bounds errors.
+      </p>
+      <p>
+        We also want a 'reset' capability, so we can start over at the first element. If the
+        array is empty or we run out of elements, we want predictable behavior—no accidental
+        exceptions. Later, we might integrate this concept with Java's for–each loops, but for
+        now we'll just rely on standard features like arrays and simple classes.”
+      </p>
+      <p>
+        <term>Key Details &amp; Clarifications</term>:
+      </p>
+      <ul>
+        <li>
+          <em>Data</em>: An <c>int</c> array, which we'll store internally as <c>data</c>.
+        </li>
+        <li>
+          <em>State</em>: An integer <c>currentIndex</c> that marks which element to return next.
+        </li>
+        <li>
+          <em>Behavior</em>:
+          <ul>
+            <li><c>hasNext()</c> — checks if more elements remain.</li>
+            <li><c>next()</c> — retrieves the current element and advances the index.</li>
+            <li><c>reset()</c> — starts iteration over from the first element.</li>
+          </ul>
+        </li>
+        <li>
+          <em>Edge Cases</em>: 
+          <ul>
+            <li>If <c>data</c> is empty, <c>hasNext()</c> returns false from the start.</li>
+            <li>If <c>next()</c> is called when no elements remain, we either throw an exception or
+                handle it gracefully—our design choice. We'll opt to throw a <c>RuntimeException</c>.</li>
+          </ul>
+        </li>
+      </ul>
+      <p>
+        We'll assume <c>arr</c> passed in isn't <c>null</c> to keep things simple. 
+      </p>
+    </subsubsection>
+
+
+    <subsubsection xml:id="step1-data-definition">
+      <title>Step 1: Data Definition</title>
+      <p>
+        We identify which <em>fields</em> or data elements this class needs:
+      </p>
+      <ul>
+        <li>
+          <c>private int[] data;</c><br/>
+          The integer array we're iterating over. We do not modify it.
+        </li>
+        <li>
+          <c>private int currentIndex;</c><br/>
+          The “bookmark.” Ranges from <c>0</c> to <c>data.length</c> inclusive. Once
+          <c>currentIndex == data.length</c>, no more elements remain.
+        </li>
+      </ul>
+      <p>
+        By bundling the array and the index in one place, we minimize off-by-one mistakes
+        scattered across the code. Instead, iteration logic lives inside <c>MyIterator</c>, so
+        callers just call <c>hasNext()</c> / <c>next()</c>.
+      </p>
+    </subsubsection>
+
+
+    <subsubsection xml:id="step2-methods">
+      <title>Step 2: Method Signatures &amp; Purpose Statements</title>
+      <p>
+        We'll provide four key methods:
+      </p>
+      <table xml:id="table-iterator-methods">
+        <title>Iterator Methods</title>
+        <tabular halign="left" top="major" bottom="minor">
+          <col width="25%"/>
+          <col width="75%"/>
+          <row header="yes">
+            <cell>Method</cell>
+            <cell>Details</cell>
+          </row>
+          <row>
+            <cell><em>Constructor</em></cell>
+            <cell>
+              <p><c>public MyIterator(int[] arr)</c></p>
+              <p>Save <c>arr</c> in <c>data</c> and set <c>currentIndex</c> to 0.</p>
+            </cell>
+          </row>
+          <row>
+            <cell><em>hasNext()</em></cell>
+            <cell>
+              <p><c>public boolean hasNext()</c></p>
+              <p>Check if <c>currentIndex &lt; data.length</c>. Return <c>true</c> if yes, <c>false</c> otherwise.</p>
+            </cell>
+          </row>
+          <row>
+            <cell><em>next()</em></cell>
+            <cell>
+              <p><c>public int next()</c></p>
+              <p>Return the current element <c>data[currentIndex]</c> and then increment <c>currentIndex</c>. If we're at the end, we'll throw an exception.</p>
+            </cell>
+          </row>
+          <row>
+            <cell><em>reset()</em></cell>
+            <cell>
+              <p><c>public void reset()</c></p>
+              <p>Move <c>currentIndex</c> back to 0 so iteration restarts at the first element.</p>
+            </cell>
+          </row>
+        </tabular>
+      </table>
+      <p>
+        Any additional methods (e.g., “peek” at current index) can be added later. These four
+        satisfy the basics of iteration.
+      </p>
+    </subsubsection>
+
+
+    <subsubsection xml:id="step3-test-cases">
+      <title>Step 3: Examples &amp; Test Cases</title>
+      <p>
+        Before coding, we plan out examples—especially edge cases. We'll likely turn these
+        examples into actual <c>main</c> checks or JUnit tests. 
+      </p>
+      <p>
+        <term>Test Case Table:</term>
+      </p>
+      <table xml:id="table-iterator-test-cases" margins="10%">
+        <title>Iterator Test Cases</title>
+        <tabular halign="left" top="major" bottom="minor">
+          <col width="25%"/>
+          <col width="75%"/>
+          <row header="yes">
+            <cell>Property</cell>
+            <cell>Description</cell>
+          </row>
+          <row>
+            <cell colspan="2"><term>Test Case 1: Non-empty Array (Normal Usage)</term></cell>
+          </row>
+          <row>
+            <cell>Data</cell>
+            <cell><c>{10, 20, 30}</c></cell>
+          </row>
+          <row>
+            <cell>Operation</cell>
+            <cell>Check <c>hasNext()</c> at start</cell>
+          </row>
+          <row>
+            <cell>Expected Outcome</cell>
+            <cell>Returns <c>true</c> since <c>currentIndex = 0 &lt; 3</c></cell>
+          </row>
+          <row>
+            <cell>Notes</cell>
+            <cell>We confirm that if <c>data</c> has 3 items, iteration isn't done yet.</cell>
+          </row>
+          <row>
+            <cell colspan="2"><term>Test Case 1 (continued): Iteration Through Array</term></cell>
+          </row>
+          <row>
+            <cell>Data</cell>
+            <cell><c>{10, 20, 30}</c></cell>
+          </row>
+          <row>
+            <cell>Operation</cell>
+            <cell>Call <c>next()</c> 3 times</cell>
+          </row>
+          <row>
+            <cell>Expected Outcome</cell>
+            <cell>Returns 10, then 20, then 30 in sequence, and updates index each time</cell>
+          </row>
+          <row>
+            <cell>Notes</cell>
+            <cell>After 3 calls, <c>currentIndex</c> should be 3. No items remain.</cell>
+          </row>
+          <row>
+            <cell colspan="2"><term>Test Case 1 (continued): End of Iteration</term></cell>
+          </row>
+          <row>
+            <cell>Data</cell>
+            <cell><c>{10, 20, 30}</c></cell>
+          </row>
+          <row>
+            <cell>Operation</cell>
+            <cell><c>hasNext()</c> after 3 calls to next</cell>
+          </row>
+          <row>
+            <cell>Expected Outcome</cell>
+            <cell><c>false</c>, because <c>currentIndex == 3</c></cell>
+          </row>
+          <row>
+            <cell>Notes</cell>
+            <cell>No more elements left to return.</cell>
+          </row>
+          <row>
+            <cell colspan="2"><term>Test Case 2: Reset Scenario</term></cell>
+          </row>
+          <row>
+            <cell>Data</cell>
+            <cell><c>{10, 20, 30}</c></cell>
+          </row>
+          <row>
+            <cell>Operation</cell>
+            <cell>Iterate to end, then call <c>reset()</c></cell>
+          </row>
+          <row>
+            <cell>Expected Outcome</cell>
+            <cell>Calling <c>hasNext()</c> after reset ⟹ <c>true</c> again, index=0</cell>
+          </row>
+          <row>
+            <cell>Notes</cell>
+            <cell>We can start from the beginning again as if new iteration.</cell>
+          </row>
+          <row>
+            <cell colspan="2"><term>Test Case 3: Empty Array</term></cell>
+          </row>
+          <row>
+            <cell>Data</cell>
+            <cell><c>{}</c></cell>
+          </row>
+          <row>
+            <cell>Operation</cell>
+            <cell><c>hasNext()</c> from the start</cell>
+          </row>
+          <row>
+            <cell>Expected Outcome</cell>
+            <cell><c>false</c> immediately</cell>
+          </row>
+          <row>
+            <cell>Notes</cell>
+            <cell>No elements exist at all. Next calls to <c>next()</c> can throw or handle gracefully.</cell>
+          </row>
+          <row>
+            <cell colspan="2"><term>Test Case 4: Next() Beyond End</term></cell>
+          </row>
+          <row>
+            <cell>Data</cell>
+            <cell><c>{10, 20, 30}</c></cell>
+          </row>
+          <row>
+            <cell>Operation</cell>
+            <cell>4th call to next()</cell>
+          </row>
+          <row>
+            <cell>Expected Outcome</cell>
+            <cell>Throw <c>RuntimeException</c></cell>
+          </row>
+          <row>
+            <cell>Notes</cell>
+            <cell>We've chosen to fail fast with an exception if we call next() illegally.</cell>
+          </row>
+        </tabular>
+      </table>
+      <p>
+        These scenarios ensure we cover typical, boundary, and error conditions. 
+        For instance, an empty array is a corner case some might forget if they only tested an array of size 3.
+      </p>
+    </subsubsection>
+
+
+    <subsubsection xml:id="step4-skeleton">
+      <title>Step 4: Skeleton / Method Template</title>
+      <p>
+        We now outline the class structure, leaving placeholders for final logic. This helps us
+        verify we haven't forgotten any method or data field.
+      </p>
+      <program language="java">
+        <code>
+public class MyIterator {
+    
+    private int[] data;        // The array we're iterating over
+    private int currentIndex;  // Current position in the array
+
+    public MyIterator(int[] arr) {
+        // Initialize data with arr
+        // Set currentIndex to 0
+    }
+
+    public boolean hasNext() {
+        // Check if currentIndex is less than data.length
+        // Return true if there are more elements, false otherwise
+        return false;  // Placeholder return
+    }
+
+    public int next() {
+        // If currentIndex is out of bounds:
+        //     Throw a RuntimeException
+        // Otherwise:
+        //     Get the element at currentIndex
+        //     Increment currentIndex
+        //     Return the element
+        return 0;  // Placeholder return
+    }
+
+    public void reset() {
+        // Reset currentIndex to 0
+    }
+}
+        </code>
+      </program>
+      <p>
+        At a glance, we see each method that the test table references. Next, we fill in the logic
+        and then validate with examples from Step 3.
+      </p>
+    </subsubsection>
+
+
+    <subsubsection xml:id="step5-implementation">
+      <title>Step 5: Implementation &amp; Testing</title>
+      <p>
+        We now fill in real Java code. Because we haven't learned about exceptions yet,
+        we'll keep things simpler by returning a <em>sentinel value</em> (like <c>-999</c>)
+        if <c>next()</c> is called with no elements remaining, rather than throwing an error.
+        In more advanced Java, we might throw an exception instead, but for now let's
+        avoid that. The rest of the design steps remain the same.
+      </p>
+      <program language="java" xml:id="myiterator_final" interactive="activecode">
+        <input>
+public class MyIterator {
+
+    private int[] data;
+    private int currentIndex;
+
+    /**
+     * Constructor:
+     * Stores the array reference and starts iteration at the first element.
+     *
+     * @param arr the array of integers to iterate over (assumed non-null).
+     */
+    public MyIterator(int[] arr) {
+        this.data = arr;         // store arr
+        this.currentIndex = 0;   // index starts at 0
+    }
+
+    /**
+     * Checks if more elements remain.
+     * @return true if currentIndex &lt; data.length
+     */
+    public boolean hasNext() {
+        return currentIndex &lt; data.length;
+    }
+
+    /**
+     * Returns the current element, then advances currentIndex.
+     * If no elements remain, returns -999 as a "sentinel" for "no data".
+     *
+     * (Later, once we learn about exceptions, we might change this 
+     * to throw an error instead of returning a sentinel.)
+     */
+    public int next() {
+        if (!hasNext()) {
+            System.out.println("No more elements! Returning -999 as a sentinel.");
+            return -999; 
+        }
+        int elem = data[currentIndex];
+        currentIndex++;
+        return elem;
+    }
+
+    /**
+     * Resets iteration so that next() will start again at data[0].
+     */
+    public void reset() {
+        currentIndex = 0;
+    }
+
+    /**
+     * A small demonstration in main. 
+     * Feel free to modify or experiment with different arrays here.
+     */
+    public static void main(String[] args) {
+        int[] sampleData = {10, 20, 30};
+        MyIterator it = new MyIterator(sampleData);
+
+        System.out.println("Iterating normally:");
+        while (it.hasNext()) {
+            System.out.println("Value: " + it.next());
+        }
+
+        // Show what happens if we call next() again:
+        System.out.println("Calling next() again after end => " + it.next());
+
+        // Show reset behavior
+        it.reset();
+        System.out.println("\nAfter reset, calling next() => " + it.next());
+    }
+}
+        </input>
+        <tests>
+import static org.junit.Assert.*;
+import org.junit.Test;
+import java.io.*;
+
+public class RunestoneTests extends CodeTestHelper {
+    
+    @Test
+    public void testNormalUsage() throws IOException {
+        // We'll do a quick run: array of {10,20,30}
+        String output = runWithInput("", "main");
+        // Expect lines "Value: 10", "Value: 20", "Value: 30"
+        // Then after that, "Returning -999" might show up, then "After reset => 10"
+        boolean has10 = output.contains("Value: 10");
+        boolean has20 = output.contains("Value: 20");
+        boolean has30 = output.contains("Value: 30");
+        assertTrue("Expected to see iteration of 10,20,30 in output:\n" + output,
+                   has10 &amp;&amp; has20 &amp;&amp; has30);
+
+        // Should see a sentinel message or -999 after the loop ends
+        boolean sentinelUsed = output.contains("-999");
+        assertTrue("Expected sentinel usage after end of iteration.\n" + output,
+                   sentinelUsed);
+
+        boolean resetCheck = output.contains("=> 10");
+        assertTrue("After reset, we should see next() => 10 again. Output:\n" + output,
+                   resetCheck);
+    }
+    
+    @Test
+    public void testEmptyArray() {
+        // We'll do a quick manual check: new MyIterator with an empty array
+        MyIterator it = new MyIterator(new int[]{});
+        assertFalse("Empty array => hasNext() should be false", it.hasNext());
+        // Next call should produce sentinel
+        assertEquals("Expected sentinel -999 from next() on empty data",
+                     -999, it.next());
+    }
+    
+    @Test
+    public void testExactlyOneElement() {
+        MyIterator it = new MyIterator(new int[]{42});
+        // initially hasNext -> true
+        assertTrue("With 1-element array, hasNext() must be true initially",
+                   it.hasNext());
+        assertEquals(42, it.next());
+        // now index=1 => no more data
+        assertFalse("After taking the 1 element, hasNext() must be false",
+                    it.hasNext());
+        assertEquals("Next call should return sentinel", -999, it.next());
+    }
+}
+        </tests>
+      </program>
+      <p>
+        <strong>Try pressing “Run”.</strong> You’ll see the output from
+        <c>main</c> in the console. Then click “Show Tests” to see if
+        everything passes. If anything fails, revisit the logic or the
+        design steps. 
+      </p>
+      <p>
+        Notice how we print a small message in <c>next()</c> whenever we return
+        <c>-999</c>, so we can observe in the console that we’ve gone beyond
+        the last element. This is <em>only</em> an interim solution until we
+        learn about exceptions later.
+      </p>
+    </subsubsection>
+
+
+    <subsubsection xml:id="step6-reflection">
+      <title>Step 6: Reflection &amp; Possible Revisions</title>
+      <p>
+        With all tests passing, we might be “done.” But design is an 
+        <em>iterative</em> process. Let’s imagine new or changing requirements—these might
+        send us back to earlier steps:
+      </p>
+      <ul>
+        <li>
+          <strong>What if we truly want an error if next() goes too far?</strong><br/>
+          We’ve returned <c>-999</c> as a sentinel, but in real Java code, 
+          a thrown error can be more explicit. 
+          Once we learn about exceptions, we might adjust Step 0’s problem statement 
+          (“We throw an error if out-of-bounds”), update Step 3’s test 
+          (“Expect an error, not a sentinel”), and re-implement Step 5’s <c>next()</c>.
+        </li>
+        <li>
+          <strong>What if we want a generic type (not just int)?</strong><br/>
+          We’d need to revise Step 0 (“We want any type, not just ints!”), 
+          Step 1’s data definition, and Step 2’s method signatures to use 
+          generics. We’re not ready for that yet, but that’s how you’d do it.
+        </li>
+        <li>
+          <strong>What if arr can be null?</strong><br/>
+          Then Step 0 and Step 3 must define how to handle it—maybe <c>MyIterator</c> 
+          prints an error or reassigns <c>arr</c> to an empty array. 
+          That’s an example of how real designs 
+          expand over time when new edge cases appear.
+        </li>
+      </ul>
+      <p>
+        In short, each design step is open to “walkbacks” if new info arises. 
+        Because we explicitly wrote out our data definitions, method specs, 
+        and test scenarios, it’s easy to see what to revise. 
+        This clarity is why the <strong>Design Recipe</strong> is so powerful.
+      </p>
+      <p>
+        With <c>MyIterator</c> in hand, we’ve proven that iteration logic can live 
+        in an <strong>object</strong> that manages state (<c>currentIndex</c>) 
+        and behavior (<c>hasNext</c>, <c>next</c>). We no longer have to manually 
+        maintain a loop variable everywhere. 
+        In the upcoming chapters, we’ll see how Java’s <c>Iterator</c> and <c>Iterable</c> 
+        interfaces give you the for–each loop for free once you adopt their patterns. 
+        For now, enjoy our simpler, sentinel-based version—and 
+        keep the door open for refactoring once you learn about exceptions and generics!
+      </p>
+    </subsubsection>
+
+  </subsection>
+
+  <subsection xml:id="summary-custom-iteration">
+    <title>Summary</title>
+    <p>
+      By applying the Design Recipe, we built a <c>MyIterator</c> class that can “walk through”
+      an integer array. We separated:
+    </p>
+    <ul>
+      <li><term>Data:</term> The array itself (<c>data</c>) plus an index (<c>currentIndex</c>).</li>
+      <li><term>Behavior:</term> <c>hasNext()</c>, <c>next()</c>, and <c>reset()</c>.</li>
+      <li><term>Edge-Case Handling:</term> We tested empty arrays, normal usage, and a scenario where iteration goes beyond the last element.</li>
+    </ul>
+    <p>
+      This systematic approach ensures robust code that others (or you, in a few weeks!) can use
+      without re-implementing the same iteration logic. The next step is to see how we can adapt
+      this into Java's standard <c>Iterable</c> framework and for–each loops once we've learned
+      about interfaces and inheritance. That's coming soon!
+    </p>
+  </subsection>
+
+</section>
