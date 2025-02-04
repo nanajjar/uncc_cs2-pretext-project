@@ -196,25 +196,30 @@ System.out.println("Sum of even numbers: " + totalEven);
     </p>
     <program language="java">
       <input>
-int count = 0;
+MyIterator iterator = new MyIterator(data);
 int sumEvens = 0;
-for (int val : data) {
-    sumEvens += (val % 2 == 0) ? val : 0;
-    count++;
-    if (count == 3) { 
-       break; // we processed 3 elements, let's stop
+int elementsProcessed = 0;
+
+while (iterator.hasNext() &amp;&amp; elementsProcessed &lt; 3) {
+    int val = iterator.next();
+    if (val % 2 == 0) {
+        sumEvens += val;
     }
+    elementsProcessed++;
 }
-System.out.println("Sum of even numbers in the FIRST 3 elements: " + sumEvens);
+System.out.println("Sum of even numbers in FIRST 3 elements: " + sumEvens);
       </input>
     </program>
     <p>
-      That works but starts feeling awkward. If you need to break frequently or refer to indexes,
-      a classic <c>for</c> loop is often simpler. 
+      This leverages our <c>MyIterator</c>'s built-in state management. While we still
+      track processed elements, the iterator handles array traversal mechanics,
+      reducing off-by-one risks. For complex iteration logic, custom iterators
+      provide better encapsulation than manual index management.
     </p>
     <p>
-      <strong>Key takeaway:</strong> For–each loops are clean and short for “iterate all elements,” 
-      but less flexible when partial iteration or index-based operations are required.
+      <strong>Key takeaway:</strong> For–each loops are ideal for full iterations,
+      while custom iterators like <c>MyIterator</c> offer more control for partial
+      traversals while maintaining clean abstraction boundaries.
     </p>
   </subsection>
 
