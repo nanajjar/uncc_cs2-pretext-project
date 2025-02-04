@@ -1,5 +1,5 @@
 <section xml:id="foreach-loops">
-  <title>For–Each Loops: Syntactic Sugar for Iteration</title>
+  <title>For–Each Loops</title>
 
   <introduction>
     <p>
@@ -58,8 +58,8 @@ for (int num : numbers) {
     </program>
 
     <p>
-      The syntax <c>for (int num : numbers)</c> is short for “Loop over each element of <c>numbers</c>, 
-      assign it to <c>num</c>, then run the body.” It's the same fundamental iteration—just no
+      The syntax <c>for (int num : numbers)</c> is short for "Loop over each element of <c>numbers</c>, 
+      assign it to <c>num</c>, then run the body." It's the same fundamental iteration—just no
       explicit index variable or <c>length</c> checks. Think of it like Java calling <c>hasNext()</c>
       and <c>next()</c> behind the scenes for each element.
     </p>
@@ -92,7 +92,7 @@ For–each loop =>  first pass: num=5
       <li>
         <strong>No Direct Index Access</strong>:
         You can't easily figure out <em>which</em> index you're on inside the loop. If you need
-        to know “am I on the 5th element?” or “access <c>i+1</c>,” you must revert to a standard
+        to know "am I on the 5th element?" or "access <c>i+1</c>," you must revert to a standard
         <c>for</c> loop or maintain a separate counter. 
         <p><em>Example:</em> <c>for(int x : arr)</c> doesn't let you do <c>arr[i+1]</c>.</p>
       </li>
@@ -119,7 +119,7 @@ For–each loop =>  first pass: num=5
       </li>
     </ul>
     <p>
-      Overall, for–each loops excel at “visit every element in a forward direction with minimal fuss.”
+      Overall, for–each loops excel at "visit every element in a forward direction with minimal fuss."
       If you want more control—like indexing, reordering, or partial iteration—then a classic
       <c>for</c> or <c>while</c> might be better. 
     </p>
@@ -132,22 +132,28 @@ For–each loop =>  first pass: num=5
       Recall that our <c>MyIterator</c> class had methods <c>hasNext()</c> and <c>next()</c> to
       manage iteration. Java's for–each loop uses a similar idea but in a more official way:
     </p>
-    <p>
-      - If a class implements <c>Iterable</c>&lt;T&gt;, it must provide 
-        <c>public Iterator&lt;T&gt; iterator()</c>.  
-      - That <c>Iterator&lt;T&gt;</c> must have <c>boolean hasNext()</c> and <c>T next()</c>.  
-      - Then <c>for (T item : iterableObject)</c> automatically calls <c>hasNext()</c> / <c>next()</c>
-        behind the scenes for each item.
-    </p>
+    <ul>
+      <li>
+        <p>If a class implements <c>Iterable</c>&lt;T&gt;, it must provide 
+        <c>public Iterator&lt;T&gt; iterator()</c>.</p>
+      </li>
+      <li>
+        <p>That <c>Iterator&lt;T&gt;</c> must have <c>boolean hasNext()</c> and <c>T next()</c>.</p>
+      </li>
+      <li>
+        <p>Then <c>for (T item : iterableObject)</c> automatically calls <c>hasNext()</c> / <c>next()</c>
+        behind the scenes for each item.</p>
+      </li>
+    </ul>
     <p>
       Our <c>MyIterator</c> is close to that pattern. Later, once we learn about interfaces and
       generics, we can rework <c>MyIterator</c> to <em>formally</em> implement 
       <c>Iterator&lt;Integer&gt;</c>. We could also create a separate class that implements
       <c>Iterable&lt;Integer&gt;</c> (returning a new <c>MyIterator</c> in its <c>iterator()</c>
-      method). Then for–each would just “magically” work. 
+      method). Then for–each would just "magically" work. 
     </p>
     <p>
-      Thus, the for–each loop is essentially “syntactic sugar” for iterators, as you can see in
+      Thus, the for–each loop is essentially "syntactic sugar" for iterators, as you can see in
       the pseudo-code below:
     </p>
     <program language="java">
@@ -168,56 +174,117 @@ while (it.hasNext()) {
 
 
   <subsection xml:id="foreach-advanced-example">
-    <title>Example: Summing Even Values &amp; Using <c>break</c></title>
+    <title>Example: Controlled Iteration and Conditional Summing</title>
     <p>
-      Let's show a slightly more advanced for–each example—summing only the <em>first few even values</em>.
-      Suppose we have:
+      <p>
+    <alert>Complex Scenario:</alert> Let's explore a scenario that highlights the strengths and
+    limitations of different iteration approaches. Our task is to sum even numbers in the array
+    <c>{2, 11, 4, 6, 9, 2}</c>, but only considering the first three elements.
+  </p>
     </p>
-    <program language="java">
-      <input>
-int[] data = {2, 11, 4, 6, 9, 2};
-int totalEven = 0;
 
-for (int val : data) {
-    if (val % 2 == 0) {
-        totalEven += val;
-    }
-    // If we only want to sum the first 3 array elements total:
-    // This won't help if we need to stop after the 3rd element. 
-    // for-each doesn't give an index. 
-}
-System.out.println("Sum of even numbers: " + totalEven);
-      </input>
-    </program>
+    <subsubsection xml:id="approach1-naive-foreach">
+      <title>Approach 1: Naive For-Each Loop</title>
+      <program language="java">
+        <input>
+  int[] data = {2, 11, 4, 6, 9, 2};
+  int sum = 0;
+  for (int value : data) {
+      if (value % 2 == 0) {
+          sum += value;
+      }
+  }
+  System.out.println("Sum of all even numbers: " + sum); // Incorrect: 14
+        </input>
+      </program>
+      <p>
+        This approach, while concise, fails our requirement. It sums <em>all</em> even numbers (14), not just those in the first three elements (6).
+      </p>
+    </subsubsection>
+
+    <subsubsection xml:id="approach2-foreach-with-counter">
+      <title>Approach 2: For-Each with External Counter</title>
+      <program language="java">
+        <input>
+  int[] data = {2, 11, 4, 6, 9, 2};
+  int sum = 0;
+  int count = 0;
+  for (int value : data) {
+      if (count &gt;= 3) break;
+      if (value % 2 == 0) {
+          sum += value;
+      }
+      count++;
+  }
+  System.out.println("Sum of even numbers in first 3 elements: " + sum); // Correct: 6
+        </input>
+      </program>
+      <p>
+        This solution correctly sums even numbers within the first three elements. However:
+      </p>
+      <ul>
+        <li>It introduces an external counter, complicating the loop's logic.</li>
+        <li>The <c>break</c> statement disrupts the natural flow of the for-each loop.</li>
+        <li>It's not immediately clear that we're limiting to three elements without careful reading.</li>
+      </ul>
+    </subsubsection>
+
+    <subsubsection xml:id="approach3-traditional-for-loop">
+      <title>Approach 3: Traditional For Loop</title>
+      <program language="java">
+        <input>
+  int[] data = {2, 11, 4, 6, 9, 2};
+  int sum = 0;
+  for (int i = 0; i &lt; 3 &amp;&amp; i &lt; data.length; i++) {
+      if (data[i] % 2 == 0) {
+          sum += data[i];
+      }
+  }
+  System.out.println("Sum of even numbers in first 3 elements: " + sum); // Correct: 6
+        </input>
+      </program>
+      <p>
+        This approach offers several advantages:
+      </p>
+      <ul>
+        <li>It clearly limits iteration to three elements (or array length if shorter).</li>
+        <li>No need for an external counter or break statement.</li>
+        <li>Provides direct access to array indices, useful for more complex scenarios.</li>
+      </ul>
+    </subsubsection>
+
     <p>
-      That sums all even numbers <c>(2 + 4 + 6 + 2 = 14)</c>. However, if we needed to stop after
-      the 3rd element in the array or skip certain positions, we'd realize for–each can't easily
-      do that. We'd have to add an external counter or break logic:
+      <strong>Comparative Analysis:</strong>
     </p>
-    <program language="java">
-      <input>
-int count = 0;
-int sumEvens = 0;
-for (int val : data) {
-    sumEvens += (val % 2 == 0) ? val : 0;
-    count++;
-    if (count == 3) { 
-       break; // we processed 3 elements, let's stop
-    }
-}
-System.out.println("Sum of even numbers in the FIRST 3 elements: " + sumEvens);
-      </input>
-    </program>
+    <table>
+      <tabular halign="center">
+        <row header="yes">
+          <cell>Approach</cell>
+          <cell>Pros</cell>
+          <cell>Cons</cell>
+        </row>
+        <row>
+          <cell>Naive For-Each</cell>
+          <cell>Simple, concise</cell>
+          <cell>Incorrect result, no early termination</cell>
+        </row>
+        <row>
+          <cell>For-Each with Counter</cell>
+          <cell>Correct result, uses for-each simplicity</cell>
+          <cell>External counter, break disrupts flow</cell>
+        </row>
+        <row>
+          <cell>Traditional For</cell>
+          <cell>Correct, clear limits, flexible</cell>
+          <cell>Slightly more verbose</cell>
+        </row>
+      </tabular>
+    </table>
+
     <p>
-      That works but starts feeling awkward. If you need to break frequently or refer to indexes,
-      a classic <c>for</c> loop is often simpler. 
-    </p>
-    <p>
-      <strong>Key takeaway:</strong> For–each loops are clean and short for “iterate all elements,” 
-      but less flexible when partial iteration or index-based operations are required.
+      This example illustrates that while for-each loops are often elegant, traditional for loops can be more suitable for scenarios requiring fine-grained control over iteration or early termination. Always consider your specific requirements when choosing an iteration approach.
     </p>
   </subsection>
-
 
   <subsection xml:id="interactive-foreach-exercises">
     <title>Interactive Exercises: Practicing For–Each Loops</title>
@@ -301,7 +368,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import java.io.*;
 
-public class RunestoneTests extends CodeTestHelper {
+public class RunestoneTests extends CodeTestHelper {`
     @Test
     public void testForEachGreeting() throws IOException {
         String output = getMethodOutput("main");
