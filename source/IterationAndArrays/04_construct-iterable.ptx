@@ -10,12 +10,11 @@
       step to create such a class: <c>MyIterator</c>.
     </p>
     <p>
-      We'll do this using only the Java features we've learned so far—no formal
-      <c>Iterable</c> interface, no generics, etc. By the end, you'll see how systematically
-      walking through the design process (clarifying the problem, enumerating test cases, writing
-      a skeleton, etc.) yields a robust, well-tested solution. Then, in a future chapter, we'll
-      integrate classes like <c>MyIterator</c> with official <c>Iterator</c> and <c>Iterable</c>
-      interfaces to enable Java's for–each loop syntax.
+      We'll build this step by step using the Java features we've learned so far. By the end, 
+      you'll see how systematically walking through the design process (clarifying the problem, 
+      enumerating test cases, writing a skeleton, etc.) yields a robust, well-tested solution. 
+      This systematic approach will serve you well as you tackle more complex programming challenges 
+      in the future.
     </p>
   </introduction>
 
