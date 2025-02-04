@@ -1,0 +1,484 @@
+<section xml:id="introducing-arrays">
+  <title>Introducing Arrays</title>
+
+  <introduction>
+    <p>
+      When you need to store multiple values of the same type in a single container,
+      Java offers <em>arrays</em>.
+      They function similarly to Python's lists but are more rigid: once created,
+      an array cannot grow or shrink. If you need a flexible, resizable structure,
+      Java provides other collections (<c>ArrayList</c>), but those come later.
+    </p>
+    <p>
+      In this section, we'll learn how to declare, create, and use arrays in Java,
+      see how arrays interact with loops, and examine the most common mistakes
+      (like out-of-bounds errors and confusion over default initialization).
+      Understanding these basics will prepare you for more advanced data structures
+      later in the course.
+    </p>
+  </introduction>
+
+  <!-- ============================= -->
+  <!-- WHAT IS AN ARRAY?            -->
+  <!-- ============================= -->
+  <subsection xml:id="what-is-an-array">
+    <title>What Is an Array?</title>
+    <p>
+      An array in Java is a <em>fixed-size</em> sequence of elements of the <em>same type</em>,
+      all stored contiguously in memory. Each element is accessed by an <strong>index</strong>,
+      starting at 0 and going up to <c>length - 1</c>.
+    </p>
+    <p>
+      If you come from Python, you might think of “lists,” but Java arrays differ:
+      <ul>
+        <li><strong>Rigid size:</strong> The length is set at creation time and cannot change.</li>
+        <li><strong>Strict typing:</strong> All elements must match the declared type
+            (<c>int</c>, <c>double</c>, <c>boolean</c>, etc.).</li>
+      </ul>
+    </p>
+    <p>
+      For instance, if you have an <c>int[]</c> of length 5, it might look like:
+    </p>
+    <program language="text">
+Indexes:  0   1   2   3   4
+Values:  [?] [?] [?] [?] [?]
+    </program>
+    <p>
+      Valid indices here are 0,1,2,3,4. Trying <c>arr[5]</c> or <c>arr[-1]</c> would cause an error.
+      Next, let's see how to <em>declare</em> and <em>initialize</em> an array in actual Java code.
+    </p>
+  </subsection>
+
+  <!-- ============================= -->
+  <!-- DECLARING AND INITIALIZING   -->
+  <!-- ============================= -->
+  <subsection xml:id="declaring-and-initializing-arrays">
+    <title>Declaring and Initializing Arrays</title>
+
+    <p>
+      In Java, creating an array often happens in two steps:
+      <ol>
+        <li><strong>Declare</strong> a variable that will refer to an array.</li>
+        <li><strong>Allocate</strong> the actual array using <c>new</c>, specifying the length.</li>
+      </ol>
+    </p>
+
+    <program language="java">
+      <input>
+// Step 1: Declaration
+int[] numbers;       // 'numbers' is an array of int, but not yet created
+
+// Step 2: Allocation
+numbers = new int[5];  // now 'numbers' refers to an array of length 5
+      </input>
+    </program>
+
+    <p>
+      You can combine these steps in one line:
+      <code>int[] numbers = new int[5];</code>
+      This means you have space for 5 <c>int</c> elements: <c>numbers[0]</c>, <c>numbers[1]</c>, ..., <c>numbers[4]</c>.
+      Each of these starts out at <c>0</c>.
+    </p>
+
+    <p>
+      If you already know the exact contents, you can use <em>an initializer list</em>:
+    </p>
+
+    <program language="java">
+      <input>
+int[] primes = {2, 3, 5, 7, 11};
+// This implicitly sets the array's length to 5.
+      </input>
+    </program>
+
+    <p>
+      Note that you <em>cannot</em> assign like this after declaring:
+      <br/>
+      <code>
+int[] primes;<br/>
+primes = {2, 3, 5, 7, 11}; // Error outside the declaration line
+      </code>
+      Instead, you must do it all at once or manually assign each element later.
+    </p>
+
+    <program language="java" xml:id="declare-example" interactive="activecode">
+      <input>
+public class DeclareArrays {
+    public static void main(String[] args) {
+        int[] numbers = new int[5];  // length 5, each element = 0 initially
+
+        System.out.println("Before assignment:");
+        for (int i = 0; i &lt; numbers.length; i++) {
+            System.out.println("numbers[" + i + "] = " + numbers[i]);
+        }
+
+        // Now let's assign some values
+        numbers[0] = 10;
+        numbers[1] = 20;
+        numbers[2] = 30;
+        numbers[3] = 40;
+        numbers[4] = 50;
+
+        System.out.println("\nAfter assignment:");
+        for (int i = 0; i &lt; numbers.length; i++) {
+            System.out.println("numbers[" + i + "] = " + numbers[i]);
+        }
+    }
+}
+      </input>
+    </program>
+  </subsection>
+
+  <!-- ============================= -->
+  <!-- ACCESSING & UPDATING         -->
+  <!-- ============================= -->
+  <subsection xml:id="accessing-array-elements">
+    <title>Accessing and Updating Array Elements</title>
+
+    <p>
+      Each element is accessed by <c>arr[index]</c>. In Java, <c>arr.length</c> (not <c>arr.length()</c>) 
+      reports the array's length. 
+    </p>
+
+    <p>
+      Below is a small demo that sets each element to the square of its index, then prints the results:
+    </p>
+    <program language="java" xml:id="array-update-example" interactive="activecode">
+      <input>
+public class ArrayUpdateExample {
+    public static void main(String[] args) {
+        int[] squares = new int[4];  // length 4 => indices 0..3
+
+        // Fill the array: squares[i] = i*i
+        for (int i = 0; i &lt; squares.length; i++) {
+            squares[i] = i * i;
+        }
+
+        // Print the updated array
+        for (int i = 0; i &lt; squares.length; i++) {
+            System.out.println("squares[" + i + "] = " + squares[i]);
+        }
+    }
+}
+      </input>
+    </program>
+
+    <p>
+      Attempting <c>squares[4]</c> or <c>squares[-1]</c> will cause an <c>ArrayIndexOutOfBoundsException</c> 
+      at runtime. 
+      This is a protective measure in Java—accessing outside valid indices is never allowed,
+      preventing more obscure bugs or memory corruption.
+    </p>
+  </subsection>
+
+  <!-- ============================= -->
+  <!-- DEFAULT VALUES & REFS        -->
+  <!-- ============================= -->
+  <subsection xml:id="array-default-values-and-types">
+    <title>Default Values &amp; References</title>
+
+    <p>
+      When you do <c>new int[5]</c>, Java allocates memory for 5 integers, 
+      <em>all</em> initially <c>0</c>. If it's an array of <c>double</c>, each element starts as <c>0.0</c>; 
+      for <c>boolean</c>, it's <c>false</c>. 
+    </p>
+    <p>
+      For <strong>object references</strong> (e.g., <c>String[]</c>), each element starts as <c>null</c>.
+      That means you can't call methods on <c>arr[i]</c> until you assign an actual object to <c>arr[i]</c>.
+      For example:
+    </p>
+    <program language="java">
+      <input>
+String[] names = new String[3];
+// names[0], names[1], names[2] are all null initially
+
+names[0] = "Alice";  // now names[0] refers to "Alice"
+names[1] = "Bob";    // now names[1] refers to "Bob"
+      </input>
+    </program>
+    <p>
+      If you accidentally do <c>names[0].length()</c> before assigning <c>names[0]</c>, you'll get a <c>NullPointerException</c>.
+    </p>
+  </subsection>
+
+  <!-- ============================= -->
+  <!-- ARRAYS AS OBJECTS            -->
+  <!-- ============================= -->
+  <subsection xml:id="arrays-are-objects">
+    <title>Arrays Are Objects in Java</title>
+    <p>
+      In Java, an array is itself a special kind of <em>object</em>. 
+      That means if you write <c>int[] arr = new int[5]</c>, behind the scenes, <c>arr</c> is a reference to an array object stored on the heap. 
+      A subtle but common confusion arises when you do something like this:
+    </p>
+    <program language="java">
+      <input>
+int[] arr1 = new int[3];
+int[] arr2 = arr1;  // arr2 now points to the same array object as arr1
+
+arr1[0] = 99;
+System.out.println(arr2[0]); // Will print 99, not 0!
+      </input>
+    </program>
+    <p>
+      Because arrays are objects, <c>arr1</c> and <c>arr2</c> both reference the <em>same</em> underlying array. 
+      Changing an element via <c>arr1</c> also changes what <c>arr2</c> sees. 
+      There is <strong>no automatic "deep copy"</strong>—if you want a separate copy, you'd need to create another array and copy over elements manually or use library methods like <c>Arrays.copyOf</c> (which we'll discuss later).
+    </p>
+    <p>
+      Keep in mind:
+      <ul>
+        <li><strong>arr.length</strong> is a field that stores the array's size (no parentheses).
+        </li>
+        <li>Assigning one array variable to another never copies the contents; it only copies the <em>reference</em>.</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <!-- ============================= -->
+  <!-- COMMON PITFALLS              -->
+  <!-- ============================= -->
+  <subsection xml:id="common-array-pitfalls">
+    <title>Common Array Pitfalls</title>
+    <p>
+      Arrays are straightforward once you get the hang of them, but here are key pitfalls:
+    </p>
+    <ul>
+      <li>
+        <p>
+          <strong>Index Out of Bounds</strong>: 
+          If your array is length 5, valid indices are <c>0..4</c>. 
+          Trying <c>arr[5]</c> or <c>arr[-1]</c> yields <c>ArrayIndexOutOfBoundsException</c>. 
+          Double-check your loop boundaries and conditions carefully.
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong>Fixed Size</strong>: 
+          Once you do <c>new int[5]</c>, you can't change it to 10 elements. 
+          If you need a dynamically sized collection, you'll learn about <c>ArrayList</c> or other collections soon.
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong>Null Elements</strong> (for reference types): 
+          <c>String[] words = new String[3]</c> starts with all elements <c>null</c>, meaning you must assign actual strings before using them. 
+          Otherwise, you'll get a <c>NullPointerException</c>.
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong>Arrays Are Objects</strong>: 
+          If you do <c>arr2 = arr1</c>, both variables share the same array in memory—changes to one show up in the other.
+        </p>
+      </li>
+    </ul>
+  </subsection>
+
+  <!-- ============================= -->
+  <!-- EXERCISES                     -->
+  <!-- ============================= -->
+  <subsection xml:id="interactive-exercises-arrays">
+    <title>Interactive Exercises: Working with Arrays</title>
+
+    <p>
+      Let's solidify these concepts with a few exercises. Each will help you get comfortable
+      declaring arrays, updating elements, and iterating over them with loops.
+    </p>
+
+    <!-- EXERCISE 1: Basic Array Print -->
+    <exercise xml:id="exercise-print-array" interactive="activecode">
+      <statement>
+        <p>
+          <strong>Exercise 1:</strong> <em>Basic Array Print</em><br/>
+          Declare an <c>int[]</c> named <c>numbers</c> of length 4, then assign the values <c>2, 4, 6, 8</c>. 
+          Finally, print each element (in a <c>for</c> loop) to verify.
+        </p>
+      </statement>
+      <program xml:id="print-array-editor" language="java" interactive="activecode">
+        <input>
+public class PrintArray {
+    public static void main(String[] args) {
+        // TODO: declare int[] numbers of length 4
+        // assign numbers[0]=2, [1]=4, [2]=6, [3]=8
+        // then print them in a loop
+        int[] numbers = new int[4];
+        numbers[0] = 2;
+        numbers[1] = 4;
+        numbers[2] = 6;
+        numbers[3] = 8;
+
+        for (int i = 0; i &lt; numbers.length; i++) {
+            System.out.println(numbers[i]);
+        }
+    }
+}
+        </input>
+        <tests>
+import static org.junit.Assert.*;
+import org.junit.Test;
+import java.io.*;
+
+public class RunestoneTests extends CodeTestHelper {
+    @Test
+    public void testPrintArray() throws IOException {
+        String output = getMethodOutput("main");
+        String expected = "2\n4\n6\n8\n";
+        boolean passed = getResults(expected, output, "Check array print output", true);
+        assertTrue(passed);
+    }
+}
+        </tests>
+      </program>
+    </exercise>
+
+    <!-- EXERCISE 2: Summation of an Array -->
+    <exercise xml:id="exercise-sum-array" interactive="activecode">
+      <statement>
+        <p>
+          <strong>Exercise 2:</strong> <em>Summation of an Array</em><br/>
+          Create an array of 5 integers: <c>10, 20, 30, 40, 50</c>. 
+          Use a loop to sum them up, then print the result.
+          (<em>Hint:</em> Start <c>sum</c> at 0 and accumulate.)
+        </p>
+      </statement>
+      <program xml:id="sum-array-editor" language="java" interactive="activecode">
+        <input>
+public class SumArray {
+    public static void main(String[] args) {
+        // Step 1: Create an array of length 5 with values 10..50
+        int[] values = {10, 20, 30, 40, 50};
+
+        // Step 2: Sum up all elements
+        int sum = 0;
+        for (int i = 0; i &lt; values.length; i++) {
+            sum += values[i];
+        }
+
+        // Step 3: Print the sum
+        System.out.println("The sum is: " + sum);
+    }
+}
+        </input>
+        <tests>
+import static org.junit.Assert.*;
+import org.junit.Test;
+import java.io.*;
+
+public class RunestoneTests extends CodeTestHelper {
+    @Test
+    public void testSumArray() throws IOException {
+        String output = getMethodOutput("main");
+        // sum(10,20,30,40,50) = 150
+        boolean passed = output.contains("150");
+        assertTrue("Expected sum=150, got:\n" + output, passed);
+    }
+}
+        </tests>
+      </program>
+    </exercise>
+
+    <!-- EXERCISE 3: dynamic squares -->
+    <exercise xml:id="exercise-squares-array" interactive="activecode">
+      <statement>
+        <p>
+          <strong>Exercise 3:</strong> <em>Dynamic Squares</em><br/>
+          Prompt the user for <c>n</c>. Create an int array of length <c>n</c>.
+          Set each <c>arr[i]</c> = <c>i*i</c>. Print the resulting array elements.
+          <br/>
+          <em>Example</em>: If <c>n</c>=5, you'd produce <c>0,1,4,9,16</c>.
+        </p>
+      </statement>
+      <program xml:id="squares-array-editor" language="java" interactive="activecode">
+        <input>
+import java.util.Scanner;
+
+public class SquaresArray {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        System.out.print("Enter n: ");
+        int n = in.nextInt();
+
+        // Create int[] of length n
+        int[] squares = new int[n];
+
+        // Fill squares[i] = i*i
+        for (int i = 0; i &lt; squares.length; i++) {
+            squares[i] = i * i;
+        }
+
+        // Print them
+        for (int i = 0; i &lt; squares.length; i++) {
+            System.out.println(squares[i]);
+        }
+    }
+}
+        </input>
+        <tests>
+import static org.junit.Assert.*;
+import org.junit.Test;
+import java.io.*;
+
+public class RunestoneTests extends CodeTestHelper {
+
+    @Test
+    public void testSize5() throws IOException {
+        String input = "5\n";
+        String output = runWithInput(input, "main");
+        // squares: 0,1,4,9,16
+        boolean hasAll = output.contains("0") &amp;&amp; output.contains("1")
+                         &amp;&amp; output.contains("4") &amp;&amp; output.contains("9")
+                         &amp;&amp; output.contains("16");
+        assertTrue("For n=5, expected squares 0..16, got:\n" + output, hasAll);
+    }
+
+}
+        </tests>
+      </program>
+    </exercise>
+
+  </subsection>
+
+  <!-- ============================= -->
+  <!-- SUMMARY                       -->
+  <!-- ============================= -->
+  <subsection xml:id="summary-intro-arrays">
+    <title>Summary: Introducing Arrays</title>
+    <p>
+      Arrays in Java hold a fixed number of elements, all of the same type.
+      Here are your key takeaways:
+    </p>
+    <ul>
+      <li>
+        <strong>Declaration &amp; Allocation:</strong> 
+        <c>int[] arr = new int[5]</c> sets up memory for five integers,
+        all initially <c>0</c>. 
+        Arrays are objects, so <c>arr</c> is a reference to the actual data.
+      </li>
+      <li>
+        <strong>Initializer Lists:</strong> 
+        <c>int[] primes = {2,3,5,7,11};</c> sets the length automatically to <c>5</c>.
+        You can't use <c>{...}</c> syntax outside of the declaration line.
+      </li>
+      <li>
+        <strong>Indices &amp; <c>length</c>:</strong> 
+        Indices go from <c>0</c> to <c>arr.length - 1</c>. 
+        The <c>length</c> field is used to ensure we stay within bounds in loops.
+      </li>
+      <li>
+        <strong>Arrays of References:</strong> 
+        <c>String[] words</c> starts out with all <c>null</c> if you do <c>new String[...]</c>.
+        You must assign objects to each element or you'll get <c>NullPointerException</c> if you call methods on <c>words[i]</c>.
+      </li>
+      <li>
+        <strong>Shared References:</strong> 
+        <c>arr2 = arr1</c> shares the same underlying array. Changing <c>arr1[0]</c> also affects <c>arr2[0]</c>.
+      </li>
+    </ul>
+    <p>
+      Going forward, we'll use arrays with loops to handle all kinds of data. Next, we'll discuss how to 
+      build a custom class that acts like a <em>collection</em>, so we can introduce the for-each loop 
+      as “syntactic sugar” for iterating over arrays or other collections.
+    </p>
+  </subsection>
+</section>
