@@ -192,7 +192,7 @@ import static org.junit.Assert.*;
 
     </program>
 </exercise>
-            <p>The <term>modulo</term> operator has been used quite a bit on the AP CS A exam, so you should be familiar with it.</p>
+            <p> The <term>modulo</term> operator is a powerful tool in programming. Because of its versatility, it's important to become familiar with how it works and how it can be applied in different problem-solving scenarios</p>
             <blockquote>
                 <p><ul>
                     <li>
