@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en-US">
   <title>Iteration &amp; Arrays</title>
+    <xi:include href="./00_intro.ptx" />
   <xi:include href="./01_intro-iteration.ptx" />
   <xi:include href="./02_while-do-while.ptx" />
   <xi:include href="./03_intro-arrays.ptx" />

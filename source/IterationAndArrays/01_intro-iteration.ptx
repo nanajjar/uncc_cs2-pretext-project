@@ -3,7 +3,10 @@
   <title>Iteration &amp; For Loops</title>
 
   <p>
-    Iteration is a fundamental concept in programming—no matter which language you started with. In Java, loops let us repeat a block of code without resorting to copy–paste. In this section, we'll begin with the <em>for</em> loop, a “definite loop” that neatly packages <em>initialization</em>, <em>condition</em>, <em>body</em>, and <em>update</em> all in one place. Even if you've used loops in other languages, you'll see that Java's approach is similar, with just a few syntactic details to remember.
+    Iteration is a fundamental concept in programming—no matter which language you started with. 
+    In Java, loops let us repeat a block of code without resorting to copy-paste. 
+    In this section, we'll begin with the <em>for</em> loop, a “definite loop” that neatly packages <em>initialization</em>, <em>condition</em>, <em>body</em>, and <em>update</em> all in one place. 
+    Even if you've used loops in other languages, you'll see that Java's approach is similar, with just a few syntactic details to remember.
   </p>
 
   <subsection xml:id="anatomy-of-for-loop">
@@ -105,7 +108,7 @@ for (int i = 0; i &lt;= 10; i++) {
           </input>
         </program>
         <p>
-          If you only intended to print ten numbers (0–9), using <c>i &lt;= 10</c> actually prints eleven (0..10). Here's how the values go:
+          If you only intended to print ten numbers (0-9), using <c>i &lt;= 10</c> actually prints eleven (0..10). Here's how the values go:
         </p>
         <pre>
 i: 0 1 2 3 4 5 6 7 8 9 10  // 11 iterations total!
