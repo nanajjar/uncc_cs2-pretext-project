@@ -326,7 +326,7 @@ public class RunestoneTests extends CodeTestHelper {
     public void testPrintArray() throws IOException {
         String output = getMethodOutput("main");
         String expected = "2\n4\n6\n8\n";
-        boolean passed = getResults(expected, output, "Check array print output", true);
+        boolean passed = getResults(expected, output, "Check array print output");
         assertTrue(passed);
     }
 }

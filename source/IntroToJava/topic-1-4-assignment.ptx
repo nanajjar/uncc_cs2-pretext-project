@@ -14,9 +14,9 @@
             <p>The following <raw format="html" xml:space="preserve"><a href="https://www.youtube.com/watch?v=MZwIgM__5C8&amp;ab_channel=colleenlewis" target="_blank">video</a></raw> by Dr. Colleen Lewis shows how variables can change values in memory using assignment statements.</p>
 
     <video xml:id="MZwIgM__5C8" youtube="MZwIgM__5C8" width="82%"/>
-                <p>As we saw in the video, we can set one variable’s value to a <em>copy</em> of the value of another variable like <c>y = x;</c>.  This won’t change the value of the variable that you are copying from.</p>
+                <p>As we saw in the video, we can set one variable's value to a <em>copy</em> of the value of another variable like <c>y = x;</c>.  This won't change the value of the variable that you are copying from.</p>
             
-            <p>Let’s step through the following code in the <raw format="html" xml:space="preserve"><a href="http://www.pythontutor.com/visualize.html#code=public+class+Test2%0A%7B%0A+++public+static+void+main(String%5B%5D+args%29%0A+++%7B%0A+++++int+x+%3D+3%3B%0A+++++int+y+%3D+2%3B%0A+++++System.out.println(x%29%3B%0A+++++System.out.println(y%29%3B%0A+++++x+%3D+y%3B%0A+++++System.out.println(x%29%3B%0A+++++System.out.println(y%29%3B%0A+++++y+%3D+5%3B%0A+++++System.out.println(x%29%3B%0A+++++System.out.println(y%29%3B%0A+++%7D%0A%7D&amp;mode=display&amp;origin=opt-frontend.js&amp;cumulative=false&amp;heapPrimitives=false&amp;textReferences=false&amp;py=java&amp;rawInputLstJSON=%5B%5D&amp;curInstr=0" target="_blank"  style="text-decoration:underline">Java visualizer</a></raw> to see the values in memory. Click on the Next button at the bottom of the code to see how the values of the variables change. You can run the visualizer on any Active Code in this e-book by just clicking on the Code Lens button at the top of each Active Code.</p>
+            <p>Let's step through the following code in the <raw format="html" xml:space="preserve"><a href="http://www.pythontutor.com/visualize.html#code=public+class+Test2%0A%7B%0A+++public+static+void+main(String%5B%5D+args%29%0A+++%7B%0A+++++int+x+%3D+3%3B%0A+++++int+y+%3D+2%3B%0A+++++System.out.println(x%29%3B%0A+++++System.out.println(y%29%3B%0A+++++x+%3D+y%3B%0A+++++System.out.println(x%29%3B%0A+++++System.out.println(y%29%3B%0A+++++y+%3D+5%3B%0A+++++System.out.println(x%29%3B%0A+++++System.out.println(y%29%3B%0A+++%7D%0A%7D&amp;mode=display&amp;origin=opt-frontend.js&amp;cumulative=false&amp;heapPrimitives=false&amp;textReferences=false&amp;py=java&amp;rawInputLstJSON=%5B%5D&amp;curInstr=0" target="_blank"  style="text-decoration:underline">Java visualizer</a></raw> to see the values in memory. Click on the Next button at the bottom of the code to see how the values of the variables change. You can run the visualizer on any Active Code in this e-book by just clicking on the Code Lens button at the top of each Active Code.</p>
 
 <program xml:id="asgn_viz1" interactive="codelens" language="java">
     <input>
@@ -97,7 +97,7 @@ z = 3;
     </exercise>
             <p> <term>Mixed Up Code</term></p>
 <exercise label="2_swap" numbered="yes" adaptive="yes" indentation="show" language="python"><statement>
-            <p>The following has the correct code to ‘swap’ the values in x and y (so that x ends up with y’s initial value and y ends up with x’s initial value), but the code is mixed up and contains one extra block which is not needed in a correct solution.  Drag the needed blocks from the left into the correct order on the right. Check your solution by clicking on the Check button.  You will be told if any of the blocks are in the wrong order or if you need to remove one or more blocks.  After three incorrect attempts you will be able to use the Help Me button to make the problem easier.</p>
+            <p>The following has the correct code to ‘swap' the values in x and y (so that x ends up with y's initial value and y ends up with x's initial value), but the code is mixed up and contains one extra block which is not needed in a correct solution.  Drag the needed blocks from the left into the correct order on the right. Check your solution by clicking on the Check button.  You will be told if any of the blocks are in the wrong order or if you need to remove one or more blocks.  After three incorrect attempts you will be able to use the Help Me button to make the problem easier.</p>
 </statement>
 <blocks><block order="1">
 <cline>int x = 3;</cline>
@@ -151,7 +151,7 @@ public class Test1
      {
          String output = getMethodOutput("main");
          String expect = "0\n1\n";
-         boolean passed = getResults(expect, output, "Expected output from main", true);
+         boolean passed = getResults(expect, output, "Expected output from main");
          assertTrue(passed);
      }
  }
@@ -200,12 +200,12 @@ public class Main
             
             
             <p xml:id="_index-014">Java uses the standard mathematical operators for addition (+), subtraction (-), multiplication (*), and division (/). Arithmetic expressions can be of type int or double. An arithmetic operation that uses two int values will evaluate to an int value. An arithmetic operation that uses at least one double value will evaluate to a double value.  (You may have noticed that + was also used to put text together in the input program above – more on this when we talk about strings.)</p>
-            <p>Java uses the operator <term>==</term> to test if the value on the left is equal to the value on the right and <term>!=</term> to test if two items are not equal.   Don’t get one equal sign = confused with two equal signs ==. They mean different things in Java. One equal sign is used to assign a value to a variable. Two equal signs are used to test a variable to see if it is a certain value and that returns true or false as you’ll see below.  Use == and != only with int values and not doubles because double values are an approximation and 3.3333 will not equal 3.3334 even though they are very close.</p>
+            <p>Java uses the operator <term>==</term> to test if the value on the left is equal to the value on the right and <term>!=</term> to test if two items are not equal.   Don't get one equal sign = confused with two equal signs ==. They mean different things in Java. One equal sign is used to assign a value to a variable. Two equal signs are used to test a variable to see if it is a certain value and that returns true or false as you'll see below.  Use == and != only with int values and not doubles because double values are an approximation and 3.3333 will not equal 3.3334 even though they are very close.</p>
             <p> <term>Coding Exercise:</term></p>
 
 <exercise label="lcop1">
     <statement>
-            <p>Run the code below to see all the operators in action. Do all of those operators do what you expected?  What about 2 / 3? Isn’t it surprising that it prints 0?  See the note below.</p>
+            <p>Run the code below to see all the operators in action. Do all of those operators do what you expected?  What about 2 / 3? Isn't it surprising that it prints 0?  See the note below.</p>
 
     </statement>
     <program xml:id="lcop1_editor" interactive="activecode" language="java">
@@ -240,7 +240,7 @@ public class Test1
      {
          String output = getMethodOutput("main");
          String expect = "5\n-1\n6\n0\nfalse\ntrue";
-         boolean passed = getResults(expect, output, "Expected output from main", true);
+         boolean passed = getResults(expect, output, "Expected output from main");
          assertTrue(passed);
      }
  }
@@ -252,7 +252,7 @@ public class Test1
                 <p>When Java sees you doing integer division (or any operation with integers) it assumes you want an integer result so it throws away anything after the decimal point in the answer. If you need a double answer, you should make at least one of the values in the expression a double like 2.0.</p>
             </note>
             <p>With division, another thing to watch out for is dividing by 0. An attempt to divide an integer by zero will result in an <term>ArithmeticException</term> error message. Try it in one of the active code windows above.</p>
-            <p>Operators can be used to create compound expressions with more than one operator. You can either use a literal value which is a fixed value like 2, or variables in them.  When compound expressions are evaluated, <term>operator precedence</term> rules are used, so that *, /, and % are done before + and -. However, anything in parentheses is done first. It doesn’t hurt to put in extra parentheses if you are unsure as to what will be done first.</p>
+            <p>Operators can be used to create compound expressions with more than one operator. You can either use a literal value which is a fixed value like 2, or variables in them.  When compound expressions are evaluated, <term>operator precedence</term> rules are used, so that *, /, and % are done before + and -. However, anything in parentheses is done first. It doesn't hurt to put in extra parentheses if you are unsure as to what will be done first.</p>
             <p> <term>Coding Exercise:</term></p>
 
 <exercise label="compound1">
@@ -288,7 +288,7 @@ public class TestCompound
      {
          String output = getMethodOutput("main");
          String expect = "8\n10\n8";
-         boolean passed = getResults(expect, output, "Expected output from main", true);
+         boolean passed = getResults(expect, output, "Expected output from main");
          assertTrue(passed);
      }
  }
@@ -342,7 +342,7 @@ public class Test1
      {
          String output = getMethodOutput("main");
          String expect = "1\n3\n0\n1";
-         boolean passed = getResults(expect, output, "Expected output from main",true);
+         boolean passed = getResults(expect, output, "Expected output from main");
          assertTrue(passed);
      }
  }
@@ -351,7 +351,7 @@ public class Test1
     </program>
 </exercise>
             <note>
-                <p>The result of x % y when x is smaller than y is always x.  The value y can’t go into x at all (goes in 0 times), since x is smaller than y, so the result is just x.  So if you see 2 % 3 the result is 2.</p>
+                <p>The result of x % y when x is smaller than y is always x.  The value y can't go into x at all (goes in 0 times), since x is smaller than y, so the result is just x.  So if you see 2 % 3 the result is 2.</p>
             </note>
             
             

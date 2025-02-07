@@ -373,7 +373,7 @@ public class RunestoneTests extends CodeTestHelper
      {
          String output = getMethodOutput("main");
          String expect = "The score is 0\nThe price is 23.25\nfalse\ntrue\nHi Jose";
-         boolean passed = getResults(expect, output, "Expected output from main", true);
+         boolean passed = getResults(expect, output, "Expected output from main");
          assertTrue(passed);
      }
 }
@@ -529,7 +529,7 @@ public class RunestoneTests extends CodeTestHelper
      {
          String output = getMethodOutput("main");
          String expect = "3.14";
-         boolean passed = getResults(expect, output, "Expected output from main", true);
+         boolean passed = getResults(expect, output, "Expected output from main");
          assertTrue(passed);
      }
 }
@@ -597,7 +597,7 @@ public class RunestoneTests extends CodeTestHelper
      {
          String output = getMethodOutput("main");
          String expect = "gameScore is 0\n";
-         boolean passed = getResults(expect, output, "Expected output from main", true);
+         boolean passed = getResults(expect, output, "Expected output from main");
          assertTrue(passed);
      }
  }

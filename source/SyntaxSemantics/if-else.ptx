@@ -178,7 +178,7 @@ import static org.junit.Assert.*;
         String output = getMethodOutput("main");
         String expect = "Let's go to the game\nafter conditional";
 
-        boolean passed = getResults(expect, output, "Expected output from main", true);
+        boolean passed = getResults(expect, output, "Expected output from main");
         assertTrue(passed);
     }
 

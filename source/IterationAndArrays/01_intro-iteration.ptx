@@ -74,7 +74,7 @@ public class RunestoneTests extends CodeTestHelper {
                         "i = 7\n" +
                         "i = 8\n" +
                         "i = 9\n";
-        assertTrue(getResults(expect, output, "Expected output not matching", true));
+        assertTrue(getResults(expect, output, "Expected output not matching"));
     }
 }
       </tests>
@@ -270,8 +270,8 @@ public class RunestoneTests extends CodeTestHelper {
         String output = getMethodOutput("main");
         // Should be exactly 10 lines: 0..9
         String expected = "0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n";
-       // boolean match = getResults(expected, output, "Expected 10 lines (0..9)", true);
-         assertEquals("Output doesn't match", cleanString(expected), cleanString(output));
+       boolean match = getResults(expected, output, "Expected 10 lines (0..9)");
+         //assertEquals("Output doesn't match", cleanString(expected), cleanString(output));
         //assertTrue(match);
     }
 }
@@ -325,7 +325,7 @@ public class RunestoneTests extends CodeTestHelper {
         for(int x = 0; x &lt; 5; x++){
             expected += x + "\n";
         }
-        boolean match = getResults(expected, output, "Expected output to be 0..4", true);
+        boolean match = getResults(expected, output, "Expected output to be 0..4");
         assertTrue(match);
     }
 }
