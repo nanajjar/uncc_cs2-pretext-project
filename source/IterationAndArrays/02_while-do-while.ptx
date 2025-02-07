@@ -209,7 +209,7 @@ public class RunestoneTests extends CodeTestHelper {
       </program>
     </exercise>
 
-    <!-- EXERCISE 2: Use while loop to sum user input -->
+    <!-- EXERCISE 2: Use while loop to sum user input
     <exercise xml:id="while-sum-user" adaptive="yes" interactive="activecode">
       <statement>
         <p>
@@ -275,7 +275,7 @@ public class RunestoneTests extends CodeTestHelper {
 }
         </tests>
       </program>
-    </exercise>
+    </exercise> -->
 
     <!-- EXERCISE 3: Simple do-while fix -->
     <exercise xml:id="exercise-do-while-simple" adaptive="yes" interactive="activecode">

@@ -269,12 +269,10 @@ public class RunestoneTests extends CodeTestHelper {
     public void testOffByOne() throws IOException {
         String output = getMethodOutput("main");
         // Should be exactly 10 lines: 0..9
-        String expected = "";
-        for(int i = 0; i &lt; 10; i++){
-            expected += i + "\n";
-        }
-        boolean match = getResults(expected, output, "Expected 10 lines (0..9)", true);
-        assertTrue(match);
+        String expected = "0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n";
+       // boolean match = getResults(expected, output, "Expected 10 lines (0..9)", true);
+         assertEquals("Output doesn't match", cleanString(expected), cleanString(output));
+        //assertTrue(match);
     }
 }
         </tests>
@@ -361,12 +359,10 @@ public class RunestoneTests extends CodeTestHelper {
       </statement>
       <program xml:id="SumFirstN" language="java" interactive="activecode">
         <input>
-import java.util.Scanner;
 
 public class SumFirstN {
     public static void main(String[] args) {
-        // Optionally read user input, or just pick n=5 for a test
-        int n = 5;  // TODO: you could do: Scanner in = new Scanner(System.in); n = in.nextInt(); 
+        int n = 5;   //change this to test for different values
         int sum = 0;
 
         // TODO: Write a loop that adds 1..n to 'sum'
@@ -438,11 +434,10 @@ public class RunestoneTests extends CodeTestHelper {
       </statement>
       <program xml:id="CountNonnegatives" language="java" interactive="activecode">
         <input>
-import java.util.Scanner;
 
 public class CountNonnegatives {
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
+        int n = -5; //change this to test for different values
         int count = 0;
         
         // TODO: Let's do up to 100 inputs max: 
