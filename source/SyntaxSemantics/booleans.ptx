@@ -50,7 +50,7 @@ public class BoolTest1
      {
          String output = getMethodOutput("main");
          String expect = "false\ntrue\nfalse\n";
-         boolean passed = getResults(expect, output, "Expected output from main", true);
+         boolean passed = getResults(expect, output, "Expected output from main");
          assertTrue(passed);
      }
  }
