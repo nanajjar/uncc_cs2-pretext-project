@@ -122,7 +122,7 @@ public class NearestInt
          String output = getMethodOutput("main");
          String expect = "5.0/3 = 1.6666666666666667\n5/3 truncated: 1\n5.0/3 rounded to nearest int: 2\n-5.0/3 rounded to nearest negative int: -2\n";
 
-         boolean passed = getResults(expect, output, "Expected output from main", true);
+         boolean passed = getResults(expect, output, "Expected output from main");
          assertTrue(passed);
      }
   }
@@ -164,7 +164,7 @@ import static org.junit.Assert.*;
          String output = getMethodOutput("main");
          String expect = "214748365\n-214748365\n";
 
-         boolean passed = getResults(expect, output, "Fixed Integer Overflow Error", true);
+         boolean passed = getResults(expect, output, "Fixed Integer Overflow Error");
          assertTrue(passed);
      }
  }
@@ -203,7 +203,7 @@ import static org.junit.Assert.*;
          String output = getMethodOutput("main");
          String expect = "3.0\n3.00\n";
 
-         boolean passed = getResults(expect, output, "Expected output from main", true);
+         boolean passed = getResults(expect, output, "Expected output from main");
          assertTrue(passed);
      }
  }

@@ -289,7 +289,7 @@ import static org.junit.Assert.*;
          int num = countOccurences(code, "{");
          boolean passed = num &gt;= 3;
 
-         getResults("3", "" + num, "Number of {", passed);
+         getResults("3", "" + num, "Number of {");
          assertTrue(passed);
      }
  }

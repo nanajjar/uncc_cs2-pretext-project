@@ -120,7 +120,7 @@ import static org.junit.Assert.*;
      {
          String output = getMethodOutput("main");
          String expect = "false\ntrue\ntrue\ntrue\n";
-         boolean passed = getResults(expect, output, "Expected output from main", true);
+         boolean passed = getResults(expect, output, "Expected output from main");
          assertTrue(passed);
      }
  }
@@ -184,7 +184,7 @@ import static org.junit.Assert.*;
      {
          String output = getMethodOutput("main");
          String expect = "Remainder of 15/2 is 1\nRemainder of 16/2 is 0\nIs 15 even? false \nIs 16 even? true\n";
-         boolean passed = getResults(expect, output, "Expected output from main", true);
+         boolean passed = getResults(expect, output, "Expected output from main");
          assertTrue(passed);
      }
  }

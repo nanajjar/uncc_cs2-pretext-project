@@ -55,7 +55,7 @@ public class RunestoneTests extends CodeTestHelper {
                           "i = 2\n" +
                           "i = 3\n" +
                           "i = 4\n";
-        boolean result = getResults(expected, output, "Your while loop output is incorrect", true);
+        boolean result = getResults(expected, output, "Your while loop output is incorrect");
         assertTrue(result);
     }
 }
@@ -108,7 +108,7 @@ public class RunestoneTests extends CodeTestHelper {
                           "i = 2\n" +
                           "i = 3\n" +
                           "i = 4\n";
-        boolean result = getResults(expected, output, "Your do-while loop output is incorrect", true);
+        boolean result = getResults(expected, output, "Your do-while loop output is incorrect");
         assertTrue(result);
     }
 }
@@ -201,7 +201,7 @@ public class RunestoneTests extends CodeTestHelper {
     public void testFixInfiniteWhile() throws IOException {
         String output = getMethodOutput("main");
         String expect = "0\n1\n2\n3\n";
-        boolean passed = getResults(expect, output, "Expected output mismatch for while loop fix", true);
+        boolean passed = getResults(expect, output, "Expected output mismatch for while loop fix");
         assertTrue(passed);
     }
 }
@@ -308,7 +308,7 @@ public class RunestoneTests extends CodeTestHelper {
     public void testDoWhileSimple() throws IOException {
         String output = getMethodOutput("main");
         String expected = "Hello!\n";
-        boolean passed = getResults(expected, output, "Should print 'Hello!' exactly once.", true);
+        boolean passed = getResults(expected, output, "Should print 'Hello!' exactly once.");
         assertTrue(passed);
     }
 }
