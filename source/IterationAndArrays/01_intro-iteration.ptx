@@ -385,8 +385,11 @@ public class RunestoneTests extends CodeTestHelper {
         // We'll just rely on them having n=5 by default
         // Then we check if the output has "15" or something
         String output = getMethodOutput("main");
-        boolean has15 = output.contains("15");
-        assertTrue("Expected sum=15 for n=5. Output:\n" + output, has15);
+   
+          boolean match = getResults("15", output, Expected sum=15 for n=5. Output:\n" + output);
+        assertTrue(match);
+             boolean has15 = output.contains("15");
+        //assertTrue("Expected sum=15 for n=5. Output:\n" + output, has15);
     }
 
     @Test
