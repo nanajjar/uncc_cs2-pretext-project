@@ -353,7 +353,7 @@ public class RunestoneTests extends CodeTestHelper {
     public void testForEachGreeting() throws IOException {
         String output = getMethodOutput("main");
          String expected = "Hello, Alice\nHello, Bob\nHello,Charlie";
-        boolean passed = getResults(expected, output, "Expected sum is 17");
+        boolean passed = getResults(expected, output, "Output contains Hello, Alice\nHello, Bob\nHello,Charlie");
         assertTrue(passed);
     }
 }
