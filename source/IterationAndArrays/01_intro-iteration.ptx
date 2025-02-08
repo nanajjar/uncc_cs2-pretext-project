@@ -271,8 +271,8 @@ public class RunestoneTests extends CodeTestHelper {
     public void testOffByOne() throws IOException {
         String output = getMethodOutput("main");
         // Should be exactly 10 lines: 0..9
-        String expected = "0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n";
-       boolean match = getResults(expected, output, "Expected 10 lines (0..9)");
+        String expected = "0\n1\n2\n3\n4\n5\n6\n7\n8\n9";
+       boolean match = getResults(expected, output.trim(), "Expected 10 lines (0..9)");
         assertTrue(match);
         
     }
