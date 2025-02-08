@@ -412,7 +412,75 @@ public class RunestoneTests extends CodeTestHelper {
     <!-- =============================
          EXERCISE 4: COUNTING NONNEGATIVES (FOR + BREAK)
          ============================= -->
-   <!-- deleted CountNonnegatives exercise - unit tests not working -->
+    <!-- <exercise xml:id="exercise-count-nonnegative" interactive="activecode">
+      <statement>
+        <p>
+          <strong>Counting Nonnegative Numbers:</strong> 
+          Let's practice using a <c>for</c> loop with a <c>break</c> statement to count positive and zero inputs.
+        </p>
+        <p>
+          Your task is to read integer inputs (either from a user or predefined in code) up to a maximum of 100 tries:
+        </p>
+        <ul>
+          <li>
+            <p>If a <em>negative</em> number is encountered, immediately exit the loop using <c>break</c>.</p>
+          </li>
+          <li>
+            <p>Keep a running count of how many nonnegative integers (zero or positive) have been processed.</p>
+          </li>
+          <li>
+            <p>Once the loop ends (either due to <c>break</c> or reaching 100 inputs), display the total count of nonnegative numbers.</p>
+          </li>
+        </ul>
+        <p>
+          <em>Example</em>: For the sequence <c>10, 0, 4, -1</c>, the loop stops at <c>-1</c>, and the count is <c>3</c>. 
+          If the very first number is negative, the count should be <c>0</c>.
+        </p>
+      </statement>
+      <program xml:id="CountNonnegatives" language="java" interactive="activecode">
+        <input>
+
+public class CountNonnegatives {
+    public static void main(String[] args) {
+        int n = -5; //change this to test for different values
+        int count = 0;
+        
+        // TODO: Let's do up to 100 inputs max: 
+        // for ...
+
+        System.out.println("Count of nonnegative numbers = " + count);
+    }
+}
+        </input>
+        <tests>
+import static org.junit.Assert.*;
+import org.junit.Test;
+import java.io.*;
+
+public class RunestoneTests extends CodeTestHelper {
+    @Test
+    public void testThreePositive() throws IOException {
+        // simulate input: 10, 0, 4, -1
+        String input = "10\n0\n4\n-1\n";
+        String output = runWithInput(input, "main");
+
+        boolean has3 = output.contains("3");
+        assertTrue("Expected 3 in output with input 10,0,4,-1. Output:\n" + output, has3);
+    }
+
+    @Test
+    public void testNoPositive() throws IOException {
+        // if the user enters a negative right away
+        String input = "-2\n";
+        String output = runWithInput(input, "main");
+
+        boolean has0 = output.contains("0");
+        assertTrue("Expected 0 in output if first input is negative. Output:\n" + output, has0);
+    }
+}
+        </tests>
+      </program>
+    </exercise> -->
   </subsection>
 
   <subsection xml:id="preview-other-loops">
