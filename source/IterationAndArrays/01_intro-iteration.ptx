@@ -386,9 +386,9 @@ public class RunestoneTests extends CodeTestHelper {
         // Then we check if the output has "15" or something
         String output = getMethodOutput("main");
    
-          boolean match = getResults("15", output, Expected sum=15 for n=5. Output:\n" + output);
+        boolean match = getResults("15", output, "Expected sum=15 for n=5. Output:\n" + output);
         assertTrue(match);
-             boolean has15 = output.contains("15");
+        
         //assertTrue("Expected sum=15 for n=5. Output:\n" + output, has15);
     }
 
@@ -412,7 +412,7 @@ public class RunestoneTests extends CodeTestHelper {
     <!-- =============================
          EXERCISE 4: COUNTING NONNEGATIVES (FOR + BREAK)
          ============================= -->
-    <exercise xml:id="exercise-count-nonnegative" interactive="activecode">
+    <!-- <exercise xml:id="exercise-count-nonnegative" interactive="activecode">
       <statement>
         <p>
           <strong>Counting Nonnegative Numbers:</strong> 
@@ -480,7 +480,7 @@ public class RunestoneTests extends CodeTestHelper {
 }
         </tests>
       </program>
-    </exercise>
+    </exercise> -->
   </subsection>
 
   <subsection xml:id="preview-other-loops">

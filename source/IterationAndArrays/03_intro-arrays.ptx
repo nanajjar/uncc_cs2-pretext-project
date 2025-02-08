@@ -375,8 +375,10 @@ public class RunestoneTests extends CodeTestHelper {
     public void testSumArray() throws IOException {
         String output = getMethodOutput("main");
         // sum(10,20,30,40,50) = 150
-        boolean passed = output.contains("150");
-        assertTrue("Expected sum=150, got:\n" + output, passed);
+        String expected = "150";
+        boolean passed = getResults(expected, output, "Expected sum=150");
+        assertTrue(passed);
+
     }
 }
         </tests>

@@ -309,7 +309,9 @@ public class RunestoneTests extends CodeTestHelper {
     @Test
     public void testForEachSum() throws IOException {
         String output = getMethodOutput("main");
-        assertTrue("Expected sum is 17", output.contains("17"));
+        String expected = "17";
+        boolean passed = getResults(expected, output, "Expected sum is 17");
+        assertTrue(passed);
     }
 }
         </tests>
@@ -350,9 +352,13 @@ public class RunestoneTests extends CodeTestHelper {
     @Test
     public void testForEachGreeting() throws IOException {
         String output = getMethodOutput("main");
-        assertTrue("Expected greeting for Alice", output.contains("Hello, Alice"));
+         String expected = "Hello, Alice\nHello, Bob\nHello,Charlie";
+        boolean passed = getResults(expected, output, "Expected sum is 17");
+        assertTrue(passed);
+
+        <!-- assertTrue("Expected greeting for Alice", output.contains("Hello, Alice"));
         assertTrue("Expected greeting for Bob", output.contains("Hello, Bob"));
-        assertTrue("Expected greeting for Charlie", output.contains("Hello, Charlie"));
+        assertTrue("Expected greeting for Charlie", output.contains("Hello, Charlie")); -->
     }
 }
         </tests>
@@ -408,9 +414,12 @@ public class RunestoneTests extends CodeTestHelper {
     @Test
     public void testModification() throws IOException {
         String output = getMethodOutput("main");
-        // We expect after the final fix, the array has 4,8,12
+        String expected = "4\n8\n12";
+        boolean passed = getResults(expected, output, "Expected output contains 4 8 12");
+        assertTrue(passed);
+        <!-- // We expect after the final fix, the array has 4,8,12
         assertTrue("The final lines should contain '4' '8' '12' after doubling\n" + output,
-            output.contains("4") &amp;&amp; output.contains("8") &amp;&amp; output.contains("12"));
+            output.contains("4") &amp;&amp; output.contains("8") &amp;&amp; output.contains("12")); -->
     }
 }
         </tests>
