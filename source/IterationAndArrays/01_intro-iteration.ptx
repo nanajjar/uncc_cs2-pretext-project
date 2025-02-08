@@ -74,7 +74,9 @@ public class RunestoneTests extends CodeTestHelper {
                         "i = 7\n" +
                         "i = 8\n" +
                         "i = 9\n";
-        assertTrue(getResults(expect, output, "Expected output not matching"));
+
+        boolean passed = getResults(expect, output, "Expected output not matching");
+        assertTrue(passed);     
     }
 }
       </tests>
