@@ -355,10 +355,6 @@ public class RunestoneTests extends CodeTestHelper {
          String expected = "Hello, Alice\nHello, Bob\nHello,Charlie";
         boolean passed = getResults(expected, output, "Expected sum is 17");
         assertTrue(passed);
-
-        <!-- assertTrue("Expected greeting for Alice", output.contains("Hello, Alice"));
-        assertTrue("Expected greeting for Bob", output.contains("Hello, Bob"));
-        assertTrue("Expected greeting for Charlie", output.contains("Hello, Charlie")); -->
     }
 }
         </tests>
@@ -417,9 +413,6 @@ public class RunestoneTests extends CodeTestHelper {
         String expected = "4\n8\n12";
         boolean passed = getResults(expected, output, "Expected output contains 4 8 12");
         assertTrue(passed);
-        <!-- // We expect after the final fix, the array has 4,8,12
-        assertTrue("The final lines should contain '4' '8' '12' after doubling\n" + output,
-            output.contains("4") &amp;&amp; output.contains("8") &amp;&amp; output.contains("12")); -->
     }
 }
         </tests>
