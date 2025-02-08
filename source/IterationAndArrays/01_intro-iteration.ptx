@@ -273,8 +273,8 @@ public class RunestoneTests extends CodeTestHelper {
         // Should be exactly 10 lines: 0..9
         String expected = "0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n";
        boolean match = getResults(expected, output, "Expected 10 lines (0..9)");
-         //assertEquals("Output doesn't match", cleanString(expected), cleanString(output));
-        //assertTrue(match);
+        assertTrue(match);
+        
     }
 }
         </tests>
