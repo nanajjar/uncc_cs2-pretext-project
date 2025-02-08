@@ -1,0 +1,264 @@
+<section xml:id="ch-intro-java-strings">
+  <title>Understanding Java Strings</title>
+
+  <!-- ======================================================
+       1. Overview & Objectives
+       ====================================================== -->
+  <subsection xml:id="ch-5-string-overview-objectives">
+    <title>Overview and Objectives</title>
+    <p> In Java, <c>String</c> handling looks simple at first glance: just type <c>"Hello World"</c> and you're done. But behind the scenes, strings are <em>objects</em> (not primitives), they're <em>immutable</em> (you can't actually change them in place), and they have special comparison rules. Understanding these fundamentals is crucial before applying the “Design Recipe” to real string-processing tasks. </p>
+    <p>
+      By the end of this section, you'll be able to:
+    </p>
+    <objectives>
+      <ul>
+        <li>
+          <p><em>Recognize</em> that Java <c>String</c> is an object type, not a primitive.</p>
+        </li>
+        <li>
+          <p><em>Explain</em> why strings are immutable and how that affects "modification."</p>
+        </li>
+        <li>
+          <p><em>Use</em> <c>.equals(...)</c> correctly instead of <c>==</c> for content comparisons.</p>
+        </li>
+        <li>
+          <p><em>Understand</em> how Java may store string <em>literals</em> in a special “pool,”
+            and why that does <em>not</em> replace the need for <c>.equals(...)</c> checks.</p>
+        </li>
+        <li>
+          <p><em>Relate</em> these points to Step 1 (Data Definition) of the Design Recipe (what a Java <c>String</c> is, structurally). </p>
+        </li>
+      </ul>
+    </objectives>
+  </subsection>
+
+  <!-- ======================================================
+       2. Strings as Objects, Not Primitives
+       ====================================================== -->
+  <subsection xml:id="strings-as-objects">
+    <title>Strings as Objects, Not Primitives</title>
+    <p>In many languages, you might think of a string as a simple sequence of text stored directly in a variable. In Java, though, <c>String</c> variables actually hold <em>references</em> to <em>String objects</em>. This is different from primitives like <c>int</c> or <c>boolean</c>, which store numeric or true/false values directly.</p>
+    <p>Whenever you write:</p>
+      <program language="java">
+        String greeting = "Hello";
+        String greeting2 = new String("Hello");
+      </program>
+    <p>Both lines create a <em>String object</em> internally. However: <ul>
+        <li><em>Literal notation</em> (<c>"Hello"</c>) can reuse an existing copy if one already exists—Java often places these in a special "string pool."</li>
+        <li><em>new String("Hello")</em> always creates a <term>new</term> object outside that pool, even if the text is the same.</li>
+      </ul> In both cases, the text is <c>"Hello"</c>, but <c>greeting</c> and <c>greeting2</c> might point to different objects under the hood.</p>
+    <p>This distinction matters because: <ul>
+        <li>A Java <c>String</c> variable (like <c>greeting</c>) doesn't contain the text directly; it <em>refers</em> to where that text is stored.</li>
+        <li>It's possible for multiple variables to share the exact same string object if they both refer to it. Other times, they might each refer to a <em>different</em> string object with the same text.</li>
+      </ul> Understanding "reference vs. content" helps you avoid subtle bugs when comparing strings or wondering why "modifications" don't behave as expected.</p>
+
+    <p>
+      Here’s a rough ASCII diagram:
+    </p>
+    <program language="plaintext">
++------------------------+     +-----------------------------+
+|  "String Pool" (temp)  |     |   General Object Storage    |
++------------------------+     +-----------------------------+
+| "Hello" literal        | &lt;-- |  new String("Hello") object | &lt;- greeting2
++------------------------+     +-----------------------------+
+     ^                              ^
+     |                              |
+  greeting                     (fresh object)
+    </program>
+    <p> In this sketch: <ul>
+        <li><em>String Pool</em> is a place where the Java runtime may keep a single copy of each
+      literal text (like <c>"Hello"</c>) so it doesn’t duplicate them unnecessarily.</li>
+        <li>The <c>new</c> expression forces creation of a separate object in the general storage
+      area (often called the <em>heap</em>). That’s why <c>greeting2</c> references a distinct
+      “Hello” object.</li>
+      </ul>
+    </p>
+  </subsection>
+
+  <!-- ======================================================
+       3. Immutability: No In-Place Modification
+       ====================================================== -->
+  <subsection xml:id="immutability-string">
+    <title>Immutability: No In-Place Modification</title>
+    <p>Java <c>String</c>s are <em>immutable</em>: once created, the sequence of characters in that string never changes. Instead of modifying the same object, methods like <c>toUpperCase()</c> or <c>concat(...)</c> create <term>new</term> <c>String</c> objects.</p>
+      <program language="java">
+        String word = "Hello";
+        word.toUpperCase();
+        System.out.println(word); // Prints "Hello", unchanged
+
+        word = word.toUpperCase();
+        System.out.println(word); // Prints "HELLO"
+      </program>
+
+    <p>In the first call, the uppercase version of "Hello" is created, but we never stored it back into <c>word</c>. So <c>word</c> remains the original "Hello". Only on the second call do we assign <c>word</c> to the newly created string "HELLO".</p>
+    <p>This can be surprising if you're coming from a language where "strings" can be changed in-place. In Java, always remember to capture the result of any "modifying" operation if you want to keep it.</p>
+  </subsection>
+
+  <!-- ======================================================
+       4. Comparing Strings: == vs .equals(...)
+       ====================================================== -->
+  <subsection xml:id="comparing-strings">
+    <title>Comparing Strings: <c>==</c> vs. <c>.equals(...)</c></title>
+    <p>Because <c>String</c> variables hold <em>references</em> to objects, using the <c>==</c> operator checks if two references point to the <em>exact same string object</em>. Meanwhile, <c>.equals(...)</c> compares the text content—i.e., do these objects have identical characters?</p>
+      <program language="java">
+        String a = "test";
+        String b = "test";
+        String c = new String("test");
+
+        System.out.println(a == b); // Possibly true if both share the same literal
+        System.out.println(a == c); // false, c is a distinct new String
+        System.out.println(a.equals(c)); // true, all have the same text "test"
+      </program>
+    <p>We strongly recommend <em>always</em> using <c>.equals(...)</c> (or <c>.equalsIgnoreCase(...)</c> to ignore case) for string comparisons in Java. Relying on <c>==</c> can cause silent bugs if the compiler/runtime happens not to reuse the same literal object or if <c>new</c> was used.</p>
+  </subsection>
+
+  <!-- ======================================================
+       5. Optional: The String Pool
+       ====================================================== -->
+  <subsection xml:id="string-pool">
+    <title>Optional: The String Pool</title>
+    <p>The <em>string pool</em> is an internal optimization in Java: whenever the compiler sees a literal like <c>"test"</c> in your code, it can store just one copy of that text in a special region. Multiple variables using that same literal may point to this single pooled copy, which sometimes makes <c>==</c> appear to work. However, this behavior is only guaranteed for <em>identical string literals</em> in the same program.</p>
+    <p>On the other hand, <c>new String("test")</c> <em>always</em> creates a new object that is <term>not</term> in the pool. Therefore, <c>a == b</c> can be <c>false</c> even if <c>a</c> and <c>b</c> have the same text. This is why <c>.equals(...)</c> is so important for correct content-based checks.</p>
+  </subsection>
+
+  <!-- ======================================================
+       6. Connecting to the Design Recipe
+       ====================================================== -->
+  <subsection xml:id="connecting-design-recipe">
+    <title>Connecting to the Design Recipe</title>
+    <p>In the Design Recipe, the first step (<em>Data Definition</em>) asks: “What data am I dealing with, and how is it structured?” For Java strings:</p>
+    <ul>
+      <li>
+        <p><em>Length</em>: An integer count of the characters, accessible via <c>str.length()</c>.</p>
+      </li>
+      <li>
+        <p><em>Characters</em>: Each at indices <c>[0..length()-1]</c>. For instance, <c>"Hello"</c> has indices 0:'H', 1:'e', and so forth.</p>
+      </li>
+      <li>
+        <p><em>Immutability</em>: Methods do not alter the string in-place— they produce new strings.</p>
+      </li>
+    </ul>
+    <p>Keeping these points in mind prevents confusion when writing or analyzing code. For example, if you want to “make your text uppercase,” in Java you do something like:</p>
+    <program language="java">
+        text = text.toUpperCase();
+    </program>
+    <p>rather than assuming you changed the original string. In upcoming sections, you’ll see how these fundamentals shape the way we search, slice, or combine strings while applying the rest of the Design Recipe (e.g., writing tests, refining method outlines, etc.).</p>
+  </subsection>
+
+  <!-- ======================================================
+       7. Exercises
+       ====================================================== -->
+  <subsection xml:id="ex-intro-strings">
+    <title>Exercises</title>
+
+    <!-- Exercise 1 -->
+    <exercise xml:id="ex-immutability-action">
+      <title>Check Immutability in Action</title>
+      <statement>
+        <p>Given the code:</p>
+          <program language="java">
+            String msg = "Hello";
+            msg.toUpperCase();
+            System.out.println(msg);
+          </program>
+        <p>
+            <term>Question 1:</term> What does the program actually print and why? <term>Question 2:</term> How do you adjust it so it prints <c>HELLO</c>? </p>
+      </statement>
+      <solution>
+        <p>
+          <em>Answer:</em>
+          <ul>
+            <li> It prints <c>Hello</c> because <c>toUpperCase()</c> creates a new string without
+              reassigning <c>msg</c>. </li>
+            <li> Reassign <c>msg</c> with the method result: <c>msg = msg.toUpperCase()</c>. Then it
+              prints <c>HELLO</c>. </li>
+          </ul>
+        </p>
+      </solution>
+    </exercise>
+
+    <!-- Exercise 2 (multiple-choice) -->
+    <exercise xml:id="mc-immutability-quiz" type="multiplechoice">
+      <title>Multiple-Choice: Immutability Quiz</title>
+      <statement>
+        <p>Which statement <em>best</em> explains why Java <c>String</c> objects are considered immutable?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>Because calling <c>toUpperCase()</c> changes the original <c>String</c> object in place.</statement>
+          <feedback>No. <c>toUpperCase()</c> returns a new string; the original is unchanged.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>Because once created, the character contents cannot be changed, and any “update” actually creates a new <c>String</c> object.</statement>
+          <feedback>Correct. Java <c>String</c> never modifies the existing object.</feedback>
+        </choice>
+        <choice>
+          <statement>Because <c>String</c> is a primitive type stored directly in each variable.</statement>
+          <feedback>No. <c>String</c> is a reference type, not a primitive.</feedback>
+        </choice>
+        <choice>
+          <statement>Because Java automatically uses <c>intern()</c> for every new <c>String</c> creation.</statement>
+          <feedback>Interning is an optional optimization for string literals, not the reason for immutability.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- Exercise 3 (activecode) -->
+    <exercise xml:id="ac-fix-immutability" interactive="activecode">
+      <title>Fixing Immutability Mistakes</title>
+      <statement>
+        <p>In the code below, we want to print <c>HELLO</c> and <c>WELCOME</c>. Currently, it prints <c>Hello</c> and <c>Welcome</c> because the calls to <c>toUpperCase()</c> are not stored back into the variables. Fix the snippet so that it correctly prints uppercase versions of each.</p>
+      </statement>
+      <program language="java" xml:id="ImmutabilityActiveCode">
+        <input>
+          public class ImmutabilityActiveCode {
+          public static void main(String[] args) {
+          String greeting = "Hello";
+          // TODO: Fix so "HELLO" is printed
+          greeting.toUpperCase();
+          System.out.println(greeting); // Should print "HELLO"
+
+          String banner = "Welcome";
+          // TODO: Fix so "WELCOME" is printed
+          banner.toUpperCase();
+          System.out.println(banner); // Should print "WELCOME"
+          }
+          }
+        </input>
+        <tests>
+import static org.junit.Assert.*;
+import org.junit.Test;
+import java.io.*;
+
+public class RunestoneTests extends CodeTestHelper {
+    @Test
+    public void testUpperCase() throws IOException {
+        String output = getMethodOutput("main");
+        String[] lines = output.trim().split("\\n");
+        assertEquals("First line should be HELLO", "HELLO", lines[0].trim());
+        assertEquals("Second line should be WELCOME", "WELCOME", lines[1].trim());
+    }
+
+    @Test
+    public void testAssignment() {
+        String code = getCodeString();
+        boolean hasAssignment = code.contains("greeting = greeting.toUpperCase()") || 
+                              code.contains("greeting=greeting.toUpperCase()");
+        assertTrue("Check if you're assigning the result back to greeting", hasAssignment);
+    }
+}
+        </tests>
+      </program>
+    </exercise>
+
+  </subsection>
+
+  <!-- ======================================================
+       8. Conclusion
+       ====================================================== -->
+  <subsection xml:id="conclusion-java-strings">
+    <title>Conclusion</title>
+    <p>Java strings might look straightforward, yet they're built upon distinct principles: they store characters in <em>objects</em> (not primitives), are <em>immutable</em>, and require <c>.equals()</c> for content comparison. Mastering these points is essential before tackling advanced string operations in the next sections. If you remember that <c>String</c> is about <em>references</em>, <em>new objects</em>, and <em>in-place immutability</em>, you'll avoid common pitfalls when building real-world string-handling code.</p>
+    <p>Next, we'll apply the Design Recipe in a step-by-step fashion to various string tasks—like slicing, searching, or replacing—knowing full well how Java <c>String</c> objects behave under the hood.</p>
+  </subsection>
+</section>

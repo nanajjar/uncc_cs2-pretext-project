@@ -1,0 +1,453 @@
+<section xml:id="ch-basic-inspection">
+  <title>1. Basic String Inspection</title>
+
+  <!-- =========================================
+       1. Introduction & Motivating Narrative
+       ========================================= -->
+  <subsection xml:id="intro-and-motivation">
+    <title>Introduction &amp; Motivating Narrative</title>
+    <p>Imagine you're building a chat application where users type short messages. You need to check if a message is empty (so you can ignore it), determine its length (to enforce a maximum size), and occasionally inspect specific characters (for commands like <c>"/roll"</c> or <c>"@someone"</c>). Java's <c>String</c> class provides convenient methods like <c>length()</c>, <c>isEmpty()</c>, and <c>charAt(...)</c>. But how do these methods work under the hood? And how can we guarantee we never access an invalid index?</p>
+    <p>In this section, we'll explore how Java implements these <em>inspection</em> methods and, in line with the <term>Design Recipe</term>, create a simplified version called "MyString." By focusing on <term>Step 1: Data Definition</term>, we'll clarify the internal structure of a string-like class. Along the way, we'll also touch on <term>Step 2: Method Signatures</term>, briefly outline a <term>Step 4: Template</term> for the class, and then build each method <term>step by step</term>. By the end, you'll see how these inspection methods flow naturally from a precise definition of what a string is in code.</p>
+  </subsection>
+
+  <!-- =========================================
+       2. Java's Built-In Methods: length, isEmpty, charAt
+       ========================================= -->
+  <subsection xml:id="built-in-inspection-methods">
+    <title>Java's Built-In Inspection Methods</title>
+    <p>Let's begin by examining how Java's <c>String</c> class meets our inspection needs:</p>
+    <ul>
+      <li><p><c>str.length()</c> — Returns the number of characters in <c>str</c>. For example, <c>"Hello".length()</c> is <c>5</c>.</p></li>
+      <li><p><c>str.isEmpty()</c> — Checks if <c>str</c> contains zero characters. If <c>str.length() == 0</c>, it returns <c>true</c>; otherwise, <c>false</c>.</p></li>
+      <li><p><c>str.charAt(i)</c> — Returns the character at index <c>i</c>, where <c>0 &lt;= i &lt; str.length()</c>. An out-of-range <c>i</c> triggers a <c>StringIndexOutOfBoundsException</c>.</p></li>
+    </ul>
+    <p>Here's a brief snippet showing their usage:</p>
+    <program language="java">
+      <input>
+public class DemoStringInspection {
+    public static void main(String[] args) {
+        String msg = "Hello";
+        System.out.println("msg.length() -&gt; " + msg.length());    // 5
+        System.out.println("msg.isEmpty() -&gt; " + msg.isEmpty());  // false
+        System.out.println("msg.charAt(1) -&gt; " + msg.charAt(1));  // 'e'
+
+        String emptyMsg = "";
+        System.out.println("emptyMsg.length() -&gt; " + emptyMsg.length());   // 0
+        System.out.println("emptyMsg.isEmpty() -&gt; " + emptyMsg.isEmpty()); // true
+    }
+}
+      </input>
+    </program>
+    <p>It's straightforward. But to understand <em>why</em> these methods behave as they do, we'll apply <term>Step 1 (Data Definition)</term> from the Design Recipe in our own “MyString.” We'll also reveal relevant method signatures (Step 2) and a skeleton (Step 4) before implementing each method individually.</p>
+  </subsection>
+
+  <subsection xml:id="spotlight-step1-data-definition">
+    <title>Spotlight: Step 1 (Data Definition)</title>
+    <p>To design our <c>MyString</c> (or any string-like class), we must decide how to represent its data internally. Our goals are to handle character-by-character storage, enable quick indexing, and track the total length. Let's look at three “attempts” to see why storing characters in an array is the most sensible approach, even if it initially introduces a naive maximum size.</p>
+
+    <subsubsection xml:id="attempt-1">
+      <title>Attempt #1: Just Store a Java <c>String</c></title>
+      <p>A quick solution might be, “If we want a string, let's just have a <c>String text</c> field.” While this does store text, it misses our educational objective: learning how methods like <c>length()</c> and <c>charAt(...)</c> work from scratch. We'd be using Java's built-in <c>String</c> rather than defining our own structure. This violates Step 1 of the Design Recipe because it doesn't define <em>our own</em> underlying data—it just delegates to existing code.</p>
+      <program language="java">
+        <input>
+private String text; // Attempt #1
+        </input>
+      </program>
+    </subsubsection>
+
+    <subsubsection xml:id="attempt-2">
+      <title>Attempt #2: Individual Variables per Character</title>
+      <p>Another idea might be, “Let's store each character in its own field.” For example:</p>
+      <program language="java">
+        <input>
+private char first;
+private char second;
+private char third;
+// ... etc.
+        </input>
+      </program>
+      <p>This quickly becomes unmanageable: we never know how many character fields we'll need, and it doesn't scale for arbitrary-length strings. If someone needs 10 or 100 characters, do we keep declaring fields indefinitely? Clearly unsustainable.</p>
+    </subsubsection>
+
+    <subsubsection xml:id="final-approach">
+      <title>Final Approach: A Fixed Character Array (Up to 100 Chars)</title>
+      <p>The best next step is to store all characters in a single array. For simplicity, we'll impose a limit of 100 characters in this demo:</p>
+      <program language="java">
+        <input>
+private char[] chars = new char[100];
+private int usedLength = 0;
+        </input>
+      </program>
+      <p>We also track <c>usedLength</c> to indicate how many of these slots are actually in use. If a string is four characters long, <c>usedLength</c> is <c>4</c>, and positions beyond index 3 remain unused. While this approach is straightforward, it's obviously limited—someone needing 101 characters has no room. Real Java <c>String</c> uses a more flexible, immutable representation. Alternatively, <c>ArrayList&lt;Character&gt;</c> could be used, though it would consume extra memory by “boxing” each character. For our Design Recipe practice, a <c>char[100]</c> plus <c>usedLength</c> clarifies how each character is stored, accessed, and counted.</p>
+      <ul>
+        <li><em>length()</em> simply returns <c>usedLength</c>.</li>
+        <li><em>isEmpty()</em> checks if <c>usedLength == 0</c>.</li>
+        <li><em>charAt(i)</em> must ensure <c>0 &lt;= i &lt; usedLength</c> before returning <c>chars[i]</c>.</li>
+      </ul>
+      <p>Our “failed attempts” and final choice illustrate why Step 1 is powerful: once we define how our string data is organized, the rest of the class follows naturally—even with a naive upper limit. In the next sections, we'll refine these methods and see how the rest of the Design Recipe fits in.</p>
+    </subsubsection>
+  </subsection>
+
+  <!-- =========================================
+       4. Step 2: Method Signatures & Purpose (Brief)
+       ========================================= -->
+  <subsection xml:id="step2-method-sigs">
+    <title>Step 2: Method Signatures &amp; Purpose</title>
+    <p>Though our main emphasis is Step 1, it's worth seeing how the <em>data definition</em> informs each method's signature and purpose. For our <c>MyString</c> class, we might write:</p>
+    <program language="java">
+      <input>
+// In a hypothetical MyString class...
+
+/**
+ * Returns how many characters are used in this MyString.
+ */
+public int length() { ... }
+
+/**
+ * Checks if this MyString has zero characters used.
+ */
+public boolean isEmpty() { ... }
+
+/**
+ * Returns the char at position index (0 &lt;= index &lt; usedLength).
+ * Throws an error if out-of-range.
+ */
+public char charAt(int index) { ... }
+      </input>
+    </program>
+    <p>Each method's purpose follows our data definition: “a string is a fixed array of up to 100 characters plus a count of used characters.” So <c>length</c> returns an <c>int</c>, <c>isEmpty</c> returns a <c>boolean</c>, and <c>charAt</c> expects an <c>int</c> parameter. Once the data is defined, the signatures and purpose statements nearly write themselves.</p>
+  </subsection>
+
+  <subsection xml:id="step3-examples-tests-inspection">
+    <title>Step 3: Examples &amp; Tests (Minimal)</title>
+    <p>We can outline a few examples to confirm correctness. Below is a table for the built-in <c>String</c>, but it equally applies to our re-implementation:</p>
+    <table>
+      <title>Inspection Methods Example Table</title>
+      <tabular>
+        <row header="yes">
+          <cell>Input</cell>
+          <cell>length()</cell>
+          <cell>isEmpty()</cell>
+          <cell>charAt(1)</cell>
+        </row>
+        <row>
+          <cell>
+            <c>"Hello"</c>
+          </cell>
+          <cell>5</cell>
+          <cell>false</cell>
+          <cell>'e'</cell>
+        </row>
+        <row>
+          <cell><c>""</c> (empty string)</cell>
+          <cell>0</cell>
+          <cell>true</cell>
+          <cell>(invalid - out of bounds)</cell>
+        </row>
+        <row>
+          <cell>
+            <c>"Cat"</c>
+          </cell>
+          <cell>3</cell>
+          <cell>false</cell>
+          <cell>'a'</cell>
+        </row>
+        <row>
+          <cell>
+            <c>"Java!"</c>
+          </cell>
+          <cell>5</cell>
+          <cell>false</cell>
+          <cell>'a'</cell>
+        </row>
+        <row>
+          <cell>
+            <c>" "</c> (space)
+          </cell>
+          <cell>1</cell>
+          <cell>false</cell>
+          <cell>(invalid - out of bounds)</cell>
+        </row>
+        <row>
+          <cell>
+            <c>"123"</c>
+          </cell>
+          <cell>3</cell>
+          <cell>false</cell>
+          <cell>'2'</cell>
+        </row>
+      </tabular>
+    </table>
+    <p>These examples offer a clear reference for the behavior we expect: from ordinary words to empty strings. They set a baseline for what the next implementation steps must achieve.</p>
+  </subsection>
+
+  <!-- =========================================
+       4. Step 4: Skeleton / Method Template
+       ========================================= -->
+  <subsection xml:id="step4-skeleton-inspection">
+    <title>Step 4: Skeleton for Our "MyString" Class</title>
+    <p>
+      Having established our data definition (Step 1), method signatures (Step 2), 
+      and sample tests (Step 3), let's present a <em>class skeleton</em>. 
+      This corresponds to <term>Step 4: Skeleton / Method Template</term> in the Design Recipe.
+    </p>
+    <program language="java">
+      <input>
+public class MyString {
+
+    // Data (from our final approach in Step 1)
+    private char[] chars = new char[100];  // fixed size of 100
+    private int usedLength;                // tracks actual characters used
+
+    // Constructor
+    // - copies characters from a regular Java String
+    public MyString(String original) {
+        // 1) verify length &lt;= 100
+        // 2) copy chars from original
+        // 3) set usedLength
+    }
+
+    public int length() {
+        // return usedLength as discussed in examples
+        return 0; // placeholder
+    }
+
+    public boolean isEmpty() {
+        // check if usedLength == 0 as shown in our test table
+        return false; // placeholder
+    }
+
+    public char charAt(int index) {
+        // verify 0 &lt;= index &lt; usedLength
+        // return chars[index] if valid
+        return 'X'; // placeholder
+    }
+
+    // We'll implement each method next
+}
+      </input>
+    </program>
+    <p>
+      This skeleton directly mirrors our earlier reasoning: the data definition from Step 1,
+      the method signatures from Step 2, and the tests from Step 3.
+      Each method's logic follows from how we defined the string structure.
+      In the next section, we'll fill in the actual method bodies.
+    </p>
+  </subsection>
+
+  <!-- =========================================
+       5. Step 5: Method Implementation
+       ========================================= -->
+  <subsection xml:id="step5-method-implementation">
+    <title>Step 5: Method Implementation</title>
+    <p>Now let's implement each method of <c>MyString</c> according to our data definition and example table. Pay particular attention to how each method directly stems from our design choices.</p>
+
+    <subsubsection xml:id="constructor-implementation">
+      <title>Constructor</title>
+      <p>First, we need a way to instantiate <c>MyString</c>. The constructor enforces our 100-character cap and properly initializes the internal array:</p>
+      <program language="java">
+        <input>
+public MyString(String original) {
+    if (original.length() &gt; 100) {
+        // Enforce our 100-character limit
+        usedLength = 100;
+    } else {
+        usedLength = original.length();
+    }
+    
+    // Copy characters into our array
+    for (int i = 0; i &lt; usedLength; i++) {
+        chars[i] = original.charAt(i);
+    }
+}
+        </input>
+      </program>
+    </subsubsection>
+
+    <subsubsection xml:id="length-implementation">
+      <title>The <c>length()</c> Method</title>
+      <p>We already track the string's length in <c>usedLength</c>. Thus, <c>length()</c> is trivial:</p>
+      <program language="java">
+        <input>
+public int length() {
+    return usedLength;
+}
+        </input>
+      </program>
+    </subsubsection>
+
+    <subsubsection xml:id="isempty-implementation">
+      <title>The <c>isEmpty()</c> Method</title>
+      <p>A string is empty if it has zero characters. Given our data definition, that's just:</p>
+      <program language="java">
+        <input>
+public boolean isEmpty() {
+    return (usedLength == 0);
+}
+        </input>
+      </program>
+    </subsubsection>
+
+    <subsubsection xml:id="charat-implementation">
+      <title>The <c>charAt()</c> Method</title>
+      <p>This method must validate the index before accessing the array. Unlike Java's <c>String</c>, we'll return a special character instead of throwing an exception:</p>
+      <program language="java">
+        <input>
+public char charAt(int index) {
+    if (index &lt; 0 || index >= usedLength) {
+        return '?';  // Our placeholder for invalid indices
+    }
+    return chars[index];
+}
+        </input>
+      </program>
+    </subsubsection>
+  </subsection>
+
+  <!-- =========================================
+       6. Step 6: Reflection & Next Steps
+       ========================================= -->
+  <subsection xml:id="step6-reflection-inspection">
+    <title>Step 6: Reflection &amp; Next Steps</title>
+    <p>By stating that “a string is a sequence of <c>n</c> characters at indices <c>0..n-1</c>,” we avoided guesswork when implementing <c>length()</c>, <c>isEmpty()</c>, and <c>charAt(...)</c>. That's Step 1 of the Design Recipe in action:</p>
+    <ul>
+      <li><strong>No out-of-bounds surprises</strong>: Our data definition clearly marks any index <c>&gt;= length</c> or <c>&lt; 0</c> as invalid.</li>
+      <li><strong>Defining "empty"</strong>: If <c>n == 0</c>, no valid positions exist, so <c>isEmpty()</c> is <c>true</c> and <c>charAt(0)</c> cannot succeed.</li>
+    </ul>
+    <p>In the next section (Section 2), we'll focus on Step 2 (Method Signatures &amp; Purpose) in the realm of <em>string equality and ordering</em>. We'll still use the same foundational data definition—“a string is length <c>n</c> with positions <c>0..n-1</c>.” This stable core continues to guide how other string methods should behave, including comparing or sorting them.</p>
+    <p>If you'd like more practice right now, try:</p>
+    <ul>
+      <li><p><em>Index validation</em>: Write a loop that calls <c>charAt(i)</c> for <c>i = 0..(length)</c>, observing how it signals an error once <c>i == length()</c>.</p></li>
+      <li><p><em>Adding tests</em>: For your <c>MyString</c>, test words like "Cat," "Umbrella," or anything else—perhaps indexing the last character. This reinforces the <c>0..n-1</c> rule.</p></li>
+    </ul>
+  </subsection>
+
+<subsection xml:id="mystring-complete-demo">
+  <title>Putting It All Together: A Runnable <c>MyString</c></title>
+  <p>
+    Now that we've walked through each method, here's a self-contained 
+    version of the <c>MyString</c> class with a <c>main</c> method. 
+    It tests the same scenarios we outlined in <em>Step 3</em> (Examples &amp; Tests).
+    Compile and run this code to confirm that all methods behave as expected.
+  </p>
+
+  <program language="java" xml:id="mystring-complete" interactive="activecode">
+public class MyString {
+
+    private char[] chars = new char[100];  // fixed size of 100
+    private int usedLength;                // tracks how many chars are used
+
+    /**
+     * Constructs a new MyString from a regular Java String.
+     * Enforces a 100-character limit.
+     */
+    public MyString(String original) {
+        if (original.length() &gt; 100) {
+            // Enforce our 100-character limit
+            usedLength = 100;
+        } else {
+            usedLength = original.length();
+        }
+        // Copy characters into our array
+        for (int i = 0; i &lt; usedLength; i++) {
+            chars[i] = original.charAt(i);
+        }
+    }
+
+    /**
+     * Returns how many characters are used.
+     */
+    public int length() {
+        return usedLength;
+    }
+
+    /**
+     * Checks if zero characters are used.
+     */
+    public boolean isEmpty() {
+        return (usedLength == 0);
+    }
+
+    /**
+     * Returns the char at position index (0 &lt;= index &lt; usedLength).
+     * Returns '?' if out-of-range.
+     */
+    public char charAt(int index) {
+        if (index &lt; 0 || index &gt;= usedLength) {
+            return '?';  // Indicator for invalid index
+        }
+        return chars[index];
+    }
+
+    /**
+     * A main method that tests MyString according to our examples in Step 3.
+     */
+    public static void main(String[] args) {
+        // 1) "Hello"
+        MyString s1 = new MyString("Hello");
+        System.out.println("Testing MyString(\"Hello\"):");
+        System.out.println(" length() -&gt; " + s1.length());        // Expect 5
+        System.out.println(" isEmpty() -&gt; " + s1.isEmpty());      // Expect false
+        System.out.println(" charAt(1) -&gt; " + s1.charAt(1));      // Expect 'e'
+        System.out.println();
+
+        // 2) "" (empty string)
+        MyString s2 = new MyString("");
+        System.out.println("Testing MyString(\"\"):");
+        System.out.println(" length() -&gt; " + s2.length());        // Expect 0
+        System.out.println(" isEmpty() -&gt; " + s2.isEmpty());      // Expect true
+        System.out.println(" charAt(1) -&gt; " + s2.charAt(1));      // Expect '?'
+        System.out.println();
+
+        // 3) "Cat"
+        MyString s3 = new MyString("Cat");
+        System.out.println("Testing MyString(\"Cat\"):");
+        System.out.println(" length() -&gt; " + s3.length());        // Expect 3
+        System.out.println(" isEmpty() -&gt; " + s3.isEmpty());      // Expect false
+        System.out.println(" charAt(1) -&gt; " + s3.charAt(1));      // Expect 'a'
+        System.out.println();
+
+        // 4) "Java!"
+        MyString s4 = new MyString("Java!");
+        System.out.println("Testing MyString(\"Java!\"):");
+        System.out.println(" length() -&gt; " + s4.length());        // Expect 5
+        System.out.println(" isEmpty() -&gt; " + s4.isEmpty());      // Expect false
+        System.out.println(" charAt(1) -&gt; " + s4.charAt(1));      // Expect 'a'
+        System.out.println();
+
+        // 5) " " (space)
+        MyString s5 = new MyString(" ");
+        System.out.println("Testing MyString(\" \"):");
+        System.out.println(" length() -&gt; " + s5.length());        // Expect 1
+        System.out.println(" isEmpty() -&gt; " + s5.isEmpty());      // Expect false
+        System.out.println(" charAt(1) -&gt; " + s5.charAt(1));      // Expect '?'
+        System.out.println();
+
+        // 6) "123"
+        MyString s6 = new MyString("123");
+        System.out.println("Testing MyString(\"123\"):");
+        System.out.println(" length() -&gt; " + s6.length());        // Expect 3
+        System.out.println(" isEmpty() -&gt; " + s6.isEmpty());      // Expect false
+        System.out.println(" charAt(1) -&gt; " + s6.charAt(1));      // Expect '2'
+        System.out.println();
+    }
+}
+  </program>
+</subsection>
+
+
+  <!-- =========================================
+       7. Summary & Recap
+       ========================================= -->
+  <subsection xml:id="summary-inspection">
+    <title>Summary &amp; Recap</title>
+    <p>This section showed how a well-defined <term>Step 1 (Data Definition)</term> naturally leads to simple inspection methods. Defining our string as “a fixed character array of size 100 plus a count of used characters” made the implementations straightforward:</p>
+    <ul>
+      <li><p><c>length()</c> returns <c>usedLength</c></p></li>
+      <li><p><c>isEmpty()</c> checks if <c>usedLength == 0</c></p></li>
+      <li><p><c>charAt(index)</c> returns <c>chars[index]</c> if valid</p></li>
+    </ul>
+    <p>We explored two alternative approaches (using Java's own <c>String</c> or individual character fields) before settling on an array-based solution. We then proceeded through the Design Recipe steps: defining method signatures (Step 2), creating a class skeleton (Step 4), and implementing each method.</p>
+    <p>In <term>Section 2</term>, we'll dive into string comparison, including <c>equals</c> vs <c>==</c>, case sensitivity, and lexicographical ordering. While the implementation remains array-based, we'll shift our focus to how different aspects of method design and testing come to life.</p>
+  </subsection>
+</section>
