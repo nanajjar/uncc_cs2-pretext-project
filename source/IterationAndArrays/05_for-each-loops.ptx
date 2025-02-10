@@ -353,9 +353,8 @@ public class RunestoneTests extends CodeTestHelper {
     public void testForEachGreeting() throws IOException {
         String output = getMethodOutput("main");
          String expected = "Hello, Alice\nHello, Bob\nHello,Charlie";
-        boolean passed = getResults(expected, output, "Expected sum is 17");
+        boolean passed = getResults(expected, output, "Output contains Hello, Alice\nHello, Bob\nHello,Charlie");
         assertTrue(passed);
-
     }
 }
         </tests>
@@ -414,9 +413,6 @@ public class RunestoneTests extends CodeTestHelper {
         String expected = "4\n8\n12";
         boolean passed = getResults(expected, output, "Expected output contains 4 8 12");
         assertTrue(passed);
-        <!-- // We expect after the final fix, the array has 4,8,12
-        assertTrue("The final lines should contain '4' '8' '12' after doubling\n" + output,
-            output.contains("4") &amp;&amp; output.contains("8") &amp;&amp; output.contains("12")); -->
     }
 }
         </tests>
