@@ -313,8 +313,8 @@ public char charAt(int index) {
     <title>Step 6: Reflection &amp; Next Steps</title>
     <p>By stating that “a string is a sequence of <c>n</c> characters at indices <c>0..n-1</c>,” we avoided guesswork when implementing <c>length()</c>, <c>isEmpty()</c>, and <c>charAt(...)</c>. That's Step 1 of the Design Recipe in action:</p>
     <ul>
-      <li><strong>No out-of-bounds surprises</strong>: Our data definition clearly marks any index <c>&gt;= length</c> or <c>&lt; 0</c> as invalid.</li>
-      <li><strong>Defining "empty"</strong>: If <c>n == 0</c>, no valid positions exist, so <c>isEmpty()</c> is <c>true</c> and <c>charAt(0)</c> cannot succeed.</li>
+      <li><term>No out-of-bounds surprises</term>: Our data definition clearly marks any index <c>&gt;= length</c> or <c>&lt; 0</c> as invalid.</li>
+      <li><term>Defining "empty"</term>: If <c>n == 0</c>, no valid positions exist, so <c>isEmpty()</c> is <c>true</c> and <c>charAt(0)</c> cannot succeed.</li>
     </ul>
     <p>In the next section (Section 2), we'll focus on Step 2 (Method Signatures &amp; Purpose) in the realm of <em>string equality and ordering</em>. We'll still use the same foundational data definition—“a string is length <c>n</c> with positions <c>0..n-1</c>.” This stable core continues to guide how other string methods should behave, including comparing or sorting them.</p>
     <p>If you'd like more practice right now, try:</p>

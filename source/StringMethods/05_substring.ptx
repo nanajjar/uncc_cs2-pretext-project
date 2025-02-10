@@ -1,0 +1,571 @@
+<section xml:id="ch-string-extraction">
+  <title>String Extraction</title>
+
+  <!-- ======================================================
+       1. INTRODUCTION & MOTIVATION
+       ====================================================== -->
+  <subsection xml:id="sec-extraction-intro">
+    <title>Introduction &amp; Motivation</title>
+    <p>In many real-world programs, it is often necessary to isolate sections of a larger string—whether that means slicing off a file extension, extracting a username, or splitting a name into first and last. This process of substring extraction is fundamental to string processing and will appear frequently throughout the course.</p>
+    <p>For example, imagine you're building a chat application that needs to process commands like "/whisper username message". To handle this properly, you'd need to extract the command name ("/whisper"), the target username, and the message content - all from different parts of the input string. Or perhaps you're reading configuration files with key-value pairs like "database.host=localhost" where you need to separate the key from its value.</p>
+    <p>In this section, we'll first explore Java's built-in substring functionality to understand what it offers and how to use it effectively. Then, we'll implement our own version in MyString. By building it ourselves, we'll gain deeper insights into string manipulation and get valuable practice with the Design Recipe methodology.</p>
+  </subsection>
+
+  <!-- ======================================================
+       2. UNDERSTANDING JAVA'S SUBSTRING
+       ====================================================== -->
+  <subsection xml:id="sec-java-substring">
+    <title>Understanding Java's substring</title>
+    <p>Java's String class provides the substring method in two forms:</p>
+    <ul>
+      <li><p><c>substring(beginIndex)</c> - Returns a new string containing all characters from beginIndex to the end of the string</p></li>
+      <li><p><c>substring(beginIndex, endIndex)</c> - Returns a new string containing characters from beginIndex (inclusive) up to but not including endIndex (exclusive)</p></li>
+    </ul>
+    <p>Let's look at some examples to understand how substring works in practice:</p>
+    <program language="java">
+String str = "Hello World";
+System.out.println(str.substring(6));     // "World"
+System.out.println(str.substring(0, 5));  // "Hello"
+System.out.println(str.substring(3, 8));  // "lo Wo"
+System.out.println(str.substring(3, 3));  // "" (empty string)
+    </program>
+
+    <p>There are several important aspects of substring that every programmer needs to understand:</p>
+    <ul>
+      <li><p>The first index (beginIndex) is inclusive - the character at this position is included in the result</p></li>
+      <li><p>The end index (endIndex) is exclusive - the character at this position is NOT included in the result</p></li>
+      <li><p>When beginIndex equals endIndex, the result is an empty string</p></li>
+      <li><p>The method creates and returns a new String object - it doesn't modify the original</p></li>
+    </ul>
+
+    <sidebar xml:id="common-pitfalls-substring">
+      <title>Common Pitfalls</title>
+      <p><term>Off-by-One Errors:</term> It's easy to forget that <c>endIndex</c> is exclusive, which can lead to accidentally missing or including one extra character in the extracted portion. Careful attention to these boundaries during development can prevent subtle bugs.</p>
+      <p><term>Ignoring Edge Cases:</term> When <c>beginIndex == endIndex</c>, the result is <c>""</c>. Negative or out-of-range indices in real Java should raise an error, rather than silently proceeding, emphasizing that validation is a key part of robust substring logic. Always anticipate how your code behaves for minimal or extreme index values.</p>
+      <p><term>Skipping Validation:</term> For robustness, it's important to handle errors gracefully or throw exceptions, rather than returning <c>""</c> without explanation. This ensures the calling code understands that something went wrong. In production code, informative exceptions can also guide debugging and maintenance.</p>
+    </sidebar>
+
+    <p>Common real-world applications of substring include:</p>
+    <ul>
+      <li><p>Parsing CSV files by extracting fields between commas: <c>"alice,bob,charlie".substring(0, 5)</c> gives <c>"alice"</c></p></li>
+      <li><p>Processing configuration entries: <c>"database.host=localhost".substring(13)</c> gives <c>"localhost"</c></p></li>
+      <li><p>Extracting file extensions: <c>"document.pdf".substring(9)</c> gives <c>"pdf"</c></p></li>
+      <li><p>Parsing command strings: <c>"/whisper alice hello".substring(9, 14)</c> gives <c>"alice"</c></p></li>
+    </ul>
+  </subsection>
+
+  <!-- ======================================================
+       3. IMPLEMENTING OUR OWN SUBSTRING (DESIGN RECIPE)
+       ====================================================== -->
+  <subsection xml:id="sec-implementing-substring">
+    <title>Implementing Our Own Substring</title>
+    <p>Now that we have a solid understanding of how substring works in Java's String class, we're ready to implement it ourselves in MyString. Let's work through the Design Recipe steps methodically.</p>
+
+    <!-- Step 1 & 2: Data & Method Signature -->
+    <subsubsection xml:id="mystring-extraction-data-review">
+      <title>Data Definition &amp; Method Signature (Steps 1 &amp; 2)</title>
+      <p>First, let's review our data structure. Recall that <c>MyString</c> maintains:</p>
+      <ul>
+        <li><p>An internal <c>char[] chars</c> array with fixed length 100</p></li>
+        <li><p>An <c>int usedLength</c> field tracking how many characters are actually in use</p></li>
+      </ul>
+
+      <p>For substring operations, we need to carefully manage these boundaries to ensure correct character extraction. Here's our method signature:</p>
+
+      <program language="java">
+/**
+ * Returns a new MyString containing characters from beginIndex (inclusive) 
+ * to endIndex (exclusive).
+ * 
+ * @param beginIndex starting position (inclusive)
+ * @param endIndex ending position (exclusive)
+ * @return new MyString with characters from range, or empty string if invalid range
+ */
+public MyString substring(int beginIndex, int endIndex)
+      </program>
+
+      <p><term>Purpose:</term> Create a new <c>MyString</c> containing characters from <c>beginIndex</c> (inclusive) up to but not including <c>endIndex</c>. While Java's actual <c>String.substring()</c> throws exceptions for invalid bounds, our implementation will take a simpler approach:</p>
+      <ul>
+        <li><p>Log an error message if indices are invalid</p></li>
+        <li><p>Return an empty string (<c>""</c>) in error cases</p></li>
+        <li><p>Focus on the core slicing logic first, leaving more sophisticated error handling for later</p></li>
+      </ul>
+
+      <p>For example:</p>
+      <ul>
+        <li><p><c>new MyString("Hello").substring(1,4)</c> should return a new <c>MyString</c> containing <c>"ell"</c></p></li>
+        <li><p><c>new MyString("Hello").substring(-1,4)</c> should print an error and return <c>""</c></p></li>
+        <li><p><c>new MyString("Hello").substring(3,3)</c> should return <c>""</c> (empty string when begin equals end)</p></li>
+      </ul>
+
+      <p>Key implementation considerations include:</p>
+      <ul>
+        <li><p><term>Memory management:</term> Creating the new result array with correct size and properly setting its <c>usedLength</c></p></li>
+      </ul>
+
+      <p>By carefully considering these aspects before implementation, we set ourselves up for a more robust and maintainable solution. Now let's move on to concrete examples and test cases.</p>
+    </subsubsection>
+
+    <!-- Step 3: Example Table -->
+    <subsubsection xml:id="extraction-examples-tests">
+      <title>Example Test Cases (Step 3)</title>
+      <p>Before coding, we outline representative scenarios for substring slicing that will guide our implementation and validation. Each test case ensures that common and corner situations are addressed: Thorough testing at this stage often saves time by preventing bugs that only appear after deployment.</p>
+      <table>
+        <title>Test Cases for substring</title>
+        <tabular>
+          <row header="yes">
+            <cell>Case</cell>
+            <cell>Input</cell>
+            <cell>begin</cell>
+            <cell>end</cell>
+            <cell>Expected</cell>
+            <cell>Notes</cell>
+          </row>
+          <row>
+            <cell>Normal slice</cell>
+            <cell>"Hello"</cell>
+            <cell>1</cell>
+            <cell>4</cell>
+            <cell>"ell"</cell>
+            <cell>Indices 1..3</cell>
+          </row>
+          <row>
+            <cell>Single char slice</cell>
+            <cell>"Hello"</cell>
+            <cell>2</cell>
+            <cell>3</cell>
+            <cell>"l"</cell>
+            <cell>Indices 2..2</cell>
+          </row>
+          <row>
+            <cell>Empty slice</cell>
+            <cell>"Hello"</cell>
+            <cell>2</cell>
+            <cell>2</cell>
+            <cell>""</cell>
+            <cell>begin == end => empty string</cell>
+          </row>
+          <row>
+            <cell>Whole string</cell>
+            <cell>"Hello"</cell>
+            <cell>0</cell>
+            <cell>5</cell>
+            <cell>"Hello"</cell>
+            <cell>Indices 0..4</cell>
+          </row>
+          <row>
+            <cell>Out of range</cell>
+            <cell>"Hello"</cell>
+            <cell>-1</cell>
+            <cell>3</cell>
+            <cell>Error</cell>
+            <cell>negative index</cell>
+          </row>
+          <row>
+            <cell>begin &gt; end</cell>
+            <cell>"Hello"</cell>
+            <cell>3</cell>
+            <cell>1</cell>
+            <cell>Error</cell>
+            <cell>throw or fallback for reversed bounds</cell>
+          </row>
+          <row>
+            <cell>Empty at end</cell>
+            <cell>"Hello"</cell>
+            <cell>5</cell>
+            <cell>5</cell>
+            <cell>""</cell>
+            <cell>valid zero-length at string end</cell>
+          </row>
+        </tabular>
+      </table>
+      <p>These examples address boundaries, empty slices, and common use cases. We will reference this table after implementing our method to ensure correctness, checking each scenario to confirm the substring logic performs as intended. By structuring our tests carefully, we create a robust safety net for catching errors early.</p>
+    </subsubsection>
+  </subsection>
+
+  <!-- ======================================================
+       3. SPOTLIGHT ON DR STEP 4: SKELETON / TEMPLATE
+       ====================================================== -->
+  <subsection xml:id="sec-extraction-skeleton">
+    <title>Step 4: Building the Skeleton / Template</title>
+    <p>Let's develop our <em>skeleton</em> gradually, starting with a minimal outline and adding key details as we consider possible edge cases. The goal is to clarify each step, from validation to final return: This incremental mindset allows us to diagnose mistakes in isolation rather than debugging everything at once.</p>
+    <program language="text">
+function substring(beginIndex, endIndex):
+    1. Check if indices are valid
+    2. Create result
+    3. Return result
+    </program>
+    <p>This is too broad. We refine the validation step using what we learned from our test table and typical Java conventions: Such refinement sets the stage for an orderly build-up of our solution.</p>
+    <program language="text">
+function substring(beginIndex, endIndex):
+    1. Check indices:
+       - Is beginIndex negative?
+       - Is endIndex &gt; length?
+       - Is beginIndex &gt; endIndex?
+       If any true: print error and return empty string
+
+    2. Create result
+    3. Return result
+    </program>
+    <p>Next, we must detail how to create and populate the result. The skeleton evolves to address the copying of characters into a new <c>MyString</c> instance: This explicit approach keeps our code transparent, making it easier to trace how the substring is formed.</p>
+    <program language="text">
+function substring(beginIndex, endIndex):
+    1. Check indices:
+       - Is beginIndex negative?
+       - Is endIndex &gt; length?
+       - Is beginIndex &gt; endIndex?
+       If any true: print error and return empty string
+
+    2. Create result:
+       a. Calculate how many chars = (endIndex - beginIndex)
+       b. Make a new MyString
+       c. Copy chars from original[begin..end-1]
+          into result[0..sliceLength-1]
+
+    3. Return result
+    </program>
+    <p>Converting that into a code-oriented skeleton helps us keep track of each step methodically:</p>
+    <program language="java">
+public MyString substring(int beginIndex, int endIndex) {
+    // 1. Validation
+    if (/* TODO: check indices */) {
+        System.err.println(/* TODO: error message */);
+        return /* TODO: empty string */;
+    }
+
+    // 2. Calculate size needed
+    int newLength = /* TODO */;
+
+    // 3. Create result and copy chars
+    MyString result = /* TODO */;
+    // TODO: copy loop
+
+    // 4. Return
+    return result;
+}
+    </program>
+    <p>We can then fill in the implementation incrementally, testing after each piece is added to ensure correctness. This layered approach is a hallmark of the Design Recipe, preventing us from tackling the entire method at once without checking our progress. As we proceed, each step builds a stable foundation for the next.</p>
+  </subsection>
+
+  <!-- ======================================================
+       4. IMPLEMENTATION & DEMO (STEP 5)
+       ====================================================== -->
+  <subsection xml:id="sec-extraction-implementation">
+    <title>Implementation &amp; Testing (Step 5)</title>
+    <p>We now translate our skeleton into working code step by step, validating each component as we go. By introducing functionality gradually, we isolate potential bugs and confirm correctness sooner. This process ensures each enhancement is well understood before we move on.</p>
+    <program language="java">
+public MyString substring(int beginIndex, int endIndex) {
+    // 1. Just implement validation first
+    if (beginIndex &lt; 0 || endIndex &gt; this.length() || beginIndex &gt; endIndex) {
+        System.err.println("Invalid substring indices: " + beginIndex + " to " + endIndex);
+        return new MyString("");
+    }
+
+    // For now, just return empty on valid indices
+    return new MyString("");
+}
+
+// Helper method for testing
+private static void testResult(String description, String expected, String actual) {
+    System.out.println(description + ":");
+    System.out.println("  Expected: \"" + expected + "\"");
+    System.out.println("  Actual:   \"" + actual + "\"");
+    System.out.println("  " + (expected.equals(actual) ? "PASS" : "FAIL"));
+    System.out.println();
+}
+
+// Test Version 1:
+public static void main(String[] args) {
+    MyString str = new MyString("Hello");
+    
+    // Should print an error and return empty:
+    System.out.println("Testing negative index:");
+    testResult("Negative begin index", "", 
+               str.substring(-1, 3).toString());
+    
+    // Should return empty (Version 1 doesn't copy yet)
+    testResult("Valid indices (currently empty)", "",
+               str.substring(1, 4).toString());
+}
+    </program>
+    <p>Having confirmed our validation logic, we extend the method to calculate length and prepare the result object, but still skip character copying. This partial implementation allows us to confirm that the result length is adjusted properly without yet filling in the data. Iterative development like this clarifies precisely how each addition to the code changes its behavior.</p>
+    <program language="java">
+public MyString substring(int beginIndex, int endIndex) {
+    if (beginIndex &lt; 0 || endIndex &gt; this.length() || beginIndex &gt; endIndex) {
+        System.err.println("Invalid substring indices: " + beginIndex + " to " + endIndex);
+        return new MyString("");
+    }
+
+    // 2. Calculate slice size
+    int sliceLength = endIndex - beginIndex;
+
+    // 3. Create result
+    MyString result = new MyString("");
+    result.usedLength = sliceLength;
+    
+    return result;
+}
+
+// Test Version 2:
+public static void main(String[] args) {
+    MyString str = new MyString("Hello");
+    
+    // Checking length logic
+    MyString slice = str.substring(1, 4);
+    testResult("Slice length check", "3", 
+               String.valueOf(slice.length()));
+}
+    </program>
+    <p>Finally, we copy the characters over. This is where the core functionality of <c>substring</c> is realized, as we replicate the selected range from the original array into a new <c>MyString</c> instance. By solidifying each piece in small increments, we reduce the risk of compounding errors when implementing more complex operations.</p>
+    <program language="java">
+public MyString substring(int beginIndex, int endIndex) {
+    if (beginIndex &lt; 0 || endIndex &gt; this.length() || beginIndex &gt; endIndex) {
+        System.err.println("Invalid substring indices: " + beginIndex + " to " + endIndex);
+        return new MyString("");
+    }
+
+    int sliceLength = endIndex - beginIndex;
+    MyString result = new MyString("");
+    result.usedLength = sliceLength;
+
+    // 3. Copy characters
+    for (int i = 0; i &lt; sliceLength; i++) {
+        result.chars[i] = this.chars[beginIndex + i];
+    }
+    
+    return result;
+}
+
+// Test Version 3:
+public static void main(String[] args) {
+    MyString str = new MyString("Hello");
+    
+    // Test all from our table:
+    testResult("Normal slice (1,4)", "ell", 
+               str.substring(1, 4).toString());
+               
+    testResult("Single char (2,3)", "l", 
+               str.substring(2, 3).toString());
+               
+    testResult("Empty slice (2,2)", "", 
+               str.substring(2, 2).toString());
+               
+    testResult("Whole string (0,5)", "Hello", 
+               str.substring(0, 5).toString());
+    
+    System.out.println("Testing error cases:");
+    testResult("Out of range (-1,3)", "", 
+               str.substring(-1, 3).toString());
+               
+    testResult("begin &gt; end (3,1)", "", 
+               str.substring(3, 1).toString());
+               
+    testResult("Empty at end (5,5)", "", 
+               str.substring(5, 5).toString());
+}
+    </program>
+    <p>By evolving the substring method in stages, we isolated issues early on—such as validation—and confirmed each subsequent piece worked properly before adding more complexity. This incremental tactic greatly reduces the risk of hidden errors in final code. With each verified step, we build confidence that the final method will behave as intended under various circumstances.</p>
+    <p><term>Performance Note:</term> Older Java versions sometimes shared the backing character array for <c>substring</c> to avoid copying. In modern Java, <c>substring</c> typically creates a new array for the result. For our <c>MyString</c>, we consistently copy characters to preserve immutability but accept the overhead of additional memory. We'll examine such trade-offs in a later chapter, highlighting the balance between memory usage and implementation clarity. These design decisions have notable implications for large-scale data processing, where efficiency and correctness must be balanced.</p>
+  </subsection>
+
+  <!-- ======================================================
+       5. PUTTING IT ALL TOGETHER
+       ====================================================== -->
+  <subsection xml:id="sec-extraction-complete">
+    <title>Complete MyString Class</title>
+    <p>Below is the full <c>MyString</c> class, now featuring <c>substring</c> alongside previous methods. Though not production-grade (since we simply print errors rather than throwing exceptions), this version shows how the essential slicing logic works in tandem with our earlier searches, providing a cohesive approach to string manipulation. This example also illustrates how thoughtful method design can simplify future extensions or integrations within larger codebases.</p>
+    <p>We'll also explore a practical example using CSV files. CSV (Comma-Separated Values) is a simple file format used to store tabular data, where each line represents a row and values are separated by commas. For example, a spreadsheet with names and ages might look like this:</p>
+    <program language="text">
+name,age,city
+alice,25,seattle
+bob,30,portland
+charlie,28,vancouver
+    </program>
+    <p>To process CSV data, we need to split each line at the commas to extract individual values. Let's see how we can use our <c>substring</c> and <c>indexOf</c> methods together to accomplish this:</p>
+    <program language="java">
+public class MyString {
+    private char[] chars;
+    private int usedLength;
+
+    /**
+     * Constructs a new MyString from a Java String.
+     * 
+     * @param str the source String to copy
+     */
+    public MyString(String str) {
+        chars = new char[100];
+        usedLength = str.length();
+        for (int i = 0; i &lt; usedLength; i++) {
+            chars[i] = str.charAt(i);
+        }
+    }
+
+    /**
+     * Returns the length of this MyString.
+     * 
+     * @return number of characters in use
+     */
+    public int length() { 
+        return usedLength; 
+    }
+
+    /**
+     * Searches for the first occurrence of target in this MyString.
+     * 
+     * @param target the string to search for
+     * @return index of first match, or -1 if not found
+     */
+    public int indexOf(String target) {
+        if (target == null || target.length() == 0) {
+            return -1;
+        }
+        
+        for (int i = 0; i &lt;= this.length() - target.length(); i++) {
+            boolean found = true;
+            for (int j = 0; j &lt; target.length(); j++) {
+                if (chars[i + j] != target.charAt(j)) {
+                    found = false;
+                    break;
+                }
+            }
+            if (found) return i;
+        }
+        return -1;
+    }
+
+    /**
+     * Returns a new MyString containing characters from beginIndex (inclusive) 
+     * to endIndex (exclusive).
+     * 
+     * @param beginIndex starting position (inclusive)
+     * @param endIndex ending position (exclusive)
+     * @return new MyString with characters from range, or empty string if invalid range
+     */
+    public MyString substring(int beginIndex, int endIndex) {
+        if (beginIndex &lt; 0 || endIndex &gt; this.length() || beginIndex &gt; endIndex) {
+            System.err.println("Invalid substring indices: " + beginIndex + " to " + endIndex);
+            return new MyString("");
+        }
+
+        int sliceLength = endIndex - beginIndex;
+        MyString result = new MyString("");
+        result.usedLength = sliceLength;
+
+        for (int i = 0; i &lt; sliceLength; i++) {
+            result.chars[i] = this.chars[beginIndex + i];
+        }
+        
+        return result;
+    }
+
+    /**
+     * Helper method for testing - compares expected vs actual results
+     */
+    private static void testResult(String description, String expected, String actual) {
+        System.out.println(description + ":");
+        System.out.println("  Expected: \"" + expected + "\"");
+        System.out.println("  Actual:   \"" + actual + "\"");
+        System.out.println("  " + (expected.equals(actual) ? "PASS" : "FAIL"));
+        System.out.println();
+    }
+
+    /**
+     * Main method with comprehensive test cases
+     */
+    public static void main(String[] args) {
+        // Basic substring tests
+        MyString str = new MyString("Hello");
+        testResult("Normal slice (1,4)", "ell", 
+                   str.substring(1, 4).toString());
+        testResult("Single char (2,3)", "l", 
+                   str.substring(2, 3).toString());
+        testResult("Empty slice (2,2)", "", 
+                   str.substring(2, 2).toString());
+        testResult("Whole string (0,5)", "Hello", 
+                   str.substring(0, 5).toString());
+        
+        // Error cases
+        System.out.println("Testing error cases:");
+        testResult("Negative index (-1,3)", "", 
+                   str.substring(-1, 3).toString());
+        testResult("Begin &gt; end (3,1)", "", 
+                   str.substring(3, 1).toString());
+        testResult("Empty at end (5,5)", "", 
+                   str.substring(5, 5).toString());
+        testResult("End &gt; length (0,6)", "", 
+                   str.substring(0, 6).toString());
+                   
+        // Simple key-value example
+        MyString text = new MyString("key=value");
+        // Find the equals sign
+        int pos = text.indexOf("=");
+        if (pos != -1) {  // if we found the equals sign
+            // Extract everything before the equals sign
+            MyString key = text.substring(0, pos);
+            // Extract everything after the equals sign
+            MyString value = text.substring(pos + 1, text.length());
+            testResult("Key extraction", "key", key.toString());
+            testResult("Value extraction", "value", value.toString());
+        }
+        
+        // CSV parsing example - let's break this down step by step:
+        MyString csv = new MyString("alice,bob,charlie");
+        
+        // Step 1: Find the first comma
+        int comma1 = csv.indexOf(",");
+        
+        // Step 2: Starting after the first comma, find the second comma
+        int comma2 = csv.indexOf(",", comma1 + 1);
+        
+        // Step 3: If we found both commas, we can split into three parts
+        if (comma1 != -1 &amp;&amp; comma2 != -1) {
+            // Get first value: everything from start (0) to first comma
+            MyString first = csv.substring(0, comma1);
+            
+            // Get second value: everything between first and second comma
+            // Note: we add 1 to comma1 to skip over the comma itself
+            MyString second = csv.substring(comma1 + 1, comma2);
+            
+            // Get third value: everything from second comma to end
+            // Note: we add 1 to comma2 to skip over the comma itself
+            MyString third = csv.substring(comma2 + 1, csv.length());
+            
+            // Test that we got each value correctly
+            testResult("CSV field 1", "alice", first.toString());
+            testResult("CSV field 2", "bob", second.toString());
+            testResult("CSV field 3", "charlie", third.toString());
+        }
+    }
+}
+    </program>
+  </subsection>
+
+  <!-- ======================================================
+       6. REFLECTION & CONCLUSION (STEP 6)
+       ====================================================== -->
+  <subsection xml:id="sec-extraction-reflection">
+    <title>Reflection &amp; Conclusion</title>
+    <p>Our incremental approach to implementing <c>substring</c> uncovers several important ideas: it highlights how careful, stepwise development can prevent logical missteps and off-by-one bugs that are common in string processing. Each discrete step of our approach enables thorough validation and targeted troubleshooting.</p>
+    <p><term>Skeleton Evolution:</term></p>
+    <ul>
+      <li><p>We began with a simple three-step layout (validate indices, create result, return it). This clarified our core objectives and prevented us from writing code before establishing a plan.</p></li>
+      <li><p>We refined validation details by referencing our test table, ensuring all edge cases were covered. Practical examples guided our checks to make sure the code handled negative indices, out-of-range errors, and other issues gracefully.</p></li>
+      <li><p>We decided how to construct and populate the result array based on <c>beginIndex</c> and <c>endIndex</c>, clarifying that the end index is exclusive. This explicit coverage of indices proved vital to correct data extraction.</p></li>
+      <li><p>We transformed this outline into code, checking each step with small tests to confirm partial functionality before moving forward. This testing strategy minimized confusion by allowing us to verify each piece as soon as we introduced it.</p></li>
+    </ul>
+    <p><term>Implementation Refinements:</term></p>
+    <ul>
+      <li><p>Version 1: basic validation to catch index errors right away and return an empty string on invalid requests, maintaining code safety from the start.</p></li>
+      <li><p>Version 2: introduced new length calculations and set up the result object, confirming we handle correct sizing. This step revealed how index arithmetic translates into actual substring length.</p></li>
+      <li><p>Version 3: finished by copying characters to form a proper substring, meeting all valid boundary scenarios and reflecting typical Java <c>substring</c> behavior. At this point, the implementation aligned with our initial specification.</p></li>
+    </ul>
+    <p><term>Testing Lessons:</term></p>
+    <ul>
+      <li><p>Each version got targeted tests to confirm partial functionality quickly, ensuring that any defects could be found before proceeding. Such incremental validation is especially beneficial in larger projects, where debugging after extensive changes can be cumbersome.</p></li>
+      <li><p>We eventually tested against every scenario in our table, including negative indices, zero-length slices, and full-string requests. Comprehensive coverage allowed us to trust the final solution more fully.</p></li>
+      <li><p>We also explored how to integrate <c>indexOf</c> with <c>substring</c> for realistic tasks like splitting <c>"key=value"</c>, emphasizing that searching and slicing are closely interlinked operations. This demonstrated how fundamental string methods can be combined for practical text manipulation.</p></li>
+    </ul>
+    <p>This stepwise design and testing approach illustrates how the <term>Design Recipe</term>—particularly Step 4 (Skeleton) and Step 5 (Implementation &amp; Testing)—reduces complexity and fosters confidence in the final code. By addressing validation, planning the copy routine, and testing thoroughly, we produce a robust <c>substring</c> method that captures the essence of Java's slicing logic. Throughout this process, each incremental improvement serves as a checkpoint, validating our assumptions and ensuring we remain aligned with the intended functionality.</p>
+  </subsection>
+
+</section>

@@ -1,5 +1,5 @@
 <section xml:id="ch-equality-ordering">
-  <title>2. String Comparison Methods</title>
+  <title>String Comparison Methods</title>
 
   <!-- =====================================================
        1. WHY ARE WE HERE? A STUDENT-CENTERED INTRO
@@ -122,9 +122,9 @@ if (s1.equals(s2)) {
     <title>Step 2: Method Signatures &amp; Purpose Statements</title>
     <p>Step 2 of the Design Recipe asks us to write down exactly what our methods look like (signatures) and <em>why</em> they exist (purpose statements). This is where we decide:</p>
     <ul>
-      <li><strong>Parameter types:</strong> For instance, should we compare <c>MyString</c> to another <c>MyString</c> or to a standard Java <c>String</c>? We will choose <c>String</c> here for clarity.</li>
-      <li><strong>Return types:</strong> Should we return <c>boolean</c> or <c>int</c>? That depends on what question we want answered. Equality needs a <c>boolean</c>; ordering needs an <c>int</c>.</li>
-      <li><strong>Behavior &amp; purpose:</strong> What exactly happens if <c>other</c> is null or shorter/longer? How do we decide "less than" or "greater than"? Are we case-sensitive?</li>
+      <li><term>Parameter types:</term> For instance, should we compare <c>MyString</c> to another <c>MyString</c> or to a standard Java <c>String</c>? We will choose <c>String</c> here for clarity.</li>
+      <li><term>Return types:</term> Should we return <c>boolean</c> or <c>int</c>? That depends on what question we want answered. Equality needs a <c>boolean</c>; ordering needs an <c>int</c>.</li>
+      <li><term>Behavior &amp; purpose:</term> What exactly happens if <c>other</c> is null or shorter/longer? How do we decide "less than" or "greater than"? Are we case-sensitive?</li>
     </ul>
     <p>The most direct way to capture this in Java is through <em>JavaDoc</em> comments. JavaDoc is a specialized comment style that begins with <c>/&#42;&#42;</c> and uses tags like <c>@param</c>, <c>@return</c>, <c>@throws</c>. IDEs (like VS Code) automatically parse these comments and can show them when you hover over a method, making it easier for you—and your classmates or teammates—to recall what each method is for. JavaDoc can also generate a website of your documentation if you run the <c>javadoc</c> tool. For more details, see <link href="https://www.baeldung.com/javadoc">this Baeldung article on JavaDoc</link>.</p>
     <p>Let's see how we might create meaningful JavaDoc for two methods: <c>equals(String other)</c> and <c>compareTo(String other)</c>. We will build it up iteratively, to illustrate how we refine the content.</p>
@@ -591,14 +591,14 @@ System.out.println("Testing compareTo(\"\"): " + test.compareTo("")); // Row 7: 
   ===================================================== -->
   <subsection xml:id="summary-reflection">
     <title>Summary &amp; Reflection</title>
-    <p>In this section, we focused on <strong>Step 2: Method Signatures &amp; Purpose</strong> for string comparison, but we demonstrated how it interacts with all other steps in the Design Recipe:</p>
+    <p>In this section, we focused on <term>Step 2: Method Signatures &amp; Purpose</term> for string comparison, but we demonstrated how it interacts with all other steps in the Design Recipe:</p>
     <ul>
-      <li><strong>Step 0:</strong> Recognizing the need to compare strings for equality or ordering in a project scenario (e.g., commands, sorting, filters).</li>
-      <li><strong>Step 1:</strong> Building or recalling the data definition of <c>MyString</c> (a <c>char[]</c> plus <c>usedLength</c>).</li>
-      <li><strong>Step 2 (Spotlight):</strong> Defining <c>equals(String other)</c> and <c>compareTo(String other)</c> with meaningful JavaDoc that clarifies how they behave, especially regarding null and case sensitivity.</li>
-      <li><strong>Step 3:</strong> Writing a small table of test cases—critical for guiding our eventual code and verifying it later.</li>
-      <li><strong>Step 4:</strong> Creating a skeleton outline so we know exactly which checks or loops we need before coding in detail.</li>
-      <li><strong>Step 5:</strong> Implementing, testing, and refining each comparison method. When tests reveal new edge cases or unexpected behavior, we update our documentation and implementation notes to reflect these discoveries.</li>
+      <li><term>Step 0:</term> Recognizing the need to compare strings for equality or ordering in a project scenario (e.g., commands, sorting, filters).</li>
+      <li><term>Step 1:</term> Building or recalling the data definition of <c>MyString</c> (a <c>char[]</c> plus <c>usedLength</c>).</li>
+      <li><term>Step 2 (Spotlight):</term> Defining <c>equals(String other)</c> and <c>compareTo(String other)</c> with meaningful JavaDoc that clarifies how they behave, especially regarding null and case sensitivity.</li>
+      <li><term>Step 3:</term> Writing a small table of test cases—critical for guiding our eventual code and verifying it later.</li>
+      <li><term>Step 4:</term> Creating a skeleton outline so we know exactly which checks or loops we need before coding in detail.</li>
+      <li><term>Step 5:</term> Implementing, testing, and refining each comparison method. When tests reveal new edge cases or unexpected behavior, we update our documentation and implementation notes to reflect these discoveries.</li>
     </ul>
     <p>These steps help you avoid the most frequent mistake in Java string comparison: using <c>==</c> instead of <c>.equals(...)</c>. They also clarify <em>how</em> to order strings, including what "less than" or "greater than" means. Finally, they highlight how a well-structured JavaDoc and implementation notes can guide everyone's understanding and your IDE's tooltips. As you continue your journey, consider trying case-insensitive versions or exploring how to handle punctuation or Unicode comparisons. But for now, you've laid a strong foundation in comparing strings carefully and clearly, in a way that your peers can understand and rely on.</p>
   </subsection>

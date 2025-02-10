@@ -4,6 +4,6 @@
   <xi:include href="./01_intro-string.ptx" />
   <xi:include href="./02_inspecting-strings.ptx" />
   <xi:include href="./03_equals_compare.ptx" />
-  <xi:include href="./04_substring.ptx" />
-
+  <xi:include href="./04_search.ptx" />
+  <xi:include href="./05_substring.ptx" />
 </chapter>

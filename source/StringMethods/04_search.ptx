@@ -8,8 +8,8 @@
     <title>Step 0: Understanding &amp; Restating the Problem</title>
     <p>In many real-world programs, we need to <em>search</em> strings. For instance:
       <ul>
-        <li>A <strong>chat application</strong> might check if a user typed a special command like <c>@everyone</c>.</li>
-        <li>A <strong>text-based game</strong> might parse <c>"take sword"</c> to detect the verb <c>"take"</c> and the object <c>"sword"</c>.</li>
+        <li>A <term>chat application</term> might check if a user typed a special command like <c>@everyone</c>.</li>
+        <li>A <term>text-based game</term> might parse <c>"take sword"</c> to detect the verb <c>"take"</c> and the object <c>"sword"</c>.</li>
       </ul>
       Searching is how we detect these features in user input.
     </p>
@@ -42,25 +42,25 @@
     <dl>
       <dt><c>public int indexOf(String target)</c></dt>
       <dd>
-        <p><strong>Purpose:</strong> Returns the first index where <c>target</c> appears, or <c>-1</c> if not found. If <c>target</c> is empty (<c>""</c>), we return <c>0</c> to match typical Java behavior.</p>
-        <p><strong>Error Handling:</strong> If <c>target</c> is <c>null</c>, we treat it as <c>""</c>. If <c>target</c> is longer than <c>usedLength</c>, we return <c>-1</c> instead of throwing an exception.</p>
-        <p><strong>Returns <c>int</c>:</strong> because we want a numeric position or <c>-1</c> for "not found."</p>
+        <p><term>Purpose:</term> Returns the first index where <c>target</c> appears, or <c>-1</c> if not found. If <c>target</c> is empty (<c>""</c>), we return <c>0</c> to match typical Java behavior.</p>
+        <p><term>Error Handling:</term> If <c>target</c> is <c>null</c>, we treat it as <c>""</c>. If <c>target</c> is longer than <c>usedLength</c>, we return <c>-1</c> instead of throwing an exception.</p>
+        <p><term>Returns <c>int</c>:</term> because we want a numeric position or <c>-1</c> for "not found."</p>
       </dd>
 
       <dt><c>public int lastIndexOf(String target)</c></dt>
       <dd>
-        <p><strong>Purpose:</strong> Returns the last index where <c>target</c> appears, or <c>-1</c> if not found. If <c>target</c> is <c>""</c>, we return <c>usedLength</c>, matching real Java's <c>"banana".lastIndexOf("") == 6</c>.</p>
-        <p><strong>Error Handling:</strong> Same as <c>indexOf</c>: <c>null</c> is treated as <c>""</c>, and targets longer than <c>usedLength</c> return <c>-1</c>.</p>
+        <p><term>Purpose:</term> Returns the last index where <c>target</c> appears, or <c>-1</c> if not found. If <c>target</c> is <c>""</c>, we return <c>usedLength</c>, matching real Java's <c>"banana".lastIndexOf("") == 6</c>.</p>
+        <p><term>Error Handling:</term> Same as <c>indexOf</c>: <c>null</c> is treated as <c>""</c>, and targets longer than <c>usedLength</c> return <c>-1</c>.</p>
       </dd>
 
       <dt><c>public boolean contains(String target)</c></dt>
       <dd>
-        <p><strong>Purpose:</strong> Returns <c>true</c> if <c>target</c> appears in <em>this</em> <c>MyString</c>; otherwise <c>false</c>. Internally, we can just check whether <c>indexOf(target)</c> is <c>-1</c> or not.</p>
-        <p><strong>Error Handling:</strong> Inherits behavior from <c>indexOf</c>.</p>
+        <p><term>Purpose:</term> Returns <c>true</c> if <c>target</c> appears in <em>this</em> <c>MyString</c>; otherwise <c>false</c>. Internally, we can just check whether <c>indexOf(target)</c> is <c>-1</c> or not.</p>
+        <p><term>Error Handling:</term> Inherits behavior from <c>indexOf</c>.</p>
       </dd>
     </dl>
     <p>
-      <strong>Simplified Error Policy:</strong> Throughout these methods, we take a simplified approach to errors:
+      <term>Simplified Error Policy:</term> Throughout these methods, we take a simplified approach to errors:
       <ul>
         <li>We treat <c>null</c> targets as empty strings (<c>""</c>) rather than throwing <c>NullPointerException</c></li>
         <li>We return <c>-1</c> for impossible matches (like targets longer than the string) rather than throwing exceptions</li>
