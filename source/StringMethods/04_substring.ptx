@@ -7,7 +7,7 @@
   <subsection xml:id="intro-motivation-substring">
     <title>Introduction &amp; Motivation</title>
     <p>Building on our previous lessons, you now understand basic inspection (<c>length()</c>, <c>isEmpty()</c>, <c>charAt()</c>) and comparison (<c>equals()</c>, <c>compareTo()</c>) in Java strings. Imagine you're now writing a text editor or a command-line parser. The user's input might need trimming, slicing, or partial replacement. For instance, you might remove a prefix like <c>"/"</c> from <c>"/logout"</c> to get <c>"logout"</c>, or replace every occurrence of <c>"--"</c> with a single dash.</p>
-    <p>In Java, these tasks typically involve methods like <c>substring()</c>, <c>indexOf()</c>, <c>replace()</c>, and more. But how do we systematically ensure that these methods handle edge cases, invalid indices, empty strings, or multi-character patterns? The Design Recipe's <strong>Step 3 (Examples &amp; Tests)</strong> is crucial here. Creating <em>explicit examples</em> before coding is a powerful guardrail: it reveals hidden assumptions, clarifies edge behaviors, and ensures thorough verification.</p>
+    <p>In Java, these tasks typically involve methods like <c>substring()</c>, <c>indexOf()</c>, <c>replace()</c>, and more. But how do we systematically ensure that these methods handle edge cases, invalid indices, empty strings, or multi-character patterns? The Design Recipe's <term>Step 3 (Examples &amp; Tests)</term> is crucial here. Creating <em>explicit examples</em> before coding is a powerful guardrail: it reveals hidden assumptions, clarifies edge behaviors, and ensures thorough verification.</p>
   </subsection>
 
   <!-- =====================================================
@@ -17,8 +17,8 @@
     <title>Recap: Where We Are in the Design Recipe</title>
     <p>So far, we've introduced or spotlighted:</p>
     <ul>
-      <li><strong>Step 1 (Data Definition):</strong> We represented our custom <c>MyString</c> with a <c>char[] chars</c> and an <c>int usedLength</c>.</li>
-      <li><strong>Step 2 (Method Signatures &amp; Purpose):</strong> We crafted clear JavaDoc for <c>equals()</c>, <c>compareTo()</c>, etc., specifying inputs, outputs, and how the methods behave in special cases like <c>null</c>.</li>
+      <li><term>Step 1 (Data Definition):</term> We represented our custom <c>MyString</c> with a <c>char[] chars</c> and an <c>int usedLength</c>.</li>
+      <li><term>Step 2 (Method Signatures &amp; Purpose):</term> We crafted clear JavaDoc for <c>equals()</c>, <c>compareTo()</c>, etc., specifying inputs, outputs, and how the methods behave in special cases like <c>null</c>.</li>
     </ul>
     <p>In this chapter, we'll <em>spotlight Step 3</em>—<em>Examples &amp; Tests</em>. While we've been creating tables of test cases throughout, this section will dive deeper into how to build them rigorously, show multiple “solution attempts,” and highlight how we choose final test coverage. Along the way, we'll implement new methods in <c>MyString</c>: <c>substring()</c>, <c>indexOf()</c>, and <c>replace()</c>—all heavily reliant on robust examples.</p>
   </subsection>
@@ -93,15 +93,15 @@
       <listing xml:id="substring-test-table">
         <title>Test Cases for <c>substring(start, end)</c></title>
         <program language="text">
-| Case                | Input MyString | start | end | Expected Result        | Notes                                             |
-|---------------------|---------------|-------|-----|------------------------|---------------------------------------------------|
-| Normal slice        | "Hello"       | 1     | 4   | "ell"                 | 'e'=index1, 'l'=2, 'l'=3; excludes 'o'(index4)   |
-| Start=End           | "Hello"       | 2     | 2   | "" (empty)            | Substring with no chars                          |
-| Full slice          | "Hello"       | 0     | 5   | "Hello"               | Entire string returned                           |
-| start&lt;0 (error)     | "Hello"       | -1    | 3   | Exception thrown      | Expect IndexOutOfBoundsException                 |
-| end&gt;length (error)  | "Hello"       | 0     | 10  | Exception thrown      | end beyond usedLength                            |
-| start&gt;end (error)   | "Hello"       | 4     | 3   | Exception thrown      | start cannot be greater than end                |
-| Empty string        | ""           | 0     | 0   | ""                    | Substring from empty is still empty             |
+| Case                  | Input MyString | start | end | Expected Result  | Notes                                          |
+|-----------------------|----------------|-------|-----|------------------|------------------------------------------------|
+| Normal slice          | "Hello"        | 1     | 4   | "ell"            | 'e'=index1, 'l'=2, 'l'=3; excludes 'o'(index4) |
+| Start=End             | "Hello"        | 2     | 2   | "" (empty)       | Substring with no chars                        |
+| Full slice            | "Hello"        | 0     | 5   | "Hello"          | Entire string returned                         |
+| start&lt;0 (error)    | "Hello"        | -1    | 3   | Exception thrown | Expect IndexOutOfBoundsException               |
+| end&gt;length (error) | "Hello"        | 0     | 10  | Exception thrown | end beyond usedLength                          |
+| start&gt;end (error)  | "Hello"        | 4     | 3   | Exception thrown | start cannot be greater than end               |
+| Empty string          | ""             | 0     | 0   | ""               | Substring from empty is still empty            |
         </program>
       </listing>
       <p>As you can see, we are explicit about how the method should behave in every corner case—an important hallmark of Step 3. Later, in Step 5, we'll confirm that our code either returns the correct slice or throws the specified exception for each row.</p>
@@ -117,18 +117,18 @@
       <listing xml:id="indexof-test-table">
         <title>Test Cases for <c>indexOf(target)</c></title>
         <program language="text">
-| Case                             | Input MyString   | target   | Expected Result | Notes                                                                    |
-|---------------------------------|------------------|----------|-----------------|--------------------------------------------------------------------------|
-| target found in middle          | "banana"         | "ana"    | 1               | "b[ana]na" => first "ana" starts at index 1                             |
-| target found at start           | "banana"         | "ban"    | 0               | "ban" matches from index 0                                              |
-| target found at end             | "banana"         | "na"     | 4               | "bana[na]" => starts at index 4                                         |
-| target not found                | "banana"         | "cat"    | -1              | "cat" doesn't appear                                                    |
-| empty target => index=0         | "banana"         | ""       | 0               | Java convention is to treat "" as found at index 0                      |
-| longer target => no match       | "cat"            | "cater"  | -1              | can't find "cater" in a shorter string                                  |
-| repeated pattern => first match | "aaaa"           | "aa"     | 0               | "aa" first appears at 0, though also at index 1, 2                      |
-| empty MyString                  | ""               | "test"   | -1              | cannot find anything in an empty string                                 |
-| both empty => 0?                | ""               | ""       | 0               | consistent with the "empty target => 0" rule                            |
-| null target => ???              | "banana"         | null     | ???             | We must decide (maybe throw a NullPointerException, or return -1).       |
+| Case                            | Input MyString | target  | Expected Result | Notes                                                              |
+|---------------------------------|----------------|---------|-----------------|--------------------------------------------------------------------|
+| target found in middle          | "banana"       | "ana"   | 1               | "b[ana]na" => first "ana" starts at index 1                        |
+| target found at start           | "banana"       | "ban"   | 0               | "ban" matches from index 0                                         |
+| target found at end             | "banana"       | "na"    | 4               | "bana[na]" => starts at index 4                                    |
+| target not found                | "banana"       | "cat"   | -1              | "cat" doesn't appear                                               |
+| empty target => index=0         | "banana"       | ""      | 0               | Java convention is to treat "" as found at index 0                 |
+| longer target => no match       | "cat"          | "cater" | -1              | can't find "cater" in a shorter string                             |
+| repeated pattern => first match | "aaaa"         | "aa"    | 0               | "aa" first appears at 0, though also at index 1, 2                 |
+| empty MyString                  | ""             | "test"  | -1              | cannot find anything in an empty string                            |
+| both empty => 0?                | ""             | ""      | 0               | consistent with the "empty target => 0" rule                       |
+| null target => ???              | "banana"       | null    | ???             | We must decide (maybe throw a NullPointerException, or return -1). |
         </program>
       </listing>
       <p>Notice the final row is tricky. <c>indexOf(null)</c> is undefined in standard Java and throws a <c>NullPointerException</c>. We can mimic that or define our own approach (like returning <c>-1</c>). The key is that <em>we decide and document</em> it. That's exactly the purpose of Step 3: to flush out ambiguous spots <em>before</em> coding.</p>
@@ -143,17 +143,17 @@
       <listing xml:id="replace-test-table">
         <title>Test Cases for <c>replace(find, replacement)</c></title>
         <program language="text">
-| Case                                 | Input MyString       | find   | replacement | Expected Result         | Notes                                                                   |
-|-------------------------------------|----------------------|--------|------------|-------------------------|-------------------------------------------------------------------------|
-| Find occurs once                     | "hello world"        | "world"| "Java"     | "hello Java"           | straightforward single replacement                                     |
-| Find occurs multiple times          | "banana banana"      | "ana"  | "X"        | "bXna bXna"            | each "ana" replaced with "X", skipping overlaps left-to-right          |
-| Find doesn't occur                  | "hello"              | "cat"  | "dog"      | "hello"                | unchanged                                                              |
-| Empty find => ???                   | "abc"                | ""     | "?"        | ???                     | does Java treat empty find as always matching? Typically yes, but tricky or we disallow it?                 |
-| Replacement longer than find        | "cat"                | "a"    | "longer"   | "clonger t" (??? see note) | length grows from 3 to 8. Must check 100-char limit. Possibly "clonger t" if we accept the growth.       |
-| Replacement shorter than find       | "aaaa"               | "aa"   | "*"        | "**"                    | first "aa" -&gt; "*", second "aa" -&gt; "*", total 2 replacements.            |
-| Replacement yields &gt;100 chars       | (string near 100 char)| "x"    | "xyz"      | truncated result        | we must confirm the final length is capped at 100, or throw error.      |
-| Null find => ???                    | "abc"                | null   | "XYZ"      | ???                     | Decide if that's an error or no-op. (Likely throw NullPointerException) |
-| Null replacement => ???             | "abc abc"            | "abc"  | null       | ???                     | Possibly treat as "" or throw an error. Step 3 is clarifying this.      |
+| Case                             | Input MyString         | find    | replacement | Expected Result            | Notes                                                                                              |
+|----------------------------------|------------------------|---------|-------------|----------------------------|----------------------------------------------------------------------------------------------------|
+| Find occurs once                 | "hello world"          | "world" | "Java"      | "hello Java"               | straightforward single replacement                                                                 |
+| Find occurs multiple times       | "banana banana"        | "ana"   | "X"         | "bXna bXna"                | each "ana" replaced with "X", skipping overlaps left-to-right                                      |
+| Find doesn't occur               | "hello"                | "cat"   | "dog"       | "hello"                    | unchanged                                                                                          |
+| Empty find => ???                | "abc"                  | ""      | "?"         | ???                        | does Java treat empty find as always matching? Typically yes, but tricky or we disallow it?        |
+| Replacement longer than find     | "cat"                  | "a"     | "longer"    | "clonger t" (??? see note) | length grows from 3 to 8. Must check 100-char limit. Possibly "clonger t" if we accept the growth. |
+| Replacement shorter than find    | "aaaa"                 | "aa"    | "*"         | "**"                       | first "aa" -&gt; "*", second "aa" -&gt; "*", total 2 replacements.                                 |
+| Replacement yields &gt;100 chars | (string near 100 char) | "x"     | "xyz"       | truncated result           | we must confirm the final length is capped at 100, or throw error.                                 |
+| Null find => ???                 | "abc"                  | null    | "XYZ"       | ???                        | Decide if that's an error or no-op. (Likely throw NullPointerException)                            |
+| Null replacement => ???          | "abc abc"              | "abc"   | null        | ???                        | Possibly treat as "" or throw an error. Step 3 is clarifying this.                                 |
         </program>
       </listing>
       <p>A more thorough method like <c>replace</c> can quickly reveal how many edge decisions exist in real software. By enumerating them explicitly, we avoid confusion down the line. You can see how Step 3 helps the entire team align on details like “What happens if the replacement is <c>null</c>?” or “Do we replace an empty string everywhere?” or “Is the entire result truncated at 100 characters?” We'll lock in these rules, specify them in Step 2's method doc, and then ensure our final code passes each scenario above.</p>
@@ -646,14 +646,14 @@ public class MyString {
        ===================================================== -->
   <subsection xml:id="summary-next-steps-spotlight3">
     <title>Summary &amp; Next Steps</title>
-    <p>In this chapter, we spotlighted **Step 3: Examples &amp; Tests** in depth. You saw:</p>
+    <p>In this chapter, we spotlighted <em>Step 3: Examples &amp; Tests</em> in depth. You saw:</p>
     <ul>
-      <li>**How** to build thorough test tables for three new string methods (<c>substring</c>, <c>indexOf</c>, <c>replace</c>), covering normal cases, edge conditions, and error scenarios.</li>
-      <li>**Why** Step 3 is so critical—without enumerating these scenarios, we'd risk inconsistent or incomplete implementations.</li>
-      <li>**Multiple ways** to transform these tables into real tests, from simple <c>assert</c> statements to more formal <c>JUnit</c> classes.</li>
-      <li>**Final integrated code** that references each row of the test tables, preventing logical gaps or guesswork.</li>
+      <li><em>How</em> to build thorough test tables for three new string methods (<c>substring</c>, <c>indexOf</c>, <c>replace</c>), covering normal cases, edge conditions, and error scenarios.</li>
+      <li><em>Why</em> Step 3 is so critical—without enumerating these scenarios, we'd risk inconsistent or incomplete implementations.</li>
+      <li><em>Multiple ways</em> to transform these tables into real tests, from simple <c>assert</c> statements to more formal <c>JUnit</c> classes.</li>
+      <li><em>Final integrated code</em> that references each row of the test tables, preventing logical gaps or guesswork.</li>
     </ul>
     <p>This completes our demonstration of Step 3 in action. In the next sections, we'll continue to apply the Design Recipe systematically, potentially spotlighting Step 4 or Step 5 on more sophisticated string tasks or other data structures. For now, practice generating test tables for your own code—like <c>trim()</c>, <c>toUpperCase()</c>, or custom utility methods. You'll be amazed how many “hidden details” Step 3 uncovers!</p>
-    <p>Remember: <strong>Every row in your example table must be verified by a line of test code</strong>. That's the essence of Step 3's reliability. Embrace it, and you'll write more robust, understandable, and maintainable software—no matter how simple or complex the methods become.</p>
+    <p>Remember: <term>Every row in your example table must be verified by a line of test code</term>. That's the essence of Step 3's reliability. Embrace it, and you'll write more robust, understandable, and maintainable software—no matter how simple or complex the methods become.</p>
   </subsection>
 </section>
