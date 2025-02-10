@@ -460,7 +460,8 @@ System.out.println("Testing compareTo(\"\"): " + test.compareTo("")); // Row 7: 
   <subsection xml:id="final-activecode">
     <title>A Complete Runnable Example</title>
     <p>Here is a final version of our <c>MyString</c> class, complete with a <c>main(...)</c> method that tests <c>equals</c> and <c>compareTo</c> using the table we proposed in Step 3. The implementation includes documentation of refinements made during testing. Feel free to modify, experiment, or break it intentionally to see how each comparison behaves!</p>
-    <program language="java" xml:id="MyStringComparisonActiveCode" interactive="activecode">public class MyString {
+    <program language="java" xml:id="MyStringComparisonActiveCode" interactive="activecode">
+  public class MyString {
 
     private char[] chars = new char[100];
     private int usedLength;

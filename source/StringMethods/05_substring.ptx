@@ -382,7 +382,7 @@ bob,30,portland
 charlie,28,vancouver
     </program>
     <p>To process CSV data, we need to split each line at the commas to extract individual values. Let's see how we can use our <c>substring</c> and <c>indexOf</c> methods together to accomplish this:</p>
-    <program language="java">
+    <program language="java"  interactive="activecode">
 public class MyString {
     private char[] chars;
     private int usedLength;
