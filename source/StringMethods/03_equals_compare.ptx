@@ -154,6 +154,7 @@ public boolean equals(String other) {
  * Checks if this MyString has exactly the same characters 
  * as the given String, in the same order.
  * This comparison is case-sensitive.
+ * Example: equals("HELLO") vs equals("Hello") returns false
  *
  * @param other The String to compare; 
  *              if null, the result is always false.
@@ -166,8 +167,8 @@ public boolean equals(String other) {
 }
       </input>
     </program>
-    <p>Now anyone reading can see: (1) we compare character by character, (2) it is case-sensitive, and (3) we return <c>false</c> if <c>other</c> is <c>null</c>. This clarity helps us implement the method correctly and helps future maintainers or classmates understand exactly how it works.</p>
-    <p><em>Note:</em> This is a simplified version that takes <c>String other</c>, not <c>Object other</c>. In real Java <c>String</c>, <c>equals</c> overrides <c>public boolean equals(Object obj)</c> from <c>Object</c>. We use <c>String</c> here so it's easier for beginners to see what's happening.</p>
+    <p>Now anyone reading can see: (1) we compare character by character, (2) it is case-sensitive with a concrete example, and (3) we return <c>false</c> if <c>other</c> is <c>null</c>. This clarity helps us implement the method correctly and helps future maintainers or classmates understand exactly how it works.</p>
+    <p><em>Note:</em> This is a simplified version that takes <c>String other</c>, not <c>Object other</c>. In real Java <c>String</c>, <c>equals</c> overrides <c>public boolean equals(Object obj)</c> from <c>Object</c>. We use <c>String</c> here so it's easier for beginners to see what's happening. Later courses will cover more advanced topics like method overriding and exception handling.</p>
   </subsection>
 
   <!-- =====================================================
@@ -194,6 +195,8 @@ public int compareTo(String other) {
  * Performs a lexicographical (dictionary) comparison 
  * between this MyString and another String. 
  * Case-sensitive by default.
+ * Example: "apple".compareTo("banana") returns negative
+ *          "cat".compareTo("CAT") returns positive
  *
  * @param other The String to compare; 
  *              if null, we may consider this MyString greater.
@@ -207,7 +210,7 @@ public int compareTo(String other) {
 }
       </input>
     </program>
-    <p>This version clarifies that the ordering is case-sensitive, how we handle null, and how we interpret positive/negative return values—key details needed to use the method confidently in sorting logic.</p>
+    <p>This version clarifies that the ordering is case-sensitive with concrete examples, how we handle null, and how we interpret positive/negative return values—key details needed to use the method confidently in sorting logic.</p>
   </subsection>
 
   <!-- =====================================================
@@ -215,7 +218,7 @@ public int compareTo(String other) {
   ===================================================== -->
   <subsection xml:id="step3-examples-tests">
     <title>Step 3: Examples &amp; Tests</title>
-    <p>Once our signatures and purpose statements (Step 2) are settled, it is easier to create test cases (Step 3). Let's outline a few scenarios to confirm what we expect:</p>
+    <p>Once our signatures and purpose statements (Step 2) are settled, it is easier to create test cases (Step 3). Let's outline a few scenarios to confirm what we expect. Feel free to expand this table as you discover new edge cases during implementation!</p>
     <table>
       <title>Test Table for equals(...) &amp; compareTo(...)</title>
       <tabular>
@@ -254,6 +257,18 @@ public int compareTo(String other) {
           <cell>"cater"</cell>
           <cell>false</cell>
           <cell>negative (since "cat" is a prefix but shorter)</cell>
+        </row>
+        <row>
+          <cell>""</cell>
+          <cell>""</cell>
+          <cell>true</cell>
+          <cell>0 (empty strings are equal)</cell>
+        </row>
+        <row>
+          <cell>""</cell>
+          <cell>"a"</cell>
+          <cell>false</cell>
+          <cell>negative (empty string is less than any non-empty)</cell>
         </row>
       </tabular>
     </table>
@@ -315,6 +330,7 @@ public class MyString {
 
 /**
  * Checks if this MyString matches 'other' exactly (case-sensitive).
+ * Example: equals("HELLO") vs equals("Hello") returns false
  * @param other The String to compare (null means automatically false)
  * @return true if lengths match and every character matches
  */
@@ -344,18 +360,33 @@ public boolean equals(String other) {
 }
         </input>
       </program>
-      <p>This step-by-step style ensures you understand exactly why each part is there: null checks, length checks, character comparison. You can test this immediately, perhaps by creating a small <c>main</c> method that prints out whether <c>new MyString("cat").equals("cat")</c> is true or false, etc.</p>
-      <p>Here's how we might test <c>equals(...)</c> immediately in a minimal <c>main</c> method, so we see if our code works:</p>
+      <p>This step-by-step style ensures you understand exactly why each part is there: null checks, length checks, character comparison. After implementing each method, test it to verify it behaves correctly. If a test fails, this is your signal to enter the refinement phase:</p>
+      <ul>
+        <li>Review your test case assumptions - did you expect the wrong output?</li>
+        <li>Check your skeleton logic - did you miss a case?</li>
+        <li>Consider if you've discovered a new edge case not in your original test table</li>
+      </ul>
+      <p>Here's how we might test <c>equals(...)</c> immediately in a minimal <c>main</c> method:</p>
       <program language="java">
         <input>
 public static void main(String[] args) {
     MyString test = new MyString("cat");
-    System.out.println(test.equals("cat")); // Expect true
-    System.out.println(test.equals("Cat")); // Expect false
+    
+    // Test equals() with different cases - each test maps to a table row
+    System.out.println("Testing equals(\"cat\"): " + test.equals("cat")); // Row 1: exact match
+    System.out.println("Testing equals(\"Cat\"): " + test.equals("Cat")); // Row 2: case difference
+    
+    // Implementation Notes:
+    // 1. Changes from original design:
+    //    - None needed for equals() so far
+    // 2. Additional edge cases found:
+    //    - Mixed case comparisons work as expected
+    // 3. Optimization opportunities:
+    //    - Could add early exit on length mismatch
 }
         </input>
       </program>
-      <p>This helps confirm that our equality checks behave correctly before we move on to <c>compareTo</c>.</p>
+      <p>This helps confirm that our equality checks behave correctly before we move on to <c>compareTo</c>. If tests fail, we document the refinements made in our implementation notes.</p>
     </subsubsection>
 
     <subsubsection xml:id="compareTo-implementation">
@@ -367,6 +398,8 @@ public static void main(String[] args) {
 /**
  * Lexicographically compares this MyString to 'other' (case-sensitive).
  * If 'other' is null, we treat 'this' as greater.
+ * Example: "apple".compareTo("banana") returns negative
+ *          "cat".compareTo("CAT") returns positive
  * 
  * @param other The String to compare
  * @return negative if this &lt; other, 0 if equal, positive if this &gt; other
@@ -398,7 +431,26 @@ public int compareTo(String other) {
 }
         </input>
       </program>
-      <p>This code is also straightforward if you follow the skeleton. We handle <c>null</c> first, compare common parts of the strings, and if everything matches up to the end of one string, we then decide based on length. Each part of the logic corresponds to what we wrote in Step 4 (Skeleton) and Step 2 (Purpose). If you run into a bug, go back to your skeleton or your test table from Step 3 to see where expectations differ.</p>
+      <p>After implementing <c>compareTo</c>, we should test it thoroughly and document any refinements needed:</p>
+      <program language="java">
+        <input>
+// In main, add tests for compareTo - each maps to a table row:
+System.out.println("Testing compareTo(\"cat\"): " + test.compareTo("cat")); // Row 1: equal strings
+System.out.println("Testing compareTo(\"cater\"): " + test.compareTo("cater")); // Row 5: prefix case
+System.out.println("Testing compareTo(\"\"): " + test.compareTo("")); // Row 7: empty string case
+
+// Implementation Notes:
+// 1. Changes from original design:
+//    - Clarified that shorter strings are "less than" longer ones
+// 2. Additional edge cases found:
+//    - Empty string comparisons need special handling
+// 3. Future enhancements to consider:
+//    - Case-insensitive versions
+//    - Exception handling for errors
+//    - Using testing frameworks for more thorough validation
+        </input>
+      </program>
+      <p>Remember: whenever tests reveal unexpected behavior or new edge cases, update your test table (Step 3) and skeleton (Step 4) to reflect these discoveries. This refinement process ensures your final implementation handles all cases correctly.</p>
     </subsubsection>
   </subsection>
 
@@ -407,9 +459,8 @@ public int compareTo(String other) {
   ===================================================== -->
   <subsection xml:id="final-activecode">
     <title>A Complete Runnable Example</title>
-    <p>Here is a final version of our <c>MyString</c> class, complete with a <c>main(...)</c> method that tests <c>equals</c> and <c>compareTo</c> using the table we proposed in Step 3. Feel free to modify, experiment, or break it intentionally to see how each comparison behaves!</p>
-    <program language="java" xml:id="MyStringComparisonActiveCode" interactive="activecode">
-public class MyString {
+    <p>Here is a final version of our <c>MyString</c> class, complete with a <c>main(...)</c> method that tests <c>equals</c> and <c>compareTo</c> using the table we proposed in Step 3. The implementation includes documentation of refinements made during testing. Feel free to modify, experiment, or break it intentionally to see how each comparison behaves!</p>
+    <program language="java" xml:id="MyStringComparisonActiveCode" interactive="activecode">public class MyString {
 
     private char[] chars = new char[100];
     private int usedLength;
@@ -455,8 +506,9 @@ public class MyString {
 
     /**
      * Checks if this MyString matches 'other' exactly (case-sensitive).
+     * Example: equals("HELLO") vs equals("Hello") returns false
      * @param other The String to compare; null means automatically false
-     * @return true if lengths match and every character matches, false otherwise
+     * @return true if lengths match and every character matches
      */
     public boolean equals(String other) {
         if (other == null) {
@@ -475,8 +527,9 @@ public class MyString {
 
     /**
      * Lexicographically compares this MyString to 'other' (case-sensitive).
-     * If 'other' is null, returns +1 indicating 'this' is greater.
-     * @param other The String to compare
+     * Example: "apple".compareTo("banana") returns negative
+     *          "cat".compareTo("CAT") returns positive
+     * @param other The String to compare; null means this is greater
      * @return negative if this &lt; other, 0 if equal, positive if this &gt; other
      */
     public int compareTo(String other) {
@@ -494,7 +547,8 @@ public class MyString {
     }
 
     /**
-     * A main method to demonstrate and test equals(...) and compareTo(...).
+     * A main method to demonstrate and test equals(...) and compareTo(...),
+     * with implementation notes documenting refinements made during testing.
      */
     public static void main(String[] args) {
         MyString s1 = new MyString("cat");
@@ -502,18 +556,31 @@ public class MyString {
         MyString s3 = new MyString("Cat");
         MyString s4 = new MyString("apple");
 
-        System.out.println("s1.equals(\"cat\") -&gt; " + s1.equals("cat"));    // expect true
-        System.out.println("s1.equals(\"Cat\") -&gt; " + s1.equals("Cat"));    // expect false
-        System.out.println("s3.equals(\"Cat\") -&gt; " + s3.equals("Cat"));    // expect true
+        // Test equals() - each test maps to a specific row in our test table
+        System.out.println("Testing equals():");
+        System.out.println("s1.equals(\"cat\") => " + s1.equals("cat"));    // Row 1: exact match
+        System.out.println("s1.equals(\"Cat\") => " + s1.equals("Cat"));    // Row 2: case difference
+        System.out.println("s3.equals(\"Cat\") => " + s3.equals("Cat"));    // Row 2: reversed case
 
-        System.out.println("s1.compareTo(\"cat\") -&gt; " + s1.compareTo("cat")); 
-        // expect 0
-        System.out.println("s1.compareTo(\"Cat\") -&gt; " + s1.compareTo("Cat")); 
-        // negative or positive: 'c' vs 'C'
-        System.out.println("s4.compareTo(\"banana\") -&gt; " + s4.compareTo("banana")); 
-        // 'apple' vs 'banana' => negative
-        System.out.println("s4.compareTo(null) -&gt; " + s4.compareTo(null));  
-        // we decided null => positive
+        // Test compareTo() - each test maps to a specific row
+        System.out.println("\nTesting compareTo():");
+        System.out.println("s1.compareTo(\"cat\") => " + s1.compareTo("cat"));      // Row 1: equal strings
+        System.out.println("s1.compareTo(\"Cat\") => " + s1.compareTo("Cat"));      // Row 2: case difference
+        System.out.println("s4.compareTo(\"banana\") => " + s4.compareTo("banana")); // Row 3: different first char
+        System.out.println("s4.compareTo(null) => " + s4.compareTo(null));          // Row 4: null handling
+        System.out.println("s1.compareTo(\"\") => " + s1.compareTo(""));            // Row 7: empty string
+
+        // Implementation Notes:
+        // 1. Changes from original design:
+        //    - Clarified null handling in compareTo
+        //    - Added explicit empty string test cases
+        // 2. Edge cases handled:
+        //    - Empty strings work naturally
+        //    - Case sensitivity affects sorting as expected
+        // 3. Future enhancements to consider:
+        //    - Case-insensitive versions
+        //    - Exception handling for errors
+        //    - Using testing frameworks for more thorough validation
     }
 }
     </program>
@@ -531,9 +598,9 @@ public class MyString {
       <li><strong>Step 2 (Spotlight):</strong> Defining <c>equals(String other)</c> and <c>compareTo(String other)</c> with meaningful JavaDoc that clarifies how they behave, especially regarding null and case sensitivity.</li>
       <li><strong>Step 3:</strong> Writing a small table of test cases—critical for guiding our eventual code and verifying it later.</li>
       <li><strong>Step 4:</strong> Creating a skeleton outline so we know exactly which checks or loops we need before coding in detail.</li>
-      <li><strong>Step 5:</strong> Implementing and testing each comparison method step by step, then sharing a final integrated class for demonstration.</li>
+      <li><strong>Step 5:</strong> Implementing, testing, and refining each comparison method. When tests reveal new edge cases or unexpected behavior, we update our documentation and implementation notes to reflect these discoveries.</li>
     </ul>
-    <p>These steps help you avoid the most frequent mistake in Java string comparison: using <c>==</c> instead of <c>.equals(...)</c>. They also clarify <em>how</em> to order strings, including what "less than" or "greater than" means. Finally, they highlight how a well-structured JavaDoc can guide everyone's understanding and your IDE's tooltips. As you continue your journey, consider trying case-insensitive versions or exploring how to handle punctuation or Unicode comparisons. But for now, you've laid a strong foundation in comparing strings carefully and clearly, in a way that your peers can understand and rely on.</p>
+    <p>These steps help you avoid the most frequent mistake in Java string comparison: using <c>==</c> instead of <c>.equals(...)</c>. They also clarify <em>how</em> to order strings, including what "less than" or "greater than" means. Finally, they highlight how a well-structured JavaDoc and implementation notes can guide everyone's understanding and your IDE's tooltips. As you continue your journey, consider trying case-insensitive versions or exploring how to handle punctuation or Unicode comparisons. But for now, you've laid a strong foundation in comparing strings carefully and clearly, in a way that your peers can understand and rely on.</p>
   </subsection>
 
 </section>
