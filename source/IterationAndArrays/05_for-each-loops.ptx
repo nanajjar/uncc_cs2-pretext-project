@@ -356,9 +356,6 @@ public class RunestoneTests extends CodeTestHelper {
         boolean passed = getResults(expected, output, "Expected sum is 17");
         assertTrue(passed);
 
-        <!-- assertTrue("Expected greeting for Alice", output.contains("Hello, Alice"));
-        assertTrue("Expected greeting for Bob", output.contains("Hello, Bob"));
-        assertTrue("Expected greeting for Charlie", output.contains("Hello, Charlie")); -->
     }
 }
         </tests>
