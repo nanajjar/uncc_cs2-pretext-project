@@ -1,0 +1,299 @@
+<section xml:id="ch-intro-arraylist">
+  <title>Working with ArrayList</title>
+
+  <!-- =========================================
+       1. Introduction & Motivation
+       ========================================= -->
+  <subsection xml:id="arraylist-intro-motivation">
+    <title>Introduction &amp; Motivation</title>
+    <p>Before we dive in, let's briefly discuss <term>exceptions</term>. In Java, when something goes wrong during program execution (like trying to use a value that doesn't exist), the program can throw an <term>exception</term> - a special signal indicating that an error occurred. For now, just know that exceptions are Java's way of telling us something went wrong. We'll learn more about handling exceptions in later chapters.</p>
+    <p>Arrays in Java are fundamental building blocks for data storage, but they also have a notable limitation: <term>fixed size</term>. Once declared, you cannot expand or shrink them on the fly. In practical scenarios, we often need a container that can <em>grow or shrink</em> as items are inserted or removed—like storing file lines, dynamic lists of game entities, or user inputs of unpredictable length.</p>
+    <p>The <c>ArrayList</c> class provides precisely this flexibility. It is part of Java&apos;s <c>java.util</c> package and serves as one of the most widely used data structures for in-memory collections of objects. In this lesson, we will explore:</p>
+    <objectives>
+      <ul>
+        <li><term>Create</term> an <c>ArrayList</c> while specifying its element type for type safety.</li>
+        <li><term>Add</term>, <term>remove</term>, and <term>retrieve</term> items effectively.</li>
+        <li><term>Iterate</term> over elements using different approaches.</li>
+        <li><term>Group related methods</term> for efficient usage—e.g., &quot;insertion,&quot; &quot;inspection,&quot; &quot;searching,&quot; &quot;conversion,&quot; etc.</li>
+        <li><term>Avoid</term> common pitfalls such as type erasure, <c>IndexOutOfBoundsException</c>, and auto-boxing complexities.</li>
+      </ul>
+    </objectives>
+  </subsection>
+
+  <!-- =========================================
+       2. Creating & Basic Usage
+       ========================================= -->
+  <subsection xml:id="arraylist-basics">
+    <title>Basic Creation &amp; Usage</title>
+    <p>An <c>ArrayList&lt;T&gt;</c> is a <c>List</c> implementation designed to store objects of type <c>T</c>. You create it by specifying the element type in angle brackets, for example, <c>ArrayList&lt;String&gt;</c>. This approach enforces compile-time type checks, preventing accidental mixing of types.</p>
+    <program language="java">
+      <input>
+import java.util.ArrayList;
+
+public class ArrayListBasics {
+    public static void main(String[] args) {
+        // Creating an ArrayList of strings
+        ArrayList&lt;String&gt; names = new ArrayList&lt;&gt;();
+
+        // Adding elements
+        names.add("Alice");
+        names.add("Bob");
+
+        System.out.println("ArrayList: " + names);
+
+        // Checking size
+        System.out.println("Size: " + names.size());
+
+        // Accessing element by index
+        String first = names.get(0);
+        System.out.println("First element: " + first);
+    }
+}
+      </input>
+    </program>
+
+    <p><term>Theme 1: Basic Setup &amp; Indexing Strategies</term></p>
+    <ul>
+      <li><term>Creating:</term> Use <c>new ArrayList&lt;&gt;()</c> or <c>new ArrayList&lt;String&gt;()</c> to instantiate with a specific type.</li>
+      <li><term>Adding/Accessing:</term> Use <c>add</c> to append, <c>size()</c> to check how many elements exist, and <c>get(index)</c> to retrieve a specific element.</li>
+    </ul>
+
+    <p><term>Common Pitfalls to Avoid:</term></p>
+    <ul>
+      <li><term>IndexOutOfBoundsException:</term> For instance, if you invoke <c>get(5)</c> but you only have 2 elements, you&apos;ll trigger an exception. Always check <c>size()</c> first!</li>
+      <li><term>Null Items vs. Null ArrayList:</term> Although <c>names.add(null)</c> is valid (though uncommon). If the <c>names</c> object itself is <c>null</c>, any method call triggers a <c>NullPointerException</c>.</li>
+    </ul>
+  </subsection>
+
+  <!-- =========================================
+       3. Inserting & Removing Elements
+       ========================================= -->
+  <subsection xml:id="arraylist-insert-remove">
+    <title>Inserting &amp; Removing Elements</title>
+    <p>In addition to appending with <c>add(...)</c>, <c>ArrayList</c> also supports positional inserts, as well as multiple ways to remove elements. We&apos;ll organize them below:</p>
+    <p><term>Theme 2: Insertions &amp; Removals in ArrayList</term></p>
+    <ul>
+      <li><c>add(index, element)</c> — Inserts at a specific index, shifting subsequent elements to the right within the list.</li>
+      <li><c>remove(index)</c> — Removes an item by index, causing subsequent elements to shift left.</li>
+      <li><c>remove(Object o)</c> — Removes the first occurrence of a matching object (as defined by <c>equals</c>), returning <c>true</c> if found.</li>
+      <li><c>clear()</c> — Empties the entire list of all elements.</li>
+    </ul>
+
+    <program language="java">
+      <input>
+import java.util.ArrayList;
+
+public class InsertRemoveDemo {
+    public static void main(String[] args) {
+        ArrayList&lt;String&gt; tasks = new ArrayList&lt;&gt;();
+        tasks.add("Write blog post");
+        tasks.add("Go running");
+        tasks.add("Buy groceries");
+
+        // Insert at index 1
+        tasks.add(1, "Review PRs");
+        System.out.println("After insert => " + tasks);
+
+        // Remove by index
+        tasks.remove(2); // removes "Go running"
+        System.out.println("After remove by index => " + tasks);
+
+        // Remove by object
+        tasks.remove("Buy groceries");
+        System.out.println("After remove by object => " + tasks);
+
+        // Clearing
+        tasks.clear();
+        System.out.println("After clear => " + tasks);
+    }
+}
+      </input>
+    </program>
+
+    <p><term>Key Pitfalls &amp; Additional Notes:</term></p>
+    <ul>
+      <li><term>Index Boundaries:</term> <c>add(index, element)</c> or <c>remove(index)</c> must reference valid positions <c>(0 &lt;= index &lt;= size())</c>.</li>
+      <li><term>Object Removal Ambiguities</term>: When a list contains duplicates, <c>remove("test")</c> only takes out the <em>first</em> match. You can loop or employ alternative methods to remove all occurrences if needed.</li>
+      <li><term>Shifting Elements:</term> Insertions or removals in the middle of an <c>ArrayList</c> can be <em>inefficient</em> for large lists because the rest of the elements must shift. For large-scale data scenarios, a linked structure might outperform <c>ArrayList</c> at random inserts. However, for <em>small to medium</em> lists, <c>ArrayList</c> usually performs adequately.</li>
+    </ul>
+  </subsection>
+
+  <!-- =========================================
+       4. Iterating & Searching
+       ========================================= -->
+  <subsection xml:id="arraylist-iterating-searching">
+    <title>Iterating &amp; Searching for Elements</title>
+    <p>Reading and searching within an <c>ArrayList</c> is a routine task in Java development. Fortunately, Java provides several ways to iterate:</p>
+    <p><term>Theme 3: Strategies for Iteration &amp; Basic Searching</term></p>
+    <ul>
+      <li><term>For-each loop</term>: <c>for (String x : list)</c>. Very concise, but you lose direct access to the index.</li>
+      <li><term>Indexed for loop</term>: <c>for (int i = 0; i &lt; list.size(); i++)</c>. Allows <c>list.get(i)</c> for direct index-based access.</li>
+      <li><term>contains(...)</term>: Verifies if the list contains an element matching <c>equals</c> criteria.</li>
+      <li><term>indexOf(...)</term>: Returns the first index of a matching element, or <c>-1</c> if no match is found.</li>
+    </ul>
+
+    <program language="java">
+      <input>
+import java.util.ArrayList;
+
+public class IterateSearchDemo {
+    public static void main(String[] args) {
+        ArrayList&lt;String&gt; names = new ArrayList&lt;&gt;();
+        names.add("Alice");
+        names.add("Bob");
+        names.add("Charlie");
+
+        // For-each loop
+        System.out.println("For-each loop:");
+        for (String n : names) {
+            System.out.println(" Name = " + n);
+        }
+
+        // Indexed loop
+        System.out.println("\nIndexed loop:");
+        for (int i = 0; i &lt; names.size(); i++) {
+            System.out.println(" Index " + i + " => " + names.get(i));
+        }
+
+        // Searching
+        boolean hasBob = names.contains("Bob");
+        System.out.println("\nList contains Bob? " + hasBob);
+
+        int pos = names.indexOf("Charlie");
+        System.out.println("Index of Charlie => " + pos);
+    }
+}
+      </input>
+    </program>
+
+    <p><term>Common Pitfalls and Warnings:</term></p>
+    <ul>
+      <li><term>Concurrent Modification</term>: A "concurrent modification" happens when you try to change a list at the same time you're reading through it. For example, if you use a for-each loop to go through a list and try to remove items during that loop, Java will throw a <c>ConcurrentModificationException</c>. This is because the for-each loop needs the list to stay unchanged while it's iterating - removing items partway through would make Java lose track of where it is in the list. (We'll learn safe ways to remove items using iterators in later sections.)</li>
+      <li><term>Using &quot;==&quot; Instead of <c>equals</c></term>: When dealing with objects, <c>contains</c> depends on <c>equals</c>. If you haven&apos;t overridden <c>equals</c> in your custom class, the default behavior might be unexpected.</li>
+    </ul>
+  </subsection>
+
+  <!-- =========================================
+       5. ArrayList & Wrapper Types
+       ========================================= -->
+  <subsection xml:id="arraylist-wrapper-types">
+    <title>ArrayList &amp; Wrapper Types (Auto-Boxing)</title>
+    <p><c>ArrayList</c> exclusively stores **objects**. But what if you need a list of primitive <c>int</c>? Java&apos;s type system forces you to use a wrapper class such as <c>Integer</c> to achieve this.</p>
+    <p>Fortunately, Java seamlessly converts between <c>int</c> and <c>Integer</c> whenever you invoke <c>list.add(5)</c> or retrieve an element. This mechanism is called <term>auto-boxing</term> and <term>unboxing</term>.</p>
+
+    <program language="java">
+      <input>
+import java.util.ArrayList;
+
+public class WrapperDemo {
+    public static void main(String[] args) {
+        // A list of integers (not "int")
+        ArrayList&lt;Integer&gt; scores = new ArrayList&lt;&gt;();
+
+        // Autoboxing: 5 is turned into Integer.valueOf(5)
+        scores.add(5);
+        scores.add(10);
+        scores.add(15);
+
+        // Summation
+        int total = 0;
+        for (Integer s : scores) {
+            // Auto-unboxing: 's' goes back to 'int'
+            total += s;
+        }
+        System.out.println("Total => " + total);
+    }
+}
+      </input>
+    </program>
+
+    <p><term>Theme 4: Handling Primitives in an ArrayList</term></p>
+    <ul>
+      <li><term>auto-boxing</term>: The process of wrapping (or "boxing up") a primitive value inside its corresponding wrapper object - like putting an <c>int</c> value into an <c>Integer</c> "box" or a <c>double</c> into a <c>Double</c> "box". Java does this automatically when needed.</li>
+      <li><term>auto-unboxing</term>: The reverse process: taking the primitive value back out of its wrapper object "box" (e.g., extracting the <c>int</c> from an <c>Integer</c>). Java handles this automatically too.</li>
+      <li><term>Performance &amp; Pitfalls</term>: Creating wrapper objects and boxing/unboxing values requires extra memory and processing time. In tight loops or with large datasets, these small costs can add up significantly. For better performance with large amounts of numeric data, consider using <c>IntStream</c> or arrays of primitives instead.</li>
+    </ul>
+  </subsection>
+
+  <!-- =========================================
+       6. Conversions & Utilities
+       ========================================= -->
+  <subsection xml:id="arraylist-conversions-utilities">
+    <title>Conversions &amp; Additional Utility Methods</title>
+    <p>Beyond fundamental operations (add, remove, get, contains), <c>ArrayList</c> provides several other helpful utilities. We&apos;ll group them here as the &quot;miscellaneous yet important&quot; category.</p>
+
+    <p><term>Theme 5: Conversion &amp; Utility Methods</term></p>
+    <ul>
+      <li><c>toArray()</c>: Converts an <c>ArrayList</c> into a standard array. For instance: <c>String[] arr = list.toArray(new String[0])</c>.</li>
+      <li><c>subList(from, to)</c>: Returns a <em>view</em> of a specified portion of the list (from index <c>from</c> up to <c>to - 1</c>). Changes in the sublist will reflect in the original list, so caution is advised.</li>
+      <li><c>sort(Comparator)</c>: In Java 8 or later, you can call <c>list.sort(Comparator.naturalOrder())</c> or provide a custom comparator for advanced sorting needs. (Alternatively, use <c>Collections.sort(list)</c>.)</li>
+    </ul>
+
+    <program language="java">
+      <input>
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class UtilitiesDemo {
+    public static void main(String[] args) {
+        ArrayList&lt;String&gt; fruits = new ArrayList&lt;&gt;();
+        fruits.add("Apple");
+        fruits.add("Mango");
+        fruits.add("Banana");
+        fruits.add("Orange");
+
+        // Sorting
+        fruits.sort(null);  // null => natural order
+        System.out.println("Sorted: " + fruits);
+
+        // subList
+        ArrayList&lt;String&gt; sub = new ArrayList&lt;&gt;(fruits.subList(1, 3));
+        System.out.println("Sublist (1..2): " + sub);
+
+        // toArray
+        String[] arr = fruits.toArray(new String[0]);
+        System.out.println("Array form: ");
+        for(String f : arr) {
+            System.out.println(" - " + f);
+        }
+    }
+}
+      </input>
+    </program>
+
+    <p><term>Pitfalls &amp; Important Notes:</term></p>
+    <ul>
+      <li><term>Sublist&apos;s Link</term>: <c>fruits.subList(...)</c> creates a "window" into the original list - it doesn't create a new independent list. Think of it like looking through a window into a room - if you rearrange furniture (modify elements) through the window, the room itself changes. Any modifications made through the sublist (adding, removing, or changing elements) will directly affect the original list at those positions. If you need a separate, independent copy that can be modified without affecting the original, use <c>new ArrayList&lt;&gt;(subList)</c> to create a new list with the same elements.</li>
+      <li><term>Sorting</term>: Sorting means arranging elements in a specific order (like alphabetical order for text, or numerical order for numbers). When you call <c>list.sort(null)</c>, Java will try to sort the elements in their "natural" order - for example, text will be sorted alphabetically, and numbers from smallest to largest. However, for this to work, the elements must know how to be compared to each other. Built-in types like String and Integer already know how to be compared, but for custom objects you'll need to teach Java how to compare them. We'll learn more about this when we cover the <c>Comparable</c> interface in a later chapter.</li>
+    </ul>
+  </subsection>
+
+  <!-- =========================================
+       7. Conclusion & Exercises
+       ========================================= -->
+  <subsection xml:id="arraylist-conclusion">
+    <title>Conclusion &amp; Exercises</title>
+    <p>In this lesson, we examined the fundamentals of <c>ArrayList</c>, starting with creation and basic additions, moving on to iteration, searching, and specialized methods. This knowledge will be invaluable in any project that needs dynamic lists of objects. Keep these key takeaways in mind:</p>
+    <ul>
+      <li><term>Flexibility vs. Performance:</term> <c>ArrayList</c> is a reliable default, but be mindful that frequent insertions or removals <em>in the middle</em> can be costly. For smaller lists, it&apos;s usually fine.</li>
+      <li><term>Index Checking:</term> <c>size()</c> helps ensure safe indexing. Indexing errors lead to runtime exceptions, not compile-time warnings.</li>
+      <li><term>Auto-Boxing:</term> Convenient for handling primitives within an <c>ArrayList</c>; however, be mindful of performance impacts in large loops or data sets.</li>
+      <li><term>Utilities:</term> Methods like <c>contains</c>, <c>indexOf</c>, <c>sort</c>, and <c>toArray</c> can be time-savers. Just remember <c>subList()</c> is a &quot;live&quot; window, not an independent copy.</li>
+    </ul>
+
+    <p>Now that you&apos;ve explored multiple ways to create and manage <c>ArrayList</c>s, try these **practice exercises** to reinforce your skills:</p>
+    <ol>
+      <li>
+        <p><term>Exercise 1:</term> Create a list of random integers, print them out, then remove all numbers <c>&lt; 10</c>. Finally, sort the list in descending order. (Hint: you can supply a custom comparator to <c>sort</c> that reverses the order, or first sort in ascending order and then reverse using <c>Collections.reverse</c>.)</p>
+      </li>
+      <li>
+        <p><term>Exercise 2:</term> Suppose you have a list of strings representing tasks (<c>[&quot;Wash dishes&quot;, &quot;Pay bills&quot;, &quot;Mow lawn&quot;]</c>). Insert a new task at index 1, then remove the final task. Print the resulting list at each step to observe changes.</p>
+      </li>
+      <li>
+        <p><term>Exercise 3:</term> Suppose you read a file line-by-line into an <c>ArrayList&lt;String&gt;</c>, how would you split each line by commas and store the resulting pieces? Consider combining <c>split()</c> from the previous chapter with <c>ArrayList</c>-based storage.</p>
+      </li>
+    </ol>
+
+    <p>Mastering <c>ArrayList</c> paves the way for exploring more advanced collections in Java—such as <c>LinkedList</c>, <c>HashMap</c>, or <c>TreeSet</c>. If you keep in mind how to handle insertions/removals, iteration, and various edge cases, you&apos;ll find <c>ArrayList</c> an indispensable data structure for day-to-day development in Java.</p>
+  </subsection>
+</section>

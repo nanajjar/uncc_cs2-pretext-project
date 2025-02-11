@@ -6,6 +6,7 @@
        ===================================================== -->
   <subsection xml:id="sec-practical-string-intro">
     <title>Introduction &amp; Motivation</title>
+    <p>Before we dive in, let's briefly discuss <term>exceptions</term>. In Java, when something goes wrong during program execution (like trying to use a value that doesn't exist), the program can throw an <term>exception</term> - a special signal indicating that an error occurred. For now, just know that exceptions can crash your program if not handled properly. We'll learn much more about exceptions and how to handle them in later chapters.</p>
     <p>In earlier chapters, we examined Java <c>String</c> fundamentals in depth—covering aspects like immutability, indexing, searching, comparing, and creating custom methods such as <c>substring</c>. While these core concepts are pivotal, you will frequently rely on Java's built-in <c>String</c> API for everyday tasks including <term>cleaning</term>, <term>splitting</term>, <term>transforming</term>, or <term>building</term> strings.</p>
     <p>This chapter offers a <term>toolbox</term> of essential, frequently used methods, supported by runnable code examples, cautionary notes, and real-world usage scenarios. Rather than methodically applying the entire Design Recipe, we'll emphasize <em>hands-on demonstrations</em> you can adopt immediately to write clearer, more efficient programs.</p>
     <p>By the end of this chapter, you will be able to:</p>
@@ -46,9 +47,9 @@ public class TrimDemo {
       </input>
     </program>
     <p>Running this code shows how <c>trim()</c> or <c>strip()</c> removes leading and trailing whitespace, producing a more uniform format from user-typed input.</p>
-    <p><strong>Common Pitfalls:</strong></p>
+    <p><term>Common Pitfalls:</term></p>
     <ul>
-      <li><em><b>Null Values</b>:</em> Calling <c>trim()</c> on <c>null</c> yields a <c>NullPointerException</c>. Always verify that the string is non-null first!</li>
+      <li><em><b>Null Values</b>:</em> If you try to call <c>trim()</c> on a string that doesn't exist (has value <c>null</c>), your program will crash with an exception. Always make sure your string exists before using it!</li>
       <li><em><b>Unicode Whitespace</b>:</em> <c>trim()</c> only removes characters &lt;= '\u0020', whereas <c>strip()</c> (Java 11+) handles more Unicode whitespace. In most English-oriented code, <c>trim()</c> is fine, but be mindful of differences if you need internationalization.</li>
     </ul>
   </subsection>
@@ -82,10 +83,10 @@ public class CaseConversion {
 }
       </input>
     </program>
-    <p><strong>Common Pitfalls:</strong></p>
+    <p><term>Common Pitfalls:</term></p>
     <ul>
       <li><em><b>Locale Sensitivity</b>:</em> Languages like Turkish have uppercase/lowercase mappings that differ from English. Java provides <c>toLowerCase(Locale)</c> and <c>toUpperCase(Locale)</c> for custom behavior. By default, your platform's locale is used, which is typically acceptable, but keep i18n in mind.</li>
-      <li><em><b>Null Strings</b>:</em> As usual, invoking <c>.toLowerCase()</c> on a <c>null</c> reference throws an exception.</li>
+      <li><em><b>Null Strings</b>:</em> As with <c>trim()</c>, trying to use these methods on a non-existent string will cause your program to crash.</li>
     </ul>
   </subsection>
 
@@ -120,7 +121,7 @@ public class ReplaceDemo {
 }
       </input>
     </program>
-    <p><strong>Common Pitfalls:</strong></p>
+    <p><term>Common Pitfalls:</term></p>
     <ul>
       <li><em><b>Regex gotchas</b>:</em> <c>"."</c> is a regex wildcard, so <c>replaceAll(".", "_")</c> matches every character. For literal dots, use <c>"\\."</c>.</li>
       <li><em><b>Case Sensitivity</b>:</em> Replacements are case-sensitive unless you employ a case-insensitive regex flag (<c>"(?i)"</c>) or manually convert the string's case.</li>
@@ -164,11 +165,11 @@ public class SplitJoinDemo {
 }
       </input>
     </program>
-    <p><strong>Common Pitfalls:</strong></p>
+    <p><term>Common Pitfalls:</term></p>
     <ul>
       <li><em><b>Regex vs. Literal Splits</b>:</em> The <c>split()</c> method always interprets your delimiter as a regex. Special characters like <c>"."</c>, <c>"|"</c>, or <c>"^"</c> must be escaped (<c>"\\."</c>).</li>
       <li><em><b>Empty Splits</b>:</em> By default, <c>split()</c> discards trailing empty strings. If you need them, specify a limit or carefully examine the result.</li>
-      <li><em><b>Null Items</b>:</em> If the string itself is <c>null</c>, <c>split()</c> triggers <c>NullPointerException</c>. Always check beforehand!</li>
+      <li><em><b>Null Items</b>:</em> If you try to split a non-existent string, your program will crash. Always ensure your string exists before splitting it!</li>
     </ul>
   </subsection>
 
@@ -212,7 +213,7 @@ public class StringBuilderDemo {
 }
       </input>
     </program>
-    <p><strong>Common Pitfalls:</strong></p>
+    <p><term>Common Pitfalls:</term></p>
     <ul>
       <li><em><b>Forgetting to Call <c>toString()</c></b>:</em> Passing a <c>StringBuilder</c> to a method expecting a <c>String</c> can be a mistake. Finalize your text with <c>builder.toString()</c>.</li>
       <li><em><b>One-Off Cases</b>:</em> For small concatenations (two or three strings), <c>StringBuilder</c> offers limited benefit. Java often optimizes simple string concatenation internally.</li>
@@ -247,7 +248,7 @@ public class FormatDemo {
 }
       </input>
     </program>
-    <p><strong>Common Pitfalls:</strong></p>
+    <p><term>Common Pitfalls:</term></p>
     <ul>
       <li><em><b>Print vs. Return</b>:</em> <c>String.format</c> returns a new string, whereas <c>printf</c> writes directly to the output stream.</li>
       <li><em><b>Mismatch in Placeholders</b>:</em> Ensure <c>%d</c> is used for integers, <c>%f</c> for floating-point values, <c>%s</c> for strings, etc. Using the wrong specifier can cause errors or unexpected results.</li>
@@ -263,17 +264,17 @@ public class FormatDemo {
     <p>Java's <c>String</c> class delivers a <term>rich suite</term> of methods for trimming, replacing, splitting, and joining text, plus a dedicated <c>StringBuilder</c> for efficient in-memory construction. These built-ins save significant effort over coding everything manually (as we did in earlier <c>MyString</c> examples).</p>
     <p>Here's how to apply them routinely:</p>
     <ul>
-      <li><p><strong>Cleaning &amp; Validation:</strong> Use <c>trim()</c> or <c>strip()</c> on user inputs before storage or comparisons. Convert to a consistent case (e.g., <c>toLowerCase()</c>) if logic ignores case.</p></li>
-      <li><p><strong>Transforming &amp; Tokenizing:</strong> Use <c>replace()</c> for literal changes or <c>replaceAll()</c> for pattern-based transformations (mind regex intricacies!). Break strings into arrays with <c>split(...)</c>, then recombine them via <c>String.join(...)</c>.</p></li>
-      <li><p><strong>Performance &amp; Assembly:</strong> For building large or repetitive text, use <c>StringBuilder</c> for speed, then finalize with <c>.toString()</c>.</p></li>
-      <li><p><strong>Formatting &amp; Output:</strong> <c>String.format</c> or <c>printf</c> simplifies complex output—especially if mixing multiple placeholders or controlling numeric precision.</p></li>
+      <li><p><term>Cleaning &amp; Validation:</term> Use <c>trim()</c> or <c>strip()</c> on user inputs before storage or comparisons. Convert to a consistent case (e.g., <c>toLowerCase()</c>) if logic ignores case.</p></li>
+      <li><p><term>Transforming &amp; Tokenizing:</term> Use <c>replace()</c> for literal changes or <c>replaceAll()</c> for pattern-based transformations (mind regex intricacies!). Break strings into arrays with <c>split(...)</c>, then recombine them via <c>String.join(...)</c>.</p></li>
+      <li><p><term>Performance &amp; Assembly:</term> For building large or repetitive text, use <c>StringBuilder</c> for speed, then finalize with <c>.toString()</c>.</p></li>
+      <li><p><term>Formatting &amp; Output:</term> <c>String.format</c> or <c>printf</c> simplifies complex output—especially if mixing multiple placeholders or controlling numeric precision.</p></li>
     </ul>
     <p>If you'd like some <term>practice</term> right now, try these short exercises:</p>
-    <enumeratedlist>
-      <item><p>Write a method <c>cleanInput</c> that accepts a <c>String</c>, trims it, removes punctuation using <c>replaceAll("[^a-zA-Z0-9 ]", "")</c>, and returns the result.</p></item>
-      <item><p>Split a text file's lines on commas, convert each piece to uppercase, and then join them with semicolons.</p></item>
-      <item><p>Construct a multi-line report with 10 lines of dynamic data. Compare doing it with repeated <c>+</c> versus using <c>StringBuilder</c>. If possible, measure any performance difference!</p></item>
-    </enumeratedlist>
+    <ul>
+      <li><p>Write a method <c>cleanInput</c> that accepts a <c>String</c>, trims it, removes punctuation using <c>replaceAll("[^a-zA-Z0-9 ]", "")</c>, and returns the result.</p></li>
+      <li><p>Split a text file's lines on commas, convert each piece to uppercase, and then join them with semicolons.</p></li>
+      <li><p>Construct a multi-line report with 10 lines of dynamic data. Compare doing it with repeated <c>+</c> versus using <c>StringBuilder</c>. If possible, measure any performance difference!</p></li>
+    </ul>
     <p>Now you have a more <term>practical toolkit</term> for handling strings. While the <term>Design Recipe</term> remains invaluable for learning low-level string manipulation, the built-in methods will streamline your code for real-world scenarios.</p>
   </subsection>
 </section>
