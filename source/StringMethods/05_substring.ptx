@@ -229,7 +229,7 @@ function substring(beginIndex, endIndex):
 public MyString substring(int beginIndex, int endIndex) {
     // 1. Validation
     if (/* TODO: check indices */) {
-        System.err.println(/* TODO: error message */);
+        System.out.println(/* TODO: error message */);
         return /* TODO: empty string */;
     }
 
@@ -256,8 +256,11 @@ public MyString substring(int beginIndex, int endIndex) {
     <program language="java">
 public MyString substring(int beginIndex, int endIndex) {
     // 1. Just implement validation first
-    if (beginIndex &lt; 0 || endIndex &gt; this.length() || beginIndex &gt; endIndex) {
-        System.err.println("Invalid substring indices: " + beginIndex + " to " + endIndex);
+    if (beginIndex &lt; 0 || 
+        endIndex &gt; this.length() || 
+        beginIndex &gt; endIndex) {
+        System.out.println("Invalid substring indices: " + 
+                         beginIndex + " to " + endIndex);
         return new MyString("");
     }
 
@@ -291,8 +294,11 @@ public static void main(String[] args) {
     <p>Having confirmed our validation logic, we extend the method to calculate length and prepare the result object, but still skip character copying. This partial implementation allows us to confirm that the result length is adjusted properly without yet filling in the data. Iterative development like this clarifies precisely how each addition to the code changes its behavior.</p>
     <program language="java">
 public MyString substring(int beginIndex, int endIndex) {
-    if (beginIndex &lt; 0 || endIndex &gt; this.length() || beginIndex &gt; endIndex) {
-        System.err.println("Invalid substring indices: " + beginIndex + " to " + endIndex);
+    if (beginIndex &lt; 0 || 
+        endIndex &gt; this.length() || 
+        beginIndex &gt; endIndex) {
+        System.out.println("Invalid substring indices: " + 
+                         beginIndex + " to " + endIndex);
         return new MyString("");
     }
 
@@ -319,8 +325,11 @@ public static void main(String[] args) {
     <p>Finally, we copy the characters over. This is where the core functionality of <c>substring</c> is realized, as we replicate the selected range from the original array into a new <c>MyString</c> instance. By solidifying each piece in small increments, we reduce the risk of compounding errors when implementing more complex operations.</p>
     <program language="java">
 public MyString substring(int beginIndex, int endIndex) {
-    if (beginIndex &lt; 0 || endIndex &gt; this.length() || beginIndex &gt; endIndex) {
-        System.err.println("Invalid substring indices: " + beginIndex + " to " + endIndex);
+    if (beginIndex &lt; 0 || 
+        endIndex &gt; this.length() || 
+        beginIndex &gt; endIndex) {
+        System.out.println("Invalid substring indices: " + 
+                         beginIndex + " to " + endIndex);
         return new MyString("");
     }
 
@@ -442,8 +451,11 @@ public class MyString {
      * @return new MyString with characters from range, or empty string if invalid range
      */
     public MyString substring(int beginIndex, int endIndex) {
-        if (beginIndex &lt; 0 || endIndex &gt; this.length() || beginIndex &gt; endIndex) {
-            System.err.println("Invalid substring indices: " + beginIndex + " to " + endIndex);
+        if (beginIndex &lt; 0 
+            || endIndex &gt; this.length() 
+            || beginIndex &gt; endIndex) {
+            System.out.println("Invalid substring indices: " 
+                + beginIndex + " to " + endIndex);
             return new MyString("");
         }
 
