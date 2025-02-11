@@ -26,7 +26,7 @@
   <subsection xml:id="arraylist-basics">
     <title>Basic Creation &amp; Usage</title>
     <p>An <c>ArrayList&lt;T&gt;</c> is a <c>List</c> implementation designed to store objects of type <c>T</c>. You create it by specifying the element type in angle brackets, for example, <c>ArrayList&lt;String&gt;</c>. This approach enforces compile-time type checks, preventing accidental mixing of types.</p>
-    <program language="java">
+    <program language="java"  interactive="activecode">
       <input>
 import java.util.ArrayList;
 
@@ -79,7 +79,7 @@ public class ArrayListBasics {
       <li><c>clear()</c> — Empties the entire list of all elements.</li>
     </ul>
 
-    <program language="java">
+    <program language="java"  interactive="activecode">
       <input>
 import java.util.ArrayList;
 
@@ -132,7 +132,7 @@ public class InsertRemoveDemo {
       <li><term>indexOf(...)</term>: Returns the first index of a matching element, or <c>-1</c> if no match is found.</li>
     </ul>
 
-    <program language="java">
+    <program language="java"  interactive="activecode">
       <input>
 import java.util.ArrayList;
 
@@ -181,7 +181,7 @@ public class IterateSearchDemo {
     <p><c>ArrayList</c> exclusively stores **objects**. But what if you need a list of primitive <c>int</c>? Java&apos;s type system forces you to use a wrapper class such as <c>Integer</c> to achieve this.</p>
     <p>Fortunately, Java seamlessly converts between <c>int</c> and <c>Integer</c> whenever you invoke <c>list.add(5)</c> or retrieve an element. This mechanism is called <term>auto-boxing</term> and <term>unboxing</term>.</p>
 
-    <program language="java">
+    <program language="java"  interactive="activecode">
       <input>
 import java.util.ArrayList;
 
@@ -229,7 +229,7 @@ public class WrapperDemo {
       <li><c>sort(Comparator)</c>: In Java 8 or later, you can call <c>list.sort(Comparator.naturalOrder())</c> or provide a custom comparator for advanced sorting needs. (Alternatively, use <c>Collections.sort(list)</c>.)</li>
     </ul>
 
-    <program language="java">
+    <program language="java"  interactive="activecode">
       <input>
 import java.util.ArrayList;
 import java.util.Collections;
