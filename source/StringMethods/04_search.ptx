@@ -1,0 +1,653 @@
+<section xml:id="ch-searching-step3">
+  <title>Searching in Strings</title>
+
+  <!-- =====================================================
+       1. INTRO & MOTIVATION (STEP 0: UNDERSTAND & RESTATE)
+       ===================================================== -->
+  <subsection xml:id="intro-motivation-searching">
+    <title>Step 0: Understanding &amp; Restating the Problem</title>
+    <p>In many real-world programs, we need to <em>search</em> strings. For instance:
+      <ul>
+        <li>A <term>chat application</term> might check if a user typed a special command like <c>@everyone</c>.</li>
+        <li>A <term>text-based game</term> might parse <c>"take sword"</c> to detect the verb <c>"take"</c> and the object <c>"sword"</c>.</li>
+      </ul>
+      Searching is how we detect these features in user input.
+    </p>
+    <p>
+      Formally, the <em>problem</em> is: <em>"Given a string, find whether a certain substring is present and, if so, at which index."</em> 
+      We'll apply the <term>Design Recipe</term> steps—especially Step 3 (Examples &amp; Tests)—to handle typical search tasks systematically.
+    </p>
+  </subsection>
+
+  <!-- =====================================================
+       2. DATA RECAP (STEP 1)
+       ===================================================== -->
+  <subsection xml:id="ch-5-4-step1-data-recap">
+    <title>Step 1: Recap Data Definition for <c>MyString</c></title>
+    <p>Recall that our <c>MyString</c> class has:</p>
+    <ul>
+      <li>A <c>char[] chars</c> of fixed length 100 (a simple capacity constraint).</li>
+      <li>An <c>int usedLength</c> tracking how many characters are actually used (0..100).</li>
+    </ul>
+    <p>We limit ourselves to 100 characters to keep the design manageable—real Java strings have no such limit, but this approach helps illustrate fundamentals without worrying about resizing arrays or throwing exceptions.</p>
+    <p>Thus, conceptually, a <c>MyString</c> is the sequence <c>chars[0..usedLength-1]</c>. Next, we define the methods we'll write (Step 2) before enumerating tests (Step 3) and coding (Steps 4 and 5).</p>
+  </subsection>
+
+  <!-- =====================================================
+       3. METHOD SIGNATURES & PURPOSE (STEP 2)
+       ===================================================== -->
+  <subsection xml:id="ch-5-4-step2-method-sigs">
+    <title>Step 2: Method Signatures &amp; Purpose</title>
+    <p>In Java, you'd find similar methods in <c>String</c> (<c>indexOf</c>, <c>lastIndexOf</c>, <c>contains</c>). We'll create analogous methods in our <c>MyString</c> class.</p>
+    <dl>
+      <dt><c>public int indexOf(String target)</c></dt>
+      <dd>
+        <p><term>Purpose:</term> Returns the first index where <c>target</c> appears, or <c>-1</c> if not found. If <c>target</c> is empty (<c>""</c>), we return <c>0</c> to match typical Java behavior.</p>
+        <p><term>Error Handling:</term> If <c>target</c> is <c>null</c>, we treat it as <c>""</c>. If <c>target</c> is longer than <c>usedLength</c>, we return <c>-1</c> instead of throwing an exception.</p>
+        <p><term>Returns <c>int</c>:</term> because we want a numeric position or <c>-1</c> for "not found."</p>
+      </dd>
+
+      <dt><c>public int lastIndexOf(String target)</c></dt>
+      <dd>
+        <p><term>Purpose:</term> Returns the last index where <c>target</c> appears, or <c>-1</c> if not found. If <c>target</c> is <c>""</c>, we return <c>usedLength</c>, matching real Java's <c>"banana".lastIndexOf("") == 6</c>.</p>
+        <p><term>Error Handling:</term> Same as <c>indexOf</c>: <c>null</c> is treated as <c>""</c>, and targets longer than <c>usedLength</c> return <c>-1</c>.</p>
+      </dd>
+
+      <dt><c>public boolean contains(String target)</c></dt>
+      <dd>
+        <p><term>Purpose:</term> Returns <c>true</c> if <c>target</c> appears in <em>this</em> <c>MyString</c>; otherwise <c>false</c>. Internally, we can just check whether <c>indexOf(target)</c> is <c>-1</c> or not.</p>
+        <p><term>Error Handling:</term> Inherits behavior from <c>indexOf</c>.</p>
+      </dd>
+    </dl>
+    <p>
+      <term>Simplified Error Policy:</term> Throughout these methods, we take a simplified approach to errors:
+      <ul>
+        <li>We treat <c>null</c> targets as empty strings (<c>""</c>) rather than throwing <c>NullPointerException</c></li>
+        <li>We return <c>-1</c> for impossible matches (like targets longer than the string) rather than throwing exceptions</li>
+        <li>We use print-based testing rather than <c>JUnit</c> or <c>assert</c> statements to keep focus on the core logic</li>
+      </ul>
+      This differs from real Java's <c>String</c> class (which throws exceptions), but simplifies learning.
+    </p>
+  </subsection>
+
+  <!-- =====================================================
+       4. EXAMPLES & TESTS (STEP 3)
+       ===================================================== -->
+  <subsection xml:id="ch-5-4-step3-examples-tests">
+    <title>Step 3: Examples &amp; Tests</title>
+    <p>Before coding, we list normal and edge scenarios in test tables. It's crucial to test each case immediately after implementing or modifying a method—don't wait until the end! Feel free to <em>add rows</em> if you discover new edge conditions later—this iterative mindset is central to the Design Recipe.</p>
+
+    <!-- 4.1 indexOf Test Table -->
+    <subsubsection xml:id="indexof-table">
+      <title><c>indexOf(String target)</c> Test Table</title>
+      <table margins="10%">
+        <title>Test Cases for <c>indexOf</c></title>
+        <tabular halign="left" top="major" bottom="minor">
+          <col width="30%"/>
+          <col width="25%"/>
+          <col width="25%"/>
+          <col width="20%"/>
+          <row header="yes">
+            <cell>Case</cell>
+            <cell>MyString</cell>
+            <cell>Target</cell>
+            <cell>Expected</cell>
+          </row>
+          <row>
+            <cell>Found in middle</cell>
+            <cell><c>"banana"</c></cell>
+            <cell><c>"ana"</c></cell>
+            <cell><c>1</c></cell>
+          </row>
+          <row>
+            <cell>Found at start</cell>
+            <cell><c>"banana"</c></cell>
+            <cell><c>"ban"</c></cell>
+            <cell><c>0</c></cell>
+          </row>
+          <row>
+            <cell>Overlapping matches</cell>
+            <cell><c>"aaaa"</c></cell>
+            <cell><c>"aaa"</c></cell>
+            <cell><c>0</c></cell>
+          </row>
+          <row>
+            <cell>Repeated ⟹ 1st match</cell>
+            <cell><c>"aaaa"</c></cell>
+            <cell><c>"aa"</c></cell>
+            <cell><c>0</c></cell>
+          </row>
+          <row>
+            <cell>Empty target ⟹ 0</cell>
+            <cell><c>"banana"</c></cell>
+            <cell><c>""</c></cell>
+            <cell><c>0</c></cell>
+          </row>
+          <row>
+            <cell>Not found</cell>
+            <cell><c>"banana"</c></cell>
+            <cell><c>"cat"</c></cell>
+            <cell><c>-1</c></cell>
+          </row>
+          <row>
+            <cell>Longer ⟹ -1</cell>
+            <cell><c>"cat"</c></cell>
+            <cell><c>"cater"</c></cell>
+            <cell><c>-1</c></cell>
+          </row>
+          <row>
+            <cell>Empty MyString ⟹ -1</cell>
+            <cell><c>""</c></cell>
+            <cell><c>"xyz"</c></cell>
+            <cell><c>-1</c></cell>
+          </row>
+          <row>
+            <cell>Both empty ⟹ 0</cell>
+            <cell><c>""</c></cell>
+            <cell><c>""</c></cell>
+            <cell><c>0</c></cell>
+          </row>
+          <row>
+            <cell>Null target ⟹ 0</cell>
+            <cell><c>"banana"</c></cell>
+            <cell><c>null</c></cell>
+            <cell><c>0</c></cell>
+          </row>
+        </tabular>
+      </table>
+      <p>This covers typical usage (<c>"ana"</c> in <c>"banana"</c>) plus special cases (empty substring, overlapping matches, null handling, etc.).</p>
+    </subsubsection>
+
+    <!-- 4.2 lastIndexOf Test Table -->
+    <subsubsection xml:id="lastindexof-table">
+      <title><c>lastIndexOf(String target)</c> Test Table</title>
+      <table margins="10%">
+        <title>Test Cases for <c>lastIndexOf</c></title>
+        <tabular halign="left" top="major" bottom="minor">
+          <col width="30%"/>
+          <col width="25%"/>
+          <col width="25%"/>
+          <col width="20%"/>
+          <row header="yes">
+            <cell>Case</cell>
+            <cell>MyString</cell>
+            <cell>Target</cell>
+            <cell>Expected</cell>
+          </row>
+          <row>
+            <cell>Found at end</cell>
+            <cell><c>"banana"</c></cell>
+            <cell><c>"ana"</c></cell>
+            <cell><c>3</c></cell>
+          </row>
+          <row>
+            <cell>Overlapping matches</cell>
+            <cell><c>"aaaa"</c></cell>
+            <cell><c>"aaa"</c></cell>
+            <cell><c>1</c></cell>
+          </row>
+          <row>
+            <cell>Repeated => last occurrence</cell>
+            <cell><c>"aaaa"</c></cell>
+            <cell><c>"aa"</c></cell>
+            <cell><c>2</c></cell>
+          </row>
+          <row>
+            <cell>Not found</cell>
+            <cell><c>"banana"</c></cell>
+            <cell><c>"xyz"</c></cell>
+            <cell><c>-1</c></cell>
+          </row>
+          <row>
+            <cell>Empty target => usedLength</cell>
+            <cell><c>"banana"</c></cell>
+            <cell><c>""</c></cell>
+            <cell><c>6</c></cell>
+          </row>
+          <row>
+            <cell>Null target => usedLength</cell>
+            <cell><c>"banana"</c></cell>
+            <cell><c>null</c></cell>
+            <cell><c>6</c></cell>
+          </row>
+        </tabular>
+      </table>
+      <p>If <c>target</c> is <c>""</c> or <c>null</c>, we return <c>usedLength</c> (6 for <c>"banana"</c>), aligning with real Java's behavior for empty strings.</p>
+    </subsubsection>
+
+    <!-- 4.3 contains Test Table -->
+    <subsubsection xml:id="contains-table">
+      <title><c>contains(String target)</c> Test Table</title>
+      <table margins="10%">
+        <title>Test Cases for <c>contains</c></title>
+        <tabular halign="left" top="major" bottom="minor">
+          <col width="30%"/>
+          <col width="25%"/>
+          <col width="25%"/>
+          <col width="20%"/>
+          <row header="yes">
+            <cell>Case</cell>
+            <cell>MyString</cell>
+            <cell>Target</cell>
+            <cell>Expected</cell>
+          </row>
+          <row>
+            <cell>Found</cell>
+            <cell><c>"banana"</c></cell>
+            <cell><c>"ana"</c></cell>
+            <cell><c>true</c></cell>
+          </row>
+          <row>
+            <cell>Not found</cell>
+            <cell><c>"banana"</c></cell>
+            <cell><c>"xyz"</c></cell>
+            <cell><c>false</c></cell>
+          </row>
+          <row>
+            <cell>Empty target</cell>
+            <cell><c>"banana"</c></cell>
+            <cell><c>""</c></cell>
+            <cell><c>true</c></cell>
+          </row>
+          <row>
+            <cell>Both empty</cell>
+            <cell><c>""</c></cell>
+            <cell><c>""</c></cell>
+            <cell><c>true</c></cell>
+          </row>
+          <row>
+            <cell>Null target</cell>
+            <cell><c>"banana"</c></cell>
+            <cell><c>null</c></cell>
+            <cell><c>true</c></cell>
+          </row>
+        </tabular>
+      </table>
+      <p>Since <c>contains</c> checks if <c>indexOf</c> is not <c>-1</c>, it inherits the same error handling behavior.</p>
+    </subsubsection>
+  </subsection>
+
+  <!-- =====================================================
+       5. SKELETON / METHOD TEMPLATE (STEP 4)
+       ===================================================== -->
+  <subsection xml:id="ch-5-4-step4-skeleton">
+    <title>Step 4: Skeleton for Our Search Methods</title>
+    <p>Next, we outline each method in pseudocode. That way we confirm loops and logic <em>before</em> coding. You can sketch this on paper or in comments:</p>
+    <program language="java">
+      <input>
+public int indexOf(String target) {
+    // if target == null, treat as ""
+    // if target == "", return 0
+    // if target.length() &gt; usedLength, return -1
+    // loop over possible starts
+    //    compare chars[i..i+target.length()-1] with target
+    //    if match => return i
+    // return -1
+}
+
+public int lastIndexOf(String target) {
+    // if target == null, treat as ""
+    // if target == "", return usedLength
+    // if target.length() &gt; usedLength => -1
+    // loop backward from usedLength - target.length() down to 0
+    //    compare substring
+    //    if match => return start
+    // return -1
+}
+
+public boolean contains(String target) {
+    // return (indexOf(target) != -1)
+}
+      </input>
+    </program>
+    <p>This skeleton ensures we know the structure before writing final code.</p>
+  </subsection>
+
+  <!-- =====================================================
+       6. IMPLEMENTATION & TESTING (STEP 5) INCREMENTALLY
+       ===================================================== -->
+  <subsection xml:id="ch-5-4-step5-implementation">
+    <title>Step 5: Implementation, Testing &amp; Refinement</title>
+    <p>We'll now fill in each method. After writing each method, we <em>immediately</em> test it against the rows in the tables above. This "code a bit, test a bit" approach catches errors early—a core habit we want to instill. When tests fail or produce unexpected results, we'll refine our approach by revisiting earlier steps.</p>
+
+    <!-- 6.1 indexOf -->
+    <subsubsection xml:id="implementation-indexof">
+      <title>6.1 Implementing <c>indexOf</c></title>
+      <program language="java">
+        <input>
+public int indexOf(String target) {
+    // treat null as "" to avoid errors
+    if (target == null) {
+        target = "";
+    }
+    // empty => 0
+    if (target.equals("")) {
+        return 0;
+    }
+    // too long => -1
+    if (target.length() &gt; usedLength) {
+        return -1;
+    }
+    // search
+    for (int start = 0; start &lt;= usedLength - target.length(); start++) {
+        boolean match = true;
+        for (int j = 0; j &lt; target.length(); j++) {
+            if (chars[start + j] != target.charAt(j)) {
+                match = false;
+                break;
+            }
+        }
+        if (match) {
+            return start;
+        }
+    }
+    // not found
+    return -1;
+}
+        </input>
+      </program>
+      <p>After writing this, test each case from the table using our helper method. If any test fails, we'll need to refine our implementation or update our test assumptions:</p>
+      <program language="java">
+        <input>
+private static void testResult(String desc, Object actual, Object expected) {
+    System.out.print(desc + " => " + actual);
+    if (actual.equals(expected)) {
+        System.out.println(" PASS");
+    } else {
+        System.out.println(" FAIL (expected " + expected + ")");
+        // When a test fails, consider:
+        // 1. Is the implementation wrong?
+        // 2. Is the test case's expected value wrong?
+        // 3. Did we discover a new edge case?
+    }
+}
+
+// In main:
+MyString fruit = new MyString("banana");
+testResult("indexOf('ana')", fruit.indexOf("ana"), 1);
+testResult("indexOf('cat')", fruit.indexOf("cat"), -1);
+testResult("indexOf('')", fruit.indexOf(""), 0);
+testResult("indexOf(null)", fruit.indexOf(null), 0);
+        </input>
+      </program>
+      <p>For example, if indexOf unexpectedly fails for an overlapping substring, revisit your skeleton (Step 4) or test cases (Step 3) and update them to reflect the actual behavior or fix the implementation.</p>
+    </subsubsection>
+
+    <!-- 6.2 lastIndexOf -->
+    <subsubsection xml:id="implementation-lastindexof">
+      <title>6.2 Implementing <c>lastIndexOf</c></title>
+      <program language="java">
+        <input>
+public int lastIndexOf(String target) {
+    if (target == null) {
+        target = "";
+    }
+    // empty => usedLength
+    if (target.equals("")) {
+        return usedLength;
+    }
+    if (target.length() &gt; usedLength) {
+        return -1;
+    }
+    // search backward
+    for (int start = usedLength - target.length(); start >= 0; start--) {
+        boolean match = true;
+        for (int j = 0; j &lt; target.length(); j++) {
+            if (chars[start + j] != target.charAt(j)) {
+                match = false;
+                break;
+            }
+        }
+        if (match) {
+            return start;
+        }
+    }
+    return -1;
+}
+        </input>
+      </program>
+      <p>Test each case, including overlapping matches. Document any refinements needed:</p>
+      <program language="java">
+        <input>
+// Implementation Notes:
+// 1. Changes from original design:
+//    - Updated empty string behavior to return usedLength instead of 0
+// 2. Additional edge cases found:
+//    - Overlapping pattern "aaa" in "aaaa" needs careful bounds
+// 3. Optimization opportunities:
+//    - Could cache indexOf results for contains()
+
+testResult("lastIndexOf('ana')", fruit.lastIndexOf("ana"), 3);
+testResult("lastIndexOf('xyz')", fruit.lastIndexOf("xyz"), -1);
+testResult("lastIndexOf('')", fruit.lastIndexOf(""), 6);
+
+MyString repeated = new MyString("aaaa");
+testResult("lastIndexOf('aaa') in 'aaaa'", repeated.lastIndexOf("aaa"), 1);
+testResult("lastIndexOf('aa') in 'aaaa'", repeated.lastIndexOf("aa"), 2);
+        </input>
+      </program>
+    </subsubsection>
+
+    <!-- 6.3 contains -->
+    <subsubsection xml:id="implementation-contains">
+      <title>6.3 Implementing <c>contains</c></title>
+      <program language="java">
+        <input>
+public boolean contains(String target) {
+    return (indexOf(target) != -1);
+}
+        </input>
+      </program>
+      <p>Test all cases, including null handling. Note any refinements needed:</p>
+      <program language="java">
+        <input>
+// Implementation Notes:
+// 1. Reuse of indexOf simplifies testing
+// 2. Verified inheritance of null/empty handling
+
+testResult("contains('ana')", fruit.contains("ana"), true);
+testResult("contains('xyz')", fruit.contains("xyz"), false);
+testResult("contains('')", fruit.contains(""), true);
+testResult("contains(null)", fruit.contains(null), true);
+        </input>
+      </program>
+      <p>If any test fails, revisit the method's logic or update test expectations. Document any changes in implementation notes.</p>
+    </subsubsection>
+
+    <p>Remember: whenever tests fail or produce unexpected results, revisit the skeleton (Step 4) or the test tables (Step 3) to refine assumptions, logic, or data definitions. This 'Refinement' loop ensures your final code truly reflects all discovered requirements.</p>
+  </subsection>
+
+  <!-- =====================================================
+       7. FINAL INTEGRATED CLASS
+       ===================================================== -->
+  <subsection xml:id="final-integrated">
+    <title>The Complete <c>MyString</c> (With Searching)</title>
+    <p>Below is a <em>single, runnable</em> version of <c>MyString</c> that you can copy into a file (e.g. <c>MyString.java</c>), compile, and run. It includes the constructor, data initialization, our three new search methods, and a test helper method that prints PASS/FAIL for each case.</p>
+
+    <program language="java" xml:id="MyString-search-complete" interactive="activecode">
+public class MyString {
+
+    private char[] chars = new char[100];
+    private int usedLength;
+
+    /**
+     * Constructs a MyString from a regular Java String, 
+     * copying up to 100 characters.
+     * If source is null, treat it as "" for simplicity.
+     */
+    public MyString(String source) {
+        if (source == null) {
+            source = "";
+        }
+        // limit to 100
+        usedLength = Math.min(source.length(), 100);
+        for (int i = 0; i &lt; usedLength; i++) {
+            chars[i] = source.charAt(i);
+        }
+    }
+
+    /**
+     * Returns how many chars are in use.
+     */
+    public int length() {
+        return usedLength;
+    }
+
+    /**
+     * For printing or debugging, convert used chars into a standard String.
+     */
+    public String toString() {
+        String result = "";
+        for (int i = 0; i &lt; usedLength; i++) {
+            result += chars[i];
+        }
+        return result;
+    }
+
+    /**
+     * indexOf: returns first index of target, or -1 if not found.
+     * Treats null as "", returns 0 for empty target, -1 if target too long.
+     */
+    public int indexOf(String target) {
+        if (target == null) {
+            target = "";
+        }
+        if (target.equals("")) {
+            return 0;
+        }
+        if (target.length() &gt; usedLength) {
+            return -1;
+        }
+        for (int start = 0; start &lt;= usedLength - target.length(); start++) {
+            boolean match = true;
+            for (int j = 0; j &lt; target.length(); j++) {
+                if (chars[start + j] != target.charAt(j)) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match) {
+                return start;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * lastIndexOf: returns last index of target, or -1 if not found.
+     * Treats null as "", returns usedLength for empty target, -1 if target too long.
+     */
+    public int lastIndexOf(String target) {
+        if (target == null) {
+            target = "";
+        }
+        if (target.equals("")) {
+            return usedLength;
+        }
+        if (target.length() &gt; usedLength) {
+            return -1;
+        }
+        for (int start = usedLength - target.length(); start >= 0; start--) {
+            boolean match = true;
+            for (int j = 0; j &lt; target.length(); j++) {
+                if (chars[start + j] != target.charAt(j)) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match) {
+                return start;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * contains: returns true if target is found, false otherwise.
+     * Inherits null/empty handling from indexOf.
+     */
+    public boolean contains(String target) {
+        return (indexOf(target) != -1);
+    }
+
+    private static void testResult(String desc, Object actual, Object expected) {
+        System.out.print(desc + " => " + actual);
+        if (actual.equals(expected)) {
+            System.out.println(" PASS");
+        } else {
+            System.out.println(" FAIL (expected " + expected + ")");
+            // When a test fails, consider:
+            // 1. Is the implementation wrong?
+            // 2. Is the test case's expected value wrong?
+            // 3. Did we discover a new edge case?
+        }
+    }
+
+    public static void main(String[] args) {
+        MyString fruit = new MyString("banana");
+        MyString repeated = new MyString("aaaa");
+        MyString empty = new MyString("");
+
+        // Implementation Notes:
+        // 1. Changes from original design:
+        //    - Updated empty string behavior in lastIndexOf
+        //    - Simplified contains by reusing indexOf
+        // 2. Additional edge cases found:
+        //    - Overlapping patterns need careful bounds
+        //    - Empty string handling differs between methods
+        // 3. Optimization opportunities:
+        //    - Could cache indexOf results for contains
+
+        // indexOf tests
+        testResult("indexOf('ana')", fruit.indexOf("ana"), 1);
+        testResult("indexOf('cat')", fruit.indexOf("cat"), -1);
+        testResult("indexOf('')", fruit.indexOf(""), 0);
+        testResult("indexOf(null)", fruit.indexOf(null), 0);
+        testResult("indexOf('aaa') in 'aaaa'", repeated.indexOf("aaa"), 0);
+        testResult("indexOf('xyz') in empty", empty.indexOf("xyz"), -1);
+
+        // lastIndexOf tests
+        testResult("lastIndexOf('ana')", fruit.lastIndexOf("ana"), 3);
+        testResult("lastIndexOf('xyz')", fruit.lastIndexOf("xyz"), -1);
+        testResult("lastIndexOf('')", fruit.lastIndexOf(""), 6);
+        testResult("lastIndexOf('aaa') in 'aaaa'", repeated.lastIndexOf("aaa"), 1);
+        testResult("lastIndexOf('aa') in 'aaaa'", repeated.lastIndexOf("aa"), 2);
+
+        // contains tests
+        testResult("contains('ana')", fruit.contains("ana"), true);
+        testResult("contains('xyz')", fruit.contains("xyz"), false);
+        testResult("contains('')", fruit.contains(""), true);
+        testResult("contains(null)", fruit.contains(null), true);
+    }
+}
+    </program>
+    <p>Run this code and verify all tests pass. Pay special attention to overlapping matches (like <c>"aaa"</c> in <c>"aaaa"</c>) and edge cases (empty strings, null). If you find additional cases to test, add them to both the test tables and the main method, documenting any refinements made during implementation.</p>
+  </subsection>
+
+  <!-- =====================================================
+       8. REFLECTION & NEXT STEPS (STEP 6)
+       ===================================================== -->
+  <subsection xml:id="ch-5-4-step6-reflection">
+    <title>Step 6: Reflection &amp; Conclusion</title>
+    <p>By enumerating test cases (Step 3) before coding, we preempted many pitfalls—especially with:
+      <ul>
+        <li>Empty strings and null targets (treating them consistently)</li>
+        <li>Overlapping matches (like <c>"aaa"</c> in <c>"aaaa"</c>)</li>
+        <li>"Not found" scenarios returning <c>-1</c></li>
+        <li>Matching Java's behavior where practical (e.g., <c>lastIndexOf("")</c> returns <c>usedLength</c>)</li>
+      </ul>
+    </p>
+    <p>We encourage you to:
+      <ul>
+        <li>Use the <c>testResult</c> helper to verify each test case passes</li>
+        <li>Add more test cases if you discover new edge conditions</li>
+        <li>Compare behavior with real Java's <c>String</c> methods to understand any differences</li>
+        <li>Consider how you might handle errors differently (e.g., with exceptions) in production code</li>
+        <li>Document any refinements made during implementation in the Implementation Notes section</li>
+      </ul>
+    </p>
+    <p>
+      This completes our demonstration of <em>searching</em> in <c>MyString</c> using Steps 0–6. In the next section, we'll move on to more advanced string operations, but remember: the same <em>Design Recipe</em> steps apply—just start by stating your method's purpose, enumerating examples, and verifying behavior thoroughly!
+    </p>
+  </subsection>
+</section>
