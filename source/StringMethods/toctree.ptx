@@ -3,7 +3,9 @@
   <title>String &amp; String Methods</title>
   <xi:include href="./01_intro-string.ptx" />
   <xi:include href="./02_inspecting-strings.ptx" />
-  <xi:include href="./03_equals_compare.ptx" />
+  <xi:include href="./03_equals-compare.ptx" />
   <xi:include href="./04_search.ptx" />
   <xi:include href="./05_substring.ptx" />
+  <xi:include href="./06_string-methods.ptx" />
+  <xi:include href="./07_arraylist.ptx" />
 </chapter>
