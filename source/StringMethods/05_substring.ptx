@@ -580,4 +580,163 @@ public class MyString {
     <p>This stepwise design and testing approach illustrates how the <term>Design Recipe</term>—particularly Step 4 (Skeleton) and Step 5 (Implementation &amp; Testing)—reduces complexity and fosters confidence in the final code. By addressing validation, planning the copy routine, and testing thoroughly, we produce a robust <c>substring</c> method that captures the essence of Java's slicing logic. Throughout this process, each incremental improvement serves as a checkpoint, validating our assumptions and ensuring we remain aligned with the intended functionality.</p>
   </subsection>
 
+<exercises>
+    <!-- =============================================
+         Quiz #1: Begin/End Index Behavior
+         ============================================= -->
+    <exercise xml:id="mc-substring-begin-end" type="multiplechoice">
+      <title>Multiple-Choice: Begin &amp; End Index Behavior</title>
+      <statement>
+        <p>When calling <code>substring(int beginIndex, int endIndex)</code> on our <code>MyString</code>, which statement best describes how the returned substring is determined?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>It includes the characters at both <code>beginIndex</code> and <code>endIndex</code>, so the slice is inclusive on both ends.</statement>
+          <feedback>No. Remember, we include the character at <code>beginIndex</code> but exclude the character at <code>endIndex</code>.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>It includes the character at <code>beginIndex</code> but excludes the one at <code>endIndex</code>. If <code>beginIndex == endIndex</code>, the result is empty.</statement>
+          <feedback>Correct! This matches Java's standard approach: the start is inclusive, the end is exclusive.</feedback>
+        </choice>
+        <choice>
+          <statement>Our substring automatically expands <code>endIndex</code> by <code>+1</code> if <code>beginIndex == endIndex</code>, avoiding empty strings.</statement>
+          <feedback>No. If <code>beginIndex == endIndex</code>, we produce an empty substring.</feedback>
+        </choice>
+        <choice>
+          <statement>It always returns the entire string if <code>beginIndex</code> or <code>endIndex</code> is out of range, ignoring the invalid indices.</statement>
+          <feedback>No. We return an empty string and print an error message for invalid indices.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- =============================================
+         Quiz #2: Edge Case Handling
+         ============================================= -->
+    <exercise xml:id="mc-substring-edge-cases" type="multiplechoice">
+      <title>Multiple-Choice: Edge Case Handling</title>
+      <statement>
+        <p>How does our <code>MyString.substring</code> method handle invalid index ranges, such as negative <code>beginIndex</code> or an <code>endIndex</code> that exceeds the string's length?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>We silently clamp the indices to [0..usedLength], so the caller never sees an error or an empty string.</statement>
+          <feedback>No. We don't auto-correct indices; we print an error and return empty instead.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>We print an error message and return an empty <code>MyString</code> (like <code>""</code>) instead of throwing an exception.</statement>
+          <feedback>Correct! This is our simplified approach for educational or prototype settings.</feedback>
+        </choice>
+        <choice>
+          <statement>We throw a custom exception (<code>InvalidSubstringBoundsException</code>) whenever the indices are out of range.</statement>
+          <feedback>No. We chose to avoid throwing exceptions to keep the code simpler. Real Java <code>String</code> might throw <code>StringIndexOutOfBoundsException</code>.</feedback>
+        </choice>
+        <choice>
+          <statement>We repeat the substring from the last valid index instead, so calls like <code>substring(-1,3)</code> become <code>substring(0,3)</code>.</statement>
+          <feedback>No. We do not auto-adjust; invalid bounds simply lead to returning an empty string.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- =============================================
+         Quiz #3: Differences from Real Java .substring
+         ============================================= -->
+    <exercise xml:id="mc-compare-real-java-substring" type="multiplechoice">
+      <title>Multiple-Choice: Compare with Java's substring</title>
+      <statement>
+        <p>Which difference between our <code>MyString.substring</code> and Java's built-in <code>String.substring</code> is true?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>Java's <code>substring</code> always includes both <code>beginIndex</code> and <code>endIndex</code>, whereas ours excludes <code>endIndex</code>.</statement>
+          <feedback>No. Java's <code>substring</code> also excludes <code>endIndex</code>.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>Java's <code>substring</code> throws an exception if the indices are invalid, whereas ours prints an error message and returns an empty string.</statement>
+          <feedback>Yes. The main difference is how we handle invalid bounds.</feedback>
+        </choice>
+        <choice>
+          <statement>Java's <code>substring</code> never actually copies the characters, but our method always does.</statement>
+          <feedback>This was true in older Java versions (sharing backing arrays). Modern Java typically copies, though it's an implementation detail. Our point is that we explicitly copy in <code>MyString</code>.</feedback>
+        </choice>
+        <choice>
+          <statement>Java's <code>substring</code> cannot handle negative indices, while our version gracefully adjusts them to 0 automatically.</statement>
+          <feedback>No. We do not clamp negative indices to 0; we treat them as invalid and return empty.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- =============================================
+         Quiz #4: Off-by-One Pitfalls
+         ============================================= -->
+    <exercise xml:id="mc-offbyone-pitfalls" type="multiplechoice">
+      <title>Multiple-Choice: Off-by-One Pitfalls</title>
+      <statement>
+        <p>Off-by-one errors are a common pitfall in substring slicing. Which scenario below <em>most likely</em> results from an off-by-one error in our copying logic?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>A <code>substring(0, 5)</code> on a 5-character string returns <code>""</code> (empty).</statement>
+          <feedback>Yes, that <em>would</em> indicate an off-by-one error, but check all options carefully.</feedback>
+        </choice>
+        <choice>
+          <statement><code>substring(0, 5)</code> on "Hello" returns "Hell".</statement>
+          <feedback>Yes, missing the last character suggests an off-by-one in the loop boundary.  
+But see if there's a more correct answer that covers the essence of “most likely.”</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>
+            <ul>
+              <li><code>substring(0,5)</code> returns only 4 characters instead of 5 (like "Hell").</li>
+              <li><code>substring(1,4)</code> incorrectly becomes 2 characters ("el") when it should have 3 ("ell").</li>
+            </ul>
+            Both examples reveal loop boundary errors in copying.
+          </statement>
+          <feedback>Exactly! Missing the last character by 1 is classic off-by-one for substring loops.</feedback>
+        </choice>
+        <choice>
+          <statement>Our method throws a <code>NullPointerException</code> if <code>beginIndex</code> is out of range.</statement>
+          <feedback>No. That's not an off-by-one error but rather a null or range-check issue.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- =============================================
+         Quiz #5: Substring in CSV Parsing
+         ============================================= -->
+    <exercise xml:id="mc-csv-splitting" type="multiplechoice">
+      <title>Multiple-Choice: Substring &amp; CSV Splitting</title>
+      <statement>
+        <p>We showed an example of extracting fields from a CSV line <code>"alice,bob,charlie"</code> using <code>indexOf</code> and <code>substring</code>. Which approach <em>best</em> describes how we split this line into three separate parts?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>We read one character at a time and build partial results until we see a comma, ignoring <code>substring</code> altogether.</statement>
+          <feedback>No. We specifically illustrated <code>substring</code> calls around the comma positions found by <code>indexOf</code>.</feedback>
+        </choice>
+        <choice>
+          <statement>We skip the first comma, then treat the second comma as an error, returning an empty string for the third segment.</statement>
+          <feedback>No. We handle both commas intentionally to parse out all three segments.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>We locate each comma using <code>indexOf</code>, then call <code>substring</code> between indices to isolate each segment ("alice", "bob", "charlie").</statement>
+          <feedback>Correct! We rely on commas to mark boundaries, then extract slices accordingly.</feedback>
+        </choice>
+        <choice>
+          <statement>We repeatedly call <code>substring(0,1)</code> to collect characters until we guess we've reached a comma or the end.</statement>
+          <feedback>No. That's not the approach we described. We rely on index positions of commas, not a single-character loop.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- =============================================
+         Short-Answer: Implementation Variations
+         ============================================= -->
+    <exercise xml:id="sa-implementation-variations" type="shortanswer">
+      <title>Short-Answer: Handling Substring Exceptions</title>
+      <statement>
+        <p>In our <code>MyString</code> code, we print an error and return an empty string for invalid indices instead of throwing an exception. In real Java, <code>String.substring</code> throws a <code>StringIndexOutOfBoundsException</code>. Briefly explain one advantage of throwing an exception rather than silently returning an empty string in production systems.</p>
+      </statement>
+      <answer>An exception alerts the caller that something went wrong (invalid indices), making it easier to debug or handle the error. Silently returning an empty string might mask bugs and lead to harder-to-trace logic errors downstream.</answer>
+    </exercise>
+</exercises>
 </section>

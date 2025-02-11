@@ -55,7 +55,7 @@
       </ul> Understanding "reference vs. content" helps you avoid subtle bugs when comparing strings or wondering why "modifications" don't behave as expected.</p>
 
     <p>
-      Here’s a rough ASCII diagram:
+      Here's a rough ASCII diagram:
     </p>
     <program language="plaintext">
 +------------------------+     +-----------------------------+
@@ -69,9 +69,9 @@
     </program>
     <p> In this sketch: <ul>
         <li><em>String Pool</em> is a place where the Java runtime may keep a single copy of each
-      literal text (like <c>"Hello"</c>) so it doesn’t duplicate them unnecessarily.</li>
+      literal text (like <c>"Hello"</c>) so it doesn't duplicate them unnecessarily.</li>
         <li>The <c>new</c> expression forces creation of a separate object in the general storage
-      area (often called the <em>heap</em>). That’s why <c>greeting2</c> references a distinct
+      area (often called the <em>heap</em>). That's why <c>greeting2</c> references a distinct
       “Hello” object.</li>
       </ul>
     </p>
@@ -144,7 +144,7 @@
     <program language="java">
         text = text.toUpperCase();
     </program>
-    <p>rather than assuming you changed the original string. In upcoming sections, you’ll see how these fundamentals shape the way we search, slice, or combine strings while applying the rest of the Design Recipe (e.g., writing tests, refining method outlines, etc.).</p>
+    <p>rather than assuming you changed the original string. In upcoming sections, you'll see how these fundamentals shape the way we search, slice, or combine strings while applying the rest of the Design Recipe (e.g., writing tests, refining method outlines, etc.).</p>
   </subsection>
 
   <!-- ======================================================

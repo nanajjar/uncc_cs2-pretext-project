@@ -277,4 +277,185 @@ public class FormatDemo {
     </ul>
     <p>Now you have a more <term>practical toolkit</term> for handling strings. While the <term>Design Recipe</term> remains invaluable for learning low-level string manipulation, the built-in methods will streamline your code for real-world scenarios.</p>
   </subsection>
+
+  <exercises>
+    <!-- ==========================================
+         Quiz #1: Trim vs. Strip
+         ========================================== -->
+    <exercise xml:id="mc-trim-strip" type="multiplechoice">
+      <title>Multiple-Choice: Trim vs. Strip</title>
+      <statement>
+        <p>Which of the following statements about <code>trim()</code> and <code>strip()</code> is correct?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><code>trim()</code> is only available in Java 11+, and <code>strip()</code> is available in all Java versions.</statement>
+          <feedback>No. Actually, <code>trim()</code> is older, while <code>strip()</code> was introduced in Java 11.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><code>trim()</code> removes ASCII whitespace up to <code>'\u0020'</code>, while <code>strip()</code> (Java 11+) follows Unicode rules, removing a broader range of whitespace.</statement>
+          <feedback>Correct! <code>strip()</code> is more Unicode-aware, whereas <code>trim()</code> works with basic ASCII whitespace.</feedback>
+        </choice>
+        <choice>
+          <statement><code>trim()</code> throws an exception if the string has no whitespace, while <code>strip()</code> silently ignores it.</statement>
+          <feedback>No. Neither <code>trim()</code> nor <code>strip()</code> throw an exception on empty or no-whitespace strings.</feedback>
+        </choice>
+        <choice>
+          <statement>They differ only in name; their internal implementations are identical in modern Java.</statement>
+          <feedback>No. <code>strip()</code> is specifically more Unicode-complete, so they are not identical.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- ==========================================
+         Quiz #2: toLowerCase() & Locale
+         ========================================== -->
+    <exercise xml:id="mc-tolowercase-locale" type="multiplechoice">
+      <title>Multiple-Choice: Case Conversion &amp; Locale</title>
+      <statement>
+        <p>Which scenario <em>best</em> illustrates why you might need <code>toLowerCase(Locale)</code> or <code>toUpperCase(Locale)</code> rather than the default version?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>You want to convert an English string like "Hello" to uppercase, e.g., "HELLO."</statement>
+          <feedback>No, the default locale-based methods usually suffice for basic English text. There's no special nuance here.</feedback>
+        </choice>
+        <choice>
+          <statement>You're handling numeric data, and <code>toLowerCase</code> has no effect on digits.</statement>
+          <feedback>No. Converting digits to lower/upper case is irrelevant. There's no “digit case.”</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>You're dealing with a language like Turkish, where “I” to lowercase can differ from English. Using a specific <code>Locale</code> ensures correct letter mappings.</statement>
+          <feedback>Correct! Certain languages have special casing rules, so <code>toLowerCase(Locale)</code> handles them properly.</feedback>
+        </choice>
+        <choice>
+          <statement>When reading a file from disk, you must call <code>toLowerCase(Locale)</code> on its path to avoid OS-level errors.</statement>
+          <feedback>No. Filenames on most operating systems are not changed by typical Java locale settings. This scenario is not a standard reason to use a custom locale.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- ==========================================
+         Quiz #3: replace() vs. replaceAll()
+         ========================================== -->
+    <exercise xml:id="mc-replace-vs-replaceAll" type="multiplechoice">
+      <title>Multiple-Choice: replace() vs. replaceAll()</title>
+      <statement>
+        <p>What's the main distinction between <code>replace(...)</code> and <code>replaceAll(...)</code> in Java's <code>String</code> class?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>They're fully identical, with <code>replaceAll</code> simply being a new name added in later Java versions.</statement>
+          <feedback>No. They differ in how they treat the search pattern (regex vs. literal).</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><code>replace(...)</code> does literal character/substring substitution, whereas <code>replaceAll(...)</code> interprets the first argument as a regex pattern.</statement>
+          <feedback>Exactly. That's the key difference, often leading to unexpected behavior if you forget <code>replaceAll</code> uses regex.</feedback>
+        </choice>
+        <choice>
+          <statement><code>replaceAll(...)</code> is case-insensitive by default, while <code>replace(...)</code> is case-sensitive.</statement>
+          <feedback>No. Both are case-sensitive unless you explicitly use regex flags in <code>replaceAll</code>.</feedback>
+        </choice>
+        <choice>
+          <statement><code>replaceAll(...)</code> only removes characters, and <code>replace(...)</code> only inserts new characters, so they handle different tasks.</statement>
+          <feedback>No. Both can swap or remove/insert depending on your arguments. They're not restricted to removing or inserting only.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- ==========================================
+         Quiz #4: Split and Join
+         ========================================== -->
+    <exercise xml:id="mc-split-join" type="multiplechoice">
+      <title>Multiple-Choice: Splitting &amp; Joining</title>
+      <statement>
+        <p>Consider you have <code>String line = "abc.def.ghi";</code> and want to split it on literal periods <code>"."</code>, then rejoin with dashes <code>"-"</code>. Which statement is correct?</p>
+      </statement>
+      <choices>
+        <choice correct="yes">
+          <statement>You must escape the period in the regex: <code>line.split("\\.")</code>, then use <code>String.join("-", array)</code> to recombine.</statement>
+          <feedback>Correct. The dot in a regex means “any character,” so you must use <code>"\\."</code> to match a literal period.</feedback>
+        </choice>
+        <choice>
+          <statement>Simply calling <code>line.split(".")</code> will suffice, because <code>"."</code> is automatically escaped in Java.</statement>
+          <feedback>No. <code>split(".")</code> would split on every character, not just periods.</feedback>
+        </choice>
+        <choice>
+          <statement>You must call <code>split("\\.")</code> and then can only rejoin using <code>StringBuffer</code>, because <code>String.join</code> is deprecated.</statement>
+          <feedback>No. <code>String.join</code> is not deprecated; it's perfectly valid to use for rejoining.</feedback>
+        </choice>
+        <choice>
+          <statement>Use <code>Arrays.split(line, ".")</code> followed by <code>Arrays.join("-", parts)</code>, as <code>String</code> doesn't support splitting or joining.</statement>
+          <feedback>No. Java's <code>String</code> class has built-in <code>split</code> and <code>String</code> also has <code>join</code> (static method).</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- ==========================================
+         Quiz #5: StringBuilder Usage
+         ========================================== -->
+    <exercise xml:id="mc-stringbuilder-loop" type="multiplechoice">
+      <title>Multiple-Choice: StringBuilder in a Loop</title>
+      <statement>
+        <p>Which usage scenario justifies <code>StringBuilder</code> to avoid performance issues?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>Concatenating a constant prefix and suffix once or twice (e.g., <code>"Hello" + "World"</code>).</statement>
+          <feedback>No. For small, one-off concatenations, <code>StringBuilder</code> gives minimal benefit.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>Building a large string inside a loop, adding text from each iteration, e.g., generating 10,000 lines of report data.</statement>
+          <feedback>Yes. Repeated concatenations in a loop can get expensive with immutable <code>String</code>; <code>StringBuilder</code> is a great fit.</feedback>
+        </choice>
+        <choice>
+          <statement>Parsing an integer from a string, e.g., <code>Integer.parseInt("123")</code>.</statement>
+          <feedback>No. That's an entirely different operation; <code>StringBuilder</code> doesn't help parse integers from text.</feedback>
+        </choice>
+        <choice>
+          <statement>Defining a <code>public static final</code> constant that never changes during runtime.</statement>
+          <feedback>No. Final constants are set at compile time, so there's no ongoing concatenation cost to worry about.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- ==========================================
+         Quiz #6: String.format vs. printf
+         ========================================== -->
+    <exercise xml:id="mc-format-printf" type="multiplechoice">
+      <title>Multiple-Choice: format() vs. printf()</title>
+      <statement>
+        <p>Which of these statements accurately compares <code>String.format(...)</code> and <code>System.out.printf(...)</code> usage in Java?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><code>printf</code> is the only method to use placeholders like <code>%s</code> or <code>%d</code>; <code>String.format</code> doesn't support them.</statement>
+          <feedback>No. Both support the same placeholder syntax. They're nearly identical in usage, except for printing vs. returning.</feedback>
+        </choice>
+        <choice>
+          <statement><code>String.format</code> automatically localizes numeric formats if given <code>%d</code>, while <code>printf</code> always uses English locale.</statement>
+          <feedback>No. Both can use localized formats if you provide a <code>Locale</code>, but by default they behave the same.</feedback>
+        </choice>
+        <choice>
+          <statement>They behave identically in all cases, including how they handle newlines, because <code>System.out.printf</code> also returns a <code>String</code>.</statement>
+          <feedback>No. <code>printf</code> prints to the console; it doesn't return any string.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><code>String.format</code> returns a new string with placeholders replaced, whereas <code>printf</code> writes directly to standard output (no returned string).</statement>
+          <feedback>Correct. That's the key difference: <code>format</code> yields a <code>String</code>, <code>printf</code> prints.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- ==========================================
+         Short-Answer: Practical Usage
+         ========================================== -->
+    <exercise xml:id="sa-practical-string-usage" type="shortanswer">
+      <title>Short-Answer: Practical Usage Example</title>
+      <statement>
+        <p>Give a brief example (in plain English, no code needed) where you'd combine <code>trim()</code>, <code>toLowerCase()</code>, <code>split(...)</code>, and <code>StringBuilder</code> in a single workflow. What real-world task might benefit from using all of these in sequence?</p>
+      </statement>
+      <answer>One possible scenario is parsing user input from a command line: First trim whitespace, convert to lowercase to standardize commands, split on spaces to isolate each argument, then use StringBuilder to assemble a log or message from those arguments for display or debugging.</answer>
+    </exercise>
+</exercises>
 </section>
