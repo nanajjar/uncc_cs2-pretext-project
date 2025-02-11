@@ -650,4 +650,187 @@ public class MyString {
       This completes our demonstration of <em>searching</em> in <c>MyString</c> using Steps 0–6. In the next section, we'll move on to more advanced string operations, but remember: the same <em>Design Recipe</em> steps apply—just start by stating your method's purpose, enumerating examples, and verifying behavior thoroughly!
     </p>
   </subsection>
+
+  <exercises>
+    <!-- =============================================
+         Quiz #1: Understanding indexOf(...) Behavior
+         ============================================= -->
+    <exercise xml:id="mc-indexof-outcomes" type="multiplechoice">
+      <title>Multiple-Choice: indexOf(...) Outcomes</title>
+      <statement>
+        <p>Consider the method signature:  
+        <code>public int indexOf(String target)</code>  
+        Which statement <em>best</em> describes the method's behavior for our <code>MyString</code> class?</p>
+      </statement>
+      <choices>
+        <choice correct="yes">
+          <statement>It returns the first index where <code>target</code> is found, or <code>-1</code> if no match. Empty or <code>null</code> <code>target</code> returns <code>0</code>, and any <code>target</code> longer than the string returns <code>-1</code>.</statement>
+          <feedback>Correct! We treat <code>null</code> as an empty string, return 0 when the <code>target</code> is empty, and -1 if the match is impossible.</feedback>
+        </choice>
+        <choice>
+          <statement>It throws an exception if <code>target</code> is <code>null</code> or if <code>target</code> is longer than the string.</statement>
+          <feedback>No. Our simplified approach returns -1 for impossible matches and treats null as "" instead of throwing.</feedback>
+        </choice>
+        <choice>
+          <statement>It searches only the first character of <code>target</code> and ignores the rest, returning 0 when found or 1 when not found.</statement>
+          <feedback>No. We check <em>all</em> characters in <code>target</code>, not just the first one.</feedback>
+        </choice>
+        <choice>
+          <statement>It ignores overlapping patterns, so <code>indexOf("aaa")</code> in <code>"aaaa"</code> returns -1.</statement>
+          <feedback>No. Overlapping patterns are allowed. <code>indexOf("aaa")</code> in <code>"aaaa"</code> should find a match at index 0.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- =============================================
+         Quiz #2: lastIndexOf(...) Edge Cases
+         ============================================= -->
+    <exercise xml:id="mc-lastindexof" type="multiplechoice">
+      <title>Multiple-Choice: lastIndexOf(...) Edge Cases</title>
+      <statement>
+        <p>When calling <code>lastIndexOf(String target)</code> on a <code>MyString</code> of length 6 (e.g. <code>"banana"</code>), which of the following is <em>not</em> how we handle special cases?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>If <code>target</code> is <code>null</code>, we treat it as <code>""</code> and return <code>usedLength</code> (which is 6 for <code>"banana"</code>).</statement>
+          <feedback>That <em>is</em> correct behavior (returns 6).</feedback>
+        </choice>
+        <choice>
+          <statement>If <code>target</code> is <code>""</code>, we immediately return <code>usedLength</code> (6 for <code>"banana"</code>).</statement>
+          <feedback>That <em>is</em> correct behavior in our design.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>We throw an exception if <code>target</code> is longer than <code>usedLength</code>, to indicate the search is impossible.</statement>
+          <feedback>Correct—this is <em>not</em> what we do. We return <code>-1</code> instead of throwing an exception.</feedback>
+        </choice>
+        <choice>
+          <statement>If no match is found, we return <code>-1</code>.</statement>
+          <feedback>Yes, that's the expected behavior for no match.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- =============================================
+         Quiz #3: contains(...) Implementation
+         ============================================= -->
+    <exercise xml:id="mc-contains" type="multiplechoice">
+      <title>Multiple-Choice: contains(...) Implementation</title>
+      <statement>
+        <p>Our <code>contains(String target)</code> method reuses <code>indexOf</code> internally. How does <code>contains</code> decide whether to return <code>true</code> or <code>false</code> for a given <code>target</code>?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>It compares each character of <code>target</code> to each character of <code>MyString</code>, returning <code>true</code> if any matches.</statement>
+          <feedback>Not quite. We rely on <code>indexOf</code> to do that comparison logic for us.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>It calls <code>indexOf(target)</code> and returns <code>true</code> if the result is not <code>-1</code>, otherwise <code>false</code>.</statement>
+          <feedback>Exactly! That's how we reuse existing code to avoid duplicating logic.</feedback>
+        </choice>
+        <choice>
+          <statement>It calls <code>lastIndexOf(target)</code> first, and if that fails, calls <code>indexOf(target)</code> as a fallback.</statement>
+          <feedback>No, we don't need both. One search method is enough to check for a match.</feedback>
+        </choice>
+        <choice>
+          <statement>It returns <code>false</code> for an empty <code>target</code> since that can't be found in the string.</statement>
+          <feedback>No. In our design, empty strings or null are considered found (returns <code>true</code> or 0 index for <code>indexOf</code>).</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- =============================================
+         Quiz #4: Overlapping Matches
+         ============================================= -->
+    <exercise xml:id="mc-overlapping-matches" type="multiplechoice">
+      <title>Multiple-Choice: Overlapping Matches</title>
+      <statement>
+        <p>Consider <code>"aaaa"</code> as our <code>MyString</code>, and we call <code>indexOf("aaa")</code> vs. <code>lastIndexOf("aaa")</code>. Which statement best describes how overlapping matches are handled?</p>
+      </statement>
+      <choices>
+        <choice correct="yes">
+          <statement><code>indexOf("aaa")</code> returns <code>0</code> (the first match), while <code>lastIndexOf("aaa")</code> returns <code>1</code> (the <em>last</em> match), even though they overlap.</statement>
+          <feedback>Correct. The loops in each method check for the earliest or latest valid match.</feedback>
+        </choice>
+        <choice>
+          <statement><code>indexOf("aaa")</code> returns <code>0</code>, but <code>lastIndexOf("aaa")</code> fails to find a match and returns <code>-1</code> due to the overlap.</statement>
+          <feedback>No. Overlaps are allowed; we do find <code>"aaa"</code> at index 1 from the right side.</feedback>
+        </choice>
+        <choice>
+          <statement>Both return <code>0</code> because the substring's first occurrence is also the last occurrence when overlapping is disallowed.</statement>
+          <feedback>No, we do allow overlapping. The last occurrence is at index 1, not 0.</feedback>
+        </choice>
+        <choice>
+          <statement>Both throw exceptions to indicate an overlapping substring is not valid.</statement>
+          <feedback>No. We never throw exceptions for overlapping matches; we handle them normally.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- =============================================
+         Quiz #5: Searching Method Summary
+         ============================================= -->
+    <exercise xml:id="mc-searching-summary" type="multiplechoice">
+      <title>Multiple-Choice: Searching Method Summary</title>
+      <statement>
+        <p>Which of the following statements <em>best</em> summarizes our overall design and error policy for <code>indexOf</code>, <code>lastIndexOf</code>, and <code>contains</code> in <code>MyString</code>?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>
+            <ul>
+              <li>Throw a <code>NullPointerException</code> if <code>target</code> is null</li>
+              <li>Return <code>0</code> for empty <code>target</code> in all cases</li>
+              <li>Use exceptions for substring not found</li>
+            </ul>
+          </statement>
+          <feedback>No. We never throw exceptions; we have a simplified approach returning special values (like -1).</feedback>
+        </choice>
+        <choice>
+          <statement>
+            <ul>
+              <li>Always case-insensitive: <code>"banana"</code> matches <code>"ANA"</code></li>
+              <li>Reject empty or null <code>target</code> by returning <code>-1</code></li>
+              <li>Overlap checks cause exceptions</li>
+            </ul>
+          </statement>
+          <feedback>No. Our design is case-sensitive, treats empty or null as valid, and doesn't throw exceptions on overlaps.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>
+            <ul>
+              <li>Treat <code>null</code> as an empty string</li>
+              <li>Return <code>-1</code> if <code>target</code> is not found or if longer than the <code>MyString</code></li>
+              <li>Return <code>0</code> for empty <code>target</code> in <code>indexOf</code>, and <code>usedLength</code> for empty in <code>lastIndexOf</code></li>
+              <li><code>contains</code> just checks if <code>indexOf</code> is <code>-1</code> or not</li>
+            </ul>
+          </statement>
+          <feedback>Exactly! This encapsulates our simplified approach to searching and error handling.</feedback>
+        </choice>
+        <choice>
+          <statement>
+            <ul>
+              <li>Implicitly resizes if <code>target</code> is bigger than 100 chars</li>
+              <li>For empty or null <code>target</code>, returns any random index from 0–usedLength</li>
+              <li>Requires separate logic for <code>contains</code></li>
+            </ul>
+          </statement>
+          <feedback>No. We do no resizing, don't return random indexes, and <code>contains</code> reuses <code>indexOf</code>.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- =============================================
+         Short-Answer: Handling "Impossible Matches"
+         ============================================= -->
+    <exercise xml:id="sa-impossible-matches" type="shortanswer">
+      <title>Short-Answer: Handling "Impossible Matches"</title>
+      <statement>
+        <p>When <code>target</code> is longer than the <code>MyString</code> or when no match is found, 
+        we return <code>-1</code> instead of throwing an exception. 
+        In your own words, why might this be beneficial in some educational or prototyping contexts 
+        rather than strictly following real Java's exceptions?</p>
+      </statement>
+      <answer>It makes the code simpler to handle and demonstrates the logic without forcing students to manage exceptions. This approach focuses on returning special values (like -1) instead of error objects, which is often easier for beginners or quick prototypes.</answer>
+    </exercise>
+</exercises>
 </section>

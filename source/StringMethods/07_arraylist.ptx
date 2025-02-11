@@ -296,4 +296,211 @@ public class UtilitiesDemo {
 
     <p>Mastering <c>ArrayList</c> paves the way for exploring more advanced collections in Java—such as <c>LinkedList</c>, <c>HashMap</c>, or <c>TreeSet</c>. If you keep in mind how to handle insertions/removals, iteration, and various edge cases, you&apos;ll find <c>ArrayList</c> an indispensable data structure for day-to-day development in Java.</p>
   </subsection>
+
+  <exercises>
+    <!-- ============================================
+         Quiz #1: ArrayList Creation & Basic Methods
+         ============================================ -->
+    <exercise xml:id="mc-arraylist-creation-basics" type="multiplechoice">
+      <title>Multiple-Choice: Creating &amp; Basic Methods</title>
+      <statement>
+        <p>Which of the following statements about creating and using an <code>ArrayList</code> is <em>correct</em>?</p>
+      </statement>
+      <choices>
+        <choice correct="yes">
+          <statement>You can declare it as <code>ArrayList&lt;String&gt; list = new ArrayList&lt;String&gt;();</code>, then use <code>list.add(...)</code> and <code>list.get(...)</code> to manage elements.</statement>
+          <feedback>Exactly! That's the standard approach: specify the type parameter &lt;String&gt; and call <code>add</code>/<code>get</code> to manipulate elements.</feedback>
+        </choice>
+        <choice>
+          <statement>You must import <code>java.util.ArrayList</code>, but you cannot add elements using <code>add</code>; you must use <code>list[index] = ...</code> to insert items.</statement>
+          <feedback>No. <code>ArrayList</code> doesn't use the <code>[]</code> syntax for assignment; we call <code>add</code> or <code>set</code> instead.</feedback>
+        </choice>
+        <choice>
+          <statement>It's impossible to store strings in an <code>ArrayList</code>—only numeric data is allowed by default.</statement>
+          <feedback>No. <code>ArrayList</code> is generic and can store any type of object, including strings.</feedback>
+        </choice>
+        <choice>
+          <statement>If <code>list</code> has been instantiated but is empty, calling <code>list.get(0)</code> will return <code>null</code> instead of throwing an exception.</statement>
+          <feedback>No. If it's empty, <code>get(0)</code> throws an <code>IndexOutOfBoundsException</code>, not <code>null</code>.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+
+    <!-- ============================================
+         Quiz #2: Insertions & Removals
+         ============================================ -->
+    <exercise xml:id="mc-arraylist-insert-remove" type="multiplechoice">
+      <title>Multiple-Choice: Insertions &amp; Removals</title>
+      <statement>
+        <p>You have <code>ArrayList&lt;String&gt; tasks = new ArrayList&lt;&gt;()</code> with elements <code>{"Wash dishes", "Go running", "Buy milk"}</code>. If you call <code>tasks.add(1, "Pay bills")</code>, then <code>tasks.remove("Buy milk")</code>, what is the final content of <code>tasks</code>?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><code>{"Wash dishes", "Pay bills", "Buy milk"}</code></statement>
+          <feedback>Not quite—remember we remove <code>"Buy milk"</code> after adding <code>"Pay bills"</code>.</feedback>
+        </choice>
+        <choice>
+          <statement><code>{"Pay bills", "Wash dishes", "Go running"}</code></statement>
+          <feedback>No. Inserting at index 1 puts "Pay bills" between "Wash dishes" and "Go running."</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><code>{"Wash dishes", "Pay bills", "Go running"}</code></statement>
+          <feedback>Correct! After insertion at index 1, the list is {"Wash dishes", "Pay bills", "Go running", "Buy milk"}. Removing "Buy milk" leaves {"Wash dishes", "Pay bills", "Go running"}.</feedback>
+        </choice>
+        <choice>
+          <statement><code>{"Wash dishes", "Go running"}</code></statement>
+          <feedback>No. That would happen if we removed "Pay bills" instead of "Buy milk."</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+
+    <!-- ============================================
+         Quiz #3: Iteration & Searching
+         ============================================ -->
+    <exercise xml:id="mc-arraylist-iteration-search" type="multiplechoice">
+      <title>Multiple-Choice: Iteration &amp; Searching</title>
+      <statement>
+        <p>Which statement <em>best</em> describes how to find if an <code>ArrayList&lt;String&gt;</code> contains a particular item (e.g., <code>"Bob"</code>)?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>Use a for-each loop with <code>==</code> to check each element: <code>if (elem == "Bob")</code>.</statement>
+          <feedback>No. String comparisons require <code>.equals</code>, not <code>==</code>. Also, a simpler approach is <code>list.contains("Bob")</code>.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>Call <code>list.contains("Bob")</code>, which returns <code>true</code> if any element <code>.equals("Bob")</code>.</statement>
+          <feedback>Correct! <code>contains</code> is the easiest built-in method to check membership.</feedback>
+        </choice>
+        <choice>
+          <statement>Loop through the list with <code>get(i)</code> until you find <code>list.get(i) == "Bob"</code>, otherwise return <code>false</code>.</statement>
+          <feedback>That's a more manual approach, and you'd need <code>.equals</code> not <code>==</code>. <code>list.contains</code> is simpler.</feedback>
+        </choice>
+        <choice>
+          <statement>Call <code>indexOf("Bob") &gt; 0</code> to see if it exists. If it's not found, <code>indexOf</code> returns <code>0</code>.</statement>
+          <feedback>If not found, <code>indexOf</code> returns <code>-1</code>, not <code>0</code>. Also, if "Bob" was at index 0, this logic would incorrectly say it's missing.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+
+    <!-- ============================================
+         Quiz #4: Auto-Boxing & Primitive Wrappers
+         ============================================ -->
+    <exercise xml:id="mc-arraylist-autoboxing" type="multiplechoice">
+      <title>Multiple-Choice: Auto-Boxing &amp; Wrapper Types</title>
+      <statement>
+        <p>Which statement about storing integers in an <code>ArrayList&lt;Integer&gt;</code> is <em>correct</em>?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>You must call <code>Integer.valueOf(...)</code> manually before adding an <code>int</code> to the list.</statement>
+          <feedback>No. Java does that step implicitly (auto-boxing) for convenience.</feedback>
+        </choice>
+        <choice>
+          <statement><code>new ArrayList&lt;Integer&gt;()</code> actually stores <code>int</code> primitives directly; no objects are created.</statement>
+          <feedback>No. <code>ArrayList&lt;Integer&gt;</code> always holds <code>Integer</code> objects under the hood.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>Java automatically converts <code>int</code> to <code>Integer</code> (auto-boxing) and vice versa (auto-unboxing) when you add or retrieve elements.</statement>
+          <feedback>Exactly! This is the essence of auto-boxing and unboxing for <code>int</code>.</feedback>
+        </choice>
+        <choice>
+          <statement>If you add an <code>int</code> to the list and retrieve it as <code>Integer</code>, you must cast it to <code>(Integer)</code> first to avoid compile errors.</statement>
+          <feedback>No. The generics system and auto-unboxing handle the conversions seamlessly, so no cast is needed.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+
+    <!-- ============================================
+         Quiz #5: subList(...) Live View
+         ============================================ -->
+    <exercise xml:id="mc-sublist-view" type="multiplechoice">
+      <title>Multiple-Choice: subList(...) Behavior</title>
+      <statement>
+        <p>What happens if you obtain a sublist with <code>List&lt;String&gt; sub = list.subList(1, 3)</code> and then modify the sublist?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>It creates a fully independent copy, so the original list remains unchanged.</statement>
+          <feedback>No. That's only true if you explicitly create a new <code>ArrayList</code> from the sublist, e.g. <code>new ArrayList(subList(...))</code>.</feedback>
+        </choice>
+        <choice>
+          <statement>It throws an <code>UnsupportedOperationException</code> if you try to remove items from <code>sub</code>.</statement>
+          <feedback>No. A sublist is modifiable by default if the parent list is modifiable. However, changes reflect in the parent list.</feedback>
+        </choice>
+        <choice>
+          <statement>It triggers an <code>IndexOutOfBoundsException</code> because sublists are read-only by default.</statement>
+          <feedback>No. Sublists are usually read-write, not read-only. You only get bounds errors if you exceed valid indices.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>The changes are reflected in the original list, because <code>subList</code> returns a <em>view</em> into the same underlying data.</statement>
+          <feedback>Correct! Modifications in the sublist also affect the parent list. They share the same data region.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+
+    <!-- ============================================
+         Quiz #6: Sorting & Utility Methods
+         ============================================ -->
+    <exercise xml:id="mc-arraylist-sort" type="multiplechoice">
+      <title>Multiple-Choice: Sorting &amp; Utility Methods</title>
+      <statement>
+        <p>Consider you have <code>ArrayList&lt;String&gt; fruits = new ArrayList&lt;&gt;(List.of("Orange", "Apple", "Banana"));</code> and you call <code>fruits.sort(null);</code>. Which statement is true regarding the result?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>The list is reversed: <code>["Banana", "Apple", "Orange"]</code> because passing <code>null</code> triggers reverse order by default.</statement>
+          <feedback>No. Null means "use natural order," not reversed.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>The list is now sorted in ascending (alphabetical) order: <code>["Apple", "Banana", "Orange"]</code>.</statement>
+          <feedback>Yes. Passing <code>null</code> to <code>sort</code> means use natural order, which for strings is alphabetical.</feedback>
+        </choice>
+        <choice>
+          <statement>It throws a <code>NullPointerException</code> because <code>sort(null)</code> is invalid.</statement>
+          <feedback>No. If you pass <code>null</code> for the comparator, Java uses the elements' <em>natural</em> ordering.</feedback>
+        </choice>
+        <choice>
+          <statement>The <code>sort</code> method does nothing, leaving the list in the original insertion order.</statement>
+          <feedback>No. <code>sort(null)</code> definitely sorts by natural order, not a no-op.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+
+    <!-- ============================================
+         Short-Answer #1: Handling Removals in a Loop
+         ============================================ -->
+    <exercise xml:id="sa-removals-in-loop" type="shortanswer">
+      <title>Short-Answer: Removals in a Loop</title>
+      <statement>
+        <p>
+          Why might removing elements from an <code>ArrayList</code> inside a for-each loop 
+          lead to a <code>ConcurrentModificationException</code>, 
+          and what is one strategy to remove items safely in such situations?
+        </p>
+      </statement>
+      <answer>Because the for-each loop expects the list structure to remain constant. Removing items changes its size mid-iteration, causing the iterator to detect a concurrent modification. One safe strategy is to use an explicit iterator and call <code>iterator.remove()</code>, or collect items to remove in a separate list, then remove them afterward.</answer>
+    </exercise>
+
+
+    <!-- ============================================
+         Short-Answer #2: Performance Considerations
+         ============================================ -->
+    <exercise xml:id="sa-performance-considerations" type="shortanswer">
+      <title>Short-Answer: Performance Considerations</title>
+      <statement>
+        <p>
+          In terms of performance, when might a linked-based collection (like <code>LinkedList</code>) 
+          be more appropriate than <code>ArrayList</code>? 
+          Give a scenario based on what you learned.
+        </p>
+      </statement>
+      <answer>If you need frequent insertions or deletions in the middle of a large list, a linked-based structure often outperforms ArrayList because elements aren't shifted. ArrayList is generally better for random access or adding at the end.</answer>
+    </exercise>
+</exercises>
 </section>

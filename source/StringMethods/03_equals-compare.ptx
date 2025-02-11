@@ -604,4 +604,133 @@ System.out.println("Testing compareTo(\"\"): " + test.compareTo("")); // Row 7: 
     <p>These steps help you avoid the most frequent mistake in Java string comparison: using <c>==</c> instead of <c>.equals(...)</c>. They also clarify <em>how</em> to order strings, including what "less than" or "greater than" means. Finally, they highlight how a well-structured JavaDoc and implementation notes can guide everyone's understanding and your IDE's tooltips. As you continue your journey, consider trying case-insensitive versions or exploring how to handle punctuation or Unicode comparisons. But for now, you've laid a strong foundation in comparing strings carefully and clearly, in a way that your peers can understand and rely on.</p>
   </subsection>
 
+<exercises>
+    <!-- =========================================
+         Quiz #1: equals(...) vs. ==
+         ========================================= -->
+    <exercise xml:id="mc-equals-vs-doubleequals" type="multiplechoice">
+      <title>Multiple-Choice: equals(...) vs. ==</title>
+      <statement>
+        <p>In Java, what is the primary distinction between using <c>==</c> and <c>.equals(...)</c> when comparing two strings?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement><c>==</c> checks if the two strings contain the same characters, while <c>.equals</c> checks if they are the same object in memory.</statement>
+          <feedback>No, it's actually the opposite: <c>==</c> checks for the same object reference, and <c>.equals</c> checks text content.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement><c>==</c> checks if both string variables refer to the same object, whereas <c>.equals</c> checks if the strings contain identical text.</statement>
+          <feedback>Correct! <c>==</c> is reference comparison, and <c>.equals</c> is content comparison.</feedback>
+        </choice>
+        <choice>
+          <statement>They are interchangeable for all Java <c>String</c> objects—there is no difference.</statement>
+          <feedback>No. Using <c>==</c> will often fail unexpectedly because it doesn't compare text content.</feedback>
+        </choice>
+        <choice>
+          <statement>In Java, <c>==</c> always throws an exception when used on strings, so <c>.equals</c> is the only legal comparison.</statement>
+          <feedback>No. <c>==</c> is legal syntactically, but compares references, not text.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+
+    <!-- =========================================
+         Quiz #2: compareTo(...) Behavior
+         ========================================= -->
+    <exercise xml:id="mc-compareto-outcomes" type="multiplechoice">
+      <title>Multiple-Choice: compareTo(...) Outcomes</title>
+      <statement>
+        <p>Suppose <c>str1.compareTo(str2)</c> returns a positive number. Which statement best describes what that means?</p>
+      </statement>
+      <choices>
+        <choice correct="yes">
+          <statement><c>str1</c> is considered "greater" than <c>str2</c> in lexicographical order.</statement>
+          <feedback>Correct! A positive result means <c>str1</c> sorts after <c>str2</c> alphabetically.</feedback>
+        </choice>
+        <choice>
+          <statement>They contain the same content, so the method returns a positive number to indicate "equal."</statement>
+          <feedback>No. If they're equal, <c>compareTo</c> should return <c>0</c>.</feedback>
+        </choice>
+        <choice>
+          <statement>It means <c>str1</c> is shorter than <c>str2</c>.</statement>
+          <feedback>No. Shorter or longer by itself is not the entire story; you must compare character by character.</feedback>
+        </choice>
+        <choice>
+          <statement>They must differ only in case (e.g., "Cat" vs "cat"), so <c>compareTo</c> returns positive when ignoring case differences.</statement>
+          <feedback>No. <c>compareTo</c> is case-sensitive, and a positive result can happen for many reasons, not just case.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+
+    <!-- =========================================
+         Quiz #3: Handling null in compareTo
+         ========================================= -->
+    <exercise xml:id="mc-null-handling" type="multiplechoice">
+      <title>Multiple-Choice: Handling null in compareTo(...)</title>
+      <statement>
+        <p>How does our <c>MyString.compareTo(String other)</c> implementation handle the situation when <c>other</c> is <c>null</c>?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>It throws a <c>NullPointerException</c> immediately.</statement>
+          <feedback>No. Our implementation explicitly checks for <c>null</c> and returns a positive value, not an exception.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>It treats <c>null</c> as "less than" any valid string, returning a positive integer from the <c>compareTo</c> method.</statement>
+          <feedback>Correct! The logic says if <c>other</c> is <c>null</c>, we consider the current <c>MyString</c> to be greater.</feedback>
+        </choice>
+        <choice>
+          <statement>It automatically converts <c>null</c> to an empty string and compares accordingly.</statement>
+          <feedback>No. We do not treat <c>null</c> as an empty string in the provided code snippet.</feedback>
+        </choice>
+        <choice>
+          <statement>It returns 0, implying they are equal if <c>other</c> is <c>null</c>.</statement>
+          <feedback>No. We explicitly decided to treat <c>null</c> as less (hence <c>this</c> is greater), so we return a positive integer, not zero.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+
+    <!-- =========================================
+         Quiz #4: The Role of Data Definition
+         ========================================= -->
+    <exercise xml:id="mc-data-definition-comparison" type="multiplechoice">
+      <title>Multiple-Choice: Data Definition &amp; Comparison</title>
+      <statement>
+        <p>Why is a clear data definition (as in Step 1 of the Design Recipe) essential for building correct <c>equals(...)</c> and <c>compareTo(...)</c> methods in <c>MyString</c>?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>Because we need to override <c>Object.equals(...)</c> precisely as Java does.</statement>
+          <feedback>No. While overriding <c>Object.equals</c> is a valid design, Step 1 is about defining how data is stored and accessed, not necessarily about overriding.</feedback>
+        </choice>
+        <choice>
+          <statement>It's not important; we can guess how to compare characters on-the-fly.</statement>
+          <feedback>No. Lacking a clear data definition leads to buggy implementations (e.g., forgetting length checks or ignoring <c>null</c>).</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>It specifies exactly how characters and length are stored, which makes it clear when two strings are "equal" and how to iterate for comparisons.</statement>
+          <feedback>Exactly. Knowing how <c>usedLength</c> and <c>chars</c> are managed clarifies both equality and ordering logic.</feedback>
+        </choice>
+        <choice>
+          <statement>It only matters for methods like <c>length()</c> or <c>charAt()</c>, but has no bearing on <c>equals</c> or <c>compareTo</c>.</statement>
+          <feedback>Data definition is the foundation for <em>all</em> methods—especially comparison methods that rely heavily on character-by-character checks.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+
+    <!-- =========================================
+         (Optional) Short-Answer Exercise
+         ========================================= -->
+    <exercise xml:id="sa-javadoc-prompt" type="shortanswer">
+      <title>Short-Answer: JavaDoc &amp; Clarity</title>
+      <statement>
+        <p>In your own words, why is it useful to write detailed JavaDoc 
+        for <c>equals(...)</c> and <c>compareTo(...)</c> before coding them?</p>
+      </statement>
+      <answer>It ensures clarity for future maintainers, guides implementers in handling edge cases, and makes IDEs able to display method details.</answer>
+    </exercise>
+</exercises>
 </section>
