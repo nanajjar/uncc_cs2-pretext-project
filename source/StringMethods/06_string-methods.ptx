@@ -1,3 +1,5 @@
+<?xml version="1.0"?>
+
 <section xml:id="ch-practical-string-api">
   <title>More String Methods &amp; StringBuilder</title>
 
@@ -269,12 +271,12 @@ public class FormatDemo {
       <li><p><term>Performance &amp; Assembly:</term> For building large or repetitive text, use <c>StringBuilder</c> for speed, then finalize with <c>.toString()</c>.</p></li>
       <li><p><term>Formatting &amp; Output:</term> <c>String.format</c> or <c>printf</c> simplifies complex output—especially if mixing multiple placeholders or controlling numeric precision.</p></li>
     </ul>
-    <p>If you'd like some <term>practice</term> right now, try these short exercises:</p>
+    <!-- <p>If you'd like some <term>practice</term> right now, try these short exercises:</p>
     <ul>
       <li><p>Write a method <c>cleanInput</c> that accepts a <c>String</c>, trims it, removes punctuation using <c>replaceAll("[^a-zA-Z0-9 ]", "")</c>, and returns the result.</p></li>
       <li><p>Split a text file's lines on commas, convert each piece to uppercase, and then join them with semicolons.</p></li>
       <li><p>Construct a multi-line report with 10 lines of dynamic data. Compare doing it with repeated <c>+</c> versus using <c>StringBuilder</c>. If possible, measure any performance difference!</p></li>
-    </ul>
+    </ul> -->
     <p>Now you have a more <term>practical toolkit</term> for handling strings. While the <term>Design Recipe</term> remains invaluable for learning low-level string manipulation, the built-in methods will streamline your code for real-world scenarios.</p>
   </subsection>
 
