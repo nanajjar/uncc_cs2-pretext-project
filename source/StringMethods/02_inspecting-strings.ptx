@@ -160,7 +160,7 @@ public char charAt(int index) { ... }
           </cell>
           <cell>12</cell>
           <cell>false</cell>
-          <c>' '</c> (space)
+         <cell> <c>' '</c> (space) </cell>
         </row>
         <row>
           <cell>
@@ -333,8 +333,9 @@ public char charAt(int index) {
     Run each example to confirm that all methods behave as expected
   </p>
 
+ <p>  Example 1:  "Hello"  </p> 
   <program language="java" xml:id="mystring-complete1" interactive="activecode">
-<statement> <p>  Example 1:  "Hello"  </p> </statement>
+
 <code>public class MyString {
 
     private char[] chars = new char[100];  // fixed size of 100
@@ -397,9 +398,9 @@ public char charAt(int index) {
 </code>
   </program>
 
-
+  <p>  Example 2:  "" (empty string) </p> 
     <program language="java" xml:id="mystring-complete2" interactive="activecode">
-    <statement> <p>  Example 2:  "" (empty string) </p> </statement>
+   
 <code>
 public class MyString {
 
@@ -462,8 +463,9 @@ public class MyString {
 }
 </code>
   </program>
+    <p>  Example 3:  "Cat"  </p> 
     <program language="java" xml:id="mystring-complete3" interactive="activecode">
-    <statement> <p>  Example 3:  "Cat"  </p> </statement>
+   
     <code>
 public class MyString {
 
@@ -526,8 +528,9 @@ public class MyString {
 }
 </code>
   </program>
+   <p>  Example 4:  "I love Java!"  </p>
     <program language="java" xml:id="mystring-complete4" interactive="activecode">
-    <statement> <p>  Example 4:  "I love Java!"  </p> </statement>
+   
     <code>
 public class MyString {
 
@@ -590,9 +593,9 @@ public class MyString {
 }
 </code>
   </program>
-
+ <p>  Example 5:  " " (space)  </p> 
     <program language="java" xml:id="mystring-complete5" interactive="activecode">
-    <statement> <p>  Example 5:  " " (space)  </p> </statement>
+   
 <code>
 public class MyString {
 
@@ -655,9 +658,9 @@ public class MyString {
 }
 </code>
   </program>
-
+ <p>  Example 6:  "123"  </p> 
     <program language="java" xml:id="mystring-complete6" interactive="activecode">
-        <statement> <p>  Example 6:  "123"  </p> </statement>
+        
 <code>
 public class MyString {
 
