@@ -653,6 +653,8 @@ public class MyString {
     </p>
   </subsection>
 
+<subsection xml:id="ex-search-strings">
+    <title>Check Your Understanding</title>
   <exercises>
     <!-- =============================================
          Quiz #1: Understanding indexOf(...) Behavior
@@ -835,4 +837,5 @@ public class MyString {
       <answer>It makes the code simpler to handle and demonstrates the logic without forcing students to manage exceptions. This approach focuses on returning special values (like -1) instead of error objects, which is often easier for beginners or quick prototypes.</answer>
     </exercise>
 </exercises>
+</subsection>
 </section>

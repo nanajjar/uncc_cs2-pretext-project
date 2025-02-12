@@ -605,7 +605,8 @@ System.out.println("Testing compareTo(\"\"): " + test.compareTo("")); // Row 7: 
     </ul>
     <p>These steps help you avoid the most frequent mistake in Java string comparison: using <c>==</c> instead of <c>.equals(...)</c>. They also clarify <em>how</em> to order strings, including what "less than" or "greater than" means. Finally, they highlight how a well-structured JavaDoc and implementation notes can guide everyone's understanding and your IDE's tooltips. As you continue your journey, consider trying case-insensitive versions or exploring how to handle punctuation or Unicode comparisons. But for now, you've laid a strong foundation in comparing strings carefully and clearly, in a way that your peers can understand and rely on.</p>
   </subsection>
-
+<subsection xml:id="ex-compare-strings">
+    <title>Check Your Understanding</title>
 <exercises>
     <!-- =========================================
          Quiz #1: equals(...) vs. ==
@@ -735,4 +736,5 @@ System.out.println("Testing compareTo(\"\"): " + test.compareTo("")); // Row 7: 
       <answer>It ensures clarity for future maintainers, guides implementers in handling edge cases, and makes IDEs able to display method details.</answer>
     </exercise>
 </exercises>
+</subsection>
 </section>

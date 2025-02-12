@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <section xml:id="ch-intro-arraylist">
   <title>Working with ArrayList</title>
 
@@ -297,7 +298,8 @@ public class UtilitiesDemo {
     <p>Mastering <c>ArrayList</c> paves the way for exploring more advanced collections in Java—such as <c>LinkedList</c>, <c>HashMap</c>, or <c>TreeSet</c>. 
     If you keep in mind how to handle insertions/removals, iteration, and various edge cases, you&apos;ll find <c>ArrayList</c> an indispensable data structure for day-to-day development in Java.</p>
   </subsection>
-
+<subsection xml:id="ex-arraylist">
+    <title>Check Your Understanding</title>
   <exercises>
     <!-- ============================================
          Quiz #1: ArrayList Creation & Basic Methods
@@ -504,4 +506,5 @@ public class UtilitiesDemo {
       <answer>If you need frequent insertions or deletions in the middle of a large list, a linked-based structure often outperforms ArrayList because elements aren't shifted. ArrayList is generally better for random access or adding at the end.</answer>
     </exercise>
 </exercises>
+</subsection>
 </section>

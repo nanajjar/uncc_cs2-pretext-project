@@ -279,6 +279,8 @@ public class FormatDemo {
     </ul> -->
     <p>Now you have a more <term>practical toolkit</term> for handling strings. While the <term>Design Recipe</term> remains invaluable for learning low-level string manipulation, the built-in methods will streamline your code for real-world scenarios.</p>
   </subsection>
+  <subsection xml:id="ex-string-methods">
+    <title>Check Your Understanding</title>
 
   <exercises>
     <!-- ==========================================
@@ -460,4 +462,5 @@ public class FormatDemo {
       <answer>One possible scenario is parsing user input from a command line: First trim whitespace, convert to lowercase to standardize commands, split on spaces to isolate each argument, then use StringBuilder to assemble a log or message from those arguments for display or debugging.</answer>
     </exercise>
 </exercises>
+</subsection>
 </section>
