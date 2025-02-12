@@ -269,9 +269,11 @@ import static org.junit.Assert.*;
 </block><block order="5">
 <cline> }</cline>
 </block></blocks></exercise>
+<!-- ToDO - Update question prompt -->
     <exercise label="scoreifelse">
     <statement>
-        <p>Try the following code. Add an else statement to the if statement that prints out “Good job!” if the score is greater than 9. Change the value of score to test it. Can you change the boolean test to only print out “Good job” if the score is greater than 20?</p>
+        <p>Try the following code. Add an else statement to the if statement that prints out “Good job!” if the score is greater than 9. 
+        Change the value of score to test it. Can you change the boolean test to only print out “Good job” if the score is greater than 20?</p>
 
     </statement>
     <program xml:id="scoreifelse_editor" interactive="activecode" language="java">

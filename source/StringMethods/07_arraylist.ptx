@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <section xml:id="ch-intro-arraylist">
   <title>Working with ArrayList</title>
 
@@ -272,7 +273,7 @@ public class UtilitiesDemo {
        7. Conclusion & Exercises
        ========================================= -->
   <subsection xml:id="arraylist-conclusion">
-    <title>Conclusion &amp; Exercises</title>
+    <title>Conclusion</title>
     <p>In this lesson, we examined the fundamentals of <c>ArrayList</c>, starting with creation and basic additions, moving on to iteration, searching, and specialized methods. This knowledge will be invaluable in any project that needs dynamic lists of objects. Keep these key takeaways in mind:</p>
     <ul>
       <li><term>Flexibility vs. Performance:</term> <c>ArrayList</c> is a reliable default, but be mindful that frequent insertions or removals <em>in the middle</em> can be costly. For smaller lists, it&apos;s usually fine.</li>
@@ -280,7 +281,7 @@ public class UtilitiesDemo {
       <li><term>Auto-Boxing:</term> Convenient for handling primitives within an <c>ArrayList</c>; however, be mindful of performance impacts in large loops or data sets.</li>
       <li><term>Utilities:</term> Methods like <c>contains</c>, <c>indexOf</c>, <c>sort</c>, and <c>toArray</c> can be time-savers. Just remember <c>subList()</c> is a &quot;live&quot; window, not an independent copy.</li>
     </ul>
-
+<!--
     <p>Now that you&apos;ve explored multiple ways to create and manage <c>ArrayList</c>s, try these **practice exercises** to reinforce your skills:</p>
     <ol>
       <li>
@@ -293,10 +294,12 @@ public class UtilitiesDemo {
         <p><term>Exercise 3:</term> Suppose you read a file line-by-line into an <c>ArrayList&lt;String&gt;</c>, how would you split each line by commas and store the resulting pieces? Consider combining <c>split()</c> from the previous chapter with <c>ArrayList</c>-based storage.</p>
       </li>
     </ol>
-
-    <p>Mastering <c>ArrayList</c> paves the way for exploring more advanced collections in Java—such as <c>LinkedList</c>, <c>HashMap</c>, or <c>TreeSet</c>. If you keep in mind how to handle insertions/removals, iteration, and various edge cases, you&apos;ll find <c>ArrayList</c> an indispensable data structure for day-to-day development in Java.</p>
+-->
+    <p>Mastering <c>ArrayList</c> paves the way for exploring more advanced collections in Java—such as <c>LinkedList</c>, <c>HashMap</c>, or <c>TreeSet</c>. 
+    If you keep in mind how to handle insertions/removals, iteration, and various edge cases, you&apos;ll find <c>ArrayList</c> an indispensable data structure for day-to-day development in Java.</p>
   </subsection>
-
+<subsection xml:id="ex-arraylist">
+    <title>Check Your Understanding</title>
   <exercises>
     <!-- ============================================
          Quiz #1: ArrayList Creation & Basic Methods
@@ -503,4 +506,5 @@ public class UtilitiesDemo {
       <answer>If you need frequent insertions or deletions in the middle of a large list, a linked-based structure often outperforms ArrayList because elements aren't shifted. ArrayList is generally better for random access or adding at the end.</answer>
     </exercise>
 </exercises>
+</subsection>
 </section>

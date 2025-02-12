@@ -1,3 +1,5 @@
+<?xml version="1.0"?>
+
 <section xml:id="ch-string-extraction">
   <title>String Extraction</title>
 
@@ -579,7 +581,8 @@ public class MyString {
     </ul>
     <p>This stepwise design and testing approach illustrates how the <term>Design Recipe</term>—particularly Step 4 (Skeleton) and Step 5 (Implementation &amp; Testing)—reduces complexity and fosters confidence in the final code. By addressing validation, planning the copy routine, and testing thoroughly, we produce a robust <c>substring</c> method that captures the essence of Java's slicing logic. Throughout this process, each incremental improvement serves as a checkpoint, validating our assumptions and ensuring we remain aligned with the intended functionality.</p>
   </subsection>
-
+<subsection xml:id="ex-substrings">
+    <title>Check Your Understanding</title>
 <exercises>
     <!-- =============================================
          Quiz #1: Begin/End Index Behavior
@@ -739,4 +742,5 @@ But see if there's a more correct answer that covers the essence of “most like
       <answer>An exception alerts the caller that something went wrong (invalid indices), making it easier to debug or handle the error. Silently returning an empty string might mask bugs and lead to harder-to-trace logic errors downstream.</answer>
     </exercise>
 </exercises>
+</subsection>
 </section>

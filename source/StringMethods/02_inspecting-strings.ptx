@@ -156,15 +156,15 @@ public char charAt(int index) { ... }
         </row>
         <row>
           <cell>
-            <c>"Java!"</c>
+            <c>"I love Java!"</c>
           </cell>
-          <cell>5</cell>
+          <cell>12</cell>
           <cell>false</cell>
-          <cell>'a'</cell>
+          <c>' '</c> (space)
         </row>
         <row>
           <cell>
-            <c>" "</c> (space)
+          <c>" "</c> (space)
           </cell>
           <cell>1</cell>
           <cell>false</cell>
@@ -329,11 +329,78 @@ public char charAt(int index) {
   <p>
     Now that we've walked through each method, here's a self-contained 
     version of the <c>MyString</c> class with a <c>main</c> method. 
-    It tests the same scenarios we outlined in <em>Step 3</em> (Examples &amp; Tests).
-    Compile and run this code to confirm that all methods behave as expected.
+    Each code block tests a different example, covering the scenarios we outlined  in <em>Step 3</em> (Examples &amp; Tests). 
+    Run each example to confirm that all methods behave as expected
   </p>
 
-  <program language="java" xml:id="mystring-complete" interactive="activecode">
+  <program language="java" xml:id="mystring-complete1" interactive="activecode">
+<statement> <p>  Example 1:  "Hello"  </p> </statement>
+<code>public class MyString {
+
+    private char[] chars = new char[100];  // fixed size of 100
+    private int usedLength;                // tracks how many chars are used
+
+    /**
+     * Constructs a new MyString from a regular Java String.
+     * Enforces a 100-character limit.
+     */
+    public MyString(String original) {
+        if (original.length() &gt; 100) {
+            // Enforce our 100-character limit
+            usedLength = 100;
+        } else {
+            usedLength = original.length();
+        }
+        // Copy characters into our array
+        for (int i = 0; i &lt; usedLength; i++) {
+            chars[i] = original.charAt(i);
+        }
+    }
+
+    /**
+     * Returns how many characters are used.
+     */
+    public int length() {
+        return usedLength;
+    }
+
+    /**
+     * Checks if zero characters are used.
+     */
+    public boolean isEmpty() {
+        return (usedLength == 0);
+    }
+
+    /**
+     * Returns the char at position index (0 &lt;= index &lt; usedLength).
+     * Returns '?' if out-of-range.
+     */
+    public char charAt(int index) {
+        if (index &lt; 0 || index &gt;= usedLength) {
+            return '?';  // Indicator for invalid index
+        }
+        return chars[index];
+    }
+
+    /**
+     * A main method that tests MyString according to our examples in Step 3.
+     */
+    public static void main(String[] args) {
+        MyString s1 = new MyString("Hello");
+        System.out.println("Testing MyString(\"Hello\"):");
+        System.out.println(" length() -&gt; " + s1.length());        // Expect 5
+        System.out.println(" isEmpty() -&gt; " + s1.isEmpty());      // Expect false
+        System.out.println(" charAt(1) -&gt; " + s1.charAt(1));      // Expect 'e'
+        System.out.println();
+    }
+}
+</code>
+  </program>
+
+
+    <program language="java" xml:id="mystring-complete2" interactive="activecode">
+    <statement> <p>  Example 2:  "" (empty string) </p> </statement>
+<code>
 public class MyString {
 
     private char[] chars = new char[100];  // fixed size of 100
@@ -385,47 +452,264 @@ public class MyString {
      * A main method that tests MyString according to our examples in Step 3.
      */
     public static void main(String[] args) {
-        // 1) "Hello"
-        MyString s1 = new MyString("Hello");
-        System.out.println("Testing MyString(\"Hello\"):");
-        System.out.println(" length() -&gt; " + s1.length());        // Expect 5
-        System.out.println(" isEmpty() -&gt; " + s1.isEmpty());      // Expect false
-        System.out.println(" charAt(1) -&gt; " + s1.charAt(1));      // Expect 'e'
-        System.out.println();
-
-        // 2) "" (empty string)
         MyString s2 = new MyString("");
         System.out.println("Testing MyString(\"\"):");
         System.out.println(" length() -&gt; " + s2.length());        // Expect 0
         System.out.println(" isEmpty() -&gt; " + s2.isEmpty());      // Expect true
         System.out.println(" charAt(1) -&gt; " + s2.charAt(1));      // Expect '?'
         System.out.println();
+    }
+}
+</code>
+  </program>
+    <program language="java" xml:id="mystring-complete3" interactive="activecode">
+    <statement> <p>  Example 3:  "Cat"  </p> </statement>
+    <code>
+public class MyString {
 
-        // 3) "Cat"
+    private char[] chars = new char[100];  // fixed size of 100
+    private int usedLength;                // tracks how many chars are used
+
+    /**
+     * Constructs a new MyString from a regular Java String.
+     * Enforces a 100-character limit.
+     */
+    public MyString(String original) {
+        if (original.length() &gt; 100) {
+            // Enforce our 100-character limit
+            usedLength = 100;
+        } else {
+            usedLength = original.length();
+        }
+        // Copy characters into our array
+        for (int i = 0; i &lt; usedLength; i++) {
+            chars[i] = original.charAt(i);
+        }
+    }
+
+    /**
+     * Returns how many characters are used.
+     */
+    public int length() {
+        return usedLength;
+    }
+
+    /**
+     * Checks if zero characters are used.
+     */
+    public boolean isEmpty() {
+        return (usedLength == 0);
+    }
+
+    /**
+     * Returns the char at position index (0 &lt;= index &lt; usedLength).
+     * Returns '?' if out-of-range.
+     */
+    public char charAt(int index) {
+        if (index &lt; 0 || index &gt;= usedLength) {
+            return '?';  // Indicator for invalid index
+        }
+        return chars[index];
+    }
+
+    /**
+     * A main method that tests MyString according to our examples in Step 3.
+     */
+    public static void main(String[] args) {
         MyString s3 = new MyString("Cat");
         System.out.println("Testing MyString(\"Cat\"):");
         System.out.println(" length() -&gt; " + s3.length());        // Expect 3
         System.out.println(" isEmpty() -&gt; " + s3.isEmpty());      // Expect false
         System.out.println(" charAt(1) -&gt; " + s3.charAt(1));      // Expect 'a'
         System.out.println();
+    }
+}
+</code>
+  </program>
+    <program language="java" xml:id="mystring-complete4" interactive="activecode">
+    <statement> <p>  Example 4:  "I love Java!"  </p> </statement>
+    <code>
+public class MyString {
 
-        // 4) "Java!"
-        MyString s4 = new MyString("Java!");
+    private char[] chars = new char[100];  // fixed size of 100
+    private int usedLength;                // tracks how many chars are used
+
+    /**
+     * Constructs a new MyString from a regular Java String.
+     * Enforces a 100-character limit.
+     */
+    public MyString(String original) {
+        if (original.length() &gt; 100) {
+            // Enforce our 100-character limit
+            usedLength = 100;
+        } else {
+            usedLength = original.length();
+        }
+        // Copy characters into our array
+        for (int i = 0; i &lt; usedLength; i++) {
+            chars[i] = original.charAt(i);
+        }
+    }
+
+    /**
+     * Returns how many characters are used.
+     */
+    public int length() {
+        return usedLength;
+    }
+
+    /**
+     * Checks if zero characters are used.
+     */
+    public boolean isEmpty() {
+        return (usedLength == 0);
+    }
+
+    /**
+     * Returns the char at position index (0 &lt;= index &lt; usedLength).
+     * Returns '?' if out-of-range.
+     */
+    public char charAt(int index) {
+        if (index &lt; 0 || index &gt;= usedLength) {
+            return '?';  // Indicator for invalid index
+        }
+        return chars[index];
+    }
+
+    /**
+     * A main method that tests MyString according to our examples in Step 3.
+     */
+    public static void main(String[] args) {
+        MyString s4 = new MyString("I love Java!");
         System.out.println("Testing MyString(\"Java!\"):");
-        System.out.println(" length() -&gt; " + s4.length());        // Expect 5
+        System.out.println(" length() -&gt; " + s4.length());        // Expect 12
         System.out.println(" isEmpty() -&gt; " + s4.isEmpty());      // Expect false
-        System.out.println(" charAt(1) -&gt; " + s4.charAt(1));      // Expect 'a'
+        System.out.println(" charAt(1) -&gt; " + s4.charAt(1));      // Expect ' '
         System.out.println();
+    }
+}
+</code>
+  </program>
 
-        // 5) " " (space)
+    <program language="java" xml:id="mystring-complete5" interactive="activecode">
+    <statement> <p>  Example 5:  " " (space)  </p> </statement>
+<code>
+public class MyString {
+
+    private char[] chars = new char[100];  // fixed size of 100
+    private int usedLength;                // tracks how many chars are used
+
+    /**
+     * Constructs a new MyString from a regular Java String.
+     * Enforces a 100-character limit.
+     */
+    public MyString(String original) {
+        if (original.length() &gt; 100) {
+            // Enforce our 100-character limit
+            usedLength = 100;
+        } else {
+            usedLength = original.length();
+        }
+        // Copy characters into our array
+        for (int i = 0; i &lt; usedLength; i++) {
+            chars[i] = original.charAt(i);
+        }
+    }
+
+    /**
+     * Returns how many characters are used.
+     */
+    public int length() {
+        return usedLength;
+    }
+
+    /**
+     * Checks if zero characters are used.
+     */
+    public boolean isEmpty() {
+        return (usedLength == 0);
+    }
+
+    /**
+     * Returns the char at position index (0 &lt;= index &lt; usedLength).
+     * Returns '?' if out-of-range.
+     */
+    public char charAt(int index) {
+        if (index &lt; 0 || index &gt;= usedLength) {
+            return '?';  // Indicator for invalid index
+        }
+        return chars[index];
+    }
+
+    /**
+     * A main method that tests MyString according to our examples in Step 3.
+     */
+    public static void main(String[] args) {
         MyString s5 = new MyString(" ");
         System.out.println("Testing MyString(\" \"):");
         System.out.println(" length() -&gt; " + s5.length());        // Expect 1
         System.out.println(" isEmpty() -&gt; " + s5.isEmpty());      // Expect false
         System.out.println(" charAt(1) -&gt; " + s5.charAt(1));      // Expect '?'
         System.out.println();
+    }
+}
+</code>
+  </program>
 
-        // 6) "123"
+    <program language="java" xml:id="mystring-complete6" interactive="activecode">
+        <statement> <p>  Example 6:  "123"  </p> </statement>
+<code>
+public class MyString {
+
+    private char[] chars = new char[100];  // fixed size of 100
+    private int usedLength;                // tracks how many chars are used
+
+    /**
+     * Constructs a new MyString from a regular Java String.
+     * Enforces a 100-character limit.
+     */
+    public MyString(String original) {
+        if (original.length() &gt; 100) {
+            // Enforce our 100-character limit
+            usedLength = 100;
+        } else {
+            usedLength = original.length();
+        }
+        // Copy characters into our array
+        for (int i = 0; i &lt; usedLength; i++) {
+            chars[i] = original.charAt(i);
+        }
+    }
+
+    /**
+     * Returns how many characters are used.
+     */
+    public int length() {
+        return usedLength;
+    }
+
+    /**
+     * Checks if zero characters are used.
+     */
+    public boolean isEmpty() {
+        return (usedLength == 0);
+    }
+
+    /**
+     * Returns the char at position index (0 &lt;= index &lt; usedLength).
+     * Returns '?' if out-of-range.
+     */
+    public char charAt(int index) {
+        if (index &lt; 0 || index &gt;= usedLength) {
+            return '?';  // Indicator for invalid index
+        }
+        return chars[index];
+    }
+
+    /**
+     * A main method that tests MyString according to our examples in Step 3.
+     */
+    public static void main(String[] args) {     
         MyString s6 = new MyString("123");
         System.out.println("Testing MyString(\"123\"):");
         System.out.println(" length() -&gt; " + s6.length());        // Expect 3
@@ -434,7 +718,9 @@ public class MyString {
         System.out.println();
     }
 }
+</code>
   </program>
+
 </subsection>
 
 
@@ -452,6 +738,8 @@ public class MyString {
     <p>We explored two alternative approaches (using Java's own <c>String</c> or individual character fields) before settling on an array-based solution. We then proceeded through the Design Recipe steps: defining method signatures (Step 2), creating a class skeleton (Step 4), and implementing each method.</p>
     <p>In <term>Section 2</term>, we'll dive into string comparison, including <c>equals</c> vs <c>==</c>, case sensitivity, and lexicographical ordering. While the implementation remains array-based, we'll shift our focus to how different aspects of method design and testing come to life.</p>
   </subsection>
+  <subsection xml:id="ex-inspect-strings">
+    <title>Check Your Understanding</title>
 
 <exercises>
     <!-- =========================================
@@ -567,4 +855,5 @@ public class MyString {
       </choices>
     </exercise>
 </exercises>
+</subsection>
 </section>
