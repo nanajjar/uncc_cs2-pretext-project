@@ -464,8 +464,7 @@ public class MyString {
   </program>
     <program language="java" xml:id="mystring-complete3" interactive="activecode">
     <statement> <p>  Example 3:  "Cat"  </p> </statement>
-
-    </code>
+    <code>
 public class MyString {
 
     private char[] chars = new char[100];  // fixed size of 100
@@ -529,8 +528,7 @@ public class MyString {
   </program>
     <program language="java" xml:id="mystring-complete4" interactive="activecode">
     <statement> <p>  Example 4:  "I love Java!"  </p> </statement>
-
-    </code>
+    <code>
 public class MyString {
 
     private char[] chars = new char[100];  // fixed size of 100
