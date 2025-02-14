@@ -211,8 +211,8 @@
       <statement>
         <p>In the code below, we want to print <c>HELLO</c> and <c>WELCOME</c>. Currently, it prints <c>Hello</c> and <c>Welcome</c> because the calls to <c>toUpperCase()</c> are not stored back into the variables. Fix the snippet so that it correctly prints uppercase versions of each.</p>
       </statement>
-      <program language="java" xml:id="ImmutabilityActiveCode">
-        <input>
+      <program language="java" xml:id="ImmutabilityActiveCode" interactive="activecode">
+        <code>
           public class ImmutabilityActiveCode {
           public static void main(String[] args) {
           String greeting = "Hello";
@@ -226,7 +226,7 @@
           System.out.println(banner); // Should print "WELCOME"
           }
           }
-        </input>
+        </code>
         <tests>
 import static org.junit.Assert.*;
 import org.junit.Test;

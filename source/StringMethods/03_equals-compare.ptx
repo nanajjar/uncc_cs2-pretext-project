@@ -325,7 +325,7 @@ public class MyString {
     <p>Now let's carefully code each comparison method. We will follow our skeleton, explaining each step and testing as we go. First, let's do <c>equals</c> in isolation.</p>
 
     <subsubsection xml:id="equals-implementation">
-      <title>10.1 Implementing equals(String other)</title>
+      <title>Implementing equals(String other)</title>
       <program language="java">
         <input>
 // Part 1: equals(String other) - with explanations:
@@ -392,7 +392,7 @@ public static void main(String[] args) {
     </subsubsection>
 
     <subsubsection xml:id="compareTo-implementation">
-      <title>10.2 Implementing compareTo(String other)</title>
+      <title>Implementing compareTo(String other)</title>
       <program language="java">
         <input>
 // Part 2: compareTo(String other) - with explanations:

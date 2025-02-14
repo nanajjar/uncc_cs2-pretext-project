@@ -8,8 +8,12 @@
        ========================================= -->
   <subsection xml:id="intro-and-motivation">
     <title>Introduction &amp; Motivating Narrative</title>
-    <p>Imagine you're building a chat application where users type short messages. You need to check if a message is empty (so you can ignore it), determine its length (to enforce a maximum size), and occasionally inspect specific characters (for commands like <c>"/roll"</c> or <c>"@someone"</c>). Java's <c>String</c> class provides convenient methods like <c>length()</c>, <c>isEmpty()</c>, and <c>charAt(...)</c>. But how do these methods work under the hood? And how can we guarantee we never access an invalid index?</p>
-    <p>In this section, we'll explore how Java implements these <em>inspection</em> methods and, in line with the <term>Design Recipe</term>, create a simplified version called "MyString." By focusing on <term>Step 1: Data Definition</term>, we'll clarify the internal structure of a string-like class. Along the way, we'll also touch on <term>Step 2: Method Signatures</term>, briefly outline a <term>Step 4: Template</term> for the class, and then build each method <term>step by step</term>. By the end, you'll see how these inspection methods flow naturally from a precise definition of what a string is in code.</p>
+    <p>Imagine you're building a chat application where users type short messages. 
+    You need to check if a message is empty (so you can ignore it), determine its length (to enforce a maximum size), and occasionally inspect specific characters (for commands like <c>"/roll"</c> or <c>"@someone"</c>). 
+    Java's <c>String</c> class provides convenient methods like <c>length()</c>, <c>isEmpty()</c>, and <c>charAt(...)</c>. 
+    But how do these methods work under the hood? And how can we guarantee we never access an invalid index?</p>
+    <p>In this section, we'll explore how Java implements these <em>inspection</em> methods and, in line with the <term>Design Recipe</term>, create a simplified version called "MyString." 
+    By focusing on <term>Step 1: Data Definition</term>, we'll clarify the internal structure of a string-like class. Along the way, we'll also touch on <term>Step 2: Method Signatures</term>, identify a minimal <term>Step 3: Examples and Tests</term>, and briefly outline a <term>Step 4: Template</term> for the class, and then build each method <term>step by step</term>. By the end, you'll see how these inspection methods flow naturally from a precise definition of what a string is in code.</p>
   </subsection>
 
   <!-- =========================================
