@@ -276,7 +276,7 @@
     <title>Step 4: Skeleton for Our Search Methods</title>
     <p>Next, we outline each method in pseudocode. That way we confirm loops and logic <em>before</em> coding. You can sketch this on paper or in comments:</p>
     <program language="java">
-      <input>
+      <code>
 public int indexOf(String target) {
     // if target == null, treat as ""
     // if target == "", return 0
@@ -300,7 +300,7 @@ public int lastIndexOf(String target) {
 public boolean contains(String target) {
     // return (indexOf(target) != -1)
 }
-      </input>
+      </code>
     </program>
     <p>This skeleton ensures we know the structure before writing final code.</p>
   </subsection>
@@ -316,7 +316,7 @@ public boolean contains(String target) {
     <subsubsection xml:id="implementation-indexof">
       <title>Implementing <c>indexOf</c></title>
       <program language="java">
-        <input>
+        <code>
 public int indexOf(String target) {
     // treat null as "" to avoid errors
     if (target == null) {
@@ -346,11 +346,11 @@ public int indexOf(String target) {
     // not found
     return -1;
 }
-        </input>
+        </code>
       </program>
       <p>After writing this, test each case from the table using our helper method. If any test fails, we'll need to refine our implementation or update our test assumptions:</p>
       <program language="java">
-        <input>
+        <code>
 private static void testResult(String desc, Object actual, Object expected) {
     System.out.print(desc + " => " + actual);
     if (actual.equals(expected)) {
@@ -370,7 +370,7 @@ testResult("indexOf('ana')", fruit.indexOf("ana"), 1);
 testResult("indexOf('cat')", fruit.indexOf("cat"), -1);
 testResult("indexOf('')", fruit.indexOf(""), 0);
 testResult("indexOf(null)", fruit.indexOf(null), 0);
-        </input>
+        </code>
       </program>
       <p>For example, if indexOf unexpectedly fails for an overlapping substring, revisit your skeleton (Step 4) or test cases (Step 3) and update them to reflect the actual behavior or fix the implementation.</p>
     </subsubsection>
@@ -379,7 +379,7 @@ testResult("indexOf(null)", fruit.indexOf(null), 0);
     <subsubsection xml:id="implementation-lastindexof">
       <title>Implementing <c>lastIndexOf</c></title>
       <program language="java">
-        <input>
+        <code>
 public int lastIndexOf(String target) {
     if (target == null) {
         target = "";
@@ -406,11 +406,11 @@ public int lastIndexOf(String target) {
     }
     return -1;
 }
-        </input>
+        </code>
       </program>
       <p>Test each case, including overlapping matches. Document any refinements needed:</p>
       <program language="java">
-        <input>
+        <code>
 // Implementation Notes:
 // 1. Changes from original design:
 //    - Updated empty string behavior to return usedLength instead of 0
@@ -426,7 +426,7 @@ testResult("lastIndexOf('')", fruit.lastIndexOf(""), 6);
 MyString repeated = new MyString("aaaa");
 testResult("lastIndexOf('aaa') in 'aaaa'", repeated.lastIndexOf("aaa"), 1);
 testResult("lastIndexOf('aa') in 'aaaa'", repeated.lastIndexOf("aa"), 2);
-        </input>
+        </code>
       </program>
     </subsubsection>
 
@@ -434,15 +434,15 @@ testResult("lastIndexOf('aa') in 'aaaa'", repeated.lastIndexOf("aa"), 2);
     <subsubsection xml:id="implementation-contains">
       <title>Implementing <c>contains</c></title>
       <program language="java">
-        <input>
+        <code>
 public boolean contains(String target) {
     return (indexOf(target) != -1);
 }
-        </input>
+        </code>
       </program>
       <p>Test all cases, including null handling. Note any refinements needed:</p>
       <program language="java">
-        <input>
+        <code>
 // Implementation Notes:
 // 1. Reuse of indexOf simplifies testing
 // 2. Verified inheritance of null/empty handling
@@ -451,7 +451,7 @@ testResult("contains('ana')", fruit.contains("ana"), true);
 testResult("contains('xyz')", fruit.contains("xyz"), false);
 testResult("contains('')", fruit.contains(""), true);
 testResult("contains(null)", fruit.contains(null), true);
-        </input>
+        </code>
       </program>
       <p>If any test fails, revisit the method's logic or update test expectations. Document any changes in implementation notes.</p>
     </subsubsection>

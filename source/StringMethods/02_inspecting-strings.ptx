@@ -29,7 +29,7 @@
     </ul>
     <p>Here's a brief snippet showing their usage:</p>
     <program language="java">
-      <input>
+      <code>
 public class DemoStringInspection {
     public static void main(String[] args) {
         String msg = "Hello";
@@ -42,7 +42,7 @@ public class DemoStringInspection {
         System.out.println("emptyMsg.isEmpty() -&gt; " + emptyMsg.isEmpty()); // true
     }
 }
-      </input>
+      </code>
     </program>
     <p>It's straightforward. But to understand <em>why</em> these methods behave as they do, we'll apply <term>Step 1 (Data Definition)</term> from the Design Recipe in our own "MyString." We'll also reveal relevant method signatures (Step 2) and a skeleton (Step 4) before implementing each method individually.</p>
   </subsection>
@@ -55,9 +55,9 @@ public class DemoStringInspection {
       <title>Attempt #1: Just Store a Java <c>String</c></title>
       <p>A quick solution might be, "If we want a string, let's just have a <c>String text</c> field." While this does store text, it misses our educational objective: learning how methods like <c>length()</c> and <c>charAt(...)</c> work from scratch. We'd be using Java's built-in <c>String</c> rather than defining our own structure. This violates Step 1 of the Design Recipe because it doesn't define <em>our own</em> underlying data—it just delegates to existing code.</p>
       <program language="java">
-        <input>
+        <code>
 private String text; // Attempt #1
-        </input>
+        </code>
       </program>
     </subsubsection>
 
@@ -65,12 +65,12 @@ private String text; // Attempt #1
       <title>Attempt #2: Individual Variables per Character</title>
       <p>Another idea might be, "Let's store each character in its own field." For example:</p>
       <program language="java">
-        <input>
+        <code>
 private char first;
 private char second;
 private char third;
 // ... etc.
-        </input>
+        </code>
       </program>
       <p>This quickly becomes unmanageable: we never know how many character fields we'll need, and it doesn't scale for arbitrary-length strings. If someone needs 10 or 100 characters, do we keep declaring fields indefinitely? Clearly unsustainable.</p>
     </subsubsection>
@@ -79,10 +79,10 @@ private char third;
       <title>Final Approach: A Fixed Character Array (Up to 100 Chars)</title>
       <p>The best next step is to store all characters in a single array. For simplicity, we'll impose a limit of 100 characters in this demo:</p>
       <program language="java">
-        <input>
+        <code>
 private char[] chars = new char[100];
 private int usedLength = 0;
-        </input>
+        </code>
       </program>
       <p>We also track <c>usedLength</c> to indicate how many of these slots are actually in use. If a string is four characters long, <c>usedLength</c> is <c>4</c>, and positions beyond index 3 remain unused. While this approach is straightforward, it's obviously limited—someone needing 101 characters has no room. Real Java <c>String</c> uses a more flexible, immutable representation. Alternatively, <c>ArrayList&lt;Character&gt;</c> could be used, though it would consume extra memory by "boxing" each character. For our Design Recipe practice, a <c>char[100]</c> plus <c>usedLength</c> clarifies how each character is stored, accessed, and counted.</p>
       <ul>
@@ -101,7 +101,7 @@ private int usedLength = 0;
     <title>Step 2: Method Signatures &amp; Purpose</title>
     <p>Though our main emphasis is Step 1, it's worth seeing how the <em>data definition</em> informs each method's signature and purpose. For our <c>MyString</c> class, we might write:</p>
     <program language="java">
-      <input>
+      <code>
 // In a hypothetical MyString class...
 
 /**
@@ -119,7 +119,7 @@ public boolean isEmpty() { ... }
  * Throws an error if out-of-range.
  */
 public char charAt(int index) { ... }
-      </input>
+      </code>
     </program>
     <p>Each method's purpose follows our data definition: "a string is a fixed array of up to 100 characters plus a count of used characters." So <c>length</c> returns an <c>int</c>, <c>isEmpty</c> returns a <c>boolean</c>, and <c>charAt</c> expects an <c>int</c> parameter. Once the data is defined, the signatures and purpose statements nearly write themselves.</p>
   </subsection>
@@ -198,7 +198,7 @@ public char charAt(int index) { ... }
       This corresponds to <term>Step 4: Skeleton / Method Template</term> in the Design Recipe.
     </p>
     <program language="java">
-      <input>
+      <code>
 public class MyString {
 
     // Data (from our final approach in Step 1)
@@ -231,7 +231,7 @@ public class MyString {
 
     // We'll implement each method next
 }
-      </input>
+      </code>
     </program>
     <p>
       This skeleton directly mirrors our earlier reasoning: the data definition from Step 1,
@@ -252,7 +252,7 @@ public class MyString {
       <title>Constructor</title>
       <p>First, we need a way to instantiate <c>MyString</c>. The constructor enforces our 100-character cap and properly initializes the internal array:</p>
       <program language="java">
-        <input>
+        <code>
 public MyString(String original) {
     if (original.length() &gt; 100) {
         // Enforce our 100-character limit
@@ -266,7 +266,7 @@ public MyString(String original) {
         chars[i] = original.charAt(i);
     }
 }
-        </input>
+        </code>
       </program>
     </subsubsection>
 
@@ -274,11 +274,11 @@ public MyString(String original) {
       <title>The <c>length()</c> Method</title>
       <p>We already track the string's length in <c>usedLength</c>. Thus, <c>length()</c> is trivial:</p>
       <program language="java">
-        <input>
+        <code>
 public int length() {
     return usedLength;
 }
-        </input>
+        </code>
       </program>
     </subsubsection>
 
@@ -286,11 +286,11 @@ public int length() {
       <title>The <c>isEmpty()</c> Method</title>
       <p>A string is empty if it has zero characters. Given our data definition, that's just:</p>
       <program language="java">
-        <input>
+        <code>
 public boolean isEmpty() {
     return (usedLength == 0);
 }
-        </input>
+        </code>
       </program>
     </subsubsection>
 
@@ -298,14 +298,14 @@ public boolean isEmpty() {
       <title>The <c>charAt()</c> Method</title>
       <p>This method must validate the index before accessing the array. Unlike Java's <c>String</c>, we'll return a special character instead of throwing an exception:</p>
       <program language="java">
-        <input>
+        <code>
 public char charAt(int index) {
     if (index &lt; 0 || index >= usedLength) {
         return '?';  // Our placeholder for invalid indices
     }
     return chars[index];
 }
-        </input>
+        </code>
       </program>
     </subsubsection>
   </subsection>

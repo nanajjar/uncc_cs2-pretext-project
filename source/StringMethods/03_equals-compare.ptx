@@ -23,25 +23,25 @@
         <title><c>equals(Object other)</c></title>
         <p>This method checks if two strings contain exactly the same sequence of characters. The method signature might seem odd - why <c>Object</c> instead of <c>String</c>? This is because <c>equals</c> comes from the <c>Object</c> class that all Java classes inherit from. <c>String</c> overrides this method to provide string-specific comparison:</p>
         <program language="java">
-          <input>
+          <code>
 String command = "quit";
 if (command.equals("/quit")) {  // returns false
     System.out.println("Exiting game...");
 }
-          </input>
+          </code>
         </program>
       </li>
       <li>
         <title><c>compareTo(String other)</c></title>
         <p>This method compares strings in dictionary (lexicographic) order. It comes from the <c>Comparable&lt;String&gt;</c> interface, which requires any comparable type to provide this method:</p>
         <program language="java">
-          <input>
+          <code>
 String player1 = "Alice";
 String player2 = "Bob";
 if (player1.compareTo(player2) &lt; 0) {  // returns negative number
     System.out.println("Alice comes before Bob");
 }
-          </input>
+          </code>
         </program>
         <p>The method returns:</p>
         <p>• A negative number if the first string comes before the second</p>
@@ -65,7 +65,7 @@ if (player1.compareTo(player2) &lt; 0) {  // returns negative number
     </ul>
     <p>We already implemented basic inspection methods (<c>length()</c>, <c>isEmpty()</c>, <c>charAt()</c>) based on these data decisions. Here is a quick reminder of what the skeleton for <c>MyString</c> looks like, focusing on the relevant data fields and constructor:</p>
     <program language="java">
-      <input>
+      <code>
 public class MyString {
     private char[] chars = new char[100];
     private int usedLength;
@@ -83,7 +83,7 @@ public class MyString {
 
     // More methods (length, isEmpty, charAt...) go here
 }
-      </input>
+      </code>
     </program>
     <p>With these fundamentals in place, we are ready to design methods that compare our <c>MyString</c> objects with Java <c>String</c> objects for equality or ordering, following the Design Recipe's Step 2.</p>
   </subsection>
@@ -95,22 +95,22 @@ public class MyString {
     <title>Common Pitfalls in String Comparison</title>
     <p>In Java, strings are <em>objects</em>, not primitives. A variable of type <c>String</c> does not hold text directly; it holds a <em>reference</em> to a <c>String</c> object in memory. Consequently, the operator <c>==</c> compares whether two variables point to the same object rather than checking if they contain the same text. Beginners often write code like:</p>
     <program language="java">
-      <input>
+      <code>
 String s1 = "Hello";
 String s2 = new String("Hello");
 
 if (s1 == s2) {
     // ...
 }
-      </input>
+      </code>
     </program>
     <p>Because <c>s1</c> and <c>s2</c> are different objects, <c>(s1 == s2)</c> is false. But if you wrote:</p>
     <program language="java">
-      <input>
+      <code>
 if (s1.equals(s2)) {
     // This would be true, since both contain "Hello"
 }
-      </input>
+      </code>
     </program>
     <p>you'd get the correct result for text comparison.</p>
     <p>Remember, strings in Java are immutable and stored by reference. That means changing a string actually creates a new string object. This also means <c>==</c> checks reference identity, while <c>.equals()</c> checks the text content itself.</p>
@@ -139,7 +139,7 @@ if (s1.equals(s2)) {
     <title>Building JavaDoc in Stages: equals(String other)</title>
     <p>Suppose we initially write something minimal:</p>
     <program language="java">
-      <input>
+      <code>
 /**
  * Checks if this MyString equals some text.
  */
@@ -147,11 +147,11 @@ public boolean equals(String other) {
     // ...
     return false;
 }
-      </input>
+      </code>
     </program>
     <p>While this is a start, it does not tell us <em>how</em> we check equality (case-sensitive?), what happens if <c>other</c> is null, or what "equals" means in detail. A student reading this might wonder, "Wait, do we check lengths? Are we ignoring uppercase differences?" Let's refine it:</p>
     <program language="java">
-      <input>
+      <code>
 /**
  * Checks if this MyString has exactly the same characters 
  * as the given String, in the same order.
@@ -167,7 +167,7 @@ public boolean equals(String other) {
     // ...
     return false;
 }
-      </input>
+      </code>
     </program>
     <p>Now anyone reading can see: (1) we compare character by character, (2) it is case-sensitive with a concrete example, and (3) we return <c>false</c> if <c>other</c> is <c>null</c>. This clarity helps us implement the method correctly and helps future maintainers or classmates understand exactly how it works.</p>
     <p><em>Note:</em> This is a simplified version that takes <c>String other</c>, not <c>Object other</c>. In real Java <c>String</c>, <c>equals</c> overrides <c>public boolean equals(Object obj)</c> from <c>Object</c>. We use <c>String</c> here so it's easier for beginners to see what's happening. Later courses will cover more advanced topics like method overriding and exception handling.</p>
@@ -180,7 +180,7 @@ public boolean equals(String other) {
     <title>Building JavaDoc in Stages: compareTo(String other)</title>
     <p>Next, we do the same for ordering. We initially might just say:</p>
     <program language="java">
-      <input>
+      <code>
 /**
  * Compares this MyString to another.
  */
@@ -188,11 +188,11 @@ public int compareTo(String other) {
     // ...
     return 0;
 }
-      </input>
+      </code>
     </program>
     <p>But the student who encounters this might wonder, "How do we decide bigger or smaller? Are we ignoring uppercase vs. lowercase? What if the strings differ in length but share a common prefix?" Let's refine:</p>
     <program language="java">
-      <input>
+      <code>
 /**
  * Performs a lexicographical (dictionary) comparison 
  * between this MyString and another String. 
@@ -210,7 +210,7 @@ public int compareTo(String other) {
     // ...
     return 0;
 }
-      </input>
+      </code>
     </program>
     <p>This version clarifies that the ordering is case-sensitive with concrete examples, how we handle null, and how we interpret positive/negative return values—key details needed to use the method confidently in sorting logic.</p>
   </subsection>
@@ -284,7 +284,7 @@ public int compareTo(String other) {
     <title>Step 4: Skeleton / Method Template</title>
     <p>Before writing the complete code, it helps to sketch out the control flow in a skeleton. This ensures we know exactly which checks or loops we will write. For example:</p>
     <program language="java">
-      <input>
+      <code>
 public class MyString {
     // Data &amp; constructor from previous sections
 
@@ -312,7 +312,7 @@ public class MyString {
         return 0; // skeleton placeholder
     }
 }
-      </input>
+      </code>
     </program>
     <p>This blueprint is enough to show your instructor or peers and ask, "Does this logic look right?" If they spot a missing step, it is easier to correct in the skeleton stage than after fully coding.</p>
   </subsection>
@@ -327,7 +327,7 @@ public class MyString {
     <subsubsection xml:id="equals-implementation">
       <title>Implementing equals(String other)</title>
       <program language="java">
-        <input>
+        <code>
 // Part 1: equals(String other) - with explanations:
 
 /**
@@ -360,7 +360,7 @@ public boolean equals(String other) {
     // Step D: If we pass all checks, they're equal
     return true;
 }
-        </input>
+        </code>
       </program>
       <p>This step-by-step style ensures you understand exactly why each part is there: null checks, length checks, character comparison. After implementing each method, test it to verify it behaves correctly. If a test fails, this is your signal to enter the refinement phase:</p>
       <ul>
@@ -370,7 +370,7 @@ public boolean equals(String other) {
       </ul>
       <p>Here's how we might test <c>equals(...)</c> immediately in a minimal <c>main</c> method:</p>
       <program language="java">
-        <input>
+        <code>
 public static void main(String[] args) {
     MyString test = new MyString("cat");
     
@@ -386,7 +386,7 @@ public static void main(String[] args) {
     // 3. Optimization opportunities:
     //    - Could add early exit on length mismatch
 }
-        </input>
+        </code>
       </program>
       <p>This helps confirm that our equality checks behave correctly before we move on to <c>compareTo</c>. If tests fail, we document the refinements made in our implementation notes.</p>
     </subsubsection>
@@ -394,7 +394,7 @@ public static void main(String[] args) {
     <subsubsection xml:id="compareTo-implementation">
       <title>Implementing compareTo(String other)</title>
       <program language="java">
-        <input>
+        <code>
 // Part 2: compareTo(String other) - with explanations:
 
 /**
@@ -431,11 +431,11 @@ public int compareTo(String other) {
     // e.g. "cat" vs "cater"
     return usedLength - other.length();
 }
-        </input>
+        </code>
       </program>
       <p>After implementing <c>compareTo</c>, we should test it thoroughly and document any refinements needed:</p>
       <program language="java">
-        <input>
+        <code>
 // In main, add tests for compareTo - each maps to a table row:
 System.out.println("Testing compareTo(\"cat\"): " + test.compareTo("cat")); // Row 1: equal strings
 System.out.println("Testing compareTo(\"cater\"): " + test.compareTo("cater")); // Row 5: prefix case
@@ -450,7 +450,7 @@ System.out.println("Testing compareTo(\"\"): " + test.compareTo("")); // Row 7: 
 //    - Case-insensitive versions
 //    - Exception handling for errors
 //    - Using testing frameworks for more thorough validation
-        </input>
+        </code>
       </program>
       <p>Remember: whenever tests reveal unexpected behavior or new edge cases, update your test table (Step 3) and skeleton (Step 4) to reflect these discoveries. This refinement process ensures your final implementation handles all cases correctly.</p>
     </subsubsection>

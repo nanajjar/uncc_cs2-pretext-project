@@ -39,24 +39,24 @@
       Consider a simple array of integers. Traditionally, you might iterate like this:
     </p>
     <program language="java">
-      <input>
+      <code>
 int[] numbers = {5, 10, 15, 20};
 for (int i = 0; i &lt; numbers.length; i++) {
     System.out.println("Index " + i + ": " + numbers[i]);
 }
-      </input>
+      </code>
     </program>
 
     <p>
       In a for-each loop, we can omit the manual index management:
     </p>
     <program language="java">
-      <input>
+      <code>
 int[] numbers = {5, 10, 15, 20};
 for (int num : numbers) {
     System.out.println("Number: " + num);
 }
-      </input>
+      </code>
     </program>
 
     <p>
@@ -196,14 +196,14 @@ But don't worry too much about interfaces and generics for now, we'll cover them
       the pseudo-code below:
     </p>
     <program language="java">
-      <input>
+      <code>
 // Pseudo-code of what for (T item : collection) is doing:
 Iterator&lt;T&gt; it = collection.iterator();
 while (it.hasNext()) {
     T item = it.next();
     // loop body
 }
-      </input>
+      </code>
     </program>
     <p>
       Because our <c>MyIterator</c> was built from first principles, you have a deeper
@@ -219,7 +219,7 @@ while (it.hasNext()) {
       Suppose we have:
     </p>
     <program language="java">
-      <input>
+      <code>
 int[] data = {2, 11, 4, 6, 9, 2};
 int totalEven = 0;
 
@@ -232,7 +232,7 @@ for (int val : data) {
     // for-each doesn't give an index. 
 }
 System.out.println("Sum of even numbers: " + totalEven);
-      </input>
+      </code>
     </program>
     <p>
       That sums all even numbers <c>(2 + 4 + 6 + 2 = 14)</c>. However, if we needed to stop after
@@ -240,7 +240,7 @@ System.out.println("Sum of even numbers: " + totalEven);
       do that. We'd have to add an external counter or break logic:
     </p>
     <program language="java">
-      <input>
+      <code>
 int count = 0;
 int sumEvens = 0;
 for (int val : data) {
@@ -251,7 +251,7 @@ for (int val : data) {
     }
 }
 System.out.println("Sum of even numbers in the FIRST 3 elements: " + sumEvens);
-      </input>
+      </code>
     </program>
     <p>
       That works but starts feeling awkward. If you need to break frequently or refer to indexes,
@@ -279,16 +279,16 @@ System.out.println("Sum of even numbers in the FIRST 3 elements: " + sumEvens);
           the sum of the elements in the following array:
         </p>
         <program language="java">
-          <input>
+          <code>
 int[] values = {3, 7, 2, 5};
-          </input>
+          </code>
         </program>
         <p>
           The expected output is: <c>Sum is: 17</c>
         </p>
       </statement>
       <program language="java" xml:id="foreach-sum-editor" interactive="activecode">
-        <input>
+        <code>
 public class ForEachSum {
     public static void main(String[] args) {
         int[] values = {3, 7, 2, 5};
@@ -299,7 +299,7 @@ public class ForEachSum {
         System.out.println("Sum is: " + sum);
     }
 }
-        </input>
+        </code>
         <tests>
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -334,7 +334,7 @@ Hello, Charlie
         </pre>
       </statement>
       <program language="java" xml:id="foreach-greeting-editor" interactive="activecode">
-        <input>
+        <code>
 public class ForEachGreeting {
     public static void main(String[] args) {
         String[] names = {"Alice", "Bob", "Charlie"};
@@ -342,7 +342,7 @@ public class ForEachGreeting {
         // TODO: Use a for-each loop to print "Hello, " + name
     }
 }
-        </input>
+        </code>
         <tests>
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -373,7 +373,7 @@ public class RunestoneTests extends CodeTestHelper {
         </p>
       </statement>
       <program language="java" xml:id="foreach-modification-editor" interactive="activecode">
-        <input>
+        <code>
 public class ForEachModification {
     public static void main(String[] args) {
         int[] scores = {2, 4, 6};
@@ -400,7 +400,7 @@ public class ForEachModification {
         }
     }
 }
-        </input>
+        </code>
         <tests>
 import static org.junit.Assert.*;
 import org.junit.Test;
