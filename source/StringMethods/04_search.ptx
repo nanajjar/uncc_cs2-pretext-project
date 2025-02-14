@@ -314,7 +314,7 @@ public boolean contains(String target) {
 
     <!-- 6.1 indexOf -->
     <subsubsection xml:id="implementation-indexof">
-      <title>6.1 Implementing <c>indexOf</c></title>
+      <title>Implementing <c>indexOf</c></title>
       <program language="java">
         <input>
 public int indexOf(String target) {
@@ -377,7 +377,7 @@ testResult("indexOf(null)", fruit.indexOf(null), 0);
 
     <!-- 6.2 lastIndexOf -->
     <subsubsection xml:id="implementation-lastindexof">
-      <title>6.2 Implementing <c>lastIndexOf</c></title>
+      <title>Implementing <c>lastIndexOf</c></title>
       <program language="java">
         <input>
 public int lastIndexOf(String target) {
@@ -432,7 +432,7 @@ testResult("lastIndexOf('aa') in 'aaaa'", repeated.lastIndexOf("aa"), 2);
 
     <!-- 6.3 contains -->
     <subsubsection xml:id="implementation-contains">
-      <title>6.3 Implementing <c>contains</c></title>
+      <title>Implementing <c>contains</c></title>
       <program language="java">
         <input>
 public boolean contains(String target) {

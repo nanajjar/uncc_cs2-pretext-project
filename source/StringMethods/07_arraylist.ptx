@@ -7,7 +7,6 @@
        ========================================= -->
   <subsection xml:id="arraylist-intro-motivation">
     <title>Introduction &amp; Motivation</title>
-    <p>Before we dive in, let's briefly discuss <term>exceptions</term>. In Java, when something goes wrong during program execution (like trying to use a value that doesn't exist), the program can throw an <term>exception</term> - a special signal indicating that an error occurred. For now, just know that exceptions are Java's way of telling us something went wrong. We'll learn more about handling exceptions in later chapters.</p>
     <p>Arrays in Java are fundamental building blocks for data storage, but they also have a notable limitation: <term>fixed size</term>. Once declared, you cannot expand or shrink them on the fly. In practical scenarios, we often need a container that can <em>grow or shrink</em> as items are inserted or removed—like storing file lines, dynamic lists of game entities, or user inputs of unpredictable length.</p>
     <p>The <c>ArrayList</c> class provides precisely this flexibility. It is part of Java&apos;s <c>java.util</c> package and serves as one of the most widely used data structures for in-memory collections of objects. In this lesson, we will explore:</p>
     <objectives>
@@ -27,7 +26,7 @@
   <subsection xml:id="arraylist-basics">
     <title>Basic Creation &amp; Usage</title>
     <p>An <c>ArrayList&lt;T&gt;</c> is a <c>List</c> implementation designed to store objects of type <c>T</c>. You create it by specifying the element type in angle brackets, for example, <c>ArrayList&lt;String&gt;</c>. This approach enforces compile-time type checks, preventing accidental mixing of types.</p>
-    <program language="java"  interactive="activecode">
+    <program language="java"  interactive="activecode"  xml:id="ArrayListBasics">
       <input>
 import java.util.ArrayList;
 
@@ -80,7 +79,7 @@ public class ArrayListBasics {
       <li><c>clear()</c> — Empties the entire list of all elements.</li>
     </ul>
 
-    <program language="java"  interactive="activecode">
+    <program language="java"  interactive="activecode" xml:id="InstertRemove-ArrayList">
       <input>
 import java.util.ArrayList;
 
@@ -133,7 +132,7 @@ public class InsertRemoveDemo {
       <li><term>indexOf(...)</term>: Returns the first index of a matching element, or <c>-1</c> if no match is found.</li>
     </ul>
 
-    <program language="java"  interactive="activecode">
+    <program language="java"  interactive="activecode"  xml:id="InsertSearch-ArrayList">
       <input>
 import java.util.ArrayList;
 
@@ -182,7 +181,7 @@ public class IterateSearchDemo {
     <p><c>ArrayList</c> exclusively stores **objects**. But what if you need a list of primitive <c>int</c>? Java&apos;s type system forces you to use a wrapper class such as <c>Integer</c> to achieve this.</p>
     <p>Fortunately, Java seamlessly converts between <c>int</c> and <c>Integer</c> whenever you invoke <c>list.add(5)</c> or retrieve an element. This mechanism is called <term>auto-boxing</term> and <term>unboxing</term>.</p>
 
-    <program language="java"  interactive="activecode">
+    <program language="java"  interactive="activecode"  xml:id="WrapperDemo-ArrayList">
       <input>
 import java.util.ArrayList;
 
@@ -230,7 +229,7 @@ public class WrapperDemo {
       <li><c>sort(Comparator)</c>: In Java 8 or later, you can call <c>list.sort(Comparator.naturalOrder())</c> or provide a custom comparator for advanced sorting needs. (Alternatively, use <c>Collections.sort(list)</c>.)</li>
     </ul>
 
-    <program language="java"  interactive="activecode">
+    <program language="java"  interactive="activecode"  xml:id="UtilitesDemo-ArrayList">
       <input>
 import java.util.ArrayList;
 import java.util.Collections;

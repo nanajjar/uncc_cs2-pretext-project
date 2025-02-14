@@ -8,10 +8,11 @@
        ===================================================== -->
   <subsection xml:id="sec-practical-string-intro">
     <title>Introduction &amp; Motivation</title>
-    <p>Before we dive in, let's briefly discuss <term>exceptions</term>. In Java, when something goes wrong during program execution (like trying to use a value that doesn't exist), the program can throw an <term>exception</term> - a special signal indicating that an error occurred. For now, just know that exceptions can crash your program if not handled properly. We'll learn much more about exceptions and how to handle them in later chapters.</p>
-    <p>In earlier chapters, we examined Java <c>String</c> fundamentals in depth—covering aspects like immutability, indexing, searching, comparing, and creating custom methods such as <c>substring</c>. While these core concepts are pivotal, you will frequently rely on Java's built-in <c>String</c> API for everyday tasks including <term>cleaning</term>, <term>splitting</term>, <term>transforming</term>, or <term>building</term> strings.</p>
-    <p>This chapter offers a <term>toolbox</term> of essential, frequently used methods, supported by runnable code examples, cautionary notes, and real-world usage scenarios. Rather than methodically applying the entire Design Recipe, we'll emphasize <em>hands-on demonstrations</em> you can adopt immediately to write clearer, more efficient programs.</p>
-    <p>By the end of this chapter, you will be able to:</p>
+    <p>Before we dive in, let's briefly discuss <term>exceptions</term>. 
+    In Java, when something goes wrong during program execution (like trying to use a value that doesn't exist), the program can throw an <term>exception</term> - a special signal indicating that an error occurred. For now, just know that exceptions can crash your program if not handled properly. We'll learn much more about exceptions and how to handle them in later chapters.</p>
+    <p>In earlier sections, we examined Java <c>String</c> fundamentals in depth—covering aspects like immutability, indexing, searching, comparing, and creating custom methods such as <c>substring</c>. While these core concepts are pivotal, you will frequently rely on Java's built-in <c>String</c> API for everyday tasks including <term>cleaning</term>, <term>splitting</term>, <term>transforming</term>, or <term>building</term> strings.</p>
+    <p>This section offers a <term>toolbox</term> of essential, frequently used methods, supported by runnable code examples, cautionary notes, and real-world usage scenarios. Rather than methodically applying the entire Design Recipe, we'll emphasize <em>hands-on demonstrations</em> you can adopt immediately to write clearer, more efficient programs.</p>
+    <p>By the end of this section, you will be able to:</p>
     <objectives>
       <ul>
         <li><term>Recognize</term> the right contexts to use built-in <c>String</c> methods such as <c>trim</c>, <c>replace</c>, and <c>split</c>.</li>
@@ -87,7 +88,7 @@ public class CaseConversion {
     </program>
     <p><term>Common Pitfalls:</term></p>
     <ul>
-      <li><em><b>Locale Sensitivity</b>:</em> Languages like Turkish have uppercase/lowercase mappings that differ from English. Java provides <c>toLowerCase(Locale)</c> and <c>toUpperCase(Locale)</c> for custom behavior. By default, your platform's locale is used, which is typically acceptable, but keep i18n in mind.</li>
+      <li><em><b>Locale Sensitivity</b>:</em> Languages like Turkish have uppercase/lowercase mappings that differ from English. Java provides <c>toLowerCase(Locale)</c> and <c>toUpperCase(Locale)</c> for custom behavior. By default, your platform's locale is used, which is typically acceptable, but keep this in mind if you your platfor uses different languages.</li>
       <li><em><b>Null Strings</b>:</em> As with <c>trim()</c>, trying to use these methods on a non-existent string will cause your program to crash.</li>
     </ul>
   </subsection>
