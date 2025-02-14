@@ -29,8 +29,8 @@
   <subsection xml:id="sec-trimming-cleaning">
     <title>Trimming &amp; Cleaning Input</title>
     <p>In real applications, strings often come from external sources (user input, files, network data) and may include leading/trailing whitespace or unexpected spacing. Java provides <c>trim()</c> (and in newer versions, <c>strip()</c>) to remove whitespace from both ends of a string, ensuring cleaner inputs.</p>
-    <program language="java"  interactive="activecode">
-      <input>
+    <program language="java"  interactive="activecode" xml:id="TrimDemo">
+      <code>
 public class TrimDemo {
     public static void main(String[] args) {
         String raw = "   Hello, world!   ";
@@ -47,7 +47,7 @@ public class TrimDemo {
         System.out.println("Stripped text: [" + stripped + "]");
     }
 }
-      </input>
+      </code>
     </program>
     <p>Running this code shows how <c>trim()</c> or <c>strip()</c> removes leading and trailing whitespace, producing a more uniform format from user-typed input.</p>
     <p><term>Common Pitfalls:</term></p>
@@ -63,8 +63,8 @@ public class TrimDemo {
   <subsection xml:id="sec-case-conversion">
     <title>Changing Case: <c>toLowerCase()</c> &amp; <c>toUpperCase()</c></title>
     <p>Converting text to a uniform case is a quick way to handle case-insensitive comparisons or store data in a normalized form. For example:</p>
-    <program language="java"  interactive="activecode">
-      <input>
+    <program language="java"  interactive="activecode" xml:id="CaseConversion">
+      <code>
 public class CaseConversion {
     public static void main(String[] args) {
         String username = "Alice";
@@ -84,11 +84,11 @@ public class CaseConversion {
         }
     }
 }
-      </input>
+      </code>
     </program>
     <p><term>Common Pitfalls:</term></p>
     <ul>
-      <li><em><b>Locale Sensitivity</b>:</em> Languages like Turkish have uppercase/lowercase mappings that differ from English. Java provides <c>toLowerCase(Locale)</c> and <c>toUpperCase(Locale)</c> for custom behavior. By default, your platform's locale is used, which is typically acceptable, but keep this in mind if you your platfor uses different languages.</li>
+      <li><em><b>Locale Sensitivity</b>:</em> Languages like Turkish have uppercase/lowercase mappings that differ from English. Java provides <c>toLowerCase(Locale)</c> and <c>toUpperCase(Locale)</c> for custom behavior. By default, your platform's locale is used, which is typically acceptable, but keep this in mind if your platform uses different languages.</li>
       <li><em><b>Null Strings</b>:</em> As with <c>trim()</c>, trying to use these methods on a non-existent string will cause your program to crash.</li>
     </ul>
   </subsection>
@@ -103,8 +103,8 @@ public class CaseConversion {
       <li><p><c>replace(oldChar, newChar)</c> or <c>replace(CharSequence, CharSequence)</c> <term>performs a literal replacement</term> without regex interpretation.</p></li>
       <li><p><c>replaceAll(String regex, String replacement)</c> <term>uses regex</term>, treating the first argument as a regular expression.</p></li>
     </ul>
-    <program language="java"  interactive="activecode">
-      <input>
+    <program language="java"  interactive="activecode" xml:id="ReplaceDemo">
+      <code>
 public class ReplaceDemo {
     public static void main(String[] args) {
         String original = "Cats are great, cats are interesting.";
@@ -122,7 +122,7 @@ public class ReplaceDemo {
         System.out.println("After replaceAll(): " + noPunct);
     }
 }
-      </input>
+      </code>
     </program>
     <p><term>Common Pitfalls:</term></p>
     <ul>
@@ -138,8 +138,8 @@ public class ReplaceDemo {
   <subsection xml:id="sec-splitting-joining">
     <title>Splitting &amp; Joining</title>
     <p>Splitting a string into tokens is common—e.g., reading CSV input or splitting a command into words. The method <c>split(String regex)</c> divides a string based on regex matches, while <c>String.join</c> reassembles arrays or lists with a given delimiter.</p>
-    <program language="java"  interactive="activecode">
-      <input>
+    <program language="java"  interactive="activecode" xml:id="SplitJoinDemo">
+      <code>
 public class SplitJoinDemo {
     public static void main(String[] args) {
         // 1) Splitting a CSV-like line
@@ -166,7 +166,7 @@ public class SplitJoinDemo {
         System.out.println("Rejoined with semicolons => " + joined);
     }
 }
-      </input>
+      </code>
     </program>
     <p><term>Common Pitfalls:</term></p>
     <ul>
@@ -183,8 +183,8 @@ public class SplitJoinDemo {
     <title>StringBuilder for Efficient Concatenation</title>
     <p>Because Java <c>String</c>s are <term>immutable</term>, each concatenation can create a new object. This overhead is fine for small, infrequent operations, but can become costly in loops or extensive string assembly.</p>
     <p><c>StringBuilder</c> (or <c>StringBuffer</c>) mitigates this by maintaining a mutable character sequence that supports fast <c>append</c>, <c>insert</c>, and <c>delete</c> operations.</p>
-    <program language="java"  interactive="activecode">
-      <input>
+    <program language="java"  interactive="activecode" xml:id="StringBuilderDemo">
+      <code>
 public class StringBuilderDemo {
     public static void main(String[] args) {
         // Suppose we want to build a large message from many parts:
@@ -214,7 +214,7 @@ public class StringBuilderDemo {
         System.out.println("After replace => " + sb);
     }
 }
-      </input>
+      </code>
     </program>
     <p><term>Common Pitfalls:</term></p>
     <ul>
@@ -230,8 +230,8 @@ public class StringBuilderDemo {
   <subsection xml:id="sec-string-format">
     <title>Formatting Strings: <c>String.format</c> &amp; <c>printf</c></title>
     <p><c>String.format</c> allows you to build complex strings using a printf-style template, which can be much more readable than multiple concatenations—particularly when mixing different data types in the same output.</p>
-    <program language="java"  interactive="activecode">
-      <input>
+    <program language="java"  interactive="activecode" xml:id="FormatDemo">
+      <code>
 public class FormatDemo {
     public static void main(String[] args) {
         // 1) Basic usage: format strings with placeholders
@@ -249,7 +249,7 @@ public class FormatDemo {
         // => "Hello Alice, you have 5 new messages."
     }
 }
-      </input>
+      </code>
     </program>
     <p><term>Common Pitfalls:</term></p>
     <ul>

@@ -27,7 +27,7 @@
     <title>Basic Creation &amp; Usage</title>
     <p>An <c>ArrayList&lt;T&gt;</c> is a <c>List</c> implementation designed to store objects of type <c>T</c>. You create it by specifying the element type in angle brackets, for example, <c>ArrayList&lt;String&gt;</c>. This approach enforces compile-time type checks, preventing accidental mixing of types.</p>
     <program language="java"  interactive="activecode"  xml:id="ArrayListBasics">
-      <input>
+      <code>
 import java.util.ArrayList;
 
 public class ArrayListBasics {
@@ -49,7 +49,7 @@ public class ArrayListBasics {
         System.out.println("First element: " + first);
     }
 }
-      </input>
+      </code>
     </program>
 
     <p><term>Theme 1: Basic Setup &amp; Indexing Strategies</term></p>
@@ -80,7 +80,7 @@ public class ArrayListBasics {
     </ul>
 
     <program language="java"  interactive="activecode" xml:id="InstertRemove-ArrayList">
-      <input>
+      <code>
 import java.util.ArrayList;
 
 public class InsertRemoveDemo {
@@ -107,7 +107,7 @@ public class InsertRemoveDemo {
         System.out.println("After clear => " + tasks);
     }
 }
-      </input>
+      </code>
     </program>
 
     <p><term>Key Pitfalls &amp; Additional Notes:</term></p>
@@ -133,7 +133,7 @@ public class InsertRemoveDemo {
     </ul>
 
     <program language="java"  interactive="activecode"  xml:id="InsertSearch-ArrayList">
-      <input>
+      <code>
 import java.util.ArrayList;
 
 public class IterateSearchDemo {
@@ -163,7 +163,7 @@ public class IterateSearchDemo {
         System.out.println("Index of Charlie => " + pos);
     }
 }
-      </input>
+      </code>
     </program>
 
     <p><term>Common Pitfalls and Warnings:</term></p>
@@ -182,7 +182,7 @@ public class IterateSearchDemo {
     <p>Fortunately, Java seamlessly converts between <c>int</c> and <c>Integer</c> whenever you invoke <c>list.add(5)</c> or retrieve an element. This mechanism is called <term>auto-boxing</term> and <term>unboxing</term>.</p>
 
     <program language="java"  interactive="activecode"  xml:id="WrapperDemo-ArrayList">
-      <input>
+      <code>
 import java.util.ArrayList;
 
 public class WrapperDemo {
@@ -204,7 +204,7 @@ public class WrapperDemo {
         System.out.println("Total => " + total);
     }
 }
-      </input>
+      </code>
     </program>
 
     <p><term>Theme 4: Handling Primitives in an ArrayList</term></p>
@@ -230,7 +230,7 @@ public class WrapperDemo {
     </ul>
 
     <program language="java"  interactive="activecode"  xml:id="UtilitesDemo-ArrayList">
-      <input>
+      <code>
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -258,7 +258,7 @@ public class UtilitiesDemo {
         }
     }
 }
-      </input>
+      </code>
     </program>
 
     <p><term>Pitfalls &amp; Important Notes:</term></p>
