@@ -1,0 +1,218 @@
+<section xml:id="ch-exceptions-1">
+  <title>Introduction to Exceptions</title>
+
+  <!-- ======================================================
+       1. Intro & Motivating Narrative
+       ====================================================== -->
+  <subsection xml:id="exceptions-intro-motivation">
+    <title>When Errors Go Unnoticed</title>
+    <p>
+      Imagine you're debugging a banking app. A customer reports seeing "-1.00" on their balance sheet and panics. 
+      After hours of investigation, you find the issue: a missing account check returned -1 as a sentinel value, 
+      and the code silently treated it as real money. How did this happen?
+    </p>
+    <p>
+      When a user enters an account number and it doesn't exist, what should your method return?
+    </p>
+    <ul>
+      <li><c>0</c> for "not found"? But some users might actually have a $0 balance.</li>
+      <li><c>-1</c>? What if the bank introduces negative balances?</li>
+      <li><c>null</c>? That could cause a <c>NullPointerException</c> if we forget to check it.</li>
+    </ul>
+    <p>
+      This is a <em>sentinel value</em> problem. If we choose a special return value to mean "error" 
+      but forget to check for it, <em>bad things happen</em>. Since Java treats all numbers equally,
+      it can't warn us when we accidentally use -1 or 0 as real data.
+    </p>
+    <p>
+      The fundamental flaw? The <em>compiler doesn't enforce the check</em>. The program compiles, 
+      and everything seems fine—until a silent error snowballs into real-world consequences.
+    </p>
+    <p>
+      Instead of relying on <em>human discipline</em> to check return values, we need a way 
+      to ensure the caller <em>must</em> acknowledge errors. This is what <em>exceptions</em> provide.
+    </p>
+  </subsection>
+
+  <!-- ======================================================
+       2. The Sentinel Value Trap
+       ====================================================== -->
+  <subsection xml:id="exceptions-sentinel-demo">
+    <title>Why Returning an Error Code Fails</title>
+    <p>
+      Consider a method that retrieves numbers from an iterator. 
+      If no numbers remain, it returns <c>-999</c> to signal "no more data."
+    </p>
+    <p><strong>Method Contract (Sentinel Approach):</strong></p>
+    <ul>
+      <li>✅ <em>If data exists:</em> return the next number.</li>
+      <li>⚠️ <em>If no data remains:</em> return <c>-999</c> (caller must check!).</li>
+      <li>🛑 <em>No compiler enforcement!</em> Since -999 is just another integer to Java, a caller can ignore it and use it as real data.</li>
+    </ul>
+    <p>Here's what that looks like in Java:</p>
+    <program language="java" xml:id="ExampleSentinel" interactive="activecode">
+      <input>
+public class SentinelIterator {
+    private int[] data;
+    private int currentIndex;
+
+    public SentinelIterator(int[] arr) {
+        data = arr;
+        currentIndex = 0;
+    }
+
+    public int next() {
+        if (currentIndex >= data.length) {
+            return -999;  // Sentinel value
+        }
+        return data[currentIndex++];
+    }
+}
+      </input>
+    </program>
+    <p>
+      Now, let's see a <em>caller who forgets to check</em> the sentinel value:
+    </p>
+    <program language="java" xml:id="SentinelMisuse" interactive="activecode">
+      <input>
+public class SentinelDemo {
+    public static void main(String[] args) {
+        SentinelIterator it = new SentinelIterator(new int[]{10, 20, 30});
+        
+        int sum = it.next() + it.next() + it.next() + it.next(); // Oops!
+        System.out.println("Total: " + sum);  // Prints 61 (including -999!)
+    }
+}
+      </input>
+    </program>
+    <p>
+      The compiler <em>did not warn us</em> that <c>-999</c> was treated as a valid number. 
+      The program runs—but silently produces the wrong result.
+    </p>
+  </subsection>
+
+  <!-- ======================================================
+       3. Throwing an Exception Instead
+       ====================================================== -->
+  <subsection xml:id="throw-intro">
+    <title>Using Exceptions to Force Error Handling</title>
+    <p>
+      Let's fix the problem. Instead of returning an error code, we <em>throw an exception</em> 
+      when <c>next()</c> runs out of elements.
+    </p>
+    <p><strong>Method Contract (Exception Approach):</strong></p>
+    <ul>
+      <li>✅ <em>If data exists:</em> return the next number.</li>
+      <li>🛑 <em>If no data remains:</em> throw <c>NoSuchElementException</c>.</li>
+      <li>🚦 <em>The caller cannot ignore this mistake!</em> Java forces them to handle it or crash.</li>
+    </ul>
+    <p>First, let's modify <c>next()</c> to throw an exception:</p>
+    <program language="java" xml:id="ThrowNextExample" interactive="activecode">
+      <input>
+import java.util.NoSuchElementException;
+
+public class ThrowingIterator {
+    private int[] data;
+    private int currentIndex;
+
+    public ThrowingIterator(int[] arr) {
+        data = arr;
+        currentIndex = 0;
+    }
+
+    public int next() {
+        if (currentIndex >= data.length) {
+            throw new NoSuchElementException("No more elements"); // Stops execution immediately
+        }
+        return data[currentIndex++];
+    }
+}
+      </input>
+    </program>
+    <p>
+      Now, if a caller forgets to check for the error, <em>the program won't just limp along with garbage data</em>.
+      Instead, it will <em>immediately stop</em> with an error message.
+    </p>
+  </subsection>
+
+  <!-- ======================================================
+       4. Handling Exceptions with try/catch
+       ====================================================== -->
+  <subsection xml:id="try-catch-intro">
+    <title>Handling Exceptions Gracefully</title>
+    <p>
+      If we want to recover from an exception instead of crashing, 
+      we must use a <c>try</c> block and provide a matching <c>catch</c>.
+      But be careful—catching exceptions just to ignore them can hide real problems!
+    </p>
+    <p><strong>General Pattern:</strong></p>
+    <program language="java" xml:id="TryCatchSkeleton">
+      <input>
+try {
+    // Code that might throw an exception
+} catch (ExceptionType e) {
+    // Handle the error (don't just ignore it!)
+}
+      </input>
+    </program>
+    <p>Here's how we safely handle <c>NoSuchElementException</c>:</p>
+    <program language="java" xml:id="TryCatchExample" interactive="activecode">
+      <input>
+import java.util.NoSuchElementException;
+
+public class TryCatchDemo {
+    public static void main(String[] args) {
+        ThrowingIterator it = new ThrowingIterator(new int[]{10, 20, 30});
+
+        try {
+            while (true) {
+                System.out.println("Got: " + it.next());
+            }
+        } catch (NoSuchElementException e) {
+            System.out.println("Reached the end: " + e.getMessage());
+        }
+    }
+}
+      </input>
+    </program>
+    <p>
+      Now, instead of crashing, the program <em>detects the exception and handles it properly</em>.
+    </p>
+  </subsection>
+
+  <!-- ======================================================
+       5. Visualizing Exception Propagation
+       ====================================================== -->
+  <subsection xml:id="exceptions-visualizing">
+    <title>How Java Handles Exceptions</title>
+    <p>
+      When an exception is thrown, Java searches for a <c>catch</c> block <em>up the call stack</em>.
+    </p>
+    <pre>
+main() calls next()
+ ├── next() throws NoSuchElementException
+ │   ├── No catch found → propagates up
+ │   ├── No catch in main() → propagates further
+ │   └── Java terminates the program with a stack trace
+    </pre>
+    <p>
+      If a matching <c>catch</c> block is found, Java <em>stops searching</em> and executes that block instead of crashing.
+    </p>
+  </subsection>
+
+  <!-- ======================================================
+       6. Conclusion & Transition
+       ====================================================== -->
+  <subsection xml:id="exceptions-conclusion-next">
+    <title>Conclusion &amp; Next Steps</title>
+    <p>
+      By replacing sentinels with exceptions, we ensure errors <em>must be handled</em>.
+      But not all exceptions behave the same—some, like <c>IOException</c>, are <em>checked exceptions</em>,
+      which Java forces you to handle. 
+    </p>
+    <p>
+      In the next section, we'll explore <em>Java's built-in exceptions</em>, how the compiler enforces handling,
+      and when to use checked vs. unchecked exceptions.
+    </p>
+  </subsection>
+</section>

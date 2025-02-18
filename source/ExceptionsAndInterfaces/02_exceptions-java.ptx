@@ -1,0 +1,283 @@
+<section xml:id="ch-exceptions-2">
+  <title>Standard Library Exceptions</title>
+
+  <!-- =============================================
+       1. Overview & The Java Exception Hierarchy
+       ============================================= -->
+  <subsection xml:id="exceptions2-overview">
+    <title>Why Some Exceptions Demand More Attention</title>
+    <p>
+      Imagine you write a method that divides two numbers. What happens if someone tries to divide by zero? 
+      Should your program just crash? What if you forget to handle the error? 
+    </p>
+    <p>
+      Java takes an interesting approach to this problem: 
+      some exceptions <em>must</em> be handled before your code will even compile, 
+      while others can be ignored. Why does Java enforce some but not others? 
+      How does it decide? 
+    </p>
+    <p>
+      In the <a href="#ch-exceptions-1">previous section</a>, we saw how throwing exceptions
+      helps avoid silent failures. But that alone doesn't guarantee that the code must
+      <em>prepare</em> for every possible failure. Java's type system distinguishes between
+      <strong>checked</strong> and <strong>unchecked</strong> exceptions, 
+      and this distinction determines whether the compiler forces you to handle them.
+    </p>
+    <p>
+      This section explores Java's <c>Throwable</c> hierarchy, explains 
+      <em>compile-time enforcement</em> for exceptions, and provides best practices 
+      for picking the right exception types. Along the way, we'll see how 
+      this mechanism prevents subtle bugs.
+    </p>
+  </subsection>
+
+  <!-- =============================================
+       2. Checked vs. Unchecked: The Compiler Steps In
+       ============================================= -->
+  <subsection xml:id="exceptions2-checked-vs-unchecked">
+    <title>Checked vs. Unchecked: Compiler Enforcement</title>
+    <p>
+      In Java, all thrown objects <em>must</em> extend <c>Throwable</c>. Below that, you have two main
+      branches:
+    </p>
+    <ul>
+      <li>
+        <strong>Error</strong> (like <c>OutOfMemoryError</c>): Typically indicates serious
+        issues beyond your control. We won't focus on these—if a JVM error arises,
+        there's usually not much you can do to recover gracefully.
+      </li>
+      <li>
+        <strong>Exception</strong> (like <c>IllegalStateException</c>, <c>NoSuchElementException</c>): The
+        more common everyday path for signaling problems in user code or library code.
+      </li>
+    </ul>
+    <p>
+      Under <c>Exception</c>, Java further divides into two categories. Before we introduce them, 
+      take a moment to think:
+    </p>
+    <blockquote>
+      <p>
+        Suppose we have two errors:
+      </p>
+      <ul>
+        <li>(A) A user tries to withdraw more money than their account balance.</li>
+        <li>(B) A programmer accidentally divides by zero.</li>
+      </ul>
+      <p>
+        Should the compiler force us to handle both? Just one? Neither? Think before continuing.
+      </p>
+    </blockquote>
+    <p>
+      Now, let's look at how Java classifies these:
+    </p>
+    <table>
+      <title>Checked vs. Unchecked Exceptions</title>
+      <tabular>
+        <row header="yes">
+          <cell>Type</cell>
+          <cell>Examples</cell>
+          <cell>Compiler Enforcement</cell>
+        </row>
+        <row>
+          <cell><strong>Checked</strong></cell>
+          <cell>
+            <c>InsufficientFundsException</c>, <c>InvalidAccountException</c>, <c>TransactionException</c>
+          </cell>
+          <cell>
+            Must be <em>declared</em> (<c>throws</c>) or <em>caught</em> in a <c>try/catch</c>.
+            Otherwise, the compiler won't compile your code.
+          </cell>
+        </row>
+        <row>
+          <cell><strong>Unchecked</strong></cell>
+          <cell>
+            <c>ArithmeticException</c>, <c>NullPointerException</c>,
+            <c>IllegalArgumentException</c>
+          </cell>
+          <cell>
+            No mandatory compiler checks. You <em>can</em> catch them if you want, but
+            you don't have to declare or handle them explicitly.
+          </cell>
+        </row>
+      </tabular>
+    </table>
+    <p>
+      So, was your guess correct? Java enforces checked exceptions because they represent 
+      recoverable conditions (like insufficient funds), where handling is critical. Unchecked 
+      exceptions, on the other hand, are often <em>programming mistakes</em> that should be 
+      fixed rather than caught.
+    </p>
+  </subsection>
+
+  <!-- =============================================
+       3. A Deeper Look at Checked Exceptions
+       ============================================= -->
+  <subsection xml:id="exceptions2-ioexample">
+    <title>Example: The Compiler Demands We Handle Business Logic</title>
+    <p>
+      Let's see checked exceptions in action. Consider the following code:
+    </p>
+    <program language="java" xml:id="IOExceptionExample_Broken" interactive="activecode">
+      <input>
+class InsufficientFundsException extends Exception {
+    public InsufficientFundsException(String message) {
+        super(message);
+    }
+}
+
+public class BankAccount {
+    private double balance = 100.0;
+
+    public static void main(String[] args) {
+        // This will NOT compile: "unreported exception InsufficientFundsException"
+        withdraw(150.0);
+    }
+
+    public static void withdraw(double amount) {
+        if (amount &gt; balance) {
+            throw new InsufficientFundsException("Not enough funds!");
+        }
+        balance -= amount;
+    }
+}
+
+public class RunDemo {
+    public static void main(String[] args) {
+        BankAccount.main(null);
+    }
+}
+      </input>
+    </program>
+    <p>
+      The compiler rejects this code. Why? Because <c>withdraw()</c> 
+      <em>might</em> fail due to insufficient funds, triggering an <c>InsufficientFundsException</c>. 
+      Java forces us to <strong>handle</strong> or <strong>declare</strong> the exception:
+    </p>
+    <program language="java" xml:id="IOExceptionExample_Fixed" interactive="activecode">
+      <input>
+class InsufficientFundsException extends Exception {
+    public InsufficientFundsException(String message) {
+        super(message);
+    }
+}
+
+public class BankAccount {
+    private static double balance = 100.0;
+
+    public static void main(String[] args) {
+        try {
+            withdraw(150.0);
+        } catch (InsufficientFundsException e) {
+            System.out.println("Transaction failed: " + e.getMessage());
+        }
+    }
+
+    public static void withdraw(double amount) throws InsufficientFundsException {
+        if (amount &gt; balance) {
+            throw new InsufficientFundsException("Not enough funds!");
+        }
+        balance -= amount;
+    }
+}
+
+public class RunDemo {
+    public static void main(String[] args) {
+        BankAccount.main(null);
+    }
+}
+      </input>
+    </program>
+    <p>
+      This version compiles because it properly declares or catches the checked exception.
+    </p>
+  </subsection>
+
+  <!-- =============================================
+       4. Unchecked Exceptions: No Compiler Force
+       ============================================= -->
+  <subsection xml:id="exceptions2-unchecked">
+    <title>Unchecked Doesn't Mean Unimportant</title>
+    <p>
+      Consider this common mistake:
+    </p>
+    <program language="java" xml:id="NullDemo" interactive="activecode">
+      <input>
+public class DivisionExample {
+    public static void main(String[] args) {
+        int x = 10;
+        int y = 0;
+        System.out.println(x / y);  // ArithmeticException!
+    }
+}
+
+public class RunDemo {
+    public static void main(String[] args) {
+        DivisionExample.main(null);
+    }
+}
+      </input>
+    </program>
+    <p>
+      The program crashes, but the compiler didn't warn us. Why? 
+      Because this isn't an expected failure—it's a bug. 
+      Java assumes we should <em>fix</em> the bug, not just catch it at runtime.
+    </p>
+  </subsection>
+
+  <!-- =============================================
+       5. Selecting a Proper Exception Type
+       ============================================= -->
+  <subsection xml:id="exceptions2-choosing-type">
+    <title>Choosing the Right Exception to Throw</title>
+    <p>
+      What's wrong with this code?
+    </p>
+    <program language="java" xml:id="BadExceptionExample" interactive="activecode">
+      <input>
+public class Calculator {
+    public static int divide(int x, int y) {
+        if (y == 0) {
+            throw new Exception("Cannot divide by zero!");  // Too generic!
+        }
+        return x / y;
+    }
+
+    public static void main(String[] args) {
+        divide(10, 0);
+    }
+}
+
+public class RunDemo {
+    public static void main(String[] args) {
+        Calculator.main(null);
+    }
+}
+      </input>
+    </program>
+    <p>
+      <c>Exception</c> is too generic. Instead, use <c>IllegalArgumentException</c>:
+    </p>
+    <program language="java" xml:id="GoodExceptionExample" interactive="activecode">
+      <input>
+public class Calculator {
+    public static int divide(int x, int y) {
+        if (y == 0) {
+            throw new IllegalArgumentException("Cannot divide by zero!");
+        }
+        return x / y;
+    }
+
+    public static void main(String[] args) {
+        divide(10, 0);
+    }
+}
+
+public class RunDemo {
+    public static void main(String[] args) {
+        Calculator.main(null);
+    }
+}
+      </input>
+    </program>
+  </subsection>
+</section>
