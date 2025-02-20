@@ -1,0 +1,344 @@
+<section xml:id="ch-exceptions-2">
+  <title>Standard Library Exceptions</title>
+
+  <!-- =============================================
+       1. Preventing Failures: Manual Checks vs. Exceptions
+       ============================================= -->
+  <subsection xml:id="exceptions2-intro">
+    <title>Preventing a Bill-Splitting Crash</title>
+    <p>Imagine you're writing a program to split a restaurant bill among friends:</p>
+    <program language="java" xml:id="BillSplitter">
+public class BillSplitter {
+    public static int splitBill(int totalCost, int numberOfPeople) {
+        // What if numberOfPeople is 0?
+        return totalCost / numberOfPeople; // Can crash with ArithmeticException
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Per person: " + splitBill(100, 0));
+    }
+}
+    </program>
+    <p>Running this code will throw an <c>ArithmeticException</c>, because dividing by zero is undefined. This runtime crash could surprise you (or your users).</p>
+    <p>So how can you prevent it?</p>
+    <ul>
+      <li><term>Option 1 (Manual Check):</term> Before dividing, do <c>if (numberOfPeople == 0) { /* handle error */ }</c>. This way, you ensure no crash occurs.</li>
+      <li><term>Option 2 (Exceptions):</term> If you forget the check, Java automatically throws <c>ArithmeticException</c>. But it's an unchecked exception, so the compiler doesn't force you to handle it.</li>
+    </ul>
+    <p>This raises a question: Why does Java <em>sometimes</em> force you to handle errors, and other times let them slip by until runtime? That's exactly what we'll explore now.</p>
+  </subsection>
+
+  <!-- =============================================
+       2. The Throwable Categories (With Table)
+       ============================================= -->
+  <subsection xml:id="exceptions2-categories">
+    <title>Categories of Java Exceptions</title>
+    <p>In Java, when something goes wrong, the program can throw different types of exceptions. These fall into three main categories:</p>
+
+    <p><term>1. Errors</term></p>
+    <ul>
+      <li><term>Category:</term> <c>Error</c></li>
+      <li><term>Purpose:</term> Critical failures that affect the entire system. Not meant to be handled.</li>
+      <li><term>Examples:</term> <c>OutOfMemoryError</c>, <c>StackOverflowError</c></li>
+      <li><term>Do You Handle It?</term> ❌ No, usually unfixable.</li>
+    </ul>
+
+    <p><term>2. Checked Exceptions</term></p>
+    <ul>
+      <li><term>Category:</term> Checked Exception</li>
+      <li><term>Purpose:</term> Recoverable failures that Java forces you to either handle (<c>try/catch</c>) or declare (<c>throws</c>).</li>
+      <li><term>Examples:</term> <c>IOException</c>, <c>ClassNotFoundException</c></li>
+      <li><term>Do You Handle It?</term> ⚠️ Required: Either (try/catch) OR (throws).</li>
+    </ul>
+
+    <p><term>3. Unchecked Exceptions</term></p>
+    <ul>
+      <li><term>Category:</term> Unchecked Exception</li>
+      <li><term>Purpose:</term> Programmer mistakes that cause a crash at runtime.</li>
+      <li><term>Examples:</term> <c>ArithmeticException</c>, <c>NullPointerException</c></li>
+      <li><term>Do You Handle It?</term> 🔶 You can handle them, but Java doesn't force you to.</li>
+    </ul>
+
+    <p>All of these categories belong to a broader group called <c>Throwable</c>. Java splits these into two main groups:</p>
+    <ul>
+      <li><term>Errors</term> like <c>OutOfMemoryError</c> indicate system-level failures. You almost never handle them directly—if your program runs out of memory, there's often little you can do.</li>
+      <li><term>Exceptions</term> represent problems you <em>can</em> handle in code. They come in two types:
+        <ul>
+          <li><em>Checked Exceptions</em>: The compiler forces you to either catch them or declare them with <c>throws</c>. Example: <c>IOException</c>.</li>
+          <li><em>Unchecked Exceptions</em>: The compiler does not require explicit handling. Example: <c>ArithmeticException</c>, <c>NullPointerException</c>.</li>
+        </ul>
+      </li>
+    </ul>
+  </subsection>
+
+  <!-- =============================================
+       3. Think Before Continuing: Multiple-Choice
+       ============================================= -->
+  <subsection xml:id="exceptions2-think">
+    <title>Which Should the Compiler Force Us to Handle?</title>
+    <p>Let's test your understanding. <term>Pause here! Write down your answers before continuing.</term></p>
+    
+    <p><term>Question 1: Handling <c>IOException</c> (Checked)</term></p>
+    <p>Suppose a method needs to read data. The data might be invalid or missing. Should Java:</p>
+    <blockquote>
+      <p>A) Force you to handle or declare <c>IOException</c> before running</p>
+      <p>B) Assume you'll remember to check manually</p>
+    </blockquote>
+
+    <p><term>Question 2: Handling <c>ArithmeticException</c> (Unchecked)</term></p>
+    <p>Suppose a method divides two numbers, and the divisor might be zero. Should Java:</p>
+    <blockquote>
+      <p>A) Force the programmer to write <c>try/catch</c> around every division</p>
+      <p>B) Assume the programmer will fix or avoid dividing by zero</p>
+    </blockquote>
+
+    <p><term>Think:</term> What did you choose? Why?</p>
+
+    <p><term>Answers:</term> For <c>IOException</c>, Java does (A)—it's a checked exception. For <c>ArithmeticException</c>, Java does (B)—it's unchecked, so you're not forced to handle it at compile time. That's the heart of checked vs. unchecked.</p>
+  </subsection>
+
+  <!-- =============================================
+       4. Code Skeleton: Predict the Missing Pieces
+       ============================================= -->
+  <subsection xml:id="exceptions2-skeleton">
+    <title>Checked and Unchecked in Practice</title>
+    <p>Some failures, like a missing file or a network issue, are beyond our control. Java has a rule: if a method might fail in this way, it must <em>warn</em> whoever calls it. This is why we use <c>throws IOException</c>—it's Java's way of saying:</p>
+    <p><q>Hey, something might go wrong! You need to handle this before running the program.</q></p>
+
+    <p>Below is a <em>partial</em> implementation showing one method that might throw a checked exception, and another that can cause an unchecked exception:</p>
+    <p>(Before we see the answers, try to predict: What should the method do if y == 0? What kind of exception would make sense for readData()?)</p>
+    <program language="java" xml:id="ExceptionDemoSkeleton">
+public class ExceptionDemoSkeleton {
+
+    // Checked exception example
+    public static void readData() throws ??? {
+        // What checked exception might we throw here?
+        // e.g., throw new ???("Unable to read data...");
+    }
+
+    // Unchecked exception example
+    public static int safeDivide(int x, int y) {
+        // What if y == 0?
+        // Return x / y or do a manual check?
+        return ???;
+    }
+}
+    </program>
+    <p><term>Think:</term> Which standard <em>checked exception</em> could you throw? (Hint: <c>IOException</c> is a typical example for "something went wrong reading data.") And what should you do for <c>safeDivide</c> if <c>y == 0</c>?</p>
+    <p>Compare your answers with the full code below:</p>
+    <program language="java" xml:id="ExceptionDemo">
+public class ExceptionDemo {
+
+    public static void main(String[] args) {
+        // 1) If readData() throws a checked exception, we must handle or declare it:
+        try {
+            readData();
+        } catch (IOException e) {
+            System.out.println("Caught an IOException: " + e.getMessage());
+        }
+
+        // 2) safeDivide() can cause an ArithmeticException if y == 0, but the compiler won't stop us
+        int result = safeDivide(10, 0);
+        System.out.println("Result: " + result); // This may crash at runtime
+    }
+
+    // Implementation: "readData()" throws a checked exception
+    public static void readData() throws IOException {
+        // Pretend something went wrong reading data
+        throw new IOException("Data source unavailable.");
+    }
+
+    // Implementation: "safeDivide()" with defensive programming
+    public static int safeDivide(int x, int y) {
+        if (y == 0) {
+            throw new IllegalArgumentException("Cannot divide by zero.");
+        }
+        return x / y;
+    }
+}
+    </program>
+    <p>Notice that the compiler <term>demands</term> we handle or declare <c>IOException</c> but doesn't require us to handle <c>ArithmeticException</c>. That's the essence of checked vs. unchecked exceptions in action.</p>
+  </subsection>
+
+  <!-- =============================================
+       5. Why Not Just "Exception"? A Bad vs. Good Comparison
+       ============================================= -->
+  <subsection xml:id="exceptions2-why-not-exception">
+    <title>Why <c>throw new Exception(...)</c> Is Too Generic</title>
+    <p><term>What's wrong with this code?</term> Before reading further, try to spot the mistake:</p>
+    <program language="java" xml:id="ExceptionDemoBad">
+public static void setAge(int age) throws Exception {
+    if (age &lt; 0) {
+        throw new Exception("Something went wrong!");
+    }
+    // ... proceed with setting age
+}
+    </program>
+    <p>This code compiles, but <em>"Something went wrong!"</em> doesn't clearly say <em>what</em> the error is. It also forces a generic <c>Exception</c> onto the caller.</p>
+    <p>Here's a <term>better</term> approach using a more specific, built-in type:</p>
+    <program language="java" xml:id="ExceptionDemoGood">
+public static void setAge(int age) {
+    if (age &lt; 0) {
+        // IllegalArgumentException is unchecked, but communicates exactly what happened
+        throw new IllegalArgumentException("Age cannot be negative.");
+    }
+    // ... proceed with setting age
+}
+    </program>
+    <p>Now it's clear to the caller that the argument was illegal. <em>Specific exception types</em> convey more meaning than a generic <c>Exception</c>.</p>
+  </subsection>
+
+  <!-- =============================================
+       6. Recap & Practical Tips
+       ============================================= -->
+  <subsection xml:id="exceptions2-recap">
+    <title>How to Handle Exceptions in Your Own Code</title>
+    
+    <p><term>When You See a Checked Exception (<c>IOException</c>, <c>SQLException</c>):</term></p>
+    <ul>
+      <li>The compiler won't let you ignore it</li>
+      <li>You <em>must</em> use <c>try/catch</c> or declare <c>throws</c></li>
+      <li>These usually mean something external went wrong (like a missing file)</li>
+    </ul>
+
+    <p><term>When You Get an Unchecked Exception (<c>NullPointerException</c>, <c>ArithmeticException</c>):</term></p>
+    <ul>
+      <li>These usually mean a bug in your code</li>
+      <li>Instead of catching them, fix the mistake that caused them</li>
+      <li>Common examples: dividing by zero, using null values</li>
+    </ul>
+
+    <p><term>Best Practices for Your Code:</term></p>
+    <ul>
+      <li>Never use <c>throw new Exception(...)</c>—it's too vague</li>
+      <li>Choose specific exception types that clearly describe what went wrong</li>
+      <li>For dangerous operations (like division), check for invalid values first</li>
+      <li>When reading files or using networks, always handle checked exceptions</li>
+    </ul>
+
+    <p><term>In Your Own Code, Remember:</term></p>`
+    <ul>
+      <li>Handle external failures (files, networks) using <c>try/catch</c> or <c>throws</c></li>
+      <li>Avoid generic <c>Exception</c>—use a specific type like <c>IllegalArgumentException</c></li>
+      <li>For invalid input, check manually before proceeding (e.g., don't divide by zero)</li>
+      <li>If an error is a programmer mistake (like <c>NullPointerException</c>), fix the bug instead of catching it</li>
+    </ul>
+
+    <p>That's the essence of working with Java's standard exceptions. Next up, we'll continue exploring how to <em>handle</em> exceptions effectively (via <c>try</c>/<c>catch</c> and <c>throws</c>) so your programs never fail silently—and your code remains clear and predictable.</p>
+  </subsection>
+
+  <exercises>
+    <!-- ======================================
+         Quiz #1: Errors vs. Exceptions
+         ====================================== -->
+    <exercise xml:id="mc-errors-vs-exceptions" type="multiplechoice">
+      <title>Multiple-Choice: Errors vs. Exceptions</title>
+      <statement>
+        <p>Which statement <em>best</em> describes the difference between Java <code>Error</code> and <code>Exception</code> classes?</p>
+      </statement>
+      <choices>
+        <choice correct="yes">
+          <statement><code>Error</code> represents critical system-level failures (e.g., <code>OutOfMemoryError</code>) that are usually not handled, while <code>Exception</code> represents problems your code can potentially catch and recover from.</statement>
+          <feedback>Exactly. <code>Error</code> is generally fatal for the JVM, whereas <code>Exception</code> is recoverable.</feedback>
+        </choice>
+        <choice>
+          <statement>They have no difference at runtime; <code>Error</code> is just a deprecated name for <code>Exception</code>.</statement>
+          <feedback>No. <code>Error</code> is a distinct hierarchy for system-level issues.</feedback>
+        </choice>
+        <choice>
+          <statement>Any <code>Error</code> is a compile-time issue, while <code>Exception</code> is always a runtime-only class.</statement>
+          <feedback>No. Both occur at runtime; <code>Error</code> is not a compile-time phenomenon.</feedback>
+        </choice>
+        <choice>
+          <statement><code>Error</code> is for user input mistakes, while <code>Exception</code> is strictly for developer errors in code logic.</statement>
+          <feedback>No. User input mistakes typically lead to Exceptions; <code>Error</code> signals bigger issues (like memory exhaustion).</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- ======================================
+         Quiz #2: Checked vs. Unchecked
+         ====================================== -->
+    <exercise xml:id="mc-checked-unchecked" type="multiplechoice">
+      <title>Multiple-Choice: Checked vs. Unchecked Exceptions</title>
+      <statement>
+        <p>Which of the following <em>correctly</em> compares checked vs. unchecked exceptions in Java?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>Checked exceptions are only caused by arithmetic operations (like dividing by zero), while unchecked exceptions come from external issues (like missing files).</statement>
+          <feedback>No. It's actually the opposite: dividing by zero triggers an <code>ArithmeticException</code>, which is unchecked.</feedback>
+        </choice>
+        <choice>
+          <statement>Java forces you to handle or declare unchecked exceptions, but not checked ones.</statement>
+          <feedback>No. It's reversed. Checked exceptions must be handled or declared; unchecked do not require that.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>Checked exceptions (e.g., <code>IOException</code>) must be caught or declared using <code>throws</code>, while unchecked exceptions (e.g., <code>ArithmeticException</code>) don't require explicit handling.</statement>
+          <feedback>Correct. That's the fundamental difference in how Java treats checked vs. unchecked.</feedback>
+        </choice>
+        <choice>
+          <statement>They are identical in behavior, but checked exceptions only happen at compile-time and unchecked happen at runtime.</statement>
+          <feedback>No. All exceptions occur at runtime; "checked" means the compiler enforces handling.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- ======================================
+         Quiz #3: Dividing By Zero
+         ====================================== -->
+    <exercise xml:id="mc-arithmetic-exception" type="multiplechoice">
+      <title>Multiple-Choice: Dividing By Zero</title>
+      <statement>
+        <p>You have a method <code>int divide(int x, int y)</code> that does <code>return x / y;</code>. What happens if <code>y</code> is zero?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>The compiler will refuse to compile your code unless you catch <code>ArithmeticException</code>.</statement>
+          <feedback>No. <code>ArithmeticException</code> is unchecked, so the compiler doesn't force you to catch it.</feedback>
+        </choice>
+        <choice>
+          <statement>You automatically get a compile-time error, with no possibility of running the program.</statement>
+          <feedback>No. There's no compile-time error for dividing by a variable that might be zero.</feedback>
+        </choice>
+        <choice>
+          <statement>The method returns <code>0</code> by default if <code>y</code> is zero.</statement>
+          <feedback>No. It throws <code>ArithmeticException</code> at runtime; no default zero return is provided.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>The program throws <code>ArithmeticException</code> at runtime if <code>y</code> is zero, terminating unless you catch it or avoid the division.</statement>
+          <feedback>Correct. Since <code>ArithmeticException</code> is unchecked, it occurs at runtime with no compile-time warnings.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <!-- ======================================
+         Quiz #4: Generic Exception
+         ====================================== -->
+    <exercise xml:id="mc-generic-exception" type="multiplechoice">
+      <title>Multiple-Choice: Generic Exception</title>
+      <statement>
+        <p>Why might <code>throw new Exception("Something went wrong!")</code> be discouraged compared to throwing a more specific exception type?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>Generic <code>Exception</code> causes Java to skip the <code>catch</code> block entirely, making the program terminate immediately.</statement>
+          <feedback>No. Java doesn't skip <code>catch</code> blocks if the type matches. The problem is lack of clarity.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>It's too vague. A more specific exception (e.g. <code>IllegalArgumentException</code>) conveys clearer intent, helping both the caller and any catch blocks respond appropriately.</statement>
+          <feedback>Precisely. A specific exception type clarifies the exact nature of the error.</feedback>
+        </choice>
+        <choice>
+          <statement>Throwing <code>Exception</code> is not valid Java code and won't compile unless you add a final <code>finally</code> block.</statement>
+          <feedback>No. It is valid code. The problem is that using a generic type is poor design, not compilation failure.</feedback>
+        </choice>
+        <choice>
+          <statement>It's not discouraged; in modern Java, <code>Exception</code> is always replaced automatically by <code>RuntimeException</code> at runtime.</statement>
+          <feedback>No automatic replacement occurs. The developer must choose an appropriate type. </feedback>
+        </choice>
+      </choices>
+    </exercise>
+</exercises>
+
+</section>

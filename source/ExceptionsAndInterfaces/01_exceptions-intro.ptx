@@ -1,0 +1,384 @@
+<section xml:id="ch-exceptions-1">
+  <title>Introduction to Exceptions</title>
+
+  <!-- ======================================================
+       1. Intro & Motivating Narrative
+       ====================================================== -->
+  <subsection xml:id="exceptions-intro-motivation">
+    <title>When Errors Go Unnoticed</title>
+    <p>What happens when an error goes completely unnoticed until it causes panic? Imagine you're debugging a banking app. A customer reports seeing "-1.00" on their balance sheet and grows alarmed. After hours of investigation, you discover the real issue: a missing account check silently returned -1 as a sentinel value, and the code treated it as real money. How did this happen?</p>
+    <p>When a user enters an account number and it doesn't exist, what should your method return?</p>
+    <ul>
+      <li><c>0</c> for "not found"? But some users might actually have a $0 balance.</li>
+      <li><c>-1</c>? What if the bank introduces negative balances?</li>
+      <li><c>null</c>? That could cause a <c>NullPointerException</c> if we forget to check it.</li>
+    </ul>
+    <p>This is a <em>sentinel value</em> problem. If we pick a special return value to mean "error" but forget to handle it, bad things happen. Since Java treats all numbers equally, it can't warn us when we accidentally use -1 or 0 as if it were valid data.</p>
+    <p>The fundamental flaw? The compiler doesn't enforce the check. The program compiles, and everything appears fine—until a silent error snowballs into real-world consequences. Instead of relying on human discipline to notice mistakes, we need a mechanism that forces the caller to acknowledge errors. This is what <em>exceptions</em> provide.</p>
+  </subsection>
+
+  <!-- ======================================================
+       2. The Sentinel Value Trap
+       ====================================================== -->
+  <subsection xml:id="exceptions-sentinel-demo">
+    <title>Why Returning an Error Code Fails</title>
+    <p>Let's look at an example using an iterator that returns a sentinel value. Here is the <em>method contract</em> before we see the code:</p>
+    <ul>
+      <li><em>If there are numbers left:</em> return the next one.</li>
+      <li><em>If no numbers remain:</em> return <c>-999</c> (caller must check!).</li>
+      <li><em>No compiler enforcement:</em> since -999 is just another integer, Java won't warn us if we misuse it.</li>
+    </ul>
+    <p>Now the actual code:</p>
+    <program language="java" xml:id="ExampleSentinel" interactive="activecode">
+      <input>
+public class SentinelIterator {
+    private int[] data;
+    private int currentIndex;
+
+    public SentinelIterator(int[] arr) {
+        data = arr;
+        currentIndex = 0;
+    }
+
+    public int next() {
+        if (currentIndex >= data.length) {
+            return -999;  // Sentinel value
+        }
+        return data[currentIndex++];
+    }
+}
+      </input>
+    </program>
+    <p>Consider a caller that forgets to check the sentinel. We'll demonstrate this with an average calculation, where using -999 makes no sense:</p>
+    <program language="java" xml:id="SentinelMisuse" interactive="activecode">
+      <input>
+public class SentinelDemo {
+    public static void main(String[] args) {
+        SentinelIterator it = new SentinelIterator(new int[]{10, 20, 30});
+        
+        // The caller tries to average 4 values, not realizing the 4th is -999!
+        int sum = it.next() + it.next() + it.next() + it.next();
+        int average = sum / 4;
+        System.out.println("Average: " + average); // Wrong result includes -999!
+    }
+}
+      </input>
+    </program>
+    <p>The compiler never warned us that -999 was used in the average. The program silently produces a meaningless result.</p>
+  </subsection>
+
+  <!-- ======================================================
+       3. Throwing an Exception Instead
+       ====================================================== -->
+  <subsection xml:id="throw-intro">
+    <title>Using Exceptions to Force Error Handling</title>
+    <p>To avoid sentinel misuse, we can <em>throw an exception</em> when no more elements remain. In Java, <c>throw</c> immediately stops execution and signals a problem, rather than returning a faulty value.</p>
+    <p><em>Method Contract (Exception Approach):</em></p>
+    <ul>
+      <li><em>If data exists:</em> return the next number.</li>
+      <li><em>If no data remains:</em> throw <c>NoSuchElementException</c>.</li>
+      <li><em>The caller cannot ignore this mistake:</em> Java forces them to handle it or the program crashes.</li>
+    </ul>
+    <p>Here's how we can rewrite the iterator:</p>
+    <program language="java" xml:id="ThrowNextExample" interactive="activecode">
+      <input>
+import java.util.NoSuchElementException;
+
+public class ExceptionIterator {
+    private int[] data;
+    private int currentIndex;
+
+    public ExceptionIterator(int[] arr) {
+        data = arr;
+        currentIndex = 0;
+    }
+
+    public int next() {
+        if (currentIndex >= data.length) {
+            throw new NoSuchElementException("No more elements");
+        }
+        return data[currentIndex++];
+    }
+}
+      </input>
+    </program>
+    <p>Now, if the caller forgets to check whether more elements remain, the program won't produce bad data—it will throw an exception and stop.</p>
+  </subsection>
+
+  <!-- ======================================================
+       4. Handling Exceptions with try/catch
+       ====================================================== -->
+  <subsection xml:id="try-catch-intro">
+    <title>Handling Exceptions Gracefully</title>
+    <p>If we want to recover from an exception instead of crashing, we wrap the risky code in a <c>try</c> block and provide a matching <c>catch</c>. Catching every exception without addressing the problem can hide real issues. Use <c>try/catch</c> only when you need to recover from an error—not just to silence it.</p>
+    <p><em>General Pattern:</em></p>
+    <program language="java" xml:id="TryCatchSkeleton">
+      <input>
+try {
+    // Code that might throw an exception
+} catch (ExceptionType e) {
+    // Handle the error (don't ignore it!)
+}
+      </input>
+    </program>
+    <p>For example, safely handling <c>NoSuchElementException</c> in our iterator loop:</p>
+    <program language="java" xml:id="TryCatchExample" interactive="activecode">
+      <input>
+import java.util.NoSuchElementException;
+
+public class TryCatchDemo {
+    public static void main(String[] args) {
+        ExceptionIterator it = new ExceptionIterator(new int[]{10, 20, 30});
+
+        try {
+            while (true) {
+                System.out.println("Got: " + it.next());
+            }
+        } catch (NoSuchElementException e) {
+            System.out.println("Reached the end: " + e.getMessage());
+        }
+    }
+}
+      </input>
+    </program>
+    <p>This code catches the exception and prints a message instead of crashing or using invalid data.</p>
+  </subsection>
+
+  <!-- ======================================================
+       5. Visualizing Exception Propagation
+       ====================================================== -->
+  <subsection xml:id="exceptions-visualizing">
+    <title>How Java Handles Exceptions</title>
+    <p>Before running the code below, predict: Will Java stop immediately, or will it keep looking for a handler? Why?</p>
+    <program language="java" xml:id="ExceptionPropagationExample">
+      <input>
+import java.util.NoSuchElementException;
+
+public class ExceptionPropagationExample {
+    public static void main(String[] args) {
+        riskyMethod(); // No try/catch here!
+    }
+
+    public static void riskyMethod() {
+        throw new NoSuchElementException("Something went wrong!");
+    }
+}
+      </input>
+    </program>
+    <p>If we run this code, Java looks for a matching catch. Finding none, it keeps unwinding until it reaches the end of main, ultimately terminating the program and printing a stack trace.</p>
+    <pre>
+main() calls riskyMethod()
+ └── riskyMethod() throws NoSuchElementException
+     ├── No catch found → propagates up
+     ├── No catch in main() → propagates further
+     └── Java terminates the program with an error message
+    </pre>
+    <p>If a matching <c>catch</c> block is found anywhere up the stack, Java stops searching and executes that block instead of crashing the program.</p>
+  </subsection>
+
+  <!-- ======================================================
+       6. Conclusion & Transition
+       ====================================================== -->
+  <subsection xml:id="exceptions-conclusion-next">
+    <title>Conclusion &amp; Next Steps</title>
+    <p>By replacing sentinels with exceptions, we ensure errors must be handled. But not all exceptions behave the same—some, like <c>IOException</c>, are <em>checked exceptions</em>, which Java forces you to handle. Others are <em>unchecked</em> and let you decide whether to catch them or fix the underlying bug.</p>
+    <p><em>When should you use exceptions?</em></p>
+    <ul>
+      <li>When ignoring a failure would cause bigger problems (for instance, data corruption)</li>
+      <li>When there's no sensible "default" value to return (like -999) and you need to force the caller's attention</li>
+      <li>When you need to prevent execution from continuing incorrectly—either by stopping execution or forcing corrective action, whether at compile-time (checked exceptions) or runtime (unchecked exceptions).</li>
+    </ul>
+    <p>Some exceptions, like IOException, must be handled before your code will even compile—while others, like NullPointerException, can happen at any time. Let's see why Java makes this distinction *in the next section*.</p>
+  </subsection>
+
+  <exercises>
+    <!-- ======================================
+         Quiz #1: Sentinel Values vs. Exceptions
+         ====================================== -->
+    <exercise xml:id="mc-sentinel-vs-exception" type="multiplechoice">
+      <title>Multiple-Choice: Sentinel Value vs. Exception</title>
+      <statement>
+        <p>In Java, why might throwing an exception be preferable to returning a special “sentinel value” (like <code>-999</code>) when something goes wrong?</p>
+      </statement>
+      <choices>
+        <choice correct="yes">
+          <statement>Exceptions force the caller to handle the error or let the program crash, preventing silent misuse of an invalid return value.</statement>
+          <feedback>Correct. With sentinel values, the compiler won't warn you if you ignore them. Exceptions make errors harder to ignore.</feedback>
+        </choice>
+        <choice>
+          <statement>Returning special integer codes is no longer allowed in modern Java versions, so exceptions are the only option.</statement>
+          <feedback>No. Java still allows any integer return. Exceptions are just a safer design for error handling.</feedback>
+        </choice>
+        <choice>
+          <statement>Exceptions automatically correct the error and let the program continue with valid data.</statement>
+          <feedback>No. Exceptions don't fix errors; they indicate a problem that the caller must address or handle.</feedback>
+        </choice>
+        <choice>
+          <statement>Using a sentinel value can never crash a program, but using exceptions always does.</statement>
+          <feedback>No. A sentinel value can lead to incorrect logic if not handled. Exceptions can be caught, preventing crashes.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+
+    <!-- ======================================
+         Quiz #2: Sentinel Misuse Demo
+         ====================================== -->
+    <exercise xml:id="mc-sentinel-misuse" type="multiplechoice">
+      <title>Multiple-Choice: Sentinel Misuse</title>
+      <statement>
+        <p>Consider this snippet using a sentinel-based iterator:</p>
+        <code>
+int val = it.next(); // could return -999 if no elements
+// ...
+int sum = val + 10;  // no check for sentinel
+</code>
+        <p>What is the main risk if we don't check for the sentinel value <code>-999</code>?</p>
+      </statement>
+      <choices>
+        <choice>
+          <statement>The program will always crash with a <code>NullPointerException</code>.</statement>
+          <feedback>No. <code>-999</code> is an int, so it won't throw <code>NullPointerException</code>.</feedback>
+        </choice>
+        <choice>
+          <statement>The code becomes slower because it's performing extra checks on the sentinel.</statement>
+          <feedback>No. The bigger risk is logical errors, not just performance concerns.</feedback>
+        </choice>
+        <choice correct="yes">
+          <statement>The code may silently use <code>-999</code> as if it were a valid value, producing an incorrect or misleading result.</statement>
+          <feedback>Exactly. That leads to “invisible” errors that can propagate widely.</feedback>
+        </choice>
+        <choice>
+          <statement>Java will throw an exception if you forget to handle <code>-999</code> properly.</statement>
+          <feedback>No. Sentinel misuse is silent. That's why returning a sentinel can lead to subtle bugs.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+
+    <!-- ======================================
+         Quiz #3: Throwing Exceptions
+         ====================================== -->
+    <exercise xml:id="mc-throwing-exceptions" type="multiplechoice">
+      <title>Multiple-Choice: Throwing Exceptions</title>
+      <statement>
+        <p>You have this code in a method:</p>
+        <code>throw new NoSuchElementException("Not found");</code>
+        <p>Which statement <em>best</em> describes what happens immediately after the <code>throw</code> statement executes?</p>
+      </statement>
+      <choices>
+        <choice correct="yes">
+          <statement>Execution of that method stops; Java looks for a matching <code>catch</code> block higher on the call stack. If none is found, the program terminates with a stack trace.</statement>
+          <feedback>Exactly. Once you throw an exception, normal flow stops, and Java “unwinds” to find a handler.</feedback>
+        </choice>
+        <choice>
+          <statement>The program prints the message "Not found" on the console and continues execution in the same method.</statement>
+          <feedback>No. Throwing an exception halts normal flow. It doesn't just print a message.</feedback>
+        </choice>
+        <choice>
+          <statement>Java calls <code>System.exit(0)</code> automatically, abruptly shutting down without any trace.</statement>
+          <feedback>No. Java doesn't do that. If unhandled, it prints a stack trace and ends with a nonzero status code (not clean exit).</feedback>
+        </choice>
+        <choice>
+          <statement>An exception object is created but not thrown to the caller, so the method finishes normally, returning <code>null</code> by default.</statement>
+          <feedback>No. <code>throw</code> ensures the exception leaves the method unless caught locally.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+
+    <!-- ======================================
+         Quiz #4: try/catch Basics
+         ====================================== -->
+    <exercise xml:id="mc-try-catch-intro" type="multiplechoice">
+      <title>Multiple-Choice: try/catch Basics</title>
+      <statement>
+        <p>Which statement about <code>try/catch</code> in Java is <em>correct</em>?</p>
+      </statement>
+      <choices>
+        <choice correct="yes">
+          <statement>A <code>try</code> block encloses code that might throw an exception; a matching <code>catch</code> block handles a specific exception type, preventing the program from crashing if that exception occurs.</statement>
+          <feedback>Correct. That's the fundamental purpose of <code>try/catch</code>.</feedback>
+        </choice>
+        <choice>
+          <statement>You can only have one <code>catch</code> block for each <code>try</code> in Java, and it must handle all exceptions.</statement>
+          <feedback>No. Java allows multiple <code>catch</code> blocks for different exception types.</feedback>
+        </choice>
+        <choice>
+          <statement><code>try</code> blocks must always be followed by <code>finally</code>; otherwise the code won't compile.</statement>
+          <feedback>No. <code>finally</code> is optional; you only need it if you want a block that always executes.</feedback>
+        </choice>
+        <choice>
+          <statement>Once an exception is caught, the program restarts from the <code>try</code> block.</statement>
+          <feedback>No. After catching an exception, execution continues after the <code>catch</code> block, not from the beginning of <code>try</code>.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+
+    <!-- ======================================
+         Quiz #5: Exception Propagation
+         ====================================== -->
+    <exercise xml:id="mc-exception-propagation" type="multiplechoice">
+      <title>Multiple-Choice: Exception Propagation</title>
+      <statement>
+        <p>Consider this sequence of calls: <code>main() --&gt; methodA() --&gt; methodB()</code>. If <code>methodB</code> throws an unchecked exception and there's no matching catch block in <code>methodB</code> or <code>methodA</code>, what happens next?</p>
+      </statement>
+      <choices>
+        <choice correct="yes">
+          <statement>The exception propagates back up to <code>main</code>. If <code>main</code> doesn't catch it either, the program terminates and prints a stack trace.</statement>
+          <feedback>Yes. Java unwinds the call stack, looking for a handler. If none is found, it ends with a stack trace.</feedback>
+        </choice>
+        <choice>
+          <statement>It restarts <code>methodB</code> from the beginning, ignoring the exception details.</statement>
+          <feedback>No. Java does not “retry” methods after an exception. It either handles or propagates the error.</feedback>
+        </choice>
+        <choice>
+          <statement>It silently sets the return value of <code>methodB</code> to null, letting execution continue in <code>main</code> as normal.</statement>
+          <feedback>No. Uncaught exceptions don't degrade to null; they propagate and can terminate the program if unhandled.</feedback>
+        </choice>
+        <choice>
+          <statement>The JVM forcibly calls <code>System.exit(0)</code>, indicating a clean exit with no error message.</statement>
+          <feedback>No. The default behavior is to print a stack trace and exit with a non-zero code, not a silent exit.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+
+    <!-- ======================================
+         Short-Answer #1: Checked vs. Unchecked
+         ====================================== -->
+    <exercise xml:id="sa-checked-unchecked" type="shortanswer">
+      <title>Short-Answer: Checked vs. Unchecked Exceptions</title>
+      <statement>
+        <p>
+          Briefly explain the main difference between 
+          <em>checked</em> and <em>unchecked</em> exceptions in Java. 
+          When does the compiler force you to handle an exception?
+        </p>
+      </statement>
+      <answer>
+Checked exceptions (e.g., IOException) must be handled or declared in the method signature at compile time, or your code won't compile. Unchecked exceptions (e.g., NullPointerException) don't require explicit handling; they can occur at runtime, and the compiler doesn't force you to catch or declare them.
+      </answer>
+    </exercise>
+
+
+    <!-- ======================================
+         Short-Answer #2: try/catch Rationale
+         ====================================== -->
+    <exercise xml:id="sa-try-catch-rationale" type="shortanswer">
+      <title>Short-Answer: try/catch Rationale</title>
+      <statement>
+        <p>
+          In your own words, why might we surround code with 
+          <code>try</code> blocks and catch exceptions, 
+          instead of letting them propagate? 
+          Give one practical scenario where <code>try/catch</code> 
+          makes sense.
+        </p>
+      </statement>
+      <answer>Using try/catch allows us to gracefully recover or handle an expected error rather than crashing. For example, reading from a file: if the file is missing or corrupted, we can catch IOException and alert the user or use a default file instead of just terminating.</answer>
+    </exercise>
+</exercises>
+
+</section>
