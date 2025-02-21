@@ -83,7 +83,7 @@
                 xmlns:math="https://www.sphinx-doc.org/" xmlns:py="https://www.sphinx-doc.org/"
                 xmlns:rst="https://www.sphinx-doc.org/" xmlns:std="https://www.sphinx-doc.org/">Figure
                 4: A Date class showing attributes and constructors</caption>
-            <image source="Unit02-Using-Objects/Figures/DateClass.png" width="NaN%"
+            <image source="ch-sync/DateClass.png" width="80%"
                 alt="A Date class showing attributes and constructors" />
         </figure>
  
@@ -105,7 +105,7 @@
                 xmlns:math="https://www.sphinx-doc.org/" xmlns:py="https://www.sphinx-doc.org/"
                 xmlns:rst="https://www.sphinx-doc.org/" xmlns:std="https://www.sphinx-doc.org/">Figure
                 5: Parameter Mapping</caption>
-            <image source="Unit02-Using-Objects/Figures/parameterMappingDate.png" width="NaN%"
+            <image source="ch-sync/parameterMappingDate.png" width="NaN%"
                 alt="Parameter Mapping" />
         </figure>
         <p>The type of the values being passed in as arguments have to match the type of the formal
