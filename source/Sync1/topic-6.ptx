@@ -34,7 +34,6 @@ House neighborsHouse = new House();
             <p>Run the code below to see how it constructs 2 Person objects and fills in their data. We will explain all parts of this class in the next sections, but notice that execution always starts in the main method. When a method like the print() method is called, we run the code in the print method for that object. After a method is done, the control returns back to the next line of code in the main method. You can also see this in the <raw format="html" xml:space="preserve"><a href="http://www.pythontutor.com/visualize.html#code=public%20class%20Person%20%0A%7B%0A%20%20%20%20%20//%20instance%20variables%20%0A%20%20%20%20%20private%20String%20name%3B%0A%20%20%20%20%20private%20String%20email%3B%0A%20%20%20%20%20private%20String%20phoneNumber%3B%0A%20%20%20%20%20%0A%20%20%20%20%20//%20constructor%3A%20construct%20a%20Person%20copying%20in%20the%20data%20into%20the%20instance%20variables%0A%20%20%20%20%20public%20Person%28String%20initName,%20String%20initEmail,%20String%20initPhone%29%0A%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20name%20%3D%20initName%3B%0A%20%20%20%20%20%20%20%20email%20%3D%20initEmail%3B%0A%20%20%20%20%20%20%20%20phoneNumber%20%3D%20initPhone%3B%0A%20%20%20%20%20%7D%0A%20%20%20%20%20%0A%20%20%20%20%20//%20Print%20all%20the%20data%20for%20a%20person%0A%20%20%20%20%20public%20void%20print%28%29%0A%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20System.out.println%28%22Name%3A%20%22%20%2B%20name%29%3B%0A%20%20%20%20%20%20%20System.out.println%28%22Email%3A%20%22%20%2B%20email%29%3B%0A%20%20%20%20%20%20%20System.out.println%28%22Phone%20Number%3A%20%22%20%2B%20phoneNumber%29%3B%0A%20%20%20%20%20%7D%0A%20%20%20%20%20%0A%20%20%20%20%20//%20main%20method%20for%20testing%0A%20%20%20%20%20public%20static%20void%20main%28String%5B%5D%20args%29%0A%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20//%20call%20the%20constructor%20to%20create%20a%20new%20person%0A%20%20%20%20%20%20%20%20Person%20p1%20%3D%20new%20Person%28%22Sana%22,%20%22sana%40gmail.com%22,%20%22123-456-7890%22%29%3B%0A%20%20%20%20%20%20%20%20//%20call%20p1%27s%20print%20method%0A%20%20%20%20%20%20%20%20p1.print%28%29%3B%0A%20%20%20%20%20%20%20%20Person%20p2%20%3D%20new%20Person%28%22Jean%22,%20%22jean%40gmail.com%22,%20%22404%20899-9955%22%29%3B%0A%20%20%20%20%20%20%20%20p2.print%28%29%3B%0A%20%20%20%20%20%7D%0A%20%20%7D&amp;cumulative=false&amp;curInstr=34&amp;heapPrimitives=nevernest&amp;mode=display&amp;origin=opt-frontend.js&amp;py=java&amp;rawInputLstJSON=%5B%5D&amp;textReferences=false&amp;curInstr=0" target="_blank"  style="text-decoration:underline">Java visualizer</a></raw> (click on the link and then Forward at the bottom to run the code step by step).</p>
             
 
-<exercise label="PersonClass">
     <statement>
             <p>Run the following class. Try changing the Person p2 object in main to your name.</p>
 
@@ -99,7 +98,6 @@ public class RunestoneTests extends CodeTestHelper
 </tests>
 
     </program>
-</exercise>
         </subsection>
 <subsection xml:id="_instance-variables">
             <title>Instance Variables</title>
