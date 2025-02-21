@@ -16,6 +16,23 @@
     <xi:include href="./topic-12.ptx"/>
     <xi:include href="./topic-13.ptx"/>
 
+    <xi:include href="./topic-14-strings.ptx"/>
+    <xi:include href="./topic-15-string-methods.ptx"/>
+    <xi:include href="./topic-16-while-loops.ptx"/>
+    <xi:include href="./topic-17-loops.ptx"/>
+    <xi:include href="./topic-18-string-loops.ptx"/>
+    <xi:include href="./topic-19-nested-loops.ptx"/>
+    <xi:include href="./topic-20-loop-analysis.ptx"/>
+      <xi:include href="./topic-21-array-basics.ptx"/>
+    <xi:include href="./topic-22-traversing-arrays.ptx"/>
+    <xi:include href="./topic-23-arrays-with-foreach.ptx"/>
+    <xi:include href="./topic-24-array-algorithms.ptx"/>
+    <xi:include href="./topic-25-arraylist-basics.ptx"/>
+    <xi:include href="./topic-26-arraylist-methods.ptx"/>
+    <xi:include href="./topic-27-arraylist-loops.ptx"/>
+    <xi:include href="./topic-28-arraylist-algorithms.ptx"/>
+    <xi:include href="./topic-29-IntegerDouble.ptx"/>
+
 
   <!-- <xi:include href="./whyJava.ptx"/> -->
 
