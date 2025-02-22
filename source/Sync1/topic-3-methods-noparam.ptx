@@ -69,7 +69,7 @@ public class Song
     </input>
 </program>
             <p>Methods inside the same class can call each other using just <c>methodName()</c>, but to call non-static methods in another class or from a main method, you must first create an object of that class and then call its methods using <c>object.methodName()</c>.</p>
-            <figure align="center" xml:id="id2-1736653340"><caption xmlns:c="https://www.sphinx-doc.org/" xmlns:changeset="https://www.sphinx-doc.org/" xmlns:citation="https://www.sphinx-doc.org/" xmlns:cpp="https://www.sphinx-doc.org/" xmlns:index="https://www.sphinx-doc.org/" xmlns:js="https://www.sphinx-doc.org/" xmlns:math="https://www.sphinx-doc.org/" xmlns:py="https://www.sphinx-doc.org/" xmlns:rst="https://www.sphinx-doc.org/" xmlns:std="https://www.sphinx-doc.org/">Figure 2: Calling non-static methods from main() or from other methods inside the same class.</caption><image source="ch-sync/calling-methods.png" width="NaN%" alt="Calling Methods"/></figure>
+            <figure align="center" xml:id="id2-1736653340"><caption xmlns:c="https://www.sphinx-doc.org/" xmlns:changeset="https://www.sphinx-doc.org/" xmlns:citation="https://www.sphinx-doc.org/" xmlns:cpp="https://www.sphinx-doc.org/" xmlns:index="https://www.sphinx-doc.org/" xmlns:js="https://www.sphinx-doc.org/" xmlns:math="https://www.sphinx-doc.org/" xmlns:py="https://www.sphinx-doc.org/" xmlns:rst="https://www.sphinx-doc.org/" xmlns:std="https://www.sphinx-doc.org/">Figure 2: Calling non-static methods from main() or from other methods inside the same class.</caption><image source="ch-sync/calling-methods.png" width="70%" alt="Calling Methods"/></figure>
 
    
             

@@ -10,7 +10,7 @@
     <p>An array is like a row of small lockers, except that you can't cram lots of stuff into it. You can only store one value at each locker.</p>
     <figure align="center" xml:id="id1-40">
     <caption xmlns:c="https://www.sphinx-doc.org/" xmlns:changeset="https://www.sphinx-doc.org/" xmlns:citation="https://www.sphinx-doc.org/" xmlns:cpp="https://www.sphinx-doc.org/" xmlns:index="https://www.sphinx-doc.org/" xmlns:js="https://www.sphinx-doc.org/" xmlns:math="https://www.sphinx-doc.org/" xmlns:py="https://www.sphinx-doc.org/" xmlns:rst="https://www.sphinx-doc.org/" xmlns:std="https://www.sphinx-doc.org/">Figure 1: A row of lockers</caption>
-    <image source="ch-sync/rowLockers.jpg" width="NaN%"/>
+    <image source="ch-sync/rowLockers.jpg" width="70%"/>
   </figure>
     <p>You can store a value in an array using an <term>index</term> (location in the array). An array index is like a locker number.  It helps you find a particular place to store your stuff and retrieve stuff.    You can get or store a value from or to an array using an index.</p>
     <p>Arrays and lists in most programming languages start counting elements from the number 0, so the first element in an array is at index 0. This is similar to how Strings are indexed in Java – the first character is at index 0.</p>
@@ -164,7 +164,7 @@ import static org.junit.Assert.*;
                     </li>
                 </ul></p>
             </note>
-            <figure align="center" xml:id="id3-10"><caption xmlns:c="https://www.sphinx-doc.org/" xmlns:changeset="https://www.sphinx-doc.org/" xmlns:citation="https://www.sphinx-doc.org/" xmlns:cpp="https://www.sphinx-doc.org/" xmlns:index="https://www.sphinx-doc.org/" xmlns:js="https://www.sphinx-doc.org/" xmlns:math="https://www.sphinx-doc.org/" xmlns:py="https://www.sphinx-doc.org/" xmlns:rst="https://www.sphinx-doc.org/" xmlns:std="https://www.sphinx-doc.org/">Figure 3: Two 5 element arrays with their values set to the default values for integer and object arrays.</caption><image source="ch-sync/arrayIndicies.png" width="NaN%"/></figure>
+            <figure align="center" xml:id="id3-10"><caption xmlns:c="https://www.sphinx-doc.org/" xmlns:changeset="https://www.sphinx-doc.org/" xmlns:citation="https://www.sphinx-doc.org/" xmlns:cpp="https://www.sphinx-doc.org/" xmlns:index="https://www.sphinx-doc.org/" xmlns:js="https://www.sphinx-doc.org/" xmlns:math="https://www.sphinx-doc.org/" xmlns:py="https://www.sphinx-doc.org/" xmlns:rst="https://www.sphinx-doc.org/" xmlns:std="https://www.sphinx-doc.org/">Figure 3: Two 5 element arrays with their values set to the default values for integer and object arrays.</caption><image source="ch-sync/arrayIndicies.png" width="50%"/></figure>
         </subsection>
   <subsection xml:id="_initializer-lists-to-create-arrays">
             <title>Initializer Lists to Create Arrays</title>
@@ -174,7 +174,7 @@ int[ ] highScores = {99,98,98,88,68};
 String[ ] names = {"Jamal", "Emily", "Destiny", "Mateo", "Sofia"};
 </input></program>
             <p>When you create an array of a <term>primitive type</term> (like <c>int</c>) with initial values specified, space is allocated for the specified number of items of that type and the values in the array are set to the specified values.  When you create an array of an <term>object type</term> (like <c>String</c>) with initial values, space is set aside for that number of object references.  The objects are created and the object references set so that the objects can be found.</p>
-            <figure align="center" xml:id="id4-5"><caption xmlns:c="https://www.sphinx-doc.org/" xmlns:changeset="https://www.sphinx-doc.org/" xmlns:citation="https://www.sphinx-doc.org/" xmlns:cpp="https://www.sphinx-doc.org/" xmlns:index="https://www.sphinx-doc.org/" xmlns:js="https://www.sphinx-doc.org/" xmlns:math="https://www.sphinx-doc.org/" xmlns:py="https://www.sphinx-doc.org/" xmlns:rst="https://www.sphinx-doc.org/" xmlns:std="https://www.sphinx-doc.org/">Figure 4: A primitive array and an object array</caption><image source="ch-sync/intAndStringArrays.png" width="NaN%"/></figure>
+            <figure align="center" xml:id="id4-5"><caption xmlns:c="https://www.sphinx-doc.org/" xmlns:changeset="https://www.sphinx-doc.org/" xmlns:citation="https://www.sphinx-doc.org/" xmlns:cpp="https://www.sphinx-doc.org/" xmlns:index="https://www.sphinx-doc.org/" xmlns:js="https://www.sphinx-doc.org/" xmlns:math="https://www.sphinx-doc.org/" xmlns:py="https://www.sphinx-doc.org/" xmlns:rst="https://www.sphinx-doc.org/" xmlns:std="https://www.sphinx-doc.org/">Figure 4: A primitive array and an object array</caption><image source="ch-sync/intAndStringArrays.png" width="70%"/></figure>
             
             <p>Watch the following <raw format="html" xml:space="preserve"><a href="https://youtu.be/T-YZvVvPOac" target="_blank">video</a></raw> which shows an array of String objects with a physical model of Java memory.</p>
 

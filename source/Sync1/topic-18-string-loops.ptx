@@ -7,7 +7,7 @@
     <p>Remember that strings are a sequence of characters where each character is at a position or <term>index</term> starting at 0.</p>
     <figure align="center" xml:id="id1-28">
       <caption xmlns:c="https://www.sphinx-doc.org/" xmlns:changeset="https://www.sphinx-doc.org/" xmlns:citation="https://www.sphinx-doc.org/" xmlns:cpp="https://www.sphinx-doc.org/" xmlns:index="https://www.sphinx-doc.org/" xmlns:js="https://www.sphinx-doc.org/" xmlns:math="https://www.sphinx-doc.org/" xmlns:py="https://www.sphinx-doc.org/" xmlns:rst="https://www.sphinx-doc.org/" xmlns:std="https://www.sphinx-doc.org/">Figure 1: A string with the position (index) shown above each character</caption>
-      <image source="ch-sync/stringIndicies.png" width="NaN%" alt="a string with the position (index) shown above each character"/>
+      <image source="ch-sync/stringIndicies.png" width="80%" alt="a string with the position (index) shown above each character"/>
     </figure>
     <note>
             <p>The first character in a Java String is at index 0 and the last characters is at <term>length()</term> - 1. So loops processing Strings should start at 0!</p>

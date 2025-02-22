@@ -52,7 +52,7 @@ import static org.junit.Assert.*;
     </program>
 </exercise>
             <p>Did your trace table look like the following?</p>
-            <figure align="center" xml:id="id1-30"><caption xmlns:c="https://www.sphinx-doc.org/" xmlns:changeset="https://www.sphinx-doc.org/" xmlns:citation="https://www.sphinx-doc.org/" xmlns:cpp="https://www.sphinx-doc.org/" xmlns:index="https://www.sphinx-doc.org/" xmlns:js="https://www.sphinx-doc.org/" xmlns:math="https://www.sphinx-doc.org/" xmlns:py="https://www.sphinx-doc.org/" xmlns:rst="https://www.sphinx-doc.org/" xmlns:std="https://www.sphinx-doc.org/">Figure 1: A table showing the values of all of the variables each time through the loop.  The 0 means before the first loop.</caption><image source="ch-sync/whileLoopTrace.png" width="NaN%"/></figure>
+            <figure align="center" xml:id="id1-30"><caption xmlns:c="https://www.sphinx-doc.org/" xmlns:changeset="https://www.sphinx-doc.org/" xmlns:citation="https://www.sphinx-doc.org/" xmlns:cpp="https://www.sphinx-doc.org/" xmlns:index="https://www.sphinx-doc.org/" xmlns:js="https://www.sphinx-doc.org/" xmlns:math="https://www.sphinx-doc.org/" xmlns:py="https://www.sphinx-doc.org/" xmlns:rst="https://www.sphinx-doc.org/" xmlns:std="https://www.sphinx-doc.org/">Figure 1: A table showing the values of all of the variables each time through the loop.  The 0 means before the first loop.</caption><image source="ch-sync/whileLoopTrace.png" width="20%"/></figure>
             <p><term>Practice</term></p>
 
     <exercise label="qlb_2_2">
