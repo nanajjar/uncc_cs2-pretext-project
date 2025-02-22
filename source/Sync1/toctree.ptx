@@ -2,19 +2,24 @@
 <chapter xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en-US">
   <title> A Look Back - Classes and Objects</title>
 
-  <xi:include href="./topic-1.ptx"/>
-    <xi:include href="./topic-2.ptx"/>
-    <xi:include href="./topic-3.ptx"/>
-    <xi:include href="./topic-4.ptx"/>
-    <xi:include href="./topic-5.ptx"/>
-    <xi:include href="./topic-6.ptx"/>
-    <xi:include href="./topic-7.ptx"/>
-    <xi:include href="./topic-8.ptx"/>
-    <xi:include href="./topic-9.ptx"/>
-    <xi:include href="./topic-10.ptx"/>
-    <xi:include href="./topic-11.ptx"/>
-    <xi:include href="./topic-12.ptx"/>
-    <xi:include href="./topic-13.ptx"/>
+  <xi:include href="./topic-6-classes.ptx"/>
+  <xi:include href="./topic-7-constructors.ptx"/>
+  <xi:include href="./topic-10-methods.ptx"/>
+
+ <xi:include href="./topic-8-accessor.ptx"/>
+    <xi:include href="./topic-9-mutator.ptx"/>
+    <xi:include href="./topic-1-objects.ptx"/>
+    <xi:include href="./topic-2-creating-objects.ptx"/>
+    <xi:include href="./topic-3-methods-noparam.ptx"/>
+    <xi:include href="./topic-4-methods-param.ptx"/>
+    <xi:include href="./topic-5-methods-return.ptx"/>
+    <xi:include href="./topic-11-static-members.ptx"/>
+
+    <xi:include href="./topic-12-scope.ptx"/>
+    <xi:include href="./topic-13-this.ptx"/>
+
+
+   
 
     <xi:include href="./topic-14-strings.ptx"/>
     <xi:include href="./topic-15-string-methods.ptx"/>
@@ -23,7 +28,7 @@
     <xi:include href="./topic-18-string-loops.ptx"/>
     <xi:include href="./topic-19-nested-loops.ptx"/>
     <xi:include href="./topic-20-loop-analysis.ptx"/>
-      <xi:include href="./topic-21-array-basics.ptx"/>
+    <xi:include href="./topic-21-array-basics.ptx"/>
     <xi:include href="./topic-22-traversing-arrays.ptx"/>
     <xi:include href="./topic-23-arrays-with-foreach.ptx"/>
     <xi:include href="./topic-24-array-algorithms.ptx"/>
