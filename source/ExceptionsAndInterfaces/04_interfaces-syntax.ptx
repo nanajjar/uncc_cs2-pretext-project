@@ -1,0 +1,115 @@
+<section xml:id="interfaces-definition">
+  <!-- =========================================
+       2. Interfaces: Syntax & Basic Usage
+       ========================================= -->
+    <title>Interface Syntax: A Compiler-Enforced Contract</title>
+    <p>An interface in Java is like a <strong>contract</strong> that says, "Any class that implements me promises to contain certain methods." Inside an interface, you only write <strong>method signatures</strong>—no actual code bodies. Java then ensures at compile time that implementing classes match those signatures exactly.</p>
+    <p>Below is the <strong>basic syntax</strong> for declaring an interface, broken down step by step:</p>
+    <program language="java">
+      <input>
+/*
+ * 1) 'interface' keyword declares that this is an interface (not a class).
+ * 2) InterfaceName should be capitalized, like a class.
+ * 3) Each method signature is implicitly 'public abstract'.
+ */
+public interface InterfaceName {
+
+    /*
+     * A method signature, with:
+     *  - return type (e.g., void, int, etc.)
+     *  - method name (e.g., play, computeArea, etc.)
+     *  - any parameters (e.g., none or (String message), etc.)
+     */
+    returnType methodName(parameterList);
+
+    // You can define multiple signatures if needed
+    returnType anotherMethod(...);
+}
+      </input>
+    </program>
+    <p><strong>Why <c>public abstract</c>?</strong></p>
+    <ul>
+      <li><em>public</em> ensures the method is accessible to any class that wants to implement the interface (hence you can't have a private or package-private method signature fulfilling a public interface requirement—this leads to a compiler error).</li>
+      <li><em>abstract</em> means there's no method body—just a promise that classes will provide the details.</li>
+    </ul>
+    <p><em>Important</em>: If a class tries to implement an interface method but <em>omits</em> `public` (for instance, using package-private or private), Java will complain that it doesn't match the interface's public method signature.</p>
+    <p>For our media example, let's create a simple <c>Playable</c> interface with one method, <c>play()</c>:</p>
+    <program language="java">
+      <input>
+/**
+ * Represents any media content that can be "played."
+ *
+ * Classes implementing Playable promise to provide
+ * a 'play()' method, ensuring a consistent way to
+ * start the media.
+ */
+public interface Playable {
+
+    /**
+     * Starts playing this media content from the beginning.
+     */
+    void play();  // no method body allowed here
+}
+      </input>
+    </program>
+    <p><em>Tip:</em> Start with a minimal interface (maybe just <c>void play()</c>) and later add more methods if needed. This matches the Design Recipe's "incremental" approach.</p>
+
+    <p><strong>Detailed JavaDoc Example</strong></p>
+    <p>Below is a more advanced snippet showing how JavaDoc might look with <c>@param</c>, <c>@return</c>, and <c>@throws</c> tags—and <em>why</em> they matter:</p>
+    <program language="java">
+      <input>
+/**
+ * AdvancedMedia is anything that can be played from
+ * a specific start position.
+ *
+ * In IDEs like VS Code or IntelliJ, these comments
+ * appear as tooltips when you hover over 'playFrom'.
+ * Also, 'javadoc' commands can generate an HTML site
+ * from these tags automatically.
+ */
+public interface AdvancedMedia {
+
+    /**
+     * Start playing from a specific position (in seconds).
+     * 
+     * @param startPosition the playback position in seconds,
+     *                      must be non-negative
+     * @throws IllegalArgumentException if startPosition is negative
+     */
+    void playFrom(int startPosition);
+}
+      </input>
+    </program>
+    <p><strong>@param</strong> explains each parameter, <strong>@throws</strong> indicates when an exception is thrown, and <strong>@return</strong> (not shown here) describes what a method returns. <em>These tags help others (and you!) quickly see how to call or implement the method</em>.</p>
+
+    <p><strong>Compiler Error Mini Example</strong></p>
+    <program language="java">
+      <input>
+// Suppose our interface is:
+public interface ExampleInterface {
+    void doSomething();
+    void doAnotherThing();
+}
+
+// Class that implements only one method, forgetting doAnotherThing():
+public class PartialImplementation implements ExampleInterface {
+
+    @Override
+    public void doSomething() {
+        System.out.println("Did something!");
+    }
+    // 'doAnotherThing()' is missing!
+}
+      </input>
+      <output>
+PartialImplementation.java:1: error: PartialImplementation is not abstract
+and does not override abstract method doAnotherThing() in ExampleInterface
+public class PartialImplementation implements ExampleInterface {
+       ^
+1 error
+      </output>
+    </program>
+    <p>Line by line, the compiler is saying: "<c>doAnotherThing()</c> was promised but not provided." This immediate feedback prevents silent runtime bugs. <em>If an interface has multiple methods, you must implement them all.</em></p>
+  </section>
+
+ 

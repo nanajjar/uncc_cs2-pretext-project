@@ -6,6 +6,11 @@
     <xi:include href="./01_exceptions-intro.ptx" />
     <xi:include href="./02_exceptions-java.ptx" />
     <xi:include href="./03_interfaces-intro.ptx" />
+    <xi:include href="./04_interfaces-syntax.ptx" />
+    <xi:include href="./05_interfaces-implementation.ptx" />
+    <xi:include href="./06_interfaces-in-action.ptx" />
+    <xi:include href="./07_interfaces-design-recipe.ptx" />
+    <xi:include href="./08_interfaces-mistakes.ptx" />
 
     <!-- Add more section files as they are created -->
     
