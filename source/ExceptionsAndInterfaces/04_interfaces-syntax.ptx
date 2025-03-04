@@ -110,6 +110,109 @@ public class PartialImplementation implements ExampleInterface {
       </output>
     </program>
     <p>Line by line, the compiler is saying: "<c>doAnotherThing()</c> was promised but not provided." This immediate feedback prevents silent runtime bugs. <em>If an interface has multiple methods, you must implement them all.</em></p>
+ 
+<exercise xml:id="mc-interface-purpose">
+        <title>Interface Purpose</title>
+        <statement><p>What is the primary purpose of an interface in Java?</p>
+        </statement>
+          <choices randomize="yes">
+          <choice>
+            <statement>
+              <p>To allow multiple inheritance in Java.
+              </p>
+            </statement>
+            <feedback>
+            </feedback>
+          </choice>
+          <choice>
+            <statement>
+             To create objects directly.
+            </statement>
+            <feedback>
+            </feedback>
+          </choice>
+          <choice correct="yes">
+            <statement>
+              <p>
+                To define a contract that multiple classes can implement.
+              </p>
+            </statement>
+            <feedback>
+              <p>
+                 Interfaces define a set of abstract methods that implementing classes must provide, enabling a common structure without enforcing a specific implementation.
+              </p>
+            </feedback>
+          </choice>
+          <choice>
+            <statement>
+              <p>
+                To improve performance by reducing memory usage.
+            </p>
+            </statement>
+          </choice>
+          </choices>
+          </exercise>
+
+          <exercise xml:id="mc-interface-purpose2">
+             <statement> <p>Given the following interface and class:</p>
+              <program language="java">
+                <code>
+interface Animal {
+    void makeSound();
+}
+
+class Dog implements Animal {
+   private String type;
+
+   public Dog(String type){
+    this.type = type;
+   }
+}
+
+                </code>
+              </program>
+Why does this code produce a compilation error?
+  
+
+        </statement>
+          <choices randomize="yes">
+          <choice>
+            <statement>
+              <p>
+                The <c>Dog</c> class cannot implement an interface.
+              </p>
+            </statement>
+          </choice>
+          <choice correct="yes">
+            <statement>
+              <p>
+                The <c>Dog</c> class must implement the makeSound() method.
+              </p>
+            </statement>
+            <feedback>
+              <p>
+                 Since <c>Animal</c> is an interface with an abstract method, any class implementing it must provide an implementation for <c>makeSound()</c>.
+              </p>
+            </feedback>
+          </choice>
+          <choice>
+            <statement>
+              <p>
+                 The <c>Dog</c> class needs to explicitly declare the <c>Animal</c> interface methods as <c>public</c>.
+              </p>
+            </statement>
+          </choice>
+          <choice>
+            <statement>
+              <p>
+                 Interfaces must have at least one concrete method.
+              </p>
+            </statement>
+          </choice>
+          </choices>
+          </exercise>
+
+ 
   </section>
 
  

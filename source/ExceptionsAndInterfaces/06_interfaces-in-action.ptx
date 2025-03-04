@@ -107,5 +107,69 @@ playMedia(new Livestream()); // prints "Streaming live..."
     <p>This is polymorphism. The same "playMedia" method call does different things depending on the object's class.</p>
   </subsection>
 
-  
+  <exercise xml:id="mc-interface-inaction">
+        <title>Interface Implementation</title>
+        <statement>
+         Consider a program that follows these steps:
+         <ol>
+          <li>
+            <p>
+              An interface <c>Drawable</c> is defined with a single method <c>draw()</c>.
+            </p>
+          </li>
+          <li>
+            <p>
+              Two classes, <c>Circle</c> and <c>Rectangle</c>, implement the <c>Drawable</c> interface and provide their own definitions of the draw() method.
+            </p>
+          </li>
+          <li>
+            <p>
+              A method <c>drawShape(Drawable shape)</c> is created in a separate class. This method takes a Drawable object as a parameter and calls its <c>draw()</c> method, demonstrating polymorphism.
+            </p>
+          </li>
+          <li>
+            <p>
+              In a main method, instances of <c>Circle</c> and <c>Rectangle</c> are created and passed to d<c>rawShape()</c>, demonstrating polymorphism.
+            </p>
+          </li>
+           </ol>
+           <p>
+            Which of the following statements is true regarding this implementation?
+           </p>
+        </statement>
+        <choices randomize="yes">
+          <choice>
+            <statement>
+              The <c>Drawable</c> interface must provide an implementation for the <c>draw()</c> method.
+            </statement>
+            <feedback>
+              No. Interfaces in Java only define method signatures without providing implementations (except for default and static methods, which are not used here). The actual implementation of <c>draw()</c> must be provided by classes that implement the interface.
+            </feedback>
+          </choice>
+          <choice correct="yes">
+            <statement>
+              The <c>Circle</c> and <c>Rectangle</c> classes must override the <c>draw()</c> method from the <c>Drawable</c> interface.
+            </statement>
+            <feedback>
+              Correct! The <c>Circle</c> and <c>Rectangle</c> classes must override the <c>draw()</c> method from the <c>Drawable</c> interface.
+            </feedback>
+          </choice>
+          <choice>
+            <statement>
+             The <c>drawShape(Drawable shape)</c> method must be defined inside the <c>Drawable</c> interface.
+            </statement>
+            <feedback>
+              No! Interfaces are meant to define behavior but not necessarily contain utility methods like <c>drawShape()</c>. This method is better suited for a separate class where it can accept any <c>Drawable</c> object and invoke its <c>draw()</c> method.
+            </feedback>
+          </choice>
+          <choice>
+            <statement>
+            We cannot pass a <c>Circle</c> or <c>Rectangle</c> object to <c>drawShape()</c> because they are not of type Drawable.
+            </statement>
+            <feedback>
+              Since <c>Circle</c> and <c>Rectangle</c> implement <c>Drawable</c>, they are considered polymorphic types of <c>Drawable</c>. This allows them to be passed as arguments to <c>drawShape(Drawable shape)</c>, which expects a <c>Drawable</c> parameter.
+            </feedback>
+          </choice>
+        </choices>
+      </exercise>
 </section>
