@@ -36,7 +36,7 @@ MyInterfaceProject/
     </pre>
     <p>Then the code might look like this all together:</p>
     <program language="java">
-      <input>
+      <code>
 // Playable.java
 public interface Playable {
     void play();
@@ -83,7 +83,7 @@ public class MediaPlayer {
         playMedia(book);    // "Playing audiobook..."
     }
 }
-      </input>
+      </code>
     </program>
     <p><strong>How to compile &amp; run:</strong></p>
     <ul>
@@ -92,7 +92,7 @@ public class MediaPlayer {
     </ul>
     <p>Notice you <em>don't</em> need to change <c>MediaPlayer</c> if you add a new class (like <c>Livestream</c>) implementing <c>Playable</c>. You can just do:</p>
     <program language="java">
-      <input>
+      <code>
 public class Livestream implements Playable {
     @Override
     public void play() {
@@ -102,7 +102,7 @@ public class Livestream implements Playable {
 
 // Then in main (or anywhere):
 playMedia(new Livestream()); // prints "Streaming live..."
-      </input>
+      </code>
     </program>
     <p>This is polymorphism. The same "playMedia" method call does different things depending on the object's class.</p>
   </subsection>
