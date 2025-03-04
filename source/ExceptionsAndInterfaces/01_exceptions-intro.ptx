@@ -29,7 +29,7 @@
       <li><em>No compiler enforcement:</em> since -999 is just another integer, Java won't warn us if we misuse it.</li>
     </ul>
     <p>Now the actual code:</p>
-    <program language="java" xml:id="ExampleSentinel" interactive="activecode" label="sentinelex">
+    <program language="java" xml:id="ExampleSentinel" label="sentinelex">
       <code>
 public class SentinelIterator {
     private int[] data;
@@ -98,7 +98,7 @@ class SentinelIterator {
       <li><em>The caller cannot ignore this mistake:</em> Java forces them to handle it or the program crashes.</li>
     </ul>
     <p>Here's how we can rewrite the iterator:</p>
-    <program language="java" xml:id="ThrowNextExample" interactive="activecode" label="throw-ex">
+    <program language="java" xml:id="ThrowNextExample" label="throw-ex">
       <code>
 import java.util.NoSuchElementException;
 
@@ -185,7 +185,7 @@ class ExceptionIterator {
   <subsection xml:id="exceptions-visualizing">
     <title>How Java Handles Exceptions</title>
     <p>Before running the code below, predict: Will Java stop immediately, or will it keep looking for a handler? Why?</p>
-    <program language="java" xml:id="ExceptionPropagationExample">
+    <program language="java" xml:id="ExceptionPropagationExample"  interactive="activecode" label ="except-propagation_ex">
       <code>
 import java.util.NoSuchElementException;
 

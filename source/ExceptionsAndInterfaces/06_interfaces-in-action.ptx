@@ -37,13 +37,13 @@ MyInterfaceProject/
     <p>Then the code might look like this all together:</p>
     <program language="java" interactive="activecode" label="playable_ex" xml:id="playable_interface">
       <code>
-// Playable.java
-public interface Playable {
+// Playable interface would be declared public in Playable.java 
+interface Playable {
     void play();
 }
 
-// MusicTrack.java
-public class MusicTrack implements Playable {
+// MusicTrack.java 
+class MusicTrack implements Playable {
     @Override
     public void play() {
         System.out.println("Playing music track...");
@@ -51,7 +51,7 @@ public class MusicTrack implements Playable {
 }
 
 // PodcastEpisode.java
-public class PodcastEpisode implements Playable {
+class PodcastEpisode implements Playable {
     @Override
     public void play() {
         System.out.println("Playing podcast episode...");
@@ -59,7 +59,7 @@ public class PodcastEpisode implements Playable {
 }
 
 // Audiobook.java
-public class Audiobook implements Playable {
+class Audiobook implements Playable {
     @Override
     public void play() {
         System.out.println("Playing audiobook...");
