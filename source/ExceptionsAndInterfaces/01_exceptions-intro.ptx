@@ -140,7 +140,7 @@ try {
       </code>
     </program>
     <p>For example, safely handling <c>NoSuchElementException</c> in our iterator loop:</p>
-    <program language="java" xml:id="TryCatchExample" interactive="activecode">
+    <program language="java" xml:id="TryCatchExample" interactive="activecode" label ="try-catch_ex">
       <code>
 import java.util.NoSuchElementException;
 
@@ -155,6 +155,23 @@ public class TryCatchDemo {
         } catch (NoSuchElementException e) {
             System.out.println("Reached the end: " + e.getMessage());
         }
+    }
+}
+
+class ExceptionIterator {
+    private int[] data;
+    private int currentIndex;
+
+    public ExceptionIterator(int[] arr) {
+        data = arr;
+        currentIndex = 0;
+    }
+
+    public int next() {
+        if (currentIndex >= data.length) {
+            throw new NoSuchElementException("No more elements");
+        }
+        return data[currentIndex++];
     }
 }
       </code>
