@@ -35,7 +35,7 @@ MyInterfaceProject/
 └── MediaPlayer.java
     </pre>
     <p>Then the code might look like this all together:</p>
-    <program language="java">
+    <program language="java" interactive="activecode" label="playable_ex" xml:id="playable_interface">
       <code>
 // Playable.java
 public interface Playable {
