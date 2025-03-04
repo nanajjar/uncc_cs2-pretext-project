@@ -182,6 +182,11 @@ Why does this code produce a compilation error?
                 The <c>Dog</c> class cannot implement an interface.
               </p>
             </statement>
+            <feedback>
+              <p>
+                Any Java class can implement an interface in Java.
+              </p>
+            </feedback>
           </choice>
           <choice correct="yes">
             <statement>
@@ -201,6 +206,11 @@ Why does this code produce a compilation error?
                  The <c>Dog</c> class needs to explicitly declare the <c>Animal</c> interface methods as <c>public</c>.
               </p>
             </statement>
+            <feedback>
+              <p>
+                 While interface methods are implicitly public, the issue here is not visibility as there is no implementation.
+              </p>
+            </feedback>
           </choice>
           <choice>
             <statement>
@@ -208,6 +218,11 @@ Why does this code produce a compilation error?
                  Interfaces must have at least one concrete method.
               </p>
             </statement>
+            <feedback>
+              <p>
+                 Interfaces do not require concrete methods.
+              </p>
+            </feedback>
           </choice>
           </choices>
           </exercise>

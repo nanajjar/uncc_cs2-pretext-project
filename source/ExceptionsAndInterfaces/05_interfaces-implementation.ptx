@@ -159,6 +159,7 @@ playMedia(book); // prints "Playing audiobook..."
               </p>
             </statement>
             <feedback>
+            Java enforces strict adherence to interface method signatures. If the signature does not match, the compiler does not allow the implementation, and the program fails to compile.
             </feedback>
           </choice>
           <choice correct="yes">
@@ -178,6 +179,7 @@ playMedia(book); // prints "Playing audiobook..."
               </p>
             </statement>
             <feedback>
+            The Java compiler does not ignore extra parameters in method implementations. If an interface specifies a method signature, an implementation must match it exactly, otherwise, a compilation error occurs.
             </feedback>
           </choice>
           <choice>
@@ -187,6 +189,7 @@ playMedia(book); // prints "Playing audiobook..."
               </p>
             </statement>
             <feedback>
+            The return type must exactly match, except in cases of covariant return types (where the return type in the subclass is a subclass of the original return type). However, primitive return types like int and double are not covariant, so an incompatible return type will cause a compilation error.
             </feedback>
           </choice>
         </choices>
@@ -218,6 +221,11 @@ The code does not compile. How can this issue be fixed?
                 Modify <c>Calculator</c> so that <c>add(int, int)</c> returns <c>double</c> instead of <c>int</c>.
               </p>
             </statement>
+            <feedback>
+              <p>
+                While this change would allow MyCalculator to compile, it alters the interface definition, which could affect other classes implementing Calculator. Interfaces should be designed carefully to avoid breaking existing implementations.
+              </p>
+            </feedback>
           </choice>
           <choice correct="yes">
             <statement>
@@ -234,16 +242,26 @@ The code does not compile. How can this issue be fixed?
           <choice>
             <statement>
               <p>
-                 Use method overriding with @Override and let the compiler infer the correct return type.
+                 Use method overriding with <c>@Override</c> and let the compiler infer the correct return type.
               </p>
             </statement>
+            <feedback>
+              <p>
+                The <c>@Override</c> annotation does not change the return type rules. The compiler does not "infer" a return type; the method must explicitly match the interface's method signature, including its return type.
+              </p>
+            </feedback>
           </choice>
           <choice>
             <statement>
               <p>
-                 Interfaces must have at least one concrete method.
+                Overload the add method in <c>MyCalculator</c> by adding another version with an <c>int</c> return type.
               </p>
             </statement>
+            <feedback>
+              <p>
+                Overloading (having multiple methods with the same name but different parameters or return types) does not fix the issue. The class must override the method from the interface, not create an additional method.
+              </p>
+            </feedback>
           </choice>
           </choices>
           </exercise>
