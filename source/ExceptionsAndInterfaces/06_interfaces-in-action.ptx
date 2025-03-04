@@ -1,0 +1,175 @@
+<section xml:id="interfaces-polymorphism">
+ 
+
+  <!-- =========================================
+       5. Polymorphism in Action: A Complete Runnable Example
+       ========================================= -->
+    <title>Interfaces and Polymorphism</title>
+    <introduction>
+         <p>Let's tie everything together with a <em>fully runnable</em> project showing how polymorphism (i.e., "many forms") simplifies code when multiple classes share the same interface.</p>
+
+    </introduction>
+
+      <subsection xml:id="subsec-polymorphism-in-action">
+        <title>Interfaces and Polymorphism in Action</title>
+        
+
+    <p><strong><em>Incremental Building</em></strong> (Recommended Approach):  
+    Beginners often get overwhelmed if they see multiple files at once. A better strategy is building up step by step:</p>
+    <ol>
+      <li><strong>Create the interface first:</strong> (e.g., <c>Playable.java</c>). Compile it alone (<c>javac Playable.java</c>) to check there are no typos.</li>
+      <li><strong>Add one class at a time:</strong> For instance, write <c>MusicTrack.java</c> implementing <c>Playable</c>, then compile it. If you see a compiler error, fix it before moving on.</li>
+      <li><strong>Write a small <c>main</c>:</strong> that just creates a <c>MusicTrack</c> object and calls some method. Compile and run to verify it works.</li>
+      <li><strong>Add more classes incrementally:</strong> (e.g., <c>PodcastEpisode</c>, <c>Audiobook</c>) repeating the compile/test cycle each time. This prevents a flood of errors all at once.</li>
+      <li><strong>Finally, unify them in a more comprehensive <c>MediaPlayer</c> class:</strong> with a full <c>main</c> method demonstrating all classes. If something breaks, you know which recent addition is likely responsible.</li>
+    </ol>
+
+    <p>Below is how the <em>final</em> set of files might look once you're done:</p>
+    <p><strong>Project Folder:</strong></p>
+    <pre>
+MyInterfaceProject/
+├── Playable.java
+├── MusicTrack.java
+├── PodcastEpisode.java
+├── Audiobook.java
+└── MediaPlayer.java
+    </pre>
+    <p>Then the code might look like this all together:</p>
+    <program language="java">
+      <input>
+// Playable.java
+public interface Playable {
+    void play();
+}
+
+// MusicTrack.java
+public class MusicTrack implements Playable {
+    @Override
+    public void play() {
+        System.out.println("Playing music track...");
+    }
+}
+
+// PodcastEpisode.java
+public class PodcastEpisode implements Playable {
+    @Override
+    public void play() {
+        System.out.println("Playing podcast episode...");
+    }
+}
+
+// Audiobook.java
+public class Audiobook implements Playable {
+    @Override
+    public void play() {
+        System.out.println("Playing audiobook...");
+    }
+}
+
+// MediaPlayer.java
+public class MediaPlayer {
+
+    public static void playMedia(Playable media) {
+        media.play();
+    }
+
+    public static void main(String[] args) {
+        Playable track = new MusicTrack();
+        Playable podcast = new PodcastEpisode();
+        Playable book = new Audiobook();
+
+        playMedia(track);   // "Playing music track..."
+        playMedia(podcast); // "Playing podcast episode..."
+        playMedia(book);    // "Playing audiobook..."
+    }
+}
+      </input>
+    </program>
+    <p><strong>How to compile &amp; run:</strong></p>
+    <ul>
+      <li><strong>Compile (step by step or all at once):</strong> In your project folder, run <c>javac *.java</c> to compile all <c>.java</c> files. If you prefer incremental compilation, do <c>javac Playable.java</c> first, then each new class as you create it.</li>
+      <li><strong>Run:</strong> Then run <c>java MediaPlayer</c> to execute the <c>main</c> method in <c>MediaPlayer</c>.</li>
+    </ul>
+    <p>Notice you <em>don't</em> need to change <c>MediaPlayer</c> if you add a new class (like <c>Livestream</c>) implementing <c>Playable</c>. You can just do:</p>
+    <program language="java">
+      <input>
+public class Livestream implements Playable {
+    @Override
+    public void play() {
+        System.out.println("Streaming live...");
+    }
+}
+
+// Then in main (or anywhere):
+playMedia(new Livestream()); // prints "Streaming live..."
+      </input>
+    </program>
+    <p>This is polymorphism. The same "playMedia" method call does different things depending on the object's class.</p>
+  </subsection>
+
+  <exercise xml:id="mc-interface-inaction">
+        <title>Interface Implementation</title>
+        <statement>
+         Consider a program that follows these steps:
+         <ol>
+          <li>
+            <p>
+              An interface <c>Drawable</c> is defined with a single method <c>draw()</c>.
+            </p>
+          </li>
+          <li>
+            <p>
+              Two classes, <c>Circle</c> and <c>Rectangle</c>, implement the <c>Drawable</c> interface and provide their own definitions of the draw() method.
+            </p>
+          </li>
+          <li>
+            <p>
+              A method <c>drawShape(Drawable shape)</c> is created in a separate class. This method takes a Drawable object as a parameter and calls its <c>draw()</c> method, demonstrating polymorphism.
+            </p>
+          </li>
+          <li>
+            <p>
+              In a main method, instances of <c>Circle</c> and <c>Rectangle</c> are created and passed to d<c>rawShape()</c>, demonstrating polymorphism.
+            </p>
+          </li>
+           </ol>
+           <p>
+            Which of the following statements is true regarding this implementation?
+           </p>
+        </statement>
+        <choices randomize="yes">
+          <choice>
+            <statement>
+              The <c>Drawable</c> interface must provide an implementation for the <c>draw()</c> method.
+            </statement>
+            <feedback>
+              No. Interfaces in Java only define method signatures without providing implementations (except for default and static methods, which are not used here). The actual implementation of <c>draw()</c> must be provided by classes that implement the interface.
+            </feedback>
+          </choice>
+          <choice correct="yes">
+            <statement>
+              The <c>Circle</c> and <c>Rectangle</c> classes must override the <c>draw()</c> method from the <c>Drawable</c> interface.
+            </statement>
+            <feedback>
+              Correct! The <c>Circle</c> and <c>Rectangle</c> classes must override the <c>draw()</c> method from the <c>Drawable</c> interface.
+            </feedback>
+          </choice>
+          <choice>
+            <statement>
+             The <c>drawShape(Drawable shape)</c> method must be defined inside the <c>Drawable</c> interface.
+            </statement>
+            <feedback>
+              No! Interfaces are meant to define behavior but not necessarily contain utility methods like <c>drawShape()</c>. This method is better suited for a separate class where it can accept any <c>Drawable</c> object and invoke its <c>draw()</c> method.
+            </feedback>
+          </choice>
+          <choice>
+            <statement>
+            We cannot pass a <c>Circle</c> or <c>Rectangle</c> object to <c>drawShape()</c> because they are not of type Drawable.
+            </statement>
+            <feedback>
+              Since <c>Circle</c> and <c>Rectangle</c> implement <c>Drawable</c>, they are considered polymorphic types of <c>Drawable</c>. This allows them to be passed as arguments to <c>drawShape(Drawable shape)</c>, which expects a <c>Drawable</c> parameter.
+            </feedback>
+          </choice>
+        </choices>
+      </exercise>
+</section>

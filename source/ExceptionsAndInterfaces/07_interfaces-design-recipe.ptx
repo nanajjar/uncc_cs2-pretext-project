@@ -1,0 +1,43 @@
+<section xml:id="interfaces-design-recipe-connection">
+
+  <!-- =========================================
+       6. Interfaces and the Design Recipe
+       ========================================= -->
+    <title>Connecting Interfaces to the Design Recipe</title>
+    <p>You've seen the <em>Design Recipe</em>—it has several steps that guide your coding process:</p>
+      <ul>
+        <li>
+        
+           <p><strong>Step 0:</strong> Restate the problem. ("We need a consistent way to handle multiple media types with a single method.")</p>
+        </li>
+        <li>
+          <p>
+             <strong>Step 1:</strong> Data definitions. (Define <c>MusicTrack</c>, <c>PodcastEpisode</c>, <c>Audiobook</c> classes.)
+          </p>
+        </li>
+        <li>
+          <p>
+             <strong>Step 2:</strong> Method signature &amp; purpose. (We specify "void play()" in <c>Playable</c>—a formal contract for media playing.)
+          </p>
+        </li>
+        <li>
+          <p>
+            <strong>Step 3:</strong> Examples &amp; Tests. (Test each class to confirm <c>play()</c> prints or does what we expect—if we forget or mismatch, the compiler error helps us fast.)
+          </p>
+        </li>
+        <li>
+          <p>
+            <strong>Step 4:</strong> Skeleton / Outline. (Briefly outline how <c>play()</c> will be implemented in each class.)
+          </p>
+        </li>
+        <li>
+          <p>
+             <strong>Step 5:</strong> Implementation &amp; Reflection. (Fill in final code, verify tests, reflect on if more interface methods are needed.)
+          </p>
+        </li>
+      </ul>
+  
+    <p>Interfaces align perfectly with <em>Step 2</em>, turning your documented method signature into something the compiler enforces. If you skip or mismatch the method, the compiler halts and shows you exactly where to fix. This drastically reduces hidden bugs or guesswork about naming or parameters.</p>
+
+ 
+</section>

@@ -1,0 +1,84 @@
+<section xml:id="ch-interfaces-intro">
+  <title>Introducing Interfaces</title>
+
+  <introduction>
+    <p>
+      Interfaces in Java allow us to define a common set of behaviors that multiple classes can follow. Unlike regular classes, an interface only specifies what a class should do, not how it should do it. This helps keep code organized and makes it easier to work with different types of objects in a consistent way. In this section, we'll explore how interfaces work and why they are useful in Java programming
+    </p>
+  </introduction>
+
+  <!-- =========================================
+       1. Narrative Setup & Motivation
+       ========================================= -->
+  <subsection xml:id="interfaces-motivation">
+    <title>Why Use Interfaces? A Media Player with Multiple Classes</title>
+    <p>Suppose you want to write a simple media player that can handle multiple types of content—like music tracks, podcasts, or audiobooks. Initially, you might write two separate classes:</p>
+    <program language="java">
+      <input>
+// Two different classes with different method names
+public class MusicTrack {
+    public void playMusic() {
+        System.out.println("Playing music…");
+    }
+}
+
+public class PodcastEpisode {
+    public void startPlaying() {
+        System.out.println("Playing podcast…");
+    }
+}
+      </input>
+    </program>
+    <p>Then you attempt to create a single method <c>playMedia</c> that handles either kind of content. A naive approach might look like this:</p>
+    <program language="java">
+      <input>
+public static void playMedia(Object media) {
+    if (media instanceof MusicTrack) {
+        ((MusicTrack) media).playMusic();
+    } else if (media instanceof PodcastEpisode) {
+        ((PodcastEpisode) media).startPlaying();
+    }
+}
+      </input>
+    </program>
+    <p>Here, two <strong>new</strong> concepts appear:</p>
+    <ul>
+      <li><term><c>instanceof</c></term>: Checks if an object belongs to a specific class.</li>
+      <li><term>Casting</term>: Explicitly tells Java the type of the object. It's like labeling a generic "box" (<c>Object</c>) with a specific sticker (this is actually a <c>MusicTrack</c>!).</li>
+    </ul>
+    <p><strong>Why use <c>Object</c> at all?</strong> Because <c>Object</c> is Java's most general type. Every class in Java automatically extends <c>Object</c>.
+      This means that all Java objects share a common foundation and can be referenced as type Object when needed. We'll explore more about what this means later when we introduce inheritance, but for now, just focus on the idea that <c>Object</c> is the most general type in Java.
+      </p>
+      <p>This approach "works," but is <strong>awkward</strong> and <strong>error-prone</strong>:</p>
+
+    <ul>
+      <li>You must cast separately for each type—imagine adding more classes like <c>Audiobook</c>, <c>Livestream</c>, etc.</li>
+      <li>Different method names (<c>playMusic()</c> vs. <c>startPlaying()</c>) force multiple conditional checks.</li>
+    </ul>
+    <p><strong>Wouldn't it be simpler</strong> if each class used the <em>same method name</em>, such as <c>play()</c>? Then you could eliminate <c>instanceof</c> and casting entirely. That's exactly what Java <term>interfaces</term> help us achieve—defining a "contract" (e.g., <c>void play()</c>) that every implementor must fulfill. Java's compiler <em>enforces</em> this contract by refusing to compile code that breaks it.</p>
+
+    <p><strong>Mini Example: Compiler Enforcement in Action</strong></p>
+    <program language="java">
+      <input>
+// A tiny interface as a contract
+public interface MiniInterface {
+    void doSomething();
+}
+
+// A class that 'implements' MiniInterface
+// but FAILS to provide doSomething():
+public class BadImplementation implements MiniInterface {
+    // forgot doSomething()!
+}
+      </input>
+      <output>
+BadImplementation.java:1: error: BadImplementation is not abstract
+and does not override abstract method doSomething() in MiniInterface
+public class BadImplementation implements MiniInterface {
+       ^
+1 error
+      </output>
+    </program>
+    <p><strong><em>Encouragement About Errors</em>:</strong> Don't worry if you see errors like these! <em>Compiler errors are your friend</em>—they point you straight to what's missing or incorrect. Encountering them is normal and expected. <em>Every</em> programmer repeatedly relies on compiler feedback to correct mistakes quickly, rather than hunting for them at runtime.</p>
+  </subsection>
+</section>
