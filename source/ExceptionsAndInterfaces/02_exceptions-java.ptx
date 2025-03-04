@@ -7,7 +7,7 @@
   <subsection xml:id="exceptions2-intro">
     <title>Preventing a Bill-Splitting Crash</title>
     <p>Imagine you're writing a program to split a restaurant bill among friends:</p>
-    <program language="java" xml:id="BillSplitter">
+    <program language="java" xml:id="BillSplitter" interactive="activecode" label="arithmeticExcept">
 public class BillSplitter {
     public static int splitBill(int totalCost, int numberOfPeople) {
         // What if numberOfPeople is 0?
@@ -126,7 +126,7 @@ public class ExceptionDemoSkeleton {
     </program>
     <p><term>Think:</term> Which standard <em>checked exception</em> could you throw? (Hint: <c>IOException</c> is a typical example for "something went wrong reading data.") And what should you do for <c>safeDivide</c> if <c>y == 0</c>?</p>
     <p>Compare your answers with the full code below:</p>
-    <program language="java" xml:id="ExceptionDemo">
+    <program language="java" xml:id="ExceptionDemo"  interactive="activecode" label="except_demo">
 public class ExceptionDemo {
 
     public static void main(String[] args) {
