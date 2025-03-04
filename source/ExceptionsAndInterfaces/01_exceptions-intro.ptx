@@ -29,7 +29,7 @@
       <li><em>No compiler enforcement:</em> since -999 is just another integer, Java won't warn us if we misuse it.</li>
     </ul>
     <p>Now the actual code:</p>
-    <program language="java" xml:id="ExampleSentinel" interactive="activecode">
+    <program language="java" xml:id="ExampleSentinel" interactive="activecode" label="sentinelex">
       <code>
 public class SentinelIterator {
     private int[] data;
@@ -50,7 +50,7 @@ public class SentinelIterator {
       </code>
     </program>
     <p>Consider a caller that forgets to check the sentinel. We'll demonstrate this with an average calculation, where using -999 makes no sense:</p>
-    <program language="java" xml:id="SentinelMisuse" interactive="activecode">
+    <program language="java" xml:id="SentinelMisuse" interactive="activecode" label="sentinelerror">
       <code>
 public class SentinelDemo {
     public static void main(String[] args) {
@@ -60,6 +60,24 @@ public class SentinelDemo {
         int sum = it.next() + it.next() + it.next() + it.next();
         int average = sum / 4;
         System.out.println("Average: " + average); // Wrong result includes -999!
+    }
+}
+
+// including class definition for reference
+class SentinelIterator {
+    private int[] data;
+    private int currentIndex;
+
+    public SentinelIterator(int[] arr) {
+        data = arr;
+        currentIndex = 0;
+    }
+
+    public int next() {
+        if (currentIndex >= data.length) {
+            return -999;  // Sentinel value
+        }
+        return data[currentIndex++];
     }
 }
       </code>
@@ -80,7 +98,7 @@ public class SentinelDemo {
       <li><em>The caller cannot ignore this mistake:</em> Java forces them to handle it or the program crashes.</li>
     </ul>
     <p>Here's how we can rewrite the iterator:</p>
-    <program language="java" xml:id="ThrowNextExample" interactive="activecode">
+    <program language="java" xml:id="ThrowNextExample" interactive="activecode" label="throw-ex">
       <code>
 import java.util.NoSuchElementException;
 
