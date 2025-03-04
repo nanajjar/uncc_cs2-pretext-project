@@ -14,7 +14,7 @@
     <title>Why Use Interfaces? A Media Player with Multiple Classes</title>
     <p>Suppose you want to write a simple media player that can handle multiple types of content—like music tracks, podcasts, or audiobooks. Initially, you might write two separate classes:</p>
     <program language="java">
-      <input>
+      <code>
 // Two different classes with different method names
 public class MusicTrack {
     public void playMusic() {
@@ -27,11 +27,11 @@ public class PodcastEpisode {
         System.out.println("Playing podcast…");
     }
 }
-      </input>
+      </code>
     </program>
     <p>Then you attempt to create a single method <c>playMedia</c> that handles either kind of content. A naive approach might look like this:</p>
     <program language="java">
-      <input>
+      <code>
 public static void playMedia(Object media) {
     if (media instanceof MusicTrack) {
         ((MusicTrack) media).playMusic();
@@ -39,7 +39,7 @@ public static void playMedia(Object media) {
         ((PodcastEpisode) media).startPlaying();
     }
 }
-      </input>
+      </code>
     </program>
     <p>Here, two <strong>new</strong> concepts appear:</p>
     <ul>
@@ -59,7 +59,7 @@ public static void playMedia(Object media) {
 
     <p><strong>Mini Example: Compiler Enforcement in Action</strong></p>
     <program language="java">
-      <input>
+      <code>
 // A tiny interface as a contract
 public interface MiniInterface {
     void doSomething();
@@ -70,7 +70,7 @@ public interface MiniInterface {
 public class BadImplementation implements MiniInterface {
     // forgot doSomething()!
 }
-      </input>
+      </code>
       <output>
 BadImplementation.java:1: error: BadImplementation is not abstract
 and does not override abstract method doSomething() in MiniInterface
