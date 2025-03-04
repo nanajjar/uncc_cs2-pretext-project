@@ -61,7 +61,7 @@ and does not override abstract method play() in Playable
   <!-- =========================================
        9. Exercises
        ========================================= -->
-  <exercises>
+  <!-- <exercises>
     <exercise type="shortanswer">
       <title>Reasoning about Interfaces</title>
       <statement>
@@ -94,5 +94,5 @@ and does not override abstract method play() in Playable
         <p>Suppose you define an interface <c>Printable</c> with a single method <c>printData()</c>. Show how you would write <em>detailed</em> JavaDoc for it, using tags like <c>@param</c>, <c>@return</c>, or <c>@throws</c> if relevant. Explain in a sentence or two why JavaDoc is more powerful than a basic comment. Also note how these tags might appear in an IDE's hover-tooltips or an auto-generated docs site.</p>
       </statement>
     </exercise>
-  </exercises>
+  </exercises> -->
 </section>
