@@ -15,7 +15,7 @@
     <title>Using <c>implements</c> in a Class Declaration</title>
     <p>When a class says <c>implements SomeInterface</c>, it promises to provide <em>all</em> the methods defined by that interface. Let's update our <c>MusicTrack</c> and <c>PodcastEpisode</c> classes to implement <c>Playable</c>:</p>
     <program language="java">
-      <input>
+      <code>
 public class MusicTrack implements Playable {
 
     /**
@@ -36,17 +36,17 @@ public class PodcastEpisode implements Playable {
         System.out.println("Playing podcast...");
     }
 }
-      </input>
+      </code>
     </program>
     <p><term>@Override</term> isn't strictly required, but it's <strong>highly recommended</strong>. It <em>explicitly</em> signals your intent to Java, and if you mismatch the signature (like <c>pLay()</c> or <c>play(String s)</c>), the compiler immediately warns you.</p>
     <p>With <c>implements</c>, the compiler ensures you match <c>void play()</c> exactly. If you omit <c>play()</c>, or if you rename it to something else, you'll get a compile-time error. For example:</p>
     <program language="java">
-      <input>
+      <code>
 // WRONG EXAMPLE: Missing 'play()'
 public class Audiobook implements Playable {
     // no method provided!
 }
-      </input>
+      </code>
       <output>
 Audiobook.java:1: error: Audiobook is not abstract and does not override
 abstract method play() in Playable
@@ -57,7 +57,7 @@ public class Audiobook implements Playable {
     </program>
     <p>This error means "you promised to implement <c>play()</c>, but you didn't!" The compiler halts, forcing you to fix the issue before running. Once we add the required method, it compiles fine:</p>
     <program language="java">
-      <input>
+      <code>
 // Correct fix:
 public class Audiobook implements Playable {
 
@@ -66,7 +66,7 @@ public class Audiobook implements Playable {
         System.out.println("Playing audiobook...");
     }
 }
-      </input>
+      </code>
     </program>
     <p><strong>What if I want partial implementation?</strong> Then you can declare your class <c>abstract</c>, 
     meaning it's not fully complete and can't be instantiated. 
@@ -76,7 +76,7 @@ public class Audiobook implements Playable {
     Just focus on implementing all the interface methods in your regular classes for now.</p>
     <p><strong>Another mismatch example: Extra parameters or wrong return type</strong></p>
     <program language="java">
-      <input>
+      <code>
 public interface Playable {
     void play();
 }
@@ -89,7 +89,7 @@ public class BadImplementation implements Playable {
         System.out.println("Attempting to play " + track);
     }
 }
-      </input>
+      </code>
       <output>
 BadImplementation.java:1: error: BadImplementation is not abstract
 and does not override abstract method play() in Playable
@@ -108,7 +108,7 @@ public class BadImplementation implements Playable {
     <title>Writing a Method That Expects an Interface</title>
     <p>Now that <c>MusicTrack</c> and <c>PodcastEpisode</c> both implement <c>Playable</c>, let's simplify <c>playMedia</c> dramatically. Instead of accepting <c>Object media</c> and guessing its type, we can require a <c>Playable</c> parameter:</p>
     <program language="java">
-      <input>
+      <code>
 public static void playMedia(Playable media) {
     // Because 'media' implements Playable, it must have 'play()'.
     media.play(); 
@@ -122,11 +122,11 @@ public static void main(String[] args) {
     playMedia(music);   // prints "Playing music..."
     playMedia(podcast); // prints "Playing podcast..."
 }
-      </input>
+      </code>
     </program>
     <p>No casting, no <c>instanceof</c>—just <c>media.play()</c>. If we later add:</p>
     <program language="java">
-      <input>
+      <code>
 public class Audiobook implements Playable {
     @Override
     public void play() {
@@ -137,7 +137,7 @@ public class Audiobook implements Playable {
 // ... in main:
 Audiobook book = new Audiobook();
 playMedia(book); // prints "Playing audiobook..."
-      </input>
+      </code>
     </program>
     <p>We don't need to modify the <c>playMedia</c> method at all. It automatically works with any new class that implements <c>Playable</c>. That's the power of interfaces for easily extending your code—<em>no need</em> to rewrite or expand older methods. If you created a new class <c>Livestream</c> implementing <c>Playable</c>, you could call <c>playMedia(new Livestream())</c> with zero changes elsewhere!</p>
     <p><strong>Real-World Analogy (Polymorphism):</strong> Think of a universal "Play" button that works on different devices: a DVD player, a streaming service, or a music player. Each device does something unique when you press "Play," but from your perspective, it's a single button. That's exactly what an interface method does in code: one method name (<c>play()</c>) triggers different implementations depending on the actual class or device.</p>

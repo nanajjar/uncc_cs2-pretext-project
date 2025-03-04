@@ -30,7 +30,7 @@
     </ul>
     <p>Now the actual code:</p>
     <program language="java" xml:id="ExampleSentinel" interactive="activecode">
-      <input>
+      <code>
 public class SentinelIterator {
     private int[] data;
     private int currentIndex;
@@ -47,11 +47,11 @@ public class SentinelIterator {
         return data[currentIndex++];
     }
 }
-      </input>
+      </code>
     </program>
     <p>Consider a caller that forgets to check the sentinel. We'll demonstrate this with an average calculation, where using -999 makes no sense:</p>
     <program language="java" xml:id="SentinelMisuse" interactive="activecode">
-      <input>
+      <code>
 public class SentinelDemo {
     public static void main(String[] args) {
         SentinelIterator it = new SentinelIterator(new int[]{10, 20, 30});
@@ -62,7 +62,7 @@ public class SentinelDemo {
         System.out.println("Average: " + average); // Wrong result includes -999!
     }
 }
-      </input>
+      </code>
     </program>
     <p>The compiler never warned us that -999 was used in the average. The program silently produces a meaningless result.</p>
   </subsection>
@@ -81,7 +81,7 @@ public class SentinelDemo {
     </ul>
     <p>Here's how we can rewrite the iterator:</p>
     <program language="java" xml:id="ThrowNextExample" interactive="activecode">
-      <input>
+      <code>
 import java.util.NoSuchElementException;
 
 public class ExceptionIterator {
@@ -100,7 +100,7 @@ public class ExceptionIterator {
         return data[currentIndex++];
     }
 }
-      </input>
+      </code>
     </program>
     <p>Now, if the caller forgets to check whether more elements remain, the program won't produce bad data—it will throw an exception and stop.</p>
   </subsection>
@@ -113,17 +113,17 @@ public class ExceptionIterator {
     <p>If we want to recover from an exception instead of crashing, we wrap the risky code in a <c>try</c> block and provide a matching <c>catch</c>. Catching every exception without addressing the problem can hide real issues. Use <c>try/catch</c> only when you need to recover from an error—not just to silence it.</p>
     <p><em>General Pattern:</em></p>
     <program language="java" xml:id="TryCatchSkeleton">
-      <input>
+      <code>
 try {
     // Code that might throw an exception
 } catch (ExceptionType e) {
     // Handle the error (don't ignore it!)
 }
-      </input>
+      </code>
     </program>
     <p>For example, safely handling <c>NoSuchElementException</c> in our iterator loop:</p>
     <program language="java" xml:id="TryCatchExample" interactive="activecode">
-      <input>
+      <code>
 import java.util.NoSuchElementException;
 
 public class TryCatchDemo {
@@ -139,7 +139,7 @@ public class TryCatchDemo {
         }
     }
 }
-      </input>
+      </code>
     </program>
     <p>This code catches the exception and prints a message instead of crashing or using invalid data.</p>
   </subsection>
@@ -151,7 +151,7 @@ public class TryCatchDemo {
     <title>How Java Handles Exceptions</title>
     <p>Before running the code below, predict: Will Java stop immediately, or will it keep looking for a handler? Why?</p>
     <program language="java" xml:id="ExceptionPropagationExample">
-      <input>
+      <code>
 import java.util.NoSuchElementException;
 
 public class ExceptionPropagationExample {
@@ -163,7 +163,7 @@ public class ExceptionPropagationExample {
         throw new NoSuchElementException("Something went wrong!");
     }
 }
-      </input>
+      </code>
     </program>
     <p>If we run this code, Java looks for a matching catch. Finding none, it keeps unwinding until it reaches the end of main, ultimately terminating the program and printing a stack trace.</p>
     <pre>

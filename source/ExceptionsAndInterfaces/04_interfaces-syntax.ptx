@@ -6,7 +6,7 @@
     <p>An interface in Java is like a <strong>contract</strong> that says, "Any class that implements me promises to contain certain methods." Inside an interface, you only write <strong>method signatures</strong>—no actual code bodies. Java then ensures at compile time that implementing classes match those signatures exactly.</p>
     <p>Below is the <strong>basic syntax</strong> for declaring an interface, broken down step by step:</p>
     <program language="java">
-      <input>
+      <code>
 /*
  * 1) 'interface' keyword declares that this is an interface (not a class).
  * 2) InterfaceName should be capitalized, like a class.
@@ -25,7 +25,7 @@ public interface InterfaceName {
     // You can define multiple signatures if needed
     returnType anotherMethod(...);
 }
-      </input>
+      </code>
     </program>
     <p><strong>Why <c>public abstract</c>?</strong></p>
     <ul>
@@ -35,7 +35,7 @@ public interface InterfaceName {
     <p><em>Important</em>: If a class tries to implement an interface method but <em>omits</em> `public` (for instance, using package-private or private), Java will complain that it doesn't match the interface's public method signature.</p>
     <p>For our media example, let's create a simple <c>Playable</c> interface with one method, <c>play()</c>:</p>
     <program language="java">
-      <input>
+      <code>
 /**
  * Represents any media content that can be "played."
  *
@@ -50,14 +50,14 @@ public interface Playable {
      */
     void play();  // no method body allowed here
 }
-      </input>
+      </code>
     </program>
     <p><em>Tip:</em> Start with a minimal interface (maybe just <c>void play()</c>) and later add more methods if needed. This matches the Design Recipe's "incremental" approach.</p>
 
     <p><strong>Detailed JavaDoc Example</strong></p>
     <p>Below is a more advanced snippet showing how JavaDoc might look with <c>@param</c>, <c>@return</c>, and <c>@throws</c> tags—and <em>why</em> they matter:</p>
     <program language="java">
-      <input>
+      <code>
 /**
  * AdvancedMedia is anything that can be played from
  * a specific start position.
@@ -78,13 +78,13 @@ public interface AdvancedMedia {
      */
     void playFrom(int startPosition);
 }
-      </input>
+      </code>
     </program>
     <p><strong>@param</strong> explains each parameter, <strong>@throws</strong> indicates when an exception is thrown, and <strong>@return</strong> (not shown here) describes what a method returns. <em>These tags help others (and you!) quickly see how to call or implement the method</em>.</p>
 
     <p><strong>Compiler Error Mini Example</strong></p>
     <program language="java">
-      <input>
+      <code>
 // Suppose our interface is:
 public interface ExampleInterface {
     void doSomething();
@@ -100,7 +100,7 @@ public class PartialImplementation implements ExampleInterface {
     }
     // 'doAnotherThing()' is missing!
 }
-      </input>
+      </code>
       <output>
 PartialImplementation.java:1: error: PartialImplementation is not abstract
 and does not override abstract method doAnotherThing() in ExampleInterface
