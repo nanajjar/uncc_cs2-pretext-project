@@ -61,12 +61,13 @@ public class BillSplitter {
 
     <p>All of these categories belong to a broader group called <c>Throwable</c>. Java splits these into two main groups:</p>
     <ul>
-      <li><term>Errors</term> like <c>OutOfMemoryError</c> indicate system-level failures. You almost never handle them directly—if your program runs out of memory, there's often little you can do.</li>
-      <li><term>Exceptions</term> represent problems you <em>can</em> handle in code. They come in two types:
+      <li><p><term>Errors</term> like <c>OutOfMemoryError</c> indicate system-level failures. You almost never handle them directly—if your program runs out of memory, there's often little you can do.</p></li>
+      <li><p><term>Exceptions</term> represent problems you <em>can</em> handle in code. They come in two types:
         <ul>
           <li><em>Checked Exceptions</em>: The compiler forces you to either catch them or declare them with <c>throws</c>. Example: <c>IOException</c>.</li>
           <li><em>Unchecked Exceptions</em>: The compiler does not require explicit handling. Example: <c>ArithmeticException</c>, <c>NullPointerException</c>.</li>
         </ul>
+        </p>
       </li>
     </ul>
   </subsection>
