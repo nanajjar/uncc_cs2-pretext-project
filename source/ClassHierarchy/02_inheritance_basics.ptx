@@ -13,9 +13,30 @@
       <li>Reuse existing code without copying it</li>
       <li>Add new fields and methods to extend functionality</li>
       <li>Override inherited methods to provide specialized behavior</li>
+      <li>Leverage polymorphism to write more flexible code</li>
     </ul>
     
     <p>Imagine a game where <c>Entity</c> represents anything that can appear in the world. <c>Player</c> and <c>Monster</c> might both need a <c>health</c> field and a <c>takeDamage</c> method. Rather than copy-pasting them into each class, we can define these once in <c>Entity</c>. Subclasses like <c>Player</c> or <c>Monster</c> then inherit the same <c>health</c> and <c>takeDamage</c> logic, but are still free to add unique attributes or special behaviors.</p>
+    
+    <p>Perhaps the most powerful benefit of inheritance is <em>polymorphism</em> – the ability to treat objects of different subclasses as instances of their common superclass. This enables you to write code that operates on the general type while automatically getting the specialized behavior of specific subtypes:</p>
+    
+    <program language="java">
+      <code>// Using polymorphism
+// Collection holding different entity types
+List&lt;Entity&gt; entities = new ArrayList&lt;&gt;();
+entities.add(new Player("Hero", 100));
+entities.add(new Monster("Goblin", 50));
+entities.add(new NPC("Shopkeeper", 30));
+
+// Apply damage to all entities
+// Each will use its own version of takeDamage()
+for (Entity e : entities) {
+    e.takeDamage(10);  // Polymorphic call
+}
+</code>
+    </program>
+    
+    <p>In this example, the same <c>takeDamage()</c> call works differently depending on the actual type of entity, even though our code only deals with the general <c>Entity</c> type. This is a powerful mechanism that enables flexible and extensible designs.</p>
   </subsection>
 
   <!-- ==============================================
@@ -87,9 +108,9 @@ Entity
       </ul>
       <p>Other common anti-patterns include:</p>
       <ul>
-        <li>Creating deep inheritance hierarchies (more than 2-3 levels deep)</li>
-        <li>Using inheritance purely for code reuse when there's no logical "is-a" relationship</li>
-        <li>Inheriting from classes not designed for extension</li>
+        <li><term>Deep inheritance hierarchies:</term> More than 2-3 levels deep creates fragile, difficult-to-maintain code where changes to base classes can have unexpected effects rippling throughout the hierarchy</li>
+        <li><term>Inheritance for code reuse only:</term> Using inheritance when there's no logical "is-a" relationship leads to confusing designs that violate the principle of least surprise</li>
+        <li><term>Inheriting from final classes or those not designed for extension:</term> This limits future flexibility and may violate assumptions made by the original class designer</li>
       </ul>
     </note>
     
@@ -103,7 +124,15 @@ public class Car extends Engine {
 }</code>
     </program>
     
-    <p>This design is flawed because a <c>Car</c> is not a specialized type of <c>Engine</c>—it contains an engine as one of its components. Here's how it should be corrected using composition:</p>
+    <p>This design is flawed because a <c>Car</c> is not a specialized type of <c>Engine</c>—it contains an engine as one of its components. The consequences of this flawed design include:</p>
+    
+    <ul>
+      <li>A car would inherit all engine methods like <c>ignite()</c> and <c>increaseFuelFlow()</c> at the top level, creating a confusing API</li>
+      <li>Changes to the Engine class would directly impact Car, creating tight coupling</li>
+      <li>You couldn't change the engine in a car without changing the car itself</li>
+    </ul>
+    
+    <p>Here's how it should be corrected using composition:</p>
     
     <program language="java">
       <code>// Correct: Using composition for a "has-a" relationship
@@ -329,6 +358,22 @@ public class Player extends Entity {
     </program>
     <p>Here, <c>Monster</c> inherits and overrides both the <c>takeDamage</c> and <c>heal</c> methods to implement specialized behavior for undead monsters: they take half damage but are harmed by healing effects.</p>
     
+    <note>
+      <title>When to Override vs. When to Avoid Overriding</title>
+      <p>Method overriding is most appropriate when:</p>
+      <ul>
+        <li>The subclass needs to modify or extend the superclass behavior while maintaining the same method contract</li>
+        <li>The override still fulfills the original purpose of the method (respecting the Liskov Substitution Principle)</li>
+        <li>The behavior change is a natural specialization that users of the class would expect</li>
+      </ul>
+      <p>Avoid overriding when:</p>
+      <ul>
+        <li>The override would drastically change the expected behavior, violating the superclass contract</li>
+        <li>The override would disable or "turn off" functionality expected from the superclass</li>
+        <li>You find yourself overriding many methods of the superclass, indicating the inheritance relationship might not be appropriate</li>
+      </ul>
+    </note>
+    
     <insight>
       <title>@Override Best Practices</title>
       <p>Always use the <c>@Override</c> annotation when overriding methods in subclasses. It costs nothing to add but provides two significant benefits:</p>
@@ -458,6 +503,47 @@ inventory.add(sword1);
 System.out.println(inventory.contains(sword2));
         </code>
       </program>
+      
+      <p>Here's a real-world example of what can go wrong when you override <c>equals()</c> but not <c>hashCode()</c>:</p>
+      
+      <program language="java">
+        <code>
+// INCORRECT implementation - equals without hashCode
+public class IncorrectItem {
+    private String name;
+    private int value;
+    
+    // Constructor and getters omitted
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        
+        IncorrectItem other = (IncorrectItem) obj;
+        return value == other.value &amp;&amp; 
+               Objects.equals(name, other.name);
+    }
+    
+    // No hashCode override!
+}
+
+// Usage with collections
+IncorrectItem sword1 = new IncorrectItem("Sword", 50);
+IncorrectItem sword2 = new IncorrectItem("Sword", 50);
+
+System.out.println(sword1.equals(sword2)); // Prints "true"
+
+// But in a HashMap:
+Map&lt;IncorrectItem, String&gt; itemDescriptions = new HashMap&lt;&gt;();
+itemDescriptions.put(sword1, "A sharp blade made of steel");
+
+// This will likely return null! Even though equals says they're the same object
+System.out.println(itemDescriptions.get(sword2));
+        </code>
+      </program>
+      
+      <p>This unexpected behavior occurs because <c>HashMap</c> first uses <c>hashCode()</c> to find a "bucket" where an object should be stored. If <c>hashCode()</c> isn't properly overridden, <c>sword1</c> and <c>sword2</c> will likely go into different buckets, even though they are equal according to <c>equals()</c>.</p>
       
       <p>Overriding <c>equals()</c> and <c>hashCode()</c> is crucial when:</p>
       <ul>

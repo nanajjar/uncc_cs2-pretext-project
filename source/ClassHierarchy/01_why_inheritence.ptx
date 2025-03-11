@@ -3,7 +3,41 @@
 
   <p><term>Inheritance</term> is a fundamental mechanism in object-oriented programming where one class (the subclass) acquires the properties and behaviors of another class (the superclass). This establishes an "is-a" relationship, where the subclass represents a specialized version of the superclass. For example, a <c>SavingsAccount</c> is a specialized type of <c>BankAccount</c>.</p>
   
-  <p>This powerful feature helps eliminate code duplication and creates cleaner, more maintainable software by allowing common code to be defined once and reused across related classes. However, effective use of inheritance requires careful consideration of class relationships—misusing it can lead to inflexible designs that are difficult to maintain.</p>
+  <p>Consider this concrete example of inheritance in action:</p>
+  
+  <program language="java">
+    <code>
+// The superclass containing shared functionality
+public class BankAccount {
+    protected double balance;
+    
+    public void deposit(double amount) {
+        if (amount &gt;= 0) {
+            balance += amount;
+        }
+    }
+    
+    public void withdraw(double amount) {
+        if (amount &gt;= 0 &amp;&amp; amount &lt;= balance) {
+            balance -= amount;
+        }
+    }
+}
+
+// The subclass inherits and extends functionality
+public class SavingsAccount extends BankAccount {
+    private double interestRate;
+    
+    public void applyInterest() {
+        balance += balance * interestRate;
+    }
+}
+    </code>
+  </program>
+  
+  <p>This example demonstrates how inheritance reduces code duplication: <c>SavingsAccount</c> automatically gains the <c>deposit</c> and <c>withdraw</c> methods without rewriting them. Yet it also extends this functionality with its own <c>applyInterest</c> method that's specific to savings accounts.</p>
+  
+  <p>While inheritance powerfully enables code reuse, it creates stronger coupling between classes than other reuse mechanisms. This means changes to the superclass can potentially affect all subclasses, sometimes in unexpected ways. Effective use of inheritance requires careful consideration of these relationships.</p>
 
   <p>Object-oriented programming offers several code reuse mechanisms, each serving different purposes:</p>
   <ul>
@@ -51,30 +85,56 @@ public class NPC {
       <li>It's easy to introduce inconsistencies or errors if you miss updating one class.</li>
       <li>The codebase quickly becomes bloated and difficult to manage.</li>
     </ul>
-    <p>The <term>DRY principle (Don't Repeat Yourself)</term> advises avoiding this duplication by identifying and abstracting common behaviors into a single, shared implementation. This not only reduces redundancy but also makes your code easier to update and maintain.</p>
+    <p>The <term>DRY principle (Don't Repeat Yourself)</term> advises avoiding this duplication by identifying and abstracting common behaviors into a single, shared implementation.</p>
     
-    <p>Inheritance directly addresses the DRY principle by allowing common properties and behaviors to be defined once in a parent class (or superclass), from which other classes can inherit. This enables you to write the common code in just one place while specialized classes can extend this functionality with their unique features.</p>
+    <p>Inheritance directly addresses the DRY principle by creating a shared parent class:</p>
+    
+    <program language="java">
+      <code>
+// Parent class with shared functionality
+public class GameEntity {
+    protected int health;
+    
+    public void takeDamage(int amount) {
+        health -= amount;
+    }
+}
+
+// Subclasses inherit common behavior and add specifics
+public class Player extends GameEntity {
+    private int experiencePoints;
+    
+    public void gainExperience(int amount) {
+        experiencePoints += amount;
+    }
+}
+
+public class Monster extends GameEntity {
+    private boolean isAggressive;
+    
+    public void setAggressive(boolean aggressive) {
+        isAggressive = aggressive;
+    }
+}
+      </code>
+    </program>
     
     <note>
       <p>While these examples show identical code duplication, inheritance is most appropriate when the duplicated elements represent a genuine specialization relationship. When shared behavior might evolve differently across classes or when the "is-a" relationship doesn't hold, consider alternatives like interfaces or composition.</p>
     </note>
     
-    <p><em>Important Note:</em> While inheritance can effectively address code duplication, using it inappropriately can create tight coupling between classes that makes future changes difficult. Always ensure there is a genuine "is-a" relationship before applying inheritance. For example, a <c>Monster</c> genuinely is an <c>Entity</c>, but a <c>Game</c> is not a <c>Player</c>—it contains or manages players.</p>
-    
-    <p>Consider this concrete example of inappropriate inheritance:</p>
+    <p>For example, while a <c>Monster</c> genuinely is a <c>GameEntity</c>, a <c>Game</c> is not a <c>Player</c>—it contains or manages players. Consider this example of inappropriate inheritance:</p>
     <program language="java">
       <code>// Inappropriate inheritance example
 public class Game extends Player {
-    private ArrayList&lt;Monster&gt; monsters;
+    private List&lt;Monster&gt; monsters;
     
     // Game methods...
 }
       </code>
     </program>
     
-    <p>This design is problematic because a <c>Game</c> is not a specialized type of <c>Player</c>. If you implemented this design, your Game class would inherit player-specific attributes like <c>health</c> and <c>experience</c> that don't make sense for a game. Additionally, changes to the <c>Player</c> class would unexpectedly affect the <c>Game</c> class. A better approach would use composition: <c>Game</c> would contain instances of <c>Player</c>, <c>Monster</c>, and other game elements.</p>
-    
-    <p>This misuse of inheritance creates severe conceptual problems. A <c>Game</c> inheriting from <c>Player</c> would imply that the entire game itself is a type of player with player-specific attributes like experience points, inventory, or health—concepts that don't logically belong at the game level. Furthermore, methods like <c>takeDamage()</c> or <c>levelUp()</c> would be nonsensical when called on a game object, violating the "is-a" relationship that inheritance should represent.</p>
+    <p>This design is problematic because a <c>Game</c> is not a specialized type of <c>Player</c>, yet it would inherit player-specific attributes like <c>health</c> and <c>experience</c> that don't make sense for a game. Additionally, changes to the <c>Player</c> class would unexpectedly affect the <c>Game</c> class. A better approach would use composition: <c>Game</c> would contain instances of <c>Player</c>, <c>Monster</c>, and other game elements.</p>
     
     <exercise type="reflection" xml:id="reflection-dry-principle">
       <title>Reflecting on Code Duplication</title>
@@ -116,50 +176,24 @@ public class Child2 extends Parent {
   <subsection xml:id="composition-vs-inheritance">
     <title>Composition vs. Inheritance: Choosing Wisely</title>
     <p>There are two primary ways to reuse functionality between classes: <em>composition</em> and <em>inheritance</em>.</p>
-    <ul>
-      <li>
-        <term>Composition ("has-a")</term>: One object contains or uses another object.
-        <ul>
-          <li><term>Example:</term> A <c>Player</c> has an <c>Inventory</c>. The player isn't a type of inventory; instead, the player owns or uses it.</li>
-        </ul>
-      </li>
-      <li>
-        <term>Inheritance ("is-a")</term>: A class is a specialized version of another class.
-        <ul>
-          <li><term>Example:</term> A <c>Monster</c> is an <c>Entity</c>, meaning it naturally inherits properties (like <c>health</c>) and methods (like <c>takeDamage()</c>).</li>
-        </ul>
-      </li>
-    </ul>
-    <p>A good way to decide between composition and inheritance is to ask yourself:</p>
-    <blockquote>
-      <p>"Is this class genuinely a specialized version of another, or does it simply contain or use another object?"</p>
-    </blockquote>
-    <p>If the answer is "specialized version," inheritance makes sense. If it's "uses or contains," prefer composition.</p>
-
-    <p>While composition often provides more design flexibility (the "favor composition over inheritance" principle), inheritance is powerful and appropriate when:</p>
-    <ul>
-      <li>There is a genuine "is-a" relationship between classes</li>
-      <li>The subclass is truly a specialized version of the parent class</li>
-      <li>The parent class's behavior is appropriate for the child class without significant modifications</li>
-    </ul>
-    <p>Used correctly, inheritance can lead to clear, concise code that accurately models real-world relationships between concepts.</p>
-
-    <p>Here's a brief comparison of inheritance and composition approaches:</p>
+    
+    <p>In real-world design scenarios, the choice between these approaches often involves nuanced trade-offs rather than clear-cut decisions:</p>
     
     <p><term>Inheritance ("is-a" relationship):</term></p>
     <ul>
       <li><term>Advantages:</term>
         <ul>
-          <li>Reuses code automatically</li>
-          <li>Polymorphism support</li>
-          <li>Clean, hierarchical organization</li>
+          <li>Reuses code automatically without delegation</li>
+          <li>Enables polymorphism through substitutability</li>
+          <li>Creates clean, hierarchical organization</li>
         </ul>
       </li>
       <li><term>Disadvantages:</term>
         <ul>
-          <li>Creates tight coupling</li>
-          <li>Can lead to fragile class hierarchies</li>
-          <li>Limited to single inheritance in Java</li>
+          <li>Creates tight coupling that can make future changes difficult</li>
+          <li>Can lead to fragile class hierarchies as depth increases</li>
+          <li>Limited to single inheritance in Java (unlike multiple inheritance in some languages)</li>
+          <li>Implementation details in the superclass may leak into subclasses</li>
         </ul>
       </li>
       <li><term>Example:</term> <c>Monster extends Entity</c> - A monster is a type of entity with specialized behaviors.</li>
@@ -169,20 +203,25 @@ public class Child2 extends Parent {
     <ul>
       <li><term>Advantages:</term>
         <ul>
-          <li>More flexible design</li>
-          <li>Easier to modify components</li>
-          <li>Looser coupling</li>
+          <li>Creates more flexible design with looser coupling</li>
+          <li>Allows changing components at runtime</li>
+          <li>Enables combining behaviors from multiple sources</li>
         </ul>
       </li>
       <li><term>Disadvantages:</term>
         <ul>
-          <li>Requires more delegating code</li>
-          <li>Relationships less obvious at a glance</li>
-          <li>Manual forwarding of behavior</li>
+          <li>Requires more delegating code (forwarding methods)</li>
+          <li>Class relationships can be less immediately obvious</li>
+          <li>May need more code to implement the same functionality</li>
+          <li>Can become complex if many components need coordination</li>
         </ul>
       </li>
       <li><term>Example:</term> <c>Player</c> has an <c>Inventory</c> object - A player contains but is not a type of inventory.</li>
     </ul>
+
+    <p>A good starting question is: "Is this class genuinely a specialized version of another, or does it simply contain or use another object?" However, real designs often involve judgment calls where the lines blur. Many experienced developers adopt the "favor composition over inheritance" guideline while recognizing that inheritance is sometimes the clearer approach.</p>
+    
+    <p>It's also common to use both approaches together. For example, you might have a class hierarchy for game entities (inheritance) where each entity contains component objects like weapons or abilities (composition).</p>
 
     <exercise type="reflection" xml:id="reflection-composition-scenario">
       <title>When to Choose Composition</title>
@@ -232,7 +271,12 @@ public class Document {
     <title>Object: The Ultimate Superclass</title>
     <p>Did you know you're already using inheritance in every Java class you write? In Java, all classes implicitly inherit from a superclass called <c>Object</c> if they don't explicitly extend another class. This means every class you create automatically receives methods like <c>toString()</c>, <c>equals()</c>, and <c>hashCode()</c>.</p>
     
-    <p>This universal inheritance demonstrates a core strength of inheritance: providing common functionality across all types. For example, you can call <c>toString()</c> on any object in Java because every class inherits this method from <c>Object</c>.</p>
+    <p>This universal inheritance has profound implications for Java's design:</p>
+    <ul>
+      <li>It enables polymorphic handling of any object through the common <c>Object</c> reference type</li>
+      <li>It establishes system-wide contracts for object comparison, string representation, and hashing</li>
+      <li>It makes collections like <c>ArrayList</c> or <c>HashMap</c> possible, as they can store any object type</li>
+    </ul>
     
     <p>Let's see what happens when we use inherited <c>Object</c> methods without overriding them:</p>
     
@@ -256,7 +300,7 @@ System.out.println(hero); // Outputs something like: Player@7a81197d
       </code>
     </program>
     
-    <p>The output is not very readable because we're using the default <c>toString()</c> implementation inherited from <c>Object</c>, which simply prints the class name and a hexadecimal representation of the object's hash code.</p>
+    <p>The output is not very readable because we're using the default <c>toString()</c> implementation inherited from <c>Object</c>. This default is deliberately minimal—Java can't assume what information would be meaningful for every possible class, so it provides a basic implementation that you're expected to override with class-specific behavior.</p>
     
     <p>This example illustrates an important inheritance concept: while inheriting methods is convenient, sometimes the parent class's implementation doesn't fit the specific needs of the subclass—a perfect scenario for method overriding, which we'll explore in the next chapter.</p>
   </subsection>
