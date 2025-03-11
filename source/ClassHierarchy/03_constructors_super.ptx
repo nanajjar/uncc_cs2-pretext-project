@@ -1,0 +1,184 @@
+<section xml:id="constructors-and-super">
+  <title>Constructors and the <c>super</c> Keyword</title>
+
+  <!-- ==============================================
+       3.1 Constructors and Initialization Order
+       ============================================= -->
+  <subsection xml:id="constructor-inheritance-order">
+    <title>Constructor Chaining: Understanding Initialization Order</title>
+    <p>When creating an object, Java requires that the superclass constructor runs before the subclass constructor. This ordering ensures that all inherited fields from the superclass are properly initialized before the subclass adds its specific functionality.</p>
+    <p>For example, consider a game entity hierarchy:</p>
+    <ul>
+      <li>The superclass <c>Entity</c> initializes common fields such as <c>health</c> and <c>name</c>.</li>
+      <li>The subclass <c>Monster</c> might add specific fields, like whether it is aggressive or passive.</li>
+    </ul>
+    <p>If the superclass constructor didn't run first, subclass methods might accidentally access uninitialized superclass fields, causing runtime errors or unpredictable behavior. Java strictly enforces that superclass initialization occurs before subclass initialization precisely to prevent these issues.</p>
+  </subsection>
+
+  <!-- ==============================================
+       3.2 Explicitly Calling Superclass Constructors
+       ============================================= -->
+  <subsection xml:id="using-super-explicitly">
+    <title>Explicit Calls to the Superclass Constructor with <c>super()</c></title>
+    <p>In Java, subclass constructors must always invoke a constructor from their superclass. Java implicitly calls a superclass constructor only if the superclass provides a no-argument constructor. If the superclass does not have a no-argument constructor, you must explicitly call its parameterized constructor using the <c>super(...)</c> keyword. Failing to do so results in a compile-time error.</p>
+    <p>The syntax is straightforward:</p>
+    <program language="java">
+      <code>public SubclassName(parameters) {
+    super(arguments);  // must be first line
+    // subclass-specific initialization
+}</code>
+    </program>
+    <p>Important notes:</p>
+    <ul>
+      <li>The call to <c>super(...)</c> <em>must</em> be the first line in the subclass constructor.</li>
+      <li>If you omit <c>super(...)</c> when the superclass requires parameters, Java will issue a compile-time error.</li>
+    </ul>
+    <p>Here's a concrete, correct example:</p>
+    <program language="java">
+      <code>// Superclass: Entity.java
+public class Entity {
+    protected int health;
+
+    public Entity(int initialHealth) {
+        health = initialHealth;
+    }
+}
+
+// Subclass: Monster.java
+public class Monster extends Entity {
+    private boolean isAggressive;
+
+    public Monster(int initialHealth, boolean aggressive) {
+        super(initialHealth);  // Explicit call required
+        isAggressive = aggressive;
+    }
+}</code>
+    </program>
+    <p>If you forget to include the call to <c>super(initialHealth)</c>, Java produces a clear compile-time error:</p>
+    <pre>Error: constructor Entity() not found</pre>
+  </subsection>
+
+  <!-- ==============================================
+       3.3 Visualizing Constructor Chaining
+       ============================================= -->
+  <subsection xml:id="constructor-chaining-visual">
+    <title>Visualizing Constructor Chaining</title>
+    <p>To help visualize constructor chaining, let's enhance our previous example with explicit print statements. Observe carefully the order in which the constructors execute:</p>
+    <program language="java">
+      <code>// Superclass: Entity.java
+public class Entity {
+    protected int health;
+
+    public Entity(int initialHealth) {
+        health = initialHealth;
+        System.out.println("Entity constructor: health set to " + health);
+    }
+}
+
+// Subclass: Monster.java
+public class Monster extends Entity {
+    private boolean isAggressive;
+
+    public Monster(int initialHealth, boolean aggressive) {
+        super(initialHealth);
+        isAggressive = aggressive;
+        System.out.println("Monster constructor: isAggressive set to " + isAggressive);
+    }
+}
+
+// Main.java
+public class Main {
+    public static void main(String[] args) {
+        Monster goblin = new Monster(100, true);
+    }
+}</code>
+    </program>
+    <p>Running this code results in the following console output:</p>
+    <pre>Entity constructor: health set to 100
+Monster constructor: isAggressive set to true</pre>
+    <p>This demonstrates explicitly that Java executes the superclass constructor first, initializing inherited fields, before running the subclass constructor.</p>
+  </subsection>
+
+  <!-- ==============================================
+       3.4 Common Constructor Pitfalls
+       ============================================= -->
+  <subsection xml:id="constructor-pitfalls">
+    <title>Common Pitfalls with Constructors and <c>super()</c></title>
+    <p>Here are some frequent mistakes students encounter with constructors in inheritance hierarchies:</p>
+    <ul>
+      <li><term>Omitting explicit <c>super()</c> when required:</term> If the superclass lacks a no-argument constructor, forgetting to explicitly call <c>super(...)</c> leads to a compilation error.</li>
+      <li><term>Incorrect placement of <c>super()</c>:</term> The <c>super(...)</c> call must always be the very first statement. Placing any other statement before it causes a compile-time error.</li>
+    </ul>
+    <p>Here's an example of incorrect constructor chaining that Java will reject:</p>
+    <program language="java">
+      <code>// Incorrect: will not compile
+public class Monster extends Entity {
+    private boolean isAggressive;
+
+    public Monster(int initialHealth, boolean aggressive) {
+        isAggressive = aggressive;  // Error: code before super()
+        super(initialHealth);
+    }
+}</code>
+    </program>
+    <p>Compiler error:</p>
+    <pre>Error: Call to super() must be first statement in constructor</pre>
+    <p>Corrected example:</p>
+    <program language="java">
+      <code>// Corrected version
+public class Monster extends Entity {
+    private boolean isAggressive;
+
+    public Monster(int initialHealth, boolean aggressive) {
+        super(initialHealth);  // Correct placement
+        isAggressive = aggressive;
+    }
+}</code>
+    </program>
+  </subsection>
+
+  <!-- ==============================================
+       3.5 Exercises
+       ============================================= -->
+  <exercises>
+    <exercise xml:id="constructor-chaining-order" type="multiplechoice">
+      <title>Understanding Constructor Chaining</title>
+      <statement>
+        <p>Which statement correctly describes how Java executes constructors when creating a subclass object?</p>
+      </statement>
+      <choices>
+        <choice correct="yes">
+          <statement>The superclass constructor always executes first, followed by the subclass constructor.</statement>
+          <feedback>Correct! Java enforces superclass initialization first to ensure that inherited fields are initialized before the subclass.</feedback>
+        </choice>
+        <choice>
+          <statement>The subclass constructor executes first, followed by the superclass constructor.</statement>
+          <feedback>Incorrect. If subclass constructors ran first, inherited fields could remain uninitialized, causing errors.</feedback>
+        </choice>
+        <choice>
+          <statement>Only the subclass constructor runs, and superclass initialization is optional.</statement>
+          <feedback>Incorrect. Java requires superclass initialization to ensure inherited fields are properly set.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+
+    <exercise xml:id="writing-constructor-with-super" type="shortanswer">
+      <title>Practice Writing a Subclass Constructor</title>
+      <statement>
+        <p>Given a superclass <c>Person</c> that requires a <c>name</c> parameter in its constructor, write a constructor for a subclass <c>Student</c>. The subclass constructor should take a <c>name</c> and an integer <c>studentId</c>. Remember to use <c>super(...)</c> correctly.</p>
+      </statement>
+      <solution>
+        <program language="java">
+          <code>public class Student extends Person {
+    private int studentId;
+
+    public Student(String name, int studentId) {
+        super(name); // required explicit call to superclass constructor
+        this.studentId = studentId;
+    }
+}</code>
+        </program>
+      </solution>
+    </exercise>
+  </exercises>
+</section>

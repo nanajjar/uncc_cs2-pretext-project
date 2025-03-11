@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en-US">
+  <title>Class Hierarchy</title>
+
+  <xi:include href="01_why_inheritence.ptx" />
+  <xi:include href="02_inheritance_basics.ptx" />
+  <xi:include href="03_constructors_super.ptx" />
+</chapter>
