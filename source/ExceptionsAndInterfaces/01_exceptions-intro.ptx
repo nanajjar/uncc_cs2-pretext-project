@@ -392,8 +392,9 @@ int sum = val + 10;  // no check for sentinel
           When does the compiler force you to handle an exception?
         </p>
       </statement>
+      <response type="string" />
       <answer>
-Checked exceptions (e.g., IOException) must be handled or declared in the method signature at compile time, or your code won't compile. Unchecked exceptions (e.g., NullPointerException) don't require explicit handling; they can occur at runtime, and the compiler doesn't force you to catch or declare them.
+<p>Checked exceptions (e.g., IOException) must be handled or declared in the method signature at compile time, or your code won't compile. Unchecked exceptions (e.g., NullPointerException) don't require explicit handling; they can occur at runtime, and the compiler doesn't force you to catch or declare them.</p>
       </answer>
     </exercise>
 
@@ -412,7 +413,8 @@ Checked exceptions (e.g., IOException) must be handled or declared in the method
           makes sense.
         </p>
       </statement>
-      <answer>Using try/catch allows us to gracefully recover or handle an expected error rather than crashing. For example, reading from a file: if the file is missing or corrupted, we can catch IOException and alert the user or use a default file instead of just terminating.</answer>
+      <response type="string" />
+      <answer> <p>Using try/catch allows us to gracefully recover or handle an expected error rather than crashing. For example, reading from a file: if the file is missing or corrupted, we can catch IOException and alert the user or use a default file instead of just terminating.</p></answer>
     </exercise>
 </exercises>
 
