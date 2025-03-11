@@ -363,7 +363,7 @@ public class Player extends Entity {
       <p>Method overriding is most appropriate when:</p>
       <ul>
         <li>The subclass needs to modify or extend the superclass behavior while maintaining the same method contract</li>
-        <li>The override still fulfills the original purpose of the method (respecting the Liskov Substitution Principle)</li>
+        <li>The override still fulfills the original purpose of the method without breaking code that might use this object through its parent type</li>
         <li>The behavior change is a natural specialization that users of the class would expect</li>
       </ul>
       <p>Avoid overriding when:</p>

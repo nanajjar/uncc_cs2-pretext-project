@@ -5,4 +5,5 @@
   <xi:include href="01_why_inheritence.ptx" />
   <xi:include href="02_inheritance_basics.ptx" />
   <xi:include href="03_constructors_super.ptx" />
+  <xi:include href="04_abstract_classes.ptx" />
 </chapter>

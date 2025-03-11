@@ -1,0 +1,1015 @@
+<section xml:id="abstract-classes-interfaces">
+  <title>Abstract Classes and Interfaces</title>
+
+  <!-- ==============================================
+       4.1 Motivation: Classes as Blueprints
+       ============================================= -->
+  <subsection xml:id="abstract-classes-motivation">
+    <title>Why Abstract Classes?</title>
+    <p>You might wonder why you'd ever want to create a class that you can't actually instantiate. Yet, abstract classes are very useful because they help clearly define what subclasses must implement, without forcing unnecessary duplication. Think of an abstract class as a <em>blueprint</em> or a template for your subclasses.</p>
+
+    <sidebyside widths="48% 48%">
+      <stack>
+        <title>Document System Example</title>
+        <p>In a document management system, different document types (PDF, Word, Image) all need methods like <c>save()</c> and <c>print()</c>. An abstract <c>Document</c> class would define these methods as abstract, ensuring all document types implement them.</p>
+        <note>
+          <p>This provides a consistent interface for working with documents while allowing each document type to handle saving and printing according to its specific format requirements.</p>
+        </note>
+      </stack>
+      <stack>
+        <title>Business Domain Example</title>
+        <p>In a payroll system, you might have an abstract <c>Employee</c> class with an abstract <c>calculatePay()</c> method. Different types of employees (hourly, salaried, commission-based) would each implement this differently.</p>
+        <note>
+          <p>This mirrors real business rules where each employee type has its own pay calculation formula but shares basic employee attributes.</p>
+        </note>
+      </stack>
+    </sidebyside>
+    
+    <insight>
+      <title>How Classes Evolve to Become Abstract</title>
+      <p>In real-world software development, abstract classes often emerge through a natural evolution of your codebase rather than being designed from the start. You might initially create concrete (non-abstract) superclasses, but as your system grows, you discover that:</p>
+      <ul>
+        <li>Some superclass methods don't make sense to implement at the superclass level</li>
+        <li>Multiple subclasses keep overriding the same methods with specialized behavior</li>
+        <li>You find yourself creating superclass "instances" that really should be one of the subclasses</li>
+      </ul>
+      <p>These signs often indicate that your design would benefit from converting the superclass into an abstract class. This evolution represents a growing understanding of your problem domain and a natural refinement of your object model.</p>
+    </insight>
+  </subsection>
+
+  <!-- ==============================================
+       4.2 Defining Abstract Classes and Methods
+       ============================================= -->
+  <subsection xml:id="abstract-classes-methods">
+    <title>Creating Abstract Classes and Methods</title>
+    <p>An <term>abstract class</term> in Java is defined with the keyword <c>abstract</c>. Abstract classes can contain:</p>
+    <ul>
+      <li>Fields (instance variables)</li>
+      <li>Constructors (though they can only be called by subclasses)</li>
+      <li>Regular (concrete) methods with implementations</li>
+      <li><term>Abstract methods</term> - methods declared without implementations</li>
+    </ul>
+    
+    <p>An abstract method is a method declaration without a body. It specifies the method's signature (name, parameters, and return type) but doesn't provide an implementation:</p>
+    
+    <program language="java">
+      <code>// An abstract method - note the semicolon instead of a method body
+public abstract void calculateTax();
+      </code>
+    </program>
+    
+    <p>This tells Java: "Any non-abstract subclass of this class MUST provide an implementation for this method." It's like a contract that forces subclasses to fulfill certain responsibilities.</p>
+
+    <p>Here's a simple abstract class example:</p>
+
+    <program language="java">
+      <code>// Abstract class with both concrete and abstract methods
+public abstract class Document {               // ← Note the 'abstract' keyword
+    protected String filename;                 // ← Instance variable (state)
+    
+    // Constructor - can be called by subclasses
+    public Document(String filename) {
+        this.filename = filename;
+    }
+    
+    // Concrete method with implementation
+    public String getFilename() {
+        return filename;
+    }
+    
+    // Abstract methods - MUST be implemented by subclasses ⚠️
+    public abstract void save();               // ← Note: no method body, ends with semicolon
+    public abstract void print();
+}</code>
+    </program>
+
+    <note>
+      <title>Why Abstract Classes Can't Be Instantiated</title>
+      <p>You cannot create objects directly from abstract classes:</p>
+      <program language="java">
+        <code>// This won't compile:
+Document doc = new Document("report.txt"); // ❌ Error</code>
+      </program>
+      <p>This makes sense because abstract classes contain "incomplete" methods (the abstract ones). Since abstract methods have no implementation, Java can't allow you to create objects that would be unable to respond to method calls.</p>
+    </note>
+    
+    <p>To use an abstract class, you must create a subclass that implements all the abstract methods:</p>
+    
+    <program language="java">
+      <code>// Concrete subclass implementing the abstract methods
+public class PDFDocument extends Document {    // ← Extends the abstract class
+    public PDFDocument(String filename) {
+        super(filename);                       // ← Calls abstract class constructor
+    }
+    
+    @Override                                  // ← Always use @Override annotation
+    public void save() {
+        System.out.println("Saving PDF file: " + filename);
+        // PDF-specific saving code
+    }
+    
+    @Override                                  // ← Required for all abstract methods 
+    public void print() {
+        System.out.println("Printing PDF file: " + filename);
+        // PDF-specific printing code
+    }
+}</code>
+    </program>
+    
+    <p><term>Key takeaways about abstract classes:</term></p>
+    <ul>
+      <li>They use the <c>abstract</c> keyword in their class definition</li>
+      <li>They cannot be instantiated (no <c>new AbstractClass()</c>)</li>
+      <li>They can contain a mix of abstract and concrete methods</li>
+      <li>They can have constructors, fields, and regular methods</li>
+      <li>Subclasses must implement all abstract methods or also be declared abstract</li>
+    </ul>
+  </subsection>
+
+  <!-- ==============================================
+       4.3 Implementing Abstract Methods
+       ============================================= -->
+  <subsection xml:id="implementing-abstract-methods">
+    <title>Implementing Abstract Methods in Subclasses</title>
+    <p>Any concrete (non-abstract) subclass extending an abstract class must implement all its abstract methods. Let's build a simple vehicle example step by step:</p>
+
+    <p><strong>Step 1:</strong> First, we define our abstract Vehicle class with abstract methods:</p>
+    <program language="java">
+      <code>// Abstract class for vehicles
+public abstract class Vehicle {
+    protected String model;      // ← Shared state for all vehicles
+    
+    public Vehicle(String model) {
+        this.model = model;
+    }
+    
+    // Abstract methods that all vehicles must implement
+    public abstract void start();
+    public abstract void stop();
+    
+    // Concrete method shared by all vehicles
+    public String getModel() {
+        return model;
+    }
+}</code>
+    </program>
+
+    <p><strong>Step 2:</strong> Now, we create a concrete subclass that implements the abstract methods:</p>
+
+    <program language="java">
+      <code>// Concrete subclass of Vehicle
+public class Car extends Vehicle {
+    private int fuelLevel;      // ← Car-specific state
+    
+    public Car(String model, int fuelLevel) {
+        super(model);           // ← Call to parent constructor
+        this.fuelLevel = fuelLevel;
+    }
+    
+    @Override                   // ← Always use @Override annotation
+    public void start() {
+        if (fuelLevel > 0) {
+            System.out.println("Starting car engine for " + model);
+        } else {
+            System.out.println("Cannot start - out of fuel!");
+        }
+    }
+    
+    @Override                   // ← Required for all abstract methods
+    public void stop() {
+        System.out.println("Stopping car engine for " + model);
+    }
+}</code>
+    </program>
+
+    <p>Notice how the <c>Car</c> class:</p>
+    <ul>
+      <li>Extends the abstract <c>Vehicle</c> class</li>
+      <li>Calls the parent constructor using <c>super(model)</c></li>
+      <li>Implements both abstract methods (<c>start()</c> and <c>stop()</c>)</li>
+      <li>Uses the <c>@Override</c> annotation for clarity and compile-time checking</li>
+    </ul>
+
+    <note>
+      <title>🚩 Important: Use @Override Annotation</title>
+      <p>Always use the <c>@Override</c> annotation when implementing abstract methods. This annotation is technically optional but strongly recommended because:</p>
+      <ul>
+        <li>It asks the compiler to verify you're actually overriding a method (not creating a new one)</li>
+        <li>If you misspell the method name or use incorrect parameters, the compiler will immediately catch the error</li>
+        <li>It makes your code more readable by clearly showing which methods fulfill the contract</li>
+      </ul>
+      <p>Without <c>@Override</c>, you might accidentally create a new method instead of implementing the required one. The compiler would then complain that you haven't implemented the abstract method, but it wouldn't tell you why.</p>
+    </note>
+    
+    <p>Here are common errors when implementing abstract methods:</p>
+    
+    <program language="java">
+      <code>// ⚠️ COMMON MISTAKES when implementing abstract methods ⚠️
+public class BrokenCar extends Vehicle {
+    // ❌ Mistake 1: Method signature doesn't match (wrong name)
+    @Override
+    public void startEngine() {  // Should be 'start()'
+        // This won't satisfy the abstract method requirement
+        System.out.println("Starting engine");
+    }
+    
+    // ❌ Mistake 2: Wrong return type
+    @Override
+    public boolean stop() {  // Should return void, not boolean
+        System.out.println("Stopping");
+        return true;
+    }
+    
+    // ❌ Mistake 3: Forgetting to implement an abstract method
+    // 'stop()' is missing completely - compiler will detect this
+}</code>
+    </program>
+    
+    <p>The compiler will generate errors for each of these mistakes. Pay close attention to these error messages as they tell you exactly what's wrong:</p>
+    <ul>
+      <li>"Method does not override method from its superclass" (for <c>startEngine</c>)</li>
+      <li>"Return type boolean is not compatible with void" (for <c>stop</c>)</li>
+      <li>"BrokenCar must implement inherited abstract method Vehicle.stop()" (for the missing method)</li>
+    </ul>
+
+    <p><em><strong>Pro Tip:</strong> When implementing abstract classes or interfaces, your Java compiler is your most important debugging tool. Always carefully read compiler error messages—they contain precise information about what's wrong and often suggest how to fix it. The compiler ensures you correctly fulfill the "contract" required by the abstract class or interface.</em></p>
+
+    <insight>
+      <title>Debugging Abstract Method Implementations</title>
+      <p>Compiler errors are your best guide when working with abstract classes and interfaces. Unlike runtime bugs that might only appear under specific conditions, the compiler immediately flags contract violations. Think of compiler messages as guardrails keeping your implementation aligned with the required contract.</p>
+      
+      <p>When you see errors like:</p>
+      <ul>
+        <li>"Class X must implement inherited abstract method Y" — You forgot to implement a required method</li>
+        <li>"Method does not override a method from superclass" — You likely misspelled the method name or used wrong parameters</li>
+        <li>"Return type Z is not compatible with Y" — Your implementation returns the wrong type</li>
+      </ul>
+      
+      <p>Don't just fix the errors mechanically; understand what contract you're violating. This helps build a deeper comprehension of abstract class and interface design.</p>
+    </insight>
+
+    <p>Let's see why abstract classes are useful by comparing code with and without them:</p>
+    
+    <sidebyside widths="48% 48%">
+      <stack>
+        <title>Without Abstract Classes</title>
+        <program language="java">
+          <code>
+// No shared structure
+public class Car {
+    private String model;
+    
+    public void start() {
+        System.out.println("Starting car");
+    }
+    
+    public void stop() {
+        System.out.println("Stopping car");
+    }
+}
+
+public class Motorcycle {
+    private String model;
+    
+    public void start() {
+        System.out.println("Starting motorcycle");
+    }
+    
+    // Oops! Developer forgot to implement stop()
+    // No compiler warning!
+}
+          </code>
+        </program>
+      </stack>
+      <stack>
+        <title>With Abstract Classes</title>
+        <program language="java">
+          <code>
+// Shared structure through abstraction
+public abstract class Vehicle {
+    protected String model;
+    
+    // All vehicles must implement:
+    public abstract void start();
+    public abstract void stop();
+}
+
+public class Motorcycle extends Vehicle {
+    @Override
+    public void start() {
+        System.out.println("Starting motorcycle");
+    }
+    
+    // Compiler error:
+    // "Motorcycle must implement 
+    // inherited abstract method Vehicle.stop()"
+}
+          </code>
+        </program>
+      </stack>
+    </sidebyside>
+    
+    <p>The approach with abstract classes ensures that developers can't forget to implement required methods—the compiler enforces the contract.</p>
+    
+    <insight>
+      <title>The "Substitutability" Benefit of Abstract Classes</title>
+      <p>Abstract classes enable <term>polymorphism</term>: the ability to treat objects of different concrete subclasses uniformly through their common abstract superclass. This is one of the most powerful features of object-oriented programming.</p>
+      
+      <p><strong>What this means in practice:</strong> You can use the abstract superclass type (<c>Vehicle</c>) as a variable type or parameter type to handle any subclass object, even when you don't know its specific subclass at compile time.</p>
+      
+      <program language="java">
+        <code>// Working with different vehicles polymorphically
+// Create an array of different vehicle types
+Vehicle[] vehicles = new Vehicle[3];
+vehicles[0] = new Car("Toyota Camry", 50);      // Car object stored in Vehicle variable
+vehicles[1] = new Motorcycle("Honda CBR");       // Motorcycle object stored in Vehicle variable
+vehicles[2] = new Truck("Ford F-150", 2000);     // Truck object stored in Vehicle variable
+
+// Process all vehicles the same way - without knowing specific types
+for (Vehicle v : vehicles) {
+    System.out.println("Starting: " + v.getModel());
+    v.start();  // Each vehicle type starts differently
+    
+    // Later...
+    v.stop();   // Each vehicle type stops differently
+}</code>
+      </program>
+      
+      <p>This code doesn't need to know which specific vehicle subclass it's working with. It simply treats every vehicle through the common <c>Vehicle</c> interface, while at runtime, each object executes its specific implementation of <c>start()</c> and <c>stop()</c>. This allows for:</p>
+      
+      <ul>
+        <li>More flexible and extensible code (adding new vehicle types without changing existing code)</li>
+        <li>Reduced code duplication (shared logic in one place)</li>
+        <li>Better organization of related functionality</li>
+      </ul>
+      
+      <p><strong>Key benefit:</strong> With <term>polymorphism</term>, you can add new types to your system without modifying existing code. For example, if you later create a <c>Helicopter</c> class extending <c>Vehicle</c>, all code that works with <c>Vehicle</c> objects will automatically work with <c>Helicopter</c> objects without any changes. This is known as the <em>Open/Closed Principle</em>—code should be open for extension but closed for modification.</p>
+      
+      <p>However, an abstract class only ensures that methods exist, not that they work properly. A faulty implementation could still cause problems:</p>
+      
+      <program language="java">
+        <code>public class FaultyTruck extends Vehicle {
+    @Override
+    public void start() {
+        // Doesn't actually do anything useful
+        System.out.println("Not implemented yet!");
+    }
+    
+    @Override
+    public void stop() {
+        // Creates unexpected behavior
+        throw new RuntimeException("Brakes failed!");
+    }
+}</code>
+      </program>
+      
+      <p>When creating abstract classes, consider not just <em>what</em> methods subclasses must provide, but also what the expected behavior should be. Document the contract clearly so subclass authors understand their responsibilities.</p>
+    </insight>
+    
+    <p><term>Key takeaways about implementing abstract methods:</term></p>
+    <ul>
+      <li>Non-abstract subclasses must implement all abstract methods from their superclass</li>
+      <li>Always use <c>@Override</c> to catch signature mismatches</li>
+      <li>The implementation must match the method signature exactly (name, parameters, return type)</li>
+      <li>Abstract classes enforce a contract that the compiler checks</li>
+      <li>Abstract classes enable polymorphism (treating diverse objects uniformly)</li>
+    </ul>
+  </subsection>
+
+  <!-- ==============================================
+       4.4 Interfaces: Defining Contracts
+       ============================================= -->
+  <subsection xml:id="interfaces-introduction">
+    <title>Interfaces: Defining Pure Contracts</title>
+    <p>An <term>interface</term> is a purely abstract contract specifying methods a class must implement. Interfaces differ from abstract classes in two crucial ways:</p>
+    <ul>
+      <li>They cannot contain instance fields (except for constants)</li>
+      <li>A class can implement multiple interfaces simultaneously</li>
+    </ul>
+
+    <p>Like abstract classes, interfaces cannot be instantiated directly since they define responsibilities without providing implementations. They are declared using the <c>interface</c> keyword:</p>
+
+    <program language="java">
+      <code>// Simple interface definition
+public interface Printable {
+    void print(); // Implicitly public and abstract
+}
+
+// Interface with a constant
+public interface Taxable {
+    double TAX_RATE = 0.07; // Implicitly public, static, and final
+    
+    double calculateTax(); // Calculate tax for this item
+}</code>
+    </program>
+    
+    <p>Note that interface methods are implicitly <c>public</c> and <c>abstract</c>, and any fields are implicitly <c>public</c>, <c>static</c>, and <c>final</c> (constants). This means interfaces cannot store per-instance state.</p>
+
+    <note>
+      <title>Interfaces Cannot Be Instantiated</title>
+      <p>Like abstract classes, interfaces cannot be instantiated directly. This makes sense since they contain no implementation for their methods (except for default methods).</p>
+      <program language="java">
+        <code>// These won't compile:
+Printable p = new Printable();       // ❌ Error
+Taxable t = new Taxable();           // ❌ Error</code>
+      </program>
+      <p>You must always create a concrete class that implements the interface, then instantiate that class.</p>
+    </note>
+
+    <p>To use an interface, a class "implements" it:</p>
+
+    <program language="java">
+      <code>// A class implementing an interface
+public class Product implements Taxable {
+    private String name;
+    private double price;
+    
+    public Product(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+    
+    @Override
+    public double calculateTax() {
+        return price * TAX_RATE;
+    }
+}</code>
+    </program>
+
+    <p>The power of interfaces becomes apparent when we implement multiple interfaces:</p>
+
+    <program language="java">
+      <code>// A class implementing multiple interfaces
+public class Invoice implements Printable, Taxable {
+    private String customer;
+    private double amount;
+    
+    // Constructor and other methods omitted for brevity
+    
+    @Override
+    public void print() {
+        System.out.println("Invoice for: " + customer);
+        System.out.println("Amount: $" + amount);
+        System.out.println("Tax: $" + calculateTax());
+    }
+    
+    @Override
+    public double calculateTax() {
+        return amount * TAX_RATE;
+    }
+}</code>
+    </program>
+
+    <note>
+      <title>Modern Java Feature: Default Methods</title>
+      <p>Since Java 8, interfaces can include <em>default methods</em>—methods with implementations. Default methods were introduced primarily to enable interface evolution without breaking existing code. Before Java 8, adding a new method to an interface would break all existing implementations.</p>
+      
+      <program language="java">
+        <code>public interface Sortable {
+    // Abstract method (no implementation)
+    void sort();
+    
+    // Default method (with implementation)
+    default void sortDescending() {
+        System.out.println("Default implementation - using sort() in reverse");
+        sort();  // Note: calls the abstract method that implementers must provide
+        // Reverse the order...
+    }
+}</code>
+      </program>
+      
+      <p>Even with default methods, interfaces still cannot contain instance fields. Default methods should generally be used for:</p>
+      <ul>
+        <li>Adding optional functionality that builds on the core abstract methods</li>
+        <li>Providing convenience methods that implementers shouldn't need to override</li> 
+        <li>Evolving existing interfaces without breaking backward compatibility</li>
+      </ul>
+      
+      <p><strong>Caution:</strong> Default methods should not be used to implement significant shared logic. That's what abstract classes are for. Default methods were primarily introduced to allow interfaces to evolve over time without breaking existing code. Overusing them can lead to:</p>
+      <ul>
+        <li>Blurred distinction between interfaces and abstract classes</li>
+        <li>Poor design where state management becomes difficult</li>
+        <li>Confusion about where behavior is defined</li>
+        <li>Maintenance issues when multiple interfaces provide conflicting default implementations</li>
+      </ul>
+    </note>
+    
+    <p><term>Key takeaways about interfaces:</term></p>
+    <ul>
+      <li>Interfaces define a contract that implementing classes must fulfill</li>
+      <li>Interface methods are implicitly <c>public</c> and <c>abstract</c></li>
+      <li>Interfaces cannot have instance fields (only constants)</li>
+      <li>Interfaces cannot have constructors (since they don't initialize instance state)</li>
+      <li>A class can implement multiple interfaces (unlike inheritance, which is limited to one superclass)</li>
+      <li>Default methods provide a way to add methods to interfaces without breaking existing implementations</li>
+    </ul>
+  </subsection>
+
+  <!-- ==============================================
+       4.5 Abstract Classes vs. Interfaces
+       ============================================= -->
+  <subsection xml:id="abstract-classes-vs-interfaces">
+    <title>Choosing Between Abstract Classes and Interfaces</title>
+    <p>The choice between abstract classes and interfaces can sometimes confuse beginners. Here's a practical comparison:</p>
+
+    <note>
+      <title>Understanding "Contracts" in Java</title>
+      <p>Both abstract classes and interfaces define "contracts" but in different ways:</p>
+      <ul>
+        <li><strong>Abstract classes</strong> represent a partial implementation contract: "Here's some common state and behavior, but you must implement these specific methods."</li>
+        <li><strong>Interfaces</strong> represent a pure responsibility contract: "Any class implementing this must provide these capabilities, regardless of its inheritance hierarchy."</li>
+      </ul>
+      <p>Abstract classes focus on what a class <em>is</em> (identity), while interfaces focus on what a class can <em>do</em> (capability).</p>
+    </note>
+
+    <tabular>
+      <row header="yes">
+        <cell>Feature</cell>
+        <cell>Abstract Classes</cell>
+        <cell>Interfaces</cell>
+      </row>
+      <row>
+        <cell>Fields</cell>
+        <cell>Can have instance fields</cell>
+        <cell>Only constants (static final)</cell>
+      </row>
+      <row>
+        <cell>Methods</cell>
+        <cell>Mix of abstract and concrete</cell>
+        <cell>Abstract (+ default since Java 8)</cell>
+      </row>
+      <row>
+        <cell>Implementation</cell>
+        <cell>Can provide partial implementation</cell>
+        <cell>Only through default methods</cell>
+      </row>
+      <row>
+        <cell>Constructors</cell>
+        <cell>Yes</cell>
+        <cell>No</cell>
+      </row>
+      <row>
+        <cell>Multiple inheritance</cell>
+        <cell>No (only one superclass)</cell>
+        <cell>Yes (implement multiple)</cell>
+      </row>
+      <row>
+        <cell>Access modifiers</cell>
+        <cell>Any (public, protected, private)</cell>
+        <cell>Only public</cell>
+      </row>
+    </tabular>
+
+    <p>Based on the comparison, here are guidelines for choosing:</p>
+
+    <ul>
+      <li><term>Use Abstract Classes when:</term>
+        <ul>
+          <li>You have shared <term>state</term> (fields) that subclasses need</li>
+          <li>You want to provide some common method implementations</li>
+          <li>You have a clear "is-a" relationship in your domain</li>
+          <li>You need to use non-public members (protected methods, fields)</li>
+        </ul>
+      </li>
+      <li><term>Use Interfaces when:</term>
+        <ul>
+          <li>You want classes to fulfill multiple roles or behaviors independently</li>
+          <li>You have unrelated classes that share common method signatures but no shared state</li>
+          <li>You want maximum flexibility for future classes</li>
+          <li>You're defining a <term>capability</term> rather than a type of object</li>
+        </ul>
+      </li>
+    </ul>
+
+    <p><strong>Concrete Example Contrast:</strong></p>
+    <sidebyside widths="48% 48%">
+      <stack>
+        <title>Abstract Class Example</title>
+        <p>A <c>Vehicle</c> abstract class makes sense because:</p>
+        <ul>
+          <li>All vehicles share common state (model, speed, position)</li>
+          <li>There's clearly an "is-a" relationship (Car <em>is a</em> Vehicle)</li>
+          <li>Common behaviors can be implemented once (accelerate, decelerate)</li>
+          <li>Some methods need customization in subclasses (start, stop)</li>
+        </ul>
+      </stack>
+      <stack>
+        <title>Interface Example</title>
+        <p>A <c>Printable</c> interface makes sense because:</p>
+        <ul>
+          <li>Many unrelated classes (Document, Invoice, User) might need printing capability</li>
+          <li>These classes don't share a common superclass</li>
+          <li>No shared state is needed for printing</li>
+          <li>The capability can be added independently of inheritance hierarchy</li>
+        </ul>
+      </stack>
+    </sidebyside>
+
+    <p>Let's look at some examples from different domains:</p>
+    
+    <sidebyside widths="48% 48%">
+      <stack>
+        <title>Document Processing System</title>
+        <p>Abstract class: <c>Document</c> with fields for common properties and some shared implementation</p>
+        <p>Interfaces: <c>Printable</c>, <c>Searchable</c>, <c>Editable</c> as capabilities</p>
+        <p>Class hierarchy:</p>
+        <pre>
+Document (abstract class with common behavior)
+PDFDocument extends Document, implements Printable, Searchable
+WordDocument extends Document, implements Printable, Searchable, Editable
+ImageDocument extends Document, implements Printable
+        </pre>
+      </stack>
+      <stack>
+        <title>Vehicle System Example</title>
+        <p>Abstract class: <c>Vehicle</c> with model, position, and shared behaviors</p>
+        <p>Interfaces: <c>Drivable</c>, <c>Electric</c>, <c>Towable</c> as capabilities</p>
+        <p>Class hierarchy:</p>
+        <pre>
+Vehicle (abstract class with common behavior)
+Car extends Vehicle, implements Drivable
+ElectricCar extends Vehicle, implements Drivable, Electric
+Trailer extends Vehicle, implements Towable
+        </pre>
+      </stack>
+    </sidebyside>
+    
+    <p>Real-world systems often combine both approaches to create flexible and organized designs.</p>
+    
+    <insight>
+      <title>Hybrid Design: Combining Abstract Classes and Interfaces</title>
+      <p>In complex applications, you'll often use both abstract classes and interfaces together. Let's build this up step by step using our vehicle example:</p>
+      
+      <p><strong>Step 1:</strong> First, we define our abstract class for common vehicle behavior and state:</p>
+      <program language="java">
+        <code>// Abstract base class - handles common state and partial implementation
+public abstract class Vehicle {
+    protected String model;
+    protected double position;
+    
+    // Common implementation shared by all vehicles
+    public String getModel() {
+        return model;
+    }
+    
+    // Abstract methods that all vehicles must implement
+    public abstract void start();
+    public abstract void stop();
+}</code>
+      </program>
+      
+      <p><strong>Step 2:</strong> Next, we define interfaces for optional capabilities vehicles might have:</p>
+      <program language="java">
+        <code>// Interface for vehicles that are electric powered
+public interface Electric {
+    void charge();
+    int getBatteryLevel();
+}
+
+// Interface for vehicles that can tow other vehicles
+public interface Towable {
+    void tow(Vehicle other);
+    int getTowingCapacity();
+}</code>
+      </program>
+      
+      <p><strong>Step 3:</strong> Finally, we create concrete vehicle types that combine the abstract class with selected interfaces:</p>
+      <program language="java">
+        <code>// Concrete class using both approaches
+public class ElectricTruck extends Vehicle 
+        implements Electric, Towable {
+    
+    private int batteryLevel;
+    private int towingCapacity;
+    
+    // Implement required abstract methods from Vehicle
+    @Override
+    public void start() { 
+        if (batteryLevel > 10) {
+            System.out.println("Starting electric motor...");
+        } else {
+            System.out.println("Battery too low to start!");
+        }
+    }
+    
+    @Override
+    public void stop() { 
+        System.out.println("Stopping electric motor...");
+    }
+    
+    // Implement Electric interface
+    @Override
+    public void charge() { 
+        batteryLevel = 100;
+        System.out.println("Battery fully charged");
+    }
+    
+    @Override
+    public int getBatteryLevel() {
+        return batteryLevel;
+    }
+    
+    // Implement Towable interface
+    @Override
+    public void tow(Vehicle other) {
+        System.out.println("Towing " + other.getModel());
+    }
+    
+    @Override
+    public int getTowingCapacity() {
+        return towingCapacity;
+    }
+}</code>
+      </program>
+      
+      <p>This design leverages the strengths of both approaches:</p>
+      <ul>
+        <li>The abstract class (<c>Vehicle</c>) provides shared state (fields) and some implementation</li>
+        <li>The interfaces add optional capabilities (<c>Electric</c>, <c>Towable</c>)</li>
+        <li>Different vehicle types can mix and match these capabilities as needed</li>
+      </ul>
+    </insight>
+    
+    <p><term>Key takeaways for choosing between abstract classes and interfaces:</term></p>
+    <ul>
+      <li>Use abstract classes for "is-a" relationships with shared state and implementation</li>
+      <li>Use interfaces for "can-do" capabilities that may apply to diverse classes</li>
+      <li>Consider using both in combination for complex systems</li>
+      <li>Remember: Java allows single inheritance but multiple interface implementation</li>
+      <li>Avoid deep inheritance hierarchies (more than 2-3 levels) to reduce complexity. Deep hierarchies can lead to:
+        <ul>
+          <li>Fragile code that breaks when superclasses change</li>
+          <li>Difficulty understanding the full behavior of a class</li>
+          <li>"Method origin confusion" (which superclass does this method come from?)</li>
+          <li>Reduced maintainability and code flexibility</li>
+        </ul>
+      </li>
+    </ul>
+  </subsection>
+
+  <!-- ==============================================
+       Exercises
+       ============================================= -->
+  <exercises>
+    <exercise xml:id="abstract-interfaces-reflection" type="reflection">
+      <title>Reflecting on Abstract Classes and Interfaces</title>
+      <statement>
+        <p>Consider these simple questions about abstract classes and interfaces:</p>
+        <ol>
+          <li>Give an example where an abstract class would help you avoid code duplication.</li>
+          <li>Why can't you use an interface to share a data field like <c>balance</c> among classes?</li>
+          <li>Name one specific situation where you'd use an interface instead of an abstract class.</li>
+          <li>How does polymorphism with abstract classes help when you add new types to a system? Provide a brief example.</li>
+        </ol>
+      </statement>
+      <solution>
+        <p>An abstract class can avoid duplication when multiple classes share common data and behavior, like how different enemy types in a game all need health, position, and movement code.</p>
+
+        <p>Interfaces cannot contain instance fields, only constants. If you tried using an interface to share <c>balance</c>, each class would need its own separate implementation, causing inconsistency.</p>
+
+        <p>An interface is better when unrelated classes need the same capability, like making both <c>Document</c> and <c>Receipt</c> classes printable without them sharing a common parent.</p>
+        
+        <p>Polymorphism lets you write code that works with the abstract type without knowing specific subtypes. For example, a <c>displayVehicle(Vehicle v)</c> method works with <c>Car</c>, <c>Truck</c>, or any new <c>Vehicle</c> subclass you create later, without changing the method.</p>
+      </solution>
+    </exercise>
+    
+    <exercise xml:id="abstract-class-refactoring" type="shortanswer">
+      <title>Refactoring to Abstract Classes</title>
+      <statement>
+        <p>Examine the following code with duplicated functionality across multiple concrete classes:</p>
+        <program language="java">
+          <code>
+public class Rectangle {
+    protected double width;
+    protected double height;
+    
+    public Rectangle(double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+    
+    public double area() {
+        return width * height;
+    }
+    
+    public void draw() {
+        System.out.println("Drawing a rectangle");
+        // Rectangle-specific drawing code
+    }
+}
+
+public class Circle {
+    protected double radius;
+    
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+    
+    public double area() {
+        return Math.PI * radius * radius;
+    }
+    
+    public void draw() {
+        System.out.println("Drawing a circle");
+        // Circle-specific drawing code
+    }
+}
+
+public class Triangle {
+    protected double base;
+    protected double height;
+    
+    public Triangle(double base, double height) {
+        this.base = base;
+        this.height = height;
+    }
+    
+    public double area() {
+        return 0.5 * base * height;
+    }
+    
+    // Oops! Missing draw() method
+}
+          </code>
+        </program>
+        
+        <p>Refactor this code to use an abstract class that captures the common functionality while enforcing that all shapes must be drawable. Include explanations for your design decisions.</p>
+      </statement>
+      <solution>
+        <p>Here's a refactored solution using an abstract class, implemented step by step:</p>
+        
+        <p><strong>Step 1:</strong> First, create an abstract <c>Shape</c> class that defines the common contract:</p>
+        <program language="java">
+          <code>
+// Abstract base class for all shapes
+public abstract class Shape {
+    // All shapes need an area calculation
+    public abstract double area();
+    
+    // All shapes must be drawable
+    public abstract void draw();
+}
+          </code>
+        </program>
+        
+        <p><strong>Step 2:</strong> Refactor <c>Rectangle</c> to extend the abstract class:</p>
+        <program language="java">
+          <code>
+public class Rectangle extends Shape {
+    private double width;
+    private double height;
+    
+    public Rectangle(double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+    
+    @Override
+    public double area() {
+        return width * height;
+    }
+    
+    @Override
+    public void draw() {
+        System.out.println("Drawing a rectangle");
+        // Rectangle-specific drawing code
+    }
+}
+          </code>
+        </program>
+        
+        <p><strong>Step 3:</strong> Refactor <c>Circle</c> and <c>Triangle</c> similarly:</p>
+        <program language="java">
+          <code>
+public class Circle extends Shape {
+    private double radius;
+    
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+    
+    @Override
+    public double area() {
+        return Math.PI * radius * radius;
+    }
+    
+    @Override
+    public void draw() {
+        System.out.println("Drawing a circle");
+        // Circle-specific drawing code
+    }
+}
+
+public class Triangle extends Shape {
+    private double base;
+    private double height;
+    
+    public Triangle(double base, double height) {
+        this.base = base;
+        this.height = height;
+    }
+    
+    @Override
+    public double area() {
+        return 0.5 * base * height;
+    }
+    
+    @Override
+    public void draw() {
+        // Now the Triangle class is required to implement draw()
+        System.out.println("Drawing a triangle");
+        // Triangle-specific drawing code
+    }
+}
+          </code>
+        </program>
+        
+        <p>Design decisions explained:</p>
+        <ul>
+          <li>Created an abstract <c>Shape</c> class that requires all shapes to implement <c>area()</c> and <c>draw()</c></li>
+          <li>Made both methods abstract since each shape will calculate its area and render itself differently</li>
+          <li>This design catches the missing <c>draw()</c> method at compile time</li>
+          <li>The abstract class lets us treat all shapes polymorphically (e.g., we could have an array of <c>Shape</c> objects and call <c>draw()</c> on each)</li>
+          <li>I didn't include fields in the abstract class since each shape needs different measurements (radius vs. width/height)</li>
+        </ul>
+      </solution>
+    </exercise>
+    
+    <exercise xml:id="interface-vs-abstract-use-case" type="matching">
+      <title>Matching Use Cases with Abstractions</title>
+      <statement>
+        <p>For each scenario, decide whether an abstract class, an interface, or both would be the better choice. Match the scenarios with the appropriate options.</p>
+      </statement>
+      <matches>
+        <match>
+          <premise>You need to create various payment methods (credit card, PayPal, bank transfer) that all process payments but with different implementations.</premise>
+          <response>Interface <c>PaymentProcessor</c> is best, as payment methods don't share implementation or state, just a common capability.</response>
+        </match>
+        <match>
+          <premise>You're building different types of database connections that all share connection establishment code but have unique query execution methods.</premise>
+          <response>Abstract class <c>DatabaseConnection</c> works best to share the connection establishment code and state.</response>
+        </match>
+        <match>
+          <premise>You need various unrelated classes to be able to convert themselves to a standard text format for data exchange.</premise>
+          <response>Interface <c>StringSerializable</c> is appropriate, as this is a capability that can apply to many unrelated classes.</response>
+        </match>
+        <match>
+          <premise>You want to create different types of user accounts that share user profile data but have different permission systems.</premise>
+          <response>Abstract class <c>UserAccount</c> with common fields plus an interface <c>Permissible</c> provides the best of both worlds.</response>
+        </match>
+      </matches>
+    </exercise>
+    
+    <exercise xml:id="abstract-interface-true-false" type="truefalse">
+      <title>True or False: Abstract Classes and Interfaces</title>
+      <statement>
+        <p>Determine whether each statement is true or false:</p>
+      </statement>
+      <truefalse>
+        <statement>
+          <p>An interface can have constructors.</p>
+        </statement>
+        <answer>false</answer>
+        <feedback>
+          <p>Interfaces cannot have constructors. Constructors are used to initialize object state, but interfaces cannot contain instance variables (except constants).</p>
+        </feedback>
+      </truefalse>
+      <truefalse>
+        <statement>
+          <p>Abstract classes can contain only abstract methods.</p>
+        </statement>
+        <answer>false</answer>
+        <feedback>
+          <p>Abstract classes can contain a mix of abstract methods AND concrete methods with implementations. In fact, this is one of their key advantages over interfaces.</p>
+        </feedback>
+      </truefalse>
+      <truefalse>
+        <statement>
+          <p>A class can implement multiple interfaces at the same time.</p>
+        </statement>
+        <answer>true</answer>
+        <feedback>
+          <p>This is correct. Java allows a class to implement multiple interfaces simultaneously, which is a way to achieve a form of multiple inheritance for behavior.</p>
+        </feedback>
+      </truefalse>
+      <truefalse>
+        <statement>
+          <p>You can create an instance of an abstract class directly.</p>
+        </statement>
+        <answer>false</answer>
+        <feedback>
+          <p>You cannot instantiate abstract classes directly. You must create a concrete subclass that implements all abstract methods, then instantiate that subclass.</p>
+        </feedback>
+      </truefalse>
+      <truefalse>
+        <statement>
+          <p>Interface methods are implicitly public and abstract.</p>
+        </statement>
+        <answer>true</answer>
+        <feedback>
+          <p>This is correct. In interfaces, methods are implicitly public and abstract (except for default methods, which have implementations).</p>
+        </feedback>
+      </truefalse>
+    </exercise>
+  </exercises>
+</section>
