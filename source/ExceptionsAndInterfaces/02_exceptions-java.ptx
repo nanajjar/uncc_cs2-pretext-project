@@ -129,7 +129,8 @@ public class ExceptionDemoSkeleton {
     <p>Compare your answers with the full code below:</p>
     <program language="java" xml:id="ExceptionDemo"  interactive="activecode" label="except_demo">
 public class ExceptionDemo {
-
+    import java.io.*;
+    
     public static void main(String[] args) {
         // 1) If readData() throws a checked exception, we must handle or declare it:
         try {
