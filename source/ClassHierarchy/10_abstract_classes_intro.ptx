@@ -1,0 +1,47 @@
+<section xml:id="abstract-classes-introduction">
+  <title>Introduction to Abstract Classes</title>
+
+  <p>An <term>abstract class</term> is a special type of class in Java that cannot be instantiated directly—meaning you cannot create objects from it using the <c>new</c> keyword. Instead, abstract classes are designed to be subclassed (extended) by other classes that provide implementations for their abstract methods.</p>
+  
+  <p>Abstract classes serve as incomplete templates or blueprints that define:</p>
+  <ul>
+    <li>Common state (fields) that subclasses will inherit</li>
+    <li>Some fully implemented methods that all subclasses can use as-is</li>
+    <li>Abstract methods (methods without bodies) that subclasses <em>must</em> implement</li>
+  </ul>
+  
+  <p>The inability to instantiate abstract classes is actually by design. If a class contains one or more abstract methods that have no implementation, it wouldn't make sense to create objects from it, since those objects wouldn't know how to respond to calls to the abstract methods.</p>
+
+  <subsection xml:id="why-abstract-classes">
+    <title>Why Abstract Classes?</title>
+    <p>You might wonder why you'd ever want to create a class that you can't actually instantiate. Yet, abstract classes are very useful because they help clearly define what subclasses must implement, without forcing unnecessary duplication. Think of an abstract class as a <em>blueprint</em> or a template for your subclasses.</p>
+
+    <sidebyside widths="48% 48%">
+      <stack>
+        <title>Document System Example</title>
+        <p>In a document management system, different document types (PDF, Word, Image) all need methods like <c>save()</c> and <c>print()</c>. An abstract <c>Document</c> class would define these methods as abstract, ensuring all document types implement them.</p>
+        <note>
+          <p>This provides a consistent interface for working with documents while allowing each document type to handle saving and printing according to its specific format requirements.</p>
+        </note>
+      </stack>
+      <stack>
+        <title>Business Domain Example</title>
+        <p>In a payroll system, you might have an abstract <c>Employee</c> class with an abstract <c>calculatePay()</c> method. Different types of employees (hourly, salaried, commission-based) would each implement this differently.</p>
+        <note>
+          <p>This mirrors real business rules where each employee type has its own pay calculation formula but shares basic employee attributes.</p>
+        </note>
+      </stack>
+    </sidebyside>
+    
+    <insight>
+      <title>How Classes Evolve to Become Abstract</title>
+      <p>In real-world software development, abstract classes often emerge through a natural evolution of your codebase rather than being designed from the start. You might initially create concrete (non-abstract) superclasses, but as your system grows, you discover that:</p>
+      <ul>
+        <li>Some superclass methods don't make sense to implement at the superclass level</li>
+        <li>Multiple subclasses keep overriding the same methods with specialized behavior</li>
+        <li>You find yourself creating superclass "instances" that really should be one of the subclasses</li>
+      </ul>
+      <p>These signs often indicate that your design would benefit from converting the superclass into an abstract class. This evolution represents a growing understanding of your problem domain and a natural refinement of your object model.</p>
+    </insight>
+  </subsection>
+</section> 

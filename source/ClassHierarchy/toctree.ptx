@@ -12,5 +12,8 @@
 <xi:include href="07_protected_private.ptx" />
 <xi:include href="08_overriding_methods.ptx" />
 <xi:include href="09_constructors_super.ptx" />
-<xi:include href="04_abstract_classes.ptx" />
+<xi:include href="10_abstract_classes_intro.ptx" />
+<xi:include href="11_abstract_classes_methods.ptx" />
+<xi:include href="12_interfaces.ptx" />
+<xi:include href="13_abstract_vs_interfaces.ptx" />
 </chapter>

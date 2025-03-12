@@ -76,8 +76,6 @@ public class Entity {
 }
 
 // File: Player.java
-import java.io.Serializable; // Example import, if Player implements Serializable
- 
 public class Player extends Entity {
     private int experiencePoints;
     private int level;
