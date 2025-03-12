@@ -1,6 +1,41 @@
 <section xml:id="class-hierarchy-design-recipe">
   <title>Class Hierarchy and the Design Recipe</title>
   
+  <objectives>
+    <ul>
+        <li>
+            <p>
+                Identify opportunities for inheritance early in the design process
+            </p>
+        </li>
+        <li>
+            <p>
+                Integrate class hierarchy planning into Steps 0, 1, and 2 of the Design Recipe
+            </p>
+        </li>
+        <li>
+            <p>
+                Create data definitions that clearly separate shared vs. specialized attributes
+            </p>
+        </li>
+        <li>
+            <p>
+                Design method signatures with clear rules for what subclasses must, may, or must not override
+            </p>
+        </li>
+        <li>
+            <p>
+                Apply iterative refinement to improve class hierarchies
+            </p>
+        </li>
+        <li>
+            <p>
+                Apply the DRY principle to reduce code duplication through appropriate inheritance
+            </p>
+        </li>
+    </ul>
+  </objectives>
+  
   <p>When developing software with multiple related classes, you'll often notice patterns of repetition. Consider a social media application where you're implementing different post types: <c>TextPost</c>, <c>PhotoPost</c>, and <c>VideoPost</c>. Without inheritance, you might find yourself repeatedly coding the same fields like <c>author</c>, <c>timestamp</c>, and <c>likes</c>, along with identical methods such as <c>addComment()</c> and <c>like()</c>. This duplication is a clear signal that these classes share a common conceptual parent.</p>
   
   <p>In this section, we explicitly integrate the concept of class hierarchies and inheritance into the early steps of our Design Recipe—especially <term>Steps 0 (Understand &amp; Restate)</term> and <term>1 (Data Definitions)</term>. By carefully examining and iteratively refining our initial understanding and data definitions, we identify shared structures early, thereby creating opportunities for well-designed superclasses or interfaces.</p>

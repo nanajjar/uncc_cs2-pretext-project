@@ -1,5 +1,40 @@
 <section xml:id="abstract-classes-introduction">
   <title>Introduction to Abstract Classes</title>
+  
+  <objectives>
+    <ul>
+        <li>
+            <p>
+                Explain the purpose and benefits of abstract classes in Java
+            </p>
+        </li>
+        <li>
+            <p>
+                Implement abstract classes and methods to enforce contracts for subclasses
+            </p>
+        </li>
+        <li>
+            <p>
+                Design class hierarchies with abstract methods that must be implemented by concrete subclasses
+            </p>
+        </li>
+        <li>
+            <p>
+                Compare and contrast interfaces with abstract classes for appropriate use cases
+            </p>
+        </li>
+        <li>
+            <p>
+                Implement interfaces using the implements keyword to define cross-cutting behaviors
+            </p>
+        </li>
+        <li>
+            <p>
+                Apply both abstract classes and interfaces to solve complex design problems
+            </p>
+        </li>
+    </ul>
+  </objectives>
 
   <p>An <term>abstract class</term> is a special type of class in Java that cannot be instantiated directly—meaning you cannot create objects from it using the <c>new</c> keyword. Instead, abstract classes are designed to be subclassed (extended) by other classes that provide implementations for their abstract methods.</p>
   

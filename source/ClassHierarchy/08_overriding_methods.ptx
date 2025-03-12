@@ -4,6 +4,31 @@
 <section xml:id="inheritance-overriding-methods">
     <title>Overriding Methods</title>
     <introduction>
+    <objectives>
+        <ul>
+            <li>
+                <p>
+                    Explain how method overriding allows subclasses to modify inherited behavior while maintaining the same method signature
+                </p>
+            </li>
+            <li>
+                <p>
+                    Apply the <c>@Override</c> annotation correctly to ensure compile-time verification of overridden methods
+                </p>
+            </li>
+            <li>
+                <p>
+                    Distinguish between appropriate and inappropriate scenarios for method overriding
+                </p>
+            </li>
+            <li>
+                <p>
+                    Implement subclass methods that call their parent's implementation using the <c>super</c> keyword
+                </p>
+            </li>
+        </ul>
+    </objectives>
+    
     <p>Inheritance allows you to take a method from your superclass and replace it with your own
         version in the subclass. This is called <em>method overriding</em>. To override a method,
         define a method in your subclass with exactly the same signature as the superclass method.</p>
@@ -14,37 +39,37 @@
 
     <program language="java">
         <code>public class Monster extends Entity {
-            private boolean isUndead;
+    private boolean isUndead;
 
-            public Monster(String name, int initialHealth, boolean isUndead) {
-            super(name, initialHealth);
-            this.isUndead = isUndead;
-            }
+    public Monster(String name, int initialHealth, boolean isUndead) {
+        super(name, initialHealth);
+        this.isUndead = isUndead;
+    }
 
-            @Override
-            public void takeDamage(int amount) {
-            // Undead monsters take half damage
-            if (isUndead) {
+    @Override
+    public void takeDamage(int amount) {
+        // Undead monsters take half damage
+        if (isUndead) {
             int reducedAmount = amount / 2;
             System.out.println(getName() + " resists damage due to undead nature!");
             super.takeDamage(reducedAmount); // Call the parent version with reduced damage
-            } else {
+        } else {
             // Call the original implementation for non-undead monsters
             super.takeDamage(amount);
-            }
-            }
+        }
+    }
 
-            @Override
-            public void heal(int amount) {
-            // Undead monsters are damaged by healing
-            if (isUndead) {
+    @Override
+    public void heal(int amount) {
+        // Undead monsters are damaged by healing
+        if (isUndead) {
             System.out.println("Healing harms the undead " + getName() + "!");
             takeDamage(amount);
-            } else {
+        } else {
             super.heal(amount);
-            }
-            }
-            }</code>
+        }
+    }
+}</code>
     </program>
     <p>Here, <c>Monster</c> inherits and overrides both the <c>takeDamage</c> and <c>heal</c>
         methods to implement specialized behavior for undead monsters: they take half damage but are

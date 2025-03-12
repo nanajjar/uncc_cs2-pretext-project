@@ -1,6 +1,5 @@
 <section xml:id="inheritance-conclusion">
-  <title>Conclusion: The Power of Integrating Inheritance with the Design Recipe</title>
-
+  <title>Conclusion: Designing Class Hierarchies</title>
   <p>Throughout this chapter, we've explored how to thoughtfully integrate inheritance into the design recipe process. By considering inheritance relationships early—during Steps 0, 1, and 2—we create more robust, maintainable, and extensible class hierarchies that directly support the DRY principle and lead to cleaner, more intuitive code.</p>
 
   <subsection xml:id="key-takeaways">
@@ -60,5 +59,324 @@
     <p>The integration of inheritance planning with the design recipe provides a powerful framework for creating well-structured object-oriented systems that are easier to understand, maintain, and extend. The social media post example we've explored—with its <c>Post</c> superclass, <c>MediaPost</c> intermediate class, and specialized subclasses like <c>TextPost</c>, <c>PhotoPost</c>, and <c>VideoPost</c>—demonstrates how careful hierarchy design leads to more intuitive, DRY code that's better prepared for future evolution.</p>
     
     <p>By applying these principles consistently, you'll develop not just better code, but a deeper intuition for effective object-oriented design that will serve you throughout your programming career.</p>
+  </subsection>
+
+  <subsection xml:id="integrated-inheritance-example">
+    <title>Integrated Inheritance Example: Social Media System</title>
+    
+    <p>Throughout this chapter, we've explored many concepts related to inheritance and class hierarchies. The following example brings these concepts together in a single, runnable program that demonstrates a social media post system—the example we've referenced throughout the chapter.</p>
+    
+    <p>This example showcases:</p>
+    <ul>
+      <li>A class hierarchy with an abstract superclass (<c>Post</c>)</li>
+      <li>An intermediate class (<c>MediaPost</c>) providing shared functionality</li>
+      <li>Concrete subclasses with specialized behavior</li>
+      <li>Constructor chaining with <c>super()</c></li>
+      <li>Method overriding with <c>@Override</c> annotation</li>
+      <li>The DRY principle in action</li>
+    </ul>
+    
+    <p><term>Note:</term> To work within Runestone's constraints, all classes are combined in a single file. In a real project, each class would typically be in its own file.</p>
+    
+    <program xml:id="social_media_inheritance" interactive="activecode" language="java">
+      <input>
+/**
+ * Main class that demonstrates our social media post hierarchy in action
+ */
+public class PostDemo {
+    public static void main(String[] args) {
+        // Create different post types
+        TextPost textPost = new TextPost("Alice", "Just learned about inheritance in Java!");
+        PhotoPost photoPost = new PhotoPost("Bob", "Vacation sunset", "sunset.jpg", "1920x1080");
+        VideoPost videoPost = new VideoPost("Charlie", "My Java tutorial", "tutorial.mp4", "1280x720", 300);
+        
+        System.out.println("\n===== Basic Post Information =====");
+        displayPostInfo(textPost);
+        displayPostInfo(photoPost);
+        displayPostInfo(videoPost);
+        
+        System.out.println("\n===== User Interaction =====");
+        // Like various posts
+        textPost.like();
+        photoPost.like();
+        photoPost.like(); // Liked twice
+        videoPost.like();
+        videoPost.like();
+        videoPost.like(); // Liked three times
+        
+        // Add comments
+        textPost.addComment("Great insight!");
+        photoPost.addComment("Beautiful shot!");
+        photoPost.addComment("Where was this taken?");
+        videoPost.addComment("Very helpful tutorial!");
+        
+        System.out.println("\n===== Updated Post Information =====");
+        displayPostInfo(textPost);
+        displayPostInfo(photoPost);
+        displayPostInfo(videoPost);
+        
+        System.out.println("\n===== Media-Specific Features =====");
+        // Demonstrate media-specific methods
+        System.out.println("Time to consume " + photoPost.getTitle() + ": " + 
+                           photoPost.getTimeToConsume() + " seconds");
+        System.out.println("Time to consume " + videoPost.getTitle() + ": " + 
+                           videoPost.getTimeToConsume() + " seconds");
+                           
+        System.out.println("\n===== Text Post-Specific Features =====");
+        System.out.println(textPost.getTitle() + " - Word count: " + textPost.getWordCount());
+        System.out.println("Summary: " + textPost.getSummary(3));
+    }
+    
+    // This method demonstrates polymorphism - it works with any Post object
+    private static void displayPostInfo(Post post) {
+        System.out.println("\n" + post.getTitle());
+        System.out.println("By: " + post.getAuthor() + " | Likes: " + post.getLikeCount());
+        System.out.println("Comments: " + post.getCommentCount());
+        
+        if (post.getCommentCount() &gt; 0) {
+            System.out.println("--- Latest Comments ---");
+            for (String comment : post.getComments()) {
+                System.out.println("* " + comment);
+            }
+        }
+    }
+}
+
+/**
+ * Abstract base class for all post types
+ * - Demonstrates abstract classes
+ * - Contains shared fields and methods (DRY principle)
+ */
+abstract class Post {
+    // Common fields (shared by all post types)
+    private String author;
+    private String timestamp;
+    private int likeCount;
+    private java.util.ArrayList&lt;String&gt; comments;
+    
+    // Constructor
+    public Post(String author) {
+        this.author = author;
+        this.timestamp = new java.util.Date().toString();
+        this.likeCount = 0;
+        this.comments = new java.util.ArrayList&lt;&gt;();
+    }
+    
+    // Common methods for all posts
+    public void like() {
+        likeCount++;
+        System.out.println(getTitle() + " received a like! Total likes: " + likeCount);
+    }
+    
+    public void addComment(String comment) {
+        comments.add(comment);
+        System.out.println("Comment added to " + getTitle() + ": " + comment);
+    }
+    
+    // Getters
+    public String getAuthor() {
+        return author;
+    }
+    
+    public String getTimestamp() {
+        return timestamp;
+    }
+    
+    public int getLikeCount() {
+        return likeCount;
+    }
+    
+    public int getCommentCount() {
+        return comments.size();
+    }
+    
+    public java.util.ArrayList&lt;String&gt; getComments() {
+        return new java.util.ArrayList&lt;&gt;(comments); // Return a copy for safety
+    }
+    
+    // Abstract method that all subclasses must implement
+    public abstract String getTitle();
+    
+    // Abstract method for time to consume content
+    public abstract int getTimeToConsume();
+}
+
+/**
+ * TextPost class - a concrete subclass of Post
+ * - Demonstrates extending a class
+ * - Adds specialized fields and methods
+ */
+class TextPost extends Post {
+    private String content;
+    
+    public TextPost(String author, String content) {
+        super(author); // Call parent constructor
+        this.content = content;
+    }
+    
+    // Implement abstract method
+    @Override
+    public String getTitle() {
+        // Create a title from the first few words
+        return getFirstWords(content, 5) + "...";
+    }
+    
+    // Text-specific methods
+    public int getWordCount() {
+        if (content == null || content.isEmpty()) {
+            return 0;
+        }
+        return content.split("\\s+").length;
+    }
+    
+    public String getSummary(int sentenceCount) {
+        if (content == null || content.isEmpty()) {
+            return "";
+        }
+        
+        String[] sentences = content.split("[.!?]\\s*");
+        StringBuilder summary = new StringBuilder();
+        
+        for (int i = 0; i &lt; Math.min(sentenceCount, sentences.length); i++) {
+            summary.append(sentences[i]).append(". ");
+        }
+        
+        return summary.toString().trim();
+    }
+    
+    private String getFirstWords(String text, int wordCount) {
+        if (text == null || text.isEmpty()) {
+            return "";
+        }
+        
+        String[] words = text.split("\\s+");
+        StringBuilder result = new StringBuilder();
+        
+        for (int i = 0; i &lt; Math.min(wordCount, words.length); i++) {
+            result.append(words[i]).append(" ");
+        }
+        
+        return result.toString().trim();
+    }
+    
+    @Override
+    public int getTimeToConsume() {
+        // Estimate 2 seconds per word
+        return getWordCount() * 2;
+    }
+}
+
+/**
+ * MediaPost class - an intermediate abstract class
+ * - Demonstrates multi-level inheritance
+ * - Shows how to create intermediate classes for shared functionality
+ */
+abstract class MediaPost extends Post {
+    private String title;
+    private String filePath;
+    private String resolution;
+    
+    public MediaPost(String author, String title, String filePath, String resolution) {
+        super(author);
+        this.title = title;
+        this.filePath = filePath;
+        this.resolution = resolution;
+    }
+    
+    @Override
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getFilePath() {
+        return filePath;
+    }
+    
+    public String getResolution() {
+        return resolution;
+    }
+    
+    // Shared method for validating resolutions
+    protected boolean isValidResolution(String resolution) {
+        if (resolution == null) {
+            return false;
+        }
+        
+        // Simple validation: must be in format "WidthxHeight"
+        String[] parts = resolution.split("x");
+        if (parts.length != 2) {
+            return false;
+        }
+        
+        try {
+            int width = Integer.parseInt(parts[0]);
+            int height = Integer.parseInt(parts[1]);
+            return width &gt; 0 &amp;&amp; height &gt; 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+}
+
+/**
+ * PhotoPost class - concrete subclass of MediaPost
+ * - Demonstrates a leaf class in the hierarchy
+ */
+class PhotoPost extends MediaPost {
+    public PhotoPost(String author, String title, String filePath, String resolution) {
+        super(author, title, filePath, resolution);
+    }
+    
+    @Override
+    public int getTimeToConsume() {
+        // Photos take about 10 seconds to view
+        return 10;
+    }
+}
+
+/**
+ * VideoPost class - concrete subclass of MediaPost
+ * - Demonstrates another leaf class with different behavior
+ */
+class VideoPost extends MediaPost {
+    private int durationInSeconds;
+    
+    public VideoPost(String author, String title, String filePath, String resolution, int durationInSeconds) {
+        super(author, title, filePath, resolution);
+        this.durationInSeconds = durationInSeconds;
+    }
+    
+    public int getDurationInSeconds() {
+        return durationInSeconds;
+    }
+    
+    @Override
+    public int getTimeToConsume() {
+        // Videos take their full duration to watch
+        return durationInSeconds;
+    }
+}
+      </input>
+    </program>
+
+    <p>Try experimenting with this code! Here are some things you might modify:</p>
+    <ul>
+      <li>Create a new type of post (like <c>PollPost</c> or <c>EventPost</c>) by extending <c>Post</c></li>
+      <li>Add new fields to the existing classes</li>
+      <li>Override <c>like()</c> in one of the subclasses to provide special behavior</li>
+      <li>Add a method to count hashtags in <c>TextPost</c></li>
+      <li>Implement a <c>share()</c> method in the <c>Post</c> class and customize it in subclasses</li>
+    </ul>
+    
+    <p>This example illustrates how a well-designed inheritance hierarchy can:</p>
+    <ul>
+      <li>Reduce code duplication by centralizing common fields and methods in the superclass</li>
+      <li>Use abstract classes for conceptual entities that shouldn't be instantiated directly</li>
+      <li>Create intermediate classes when a subset of subclasses shares specialized behavior</li>
+      <li>Allow for polymorphism through method overriding</li>
+      <li>Establish a clear "is-a" relationship that mirrors real-world concepts</li>
+    </ul>
+    
+    <p>By understanding these inheritance principles and applying them with the design recipe, you can create cleaner, more maintainable, and more extensible code in your own projects.</p>
   </subsection>
 </section> 

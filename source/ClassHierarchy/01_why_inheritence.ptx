@@ -1,6 +1,41 @@
 <section xml:id="ch-class-hierarchy">
   <title>Why Inheritance?</title>
 
+  <objectives>
+    <ul>
+        <li>
+            <p>
+                Explain the purpose and benefits of inheritance in object-oriented programming
+            </p>
+        </li>
+        <li>
+            <p>
+                Apply the "is-a" relationship test to determine when inheritance is appropriate
+            </p>
+        </li>
+        <li>
+            <p>
+                Differentiate between inheritance and other code reuse mechanisms (methods, interfaces, composition)
+            </p>
+        </li>
+        <li>
+            <p>
+                Implement class hierarchies using Java's inheritance syntax
+            </p>
+        </li>
+        <li>
+            <p>
+                Apply appropriate access modifiers (protected, private) in inheritance contexts
+            </p>
+        </li>
+        <li>
+            <p>
+                Recognize the Object class as the root of all Java class hierarchies
+            </p>
+        </li>
+    </ul>
+  </objectives>
+
   <p><term>Inheritance</term> is a fundamental mechanism in object-oriented programming where one class (the subclass) acquires the properties and behaviors of another class (the superclass). This establishes an "is-a" relationship, where the subclass represents a specialized version of the superclass. For example, a <c>SavingsAccount</c> is a specialized type of <c>BankAccount</c>.</p>
   
   <p>Consider this concrete example of inheritance in action:</p>

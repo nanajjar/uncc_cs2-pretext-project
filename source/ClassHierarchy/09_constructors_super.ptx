@@ -1,6 +1,36 @@
 <section xml:id="constructors-and-super">
   <title>Constructors and the <c>super</c> Keyword</title>
 
+  <objectives>
+    <ul>
+        <li>
+            <p>
+                Explain the initialization order between superclass and subclass constructors
+            </p>
+        </li>
+        <li>
+            <p>
+                Use the <c>super()</c> constructor call to initialize a superclass from a subclass
+            </p>
+        </li>
+        <li>
+            <p>
+                Apply the <c>super</c> keyword to access superclass methods from a subclass
+            </p>
+        </li>
+        <li>
+            <p>
+                Identify and avoid common pitfalls when calling overridable methods from constructors
+            </p>
+        </li>
+        <li>
+            <p>
+                Implement constructors that properly initialize both superclass and subclass fields
+            </p>
+        </li>
+    </ul>
+  </objectives>
+
   <!-- ==============================================
        3.1 Constructors and Initialization Order
        ============================================= -->
