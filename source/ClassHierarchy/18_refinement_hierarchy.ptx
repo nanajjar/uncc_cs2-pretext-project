@@ -311,8 +311,11 @@ public void tagUser(User user) {
     </ul>
     
     <p>Here's an example of a revised data definition table after creating the <c>MediaPost</c> intermediate class:</p>
-    
-    <tabular>
+ <tabular bottom="minor" halign="center">
+      <col width="20%"/>
+      <col width="55%"/>
+      <col width="25%"/>
+
       <row header="yes">
         <cell>Class</cell>
         <cell>Fields</cell>
@@ -320,28 +323,28 @@ public void tagUser(User user) {
       </row>
       <row>
         <cell>Post (abstract)</cell>
-        <cell>author: String<br/>timestamp: Date<br/>likeCount: int<br/>comments: List&lt;Comment&gt;<br/>taggedUsers: List&lt;User&gt;</cell>
-        <cell>author not null or empty<br/>timestamp not null</cell>
+        <cell><p>author: String</p><p>timestamp: Date</p><p>likeCount: int</p><p>comments: List&lt;Comment&gt;</p><p>taggedUsers: List&lt;User&gt;</p></cell>
+        <cell><p>author not null or empty</p><p>timestamp not null</p></cell>
       </row>
       <row>
         <cell>MediaPost (abstract)</cell>
-        <cell>fileSize: int<br/>resolution: String</cell>
-        <cell>fileSize &gt; 0<br/>resolution in format "WidthxHeight"</cell>
+        <cell><p>fileSize: int</p><p>resolution: String</p></cell>
+        <cell><p>fileSize &gt; 0</p><p>resolution in format "WidthxHeight"</p></cell>
       </row>
       <row>
         <cell>TextPost</cell>
-        <cell>textContent: String<br/>wordCount: int</cell>
+        <cell><p>textContent: String</p><p>wordCount: int</p></cell>
         <cell>textContent not null</cell>
       </row>
       <row>
         <cell>PhotoPost</cell>
-        <cell>imageFile: String<br/>caption: String</cell>
+        <cell><p>imageFile: String</p><p>caption: String</p></cell>
         <cell>imageFile not null or empty</cell>
       </row>
       <row>
         <cell>VideoPost</cell>
-        <cell>videoFile: String<br/>description: String<br/>duration: int</cell>
-        <cell>videoFile not null or empty<br/>duration &gt; 0</cell>
+        <cell><p>videoFile: String</p><p>description: String</p><p>duration: int</p></cell>
+        <cell><p>videoFile not null or empty</p><p>duration &gt; 0</p></cell>
       </row>
     </tabular>
     
