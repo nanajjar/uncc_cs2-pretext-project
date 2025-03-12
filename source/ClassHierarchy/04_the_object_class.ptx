@@ -1,0 +1,37 @@
+  <section xml:id="object-class-inheritance">
+    <title>Object: The Ultimate Superclass</title>
+    <p>Did you know you're already using inheritance in every Java class you write? In Java, all classes implicitly inherit from a superclass called <c>Object</c> if they don't explicitly extend another class. This means every class you create automatically receives methods like <c>toString()</c>, <c>equals()</c>, and <c>hashCode()</c>.</p>
+    
+    <p>This universal inheritance has profound implications for Java's design:</p>
+    <ul>
+      <li>It enables polymorphic handling of any object through the common <c>Object</c> reference type</li>
+      <li>It establishes system-wide contracts for object comparison, string representation, and hashing</li>
+      <li>It makes collections like <c>ArrayList</c> or <c>HashMap</c> possible, as they can store any object type</li>
+    </ul>
+    
+    <p>Let's see what happens when we use inherited <c>Object</c> methods without overriding them:</p>
+    
+    <program language="java">
+      <code>
+public class Player {
+    private String name;
+    private int health;
+    
+    public Player(String name, int health) {
+        this.name = name;
+        this.health = health;
+    }
+    
+    // No toString() override
+}
+
+// Later in code
+Player hero = new Player("Hero", 100);
+System.out.println(hero); // Outputs something like: Player@7a81197d
+      </code>
+    </program>
+    
+    <p>The output is not very readable because we're using the default <c>toString()</c> implementation inherited from <c>Object</c>. This default is deliberately minimal—Java can't assume what information would be meaningful for every possible class, so it provides a basic implementation that you're expected to override with class-specific behavior.</p>
+    
+    <p>This example illustrates an important inheritance concept: while inheriting methods is convenient, sometimes the parent class's implementation doesn't fit the specific needs of the subclass—a perfect scenario for method overriding, which we'll explore in the next chapter.</p>
+  </section>

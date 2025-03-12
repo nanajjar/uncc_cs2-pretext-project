@@ -1,0 +1,117 @@
+ <!-- ==============================================
+       2.3 Java Inheritance Syntax
+       ============================================= -->
+  <section xml:id="java-inheritance-syntax">
+    <title>Java Inheritance Syntax</title>
+      <introduction>
+
+    <!-- <sidebyside widths="45% 55%">
+      <stack> -->
+        <p>In Java, you establish an inheritance relationship using the <c>extends</c> keyword in your class declaration.</p>
+        <p>When a class extends another class, it automatically inherits all non-private members (fields and methods) from the superclass.</p>
+        <p>The general syntax looks like this:</p>
+      <!-- </stack>
+      <stack> -->
+        <pre>
+public class SubclassName extends SuperclassName {
+    // Additional fields and methods
+    // unique to this subclass
+}
+        </pre>
+      <!-- </stack>
+    </sidebyside> -->
+    
+    <p>For example, if <c>Monster</c> extends <c>Entity</c>, it inherits all non-private fields and methods from <c>Entity</c> automatically:</p>
+    <program language="java">
+      <code>public class Monster extends Entity {
+    // extra fields or methods for Monster can go here
+}</code>
+    </program>
+  </introduction>
+  
+
+  <!-- ==============================================
+       2.4 A Complete Example: Entity and Player
+       ============================================= -->
+  <subsection xml:id="inheritance-simple-example">
+    <title>A Complete Inheritance Example</title>
+    <p>Below is a fuller example. The superclass <c>Entity</c> stores a <c>health</c> field, plus methods for initializing and modifying this health. The subclass <c>Player</c> automatically gains those fields and methods, but also adds its own unique ones.</p>
+    <program language="java">
+      <code>// File: Entity.java
+public class Entity {
+    protected int health;
+    protected int maxHealth;
+    protected String name;
+    
+    public Entity(String name, int initialHealth) {
+        this.name = name;
+        this.maxHealth = initialHealth;
+        this.health = initialHealth;
+    }
+
+    public void takeDamage(int amount) {
+        // Common damage calculation logic
+        health -= amount;
+        if (health &lt; 0) {
+            health = 0;
+        }
+        System.out.println(name + " takes " + amount + " damage. Health: " + health);
+    }
+    
+    public void heal(int amount) {
+        health += amount;
+        if (health &gt; maxHealth) {
+            health = maxHealth;
+        }
+        System.out.println(name + " heals for " + amount + ". Health: " + health);
+    }
+
+    public int getHealth() {
+        return health;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+
+// File: Player.java
+import java.io.Serializable; // Example import, if Player implements Serializable
+ 
+public class Player extends Entity {
+    private int experiencePoints;
+    private int level;
+
+    public Player(String playerName, int initialHealth) {
+        super(playerName, initialHealth); // calls the Entity constructor
+        this.experiencePoints = 0;
+        this.level = 1;
+    }
+
+    public void gainExperience(int points) {
+        experiencePoints += points;
+        System.out.println(getName() + " gains " + points + " experience points!");
+        
+        // Level up if enough experience is gained
+        if (experiencePoints >= level * 100) {
+            levelUp();
+        }
+    }
+    
+    private void levelUp() {
+        level++;
+        maxHealth += 10; // Increasing maximum health on level up
+        health = maxHealth; // Full heal on level up
+        System.out.println(getName() + " levels up to level " + level + "!");
+    }
+
+    public void printStatus() {
+        System.out.println("Player: " + getName() + ", Level: " + level + 
+                          ", Health: " + getHealth() + "/" + maxHealth + 
+                          ", XP: " + experiencePoints);
+    }
+}</code>
+    </program>
+    <p>When <c>Player</c> calls <c>super(playerName, initialHealth)</c>, it runs the <c>Entity</c> constructor to set up the parent class fields. Thanks to inheritance, you don't need to duplicate the <c>health</c> variable or <c>takeDamage()</c> method in <c>Player</c>. You inherit them all from <c>Entity</c>, while adding player-specific behaviors like gaining experience and leveling up.</p>
+  </subsection>
+</section>

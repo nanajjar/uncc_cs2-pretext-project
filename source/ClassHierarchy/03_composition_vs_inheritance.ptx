@@ -1,0 +1,95 @@
+<section xml:id="composition-vs-inheritance">
+    <title>Composition vs. Inheritance: Choosing Wisely</title>
+    <p>There are two primary ways to reuse functionality between classes: <em>composition</em> and <em>inheritance</em>.</p>
+    
+    <p>In real-world design scenarios, the choice between these approaches often involves nuanced trade-offs rather than clear-cut decisions:</p>
+    
+    <p><term>Inheritance ("is-a" relationship):</term></p>
+    <ul>
+      <li><term>Advantages:</term>
+        <ul>
+          <li>Reuses code automatically without delegation</li>
+          <li>Enables polymorphism through substitutability</li>
+          <li>Creates clean, hierarchical organization</li>
+        </ul>
+      </li>
+      <li><term>Disadvantages:</term>
+        <ul>
+          <li>Creates tight coupling that can make future changes difficult</li>
+          <li>Can lead to fragile class hierarchies as depth increases</li>
+          <li>Limited to single inheritance in Java (unlike multiple inheritance in some languages)</li>
+          <li>Implementation details in the superclass may leak into subclasses</li>
+        </ul>
+      </li>
+      <li><term>Example:</term> <c>Monster extends Entity</c> - A monster is a type of entity with specialized behaviors.</li>
+    </ul>
+    
+    <p><term>Composition ("has-a" relationship):</term></p>
+    <ul>
+      <li><term>Advantages:</term>
+        <ul>
+          <li>Creates more flexible design with looser coupling</li>
+          <li>Allows changing components at runtime</li>
+          <li>Enables combining behaviors from multiple sources</li>
+        </ul>
+      </li>
+      <li><term>Disadvantages:</term>
+        <ul>
+          <li>Requires more delegating code (forwarding methods)</li>
+          <li>Class relationships can be less immediately obvious</li>
+          <li>May need more code to implement the same functionality</li>
+          <li>Can become complex if many components need coordination</li>
+        </ul>
+      </li>
+      <li><term>Example:</term> <c>Player</c> has an <c>Inventory</c> object - A player contains but is not a type of inventory.</li>
+    </ul>
+
+    <p>A good starting question is: "Is this class genuinely a specialized version of another, or does it simply contain or use another object?" However, real designs often involve judgment calls where the lines blur. Many experienced developers adopt the "favor composition over inheritance" guideline while recognizing that inheritance is sometimes the clearer approach.</p>
+    
+    <p>It's also common to use both approaches together. For example, you might have a class hierarchy for game entities (inheritance) where each entity contains component objects like weapons or abilities (composition).</p>
+
+    <exercise type="reflection" xml:id="reflection-composition-scenario">
+      <title>When to Choose Composition</title>
+      <statement>
+        <p>For this exercise:</p>
+        <ol>
+          <li>Describe a scenario where composition is clearly a better choice than inheritance.</li>
+          <li>Explain specifically why composition makes more sense in your example.</li>
+          <li>Sketch what the classes might look like in Java using composition, showing at least two classes and their relationship.</li>
+        </ol>
+      </statement>
+      <solution>
+        <p>A document system provides a good example. A document isn't a specialized type of formatting style, but it contains formatting. Using inheritance would incorrectly imply a document is a type of formatting, while composition correctly models that a document has formatting.</p>
+        <p>Using composition, the code might look like:</p>
+        <program language="java">
+          <code>
+public class FormattingStyle {
+    private String fontFamily;
+    private int fontSize;
+    
+    public void applyTo(String text) {
+        // Apply formatting logic
+    }
+}
+
+public class Document {
+    private String content;
+    private FormattingStyle style; // Composition
+    
+    public Document(String content) {
+        this.content = content;
+        this.style = new FormattingStyle();
+    }
+    
+    public void display() {
+        style.applyTo(content);
+        // Additional document display logic
+    }
+}
+          </code>
+        </program>
+      </solution>
+    </exercise>
+  </section>
+
+  
