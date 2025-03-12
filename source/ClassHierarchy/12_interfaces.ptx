@@ -105,7 +105,7 @@ public class Invoice implements Printable, Taxable {
       <li>Evolving existing interfaces without breaking backward compatibility</li>
     </ul>
     
-    <p><strong>Caution:</strong> Default methods should not be used to implement significant shared logic. That's what abstract classes are for. Default methods were primarily introduced to allow interfaces to evolve over time without breaking existing code. Overusing them can lead to:</p>
+    <p><term>Caution:</term> Default methods should not be used to implement significant shared logic. That's what abstract classes are for. Default methods were primarily introduced to allow interfaces to evolve over time without breaking existing code. Overusing them can lead to:</p>
     <ul>
       <li>Blurred distinction between interfaces and abstract classes</li>
       <li>Poor design where state management becomes difficult</li>

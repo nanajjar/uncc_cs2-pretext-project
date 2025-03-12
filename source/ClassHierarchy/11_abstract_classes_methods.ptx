@@ -91,7 +91,7 @@ public class PDFDocument extends Document {    // ← Extends the abstract class
     <title>Implementing Abstract Methods in Subclasses</title>
     <p>Any concrete (non-abstract) subclass extending an abstract class must implement all its abstract methods. Let's build a simple vehicle example step by step:</p>
 
-    <p><strong>Step 1:</strong> First, we define our abstract Vehicle class with abstract methods:</p>
+    <p><term>Step 1:</term> First, we define our abstract Vehicle class with abstract methods:</p>
     <program language="java">
       <code>// Abstract class for vehicles
 public abstract class Vehicle {
@@ -112,7 +112,7 @@ public abstract class Vehicle {
 }</code>
     </program>
 
-    <p><strong>Step 2:</strong> Now, we create a concrete subclass that implements the abstract methods:</p>
+    <p><term>Step 2:</term> Now, we create a concrete subclass that implements the abstract methods:</p>
 
     <program language="java">
       <code>// Concrete subclass of Vehicle
@@ -190,7 +190,7 @@ public class BrokenCar extends Vehicle {
       <li>"BrokenCar must implement inherited abstract method Vehicle.stop()" (for the missing method)</li>
     </ul>
 
-    <p><em><strong>Pro Tip:</strong> When implementing abstract classes or interfaces, your Java compiler is your most important debugging tool. Always carefully read compiler error messages—they contain precise information about what's wrong and often suggest how to fix it. The compiler ensures you correctly fulfill the "contract" required by the abstract class or interface.</em></p>
+    <p><em><term>Pro Tip:</term> When implementing abstract classes or interfaces, your Java compiler is your most important debugging tool. Always carefully read compiler error messages—they contain precise information about what's wrong and often suggest how to fix it. The compiler ensures you correctly fulfill the "contract" required by the abstract class or interface.</em></p>
 
     <insight>
       <title>Debugging Abstract Method Implementations</title>
@@ -273,7 +273,7 @@ public class Motorcycle extends Vehicle {
       <title>The "Substitutability" Benefit of Abstract Classes</title>
       <p>Abstract classes enable <term>polymorphism</term>: the ability to treat objects of different concrete subclasses uniformly through their common abstract superclass. This is one of the most powerful features of object-oriented programming.</p>
       
-      <p><strong>What this means in practice:</strong> You can use the abstract superclass type (<c>Vehicle</c>) as a variable type or parameter type to handle any subclass object, even when you don't know its specific subclass at compile time.</p>
+      <p><term>What this means in practice:</term> You can use the abstract superclass type (<c>Vehicle</c>) as a variable type or parameter type to handle any subclass object, even when you don't know its specific subclass at compile time.</p>
       
       <program language="java">
         <code>// Working with different vehicles polymorphically
@@ -301,7 +301,7 @@ for (Vehicle v : vehicles) {
         <li>Better organization of related functionality</li>
       </ul>
       
-      <p><strong>Key benefit:</strong> With <term>polymorphism</term>, you can add new types to your system without modifying existing code. For example, if you later create a <c>Helicopter</c> class extending <c>Vehicle</c>, all code that works with <c>Vehicle</c> objects will automatically work with <c>Helicopter</c> objects without any changes. This is known as the <em>Open/Closed Principle</em>—code should be open for extension but closed for modification.</p>
+      <p><term>Key benefit:</term> With <term>polymorphism</term>, you can add new types to your system without modifying existing code. For example, if you later create a <c>Helicopter</c> class extending <c>Vehicle</c>, all code that works with <c>Vehicle</c> objects will automatically work with <c>Helicopter</c> objects without any changes. This is known as the <em>Open/Closed Principle</em>—code should be open for extension but closed for modification.</p>
       
       <p>However, an abstract class only ensures that methods exist, not that they work properly. A faulty implementation could still cause problems:</p>
       

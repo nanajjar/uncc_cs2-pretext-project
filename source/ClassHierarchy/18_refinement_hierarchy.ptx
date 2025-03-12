@@ -1,0 +1,413 @@
+<section xml:id="inheritance-iterative-refinement">
+  <title>Iterative Refinement of Class Hierarchy Across Steps 0–2</title>
+
+  <p>Software design is rarely perfect on the first attempt. While Steps 0, 1, and 2 of the Design Recipe provide a structured approach to designing class hierarchies, they aren't strictly linear. Instead, you should anticipate cycling through these steps iteratively. As you refine your understanding (Step 0), document data definitions (Step 1), and outline method signatures (Step 2), you will naturally discover opportunities to adjust and improve your class hierarchy.</p>
+
+  <subsection xml:id="recognizing-the-need-to-iterate">
+    <title>Recognizing the Need to Iterate</title>
+
+    <p>As you develop your understanding of the problem domain, you might discover:</p>
+    
+    <ul>
+      <li>New shared attributes or behaviors among a subset of your classes</li>
+      <li>Different ways to categorize your objects</li>
+      <li>Edge cases that don't fit neatly into your original hierarchy</li>
+      <li>New requirements that suggest different abstractions</li>
+    </ul>
+    
+    <p>When these discoveries occur, it's a signal to revisit Steps 0–2 of the design recipe and refine your hierarchy.</p>
+    
+    <p>For example, in our social media application, you might initially design separate implementations of a <c>tagUser()</c> method in each subclass—<c>TextPost</c>, <c>PhotoPost</c>, and <c>VideoPost</c>. However, upon reviewing these implementations, you realize the code is identical in each class. This redundancy signals an opportunity to move the <c>tagUser()</c> method up to the common superclass, <c>Post</c>.</p>
+
+    <p>This realization might prompt you to revisit Steps 0–2:</p>
+
+    <ul>
+      <li><term>Step 0 (Restatement):</term> Update your problem restatement to reflect the new understanding that all posts must support tagging users.</li>
+      <li><term>Step 1 (Data Definitions):</term> Move <c>taggedUsers</c> field and related invariants to the superclass.</li>
+      <li><term>Step 2 (Method Signatures):</term> Clearly document the shared <c>tagUser()</c> method and any invariants or constraints associated with it.</li>
+    </ul>
+
+    <p>Iterative refinement is crucial to catching design issues early, making your inheritance hierarchy stronger and more maintainable.</p>
+  </subsection>
+
+  <subsection xml:id="example-of-refinement">
+    <title>Example of Iterative Refinement</title>
+    
+    <p>Let's see a concrete example of iterative refinement with our social media post hierarchy:</p>
+    
+    <sidebyside widths="48% 48%">
+      <stack>
+        <title>Initial Hierarchy</title>
+        <pre>
+Post (abstract)
+ ├── TextPost
+ ├── PhotoPost
+ └── VideoPost
+        </pre>
+        <p>In our initial design, we had a single <c>Post</c> superclass with three direct subclasses.</p>
+      </stack>
+      <stack>
+        <title>Refined Hierarchy</title>
+        <pre>
+Post (abstract)
+ ├── TextPost
+ └── MediaPost (abstract)
+      ├── PhotoPost
+      └── VideoPost
+        </pre>
+        <p>After further analysis, we recognized that photo and video posts share media-related functionality, so we introduced an intermediate abstract class.</p>
+      </stack>
+    </sidebyside>
+
+    <p>Initially, your <c>PhotoPost</c> and <c>VideoPost</c> classes each contained similar methods for handling media attributes:</p>
+
+    <program language="java">
+      <code>
+// PhotoPost initially
+public class PhotoPost extends Post {
+    private String imageFile;
+    private String caption;
+    private int fileSize;
+    private String resolution;
+    
+    public String generateThumbnail() {
+        // Photo-specific thumbnail generation
+        return "thumbnail_" + imageFile;
+    }
+    
+    public void updateResolution(String newResolution) {
+        if (newResolution == null || !isValidResolution(newResolution)) {
+            throw new IllegalArgumentException("Invalid resolution format");
+        }
+        this.resolution = newResolution;
+    }
+    
+    private boolean isValidResolution(String resolution) {
+        // Check if resolution is in format "WidthxHeight"
+        // For example: "1920x1080"
+        if (resolution == null) {
+            return false;
+        }
+        
+        // Split the string by the 'x' character
+        String[] parts = resolution.split("x");
+        
+        // Check if we have exactly two parts (width and height)
+        if (parts.length != 2) {
+            return false;
+        }
+        
+        try {
+            // Try to convert both parts to numbers
+            int width = Integer.parseInt(parts[0]);
+            int height = Integer.parseInt(parts[1]);
+            
+            // Make sure both width and height are positive
+            return width &gt; 0 &amp;&amp; height &gt; 0;
+        } catch (NumberFormatException e) {
+            // If we can't convert to numbers, the format is invalid
+            return false;
+        }
+    }
+}
+
+// VideoPost initially
+public class VideoPost extends Post {
+    private String videoFile;
+    private String description;
+    private int duration;
+    private int fileSize;
+    private String resolution;
+    
+    public String generateThumbnail() {
+        // Video-specific thumbnail generation
+        return "thumbnail_" + videoFile;
+    }
+    
+    public void updateResolution(String newResolution) {
+        if (newResolution == null || !isValidResolution(newResolution)) {
+            throw new IllegalArgumentException("Invalid resolution format");
+        }
+        this.resolution = newResolution;
+    }
+    
+    private boolean isValidResolution(String resolution) {
+        // Check if resolution is in format "WidthxHeight"
+        // For example: "1920x1080"
+        if (resolution == null) {
+            return false;
+        }
+        
+        // Split the string by the 'x' character
+        String[] parts = resolution.split("x");
+        
+        // Check if we have exactly two parts (width and height)
+        if (parts.length != 2) {
+            return false;
+        }
+        
+        try {
+            // Try to convert both parts to numbers
+            int width = Integer.parseInt(parts[0]);
+            int height = Integer.parseInt(parts[1]);
+            
+            // Make sure both width and height are positive
+            return width &gt; 0 &amp;&amp; height &gt; 0;
+        } catch (NumberFormatException e) {
+            // If we can't convert to numbers, the format is invalid
+            return false;
+        }
+    }
+}
+      </code>
+    </program>
+    
+    <p>Recognizing the duplication in media-related functionality, we refine our hierarchy by creating an intermediate <c>MediaPost</c> abstract class:</p>
+    
+    <program language="java">
+      <code>
+// Refined design with intermediate class
+public abstract class MediaPost extends Post {
+    protected int fileSize;
+    protected String resolution;
+    
+    // Shared media-specific functionality
+    public abstract String generateThumbnail();
+    
+    public void updateResolution(String newResolution) {
+        // This validation logic is shared by all media posts
+        if (newResolution == null || !isValidResolution(newResolution)) {
+            throw new IllegalArgumentException("Invalid resolution format");
+        }
+        this.resolution = newResolution;
+    }
+    
+    protected boolean isValidResolution(String resolution) {
+        // This method checks if resolution is in format "WidthxHeight"
+        // For example: "1920x1080"
+        // All media posts need this validation, so we put it in the superclass
+        
+        if (resolution == null) {
+            return false;
+        }
+        
+        // Split the string by the 'x' character
+        String[] parts = resolution.split("x");
+        
+        // Check if we have exactly two parts (width and height)
+        if (parts.length != 2) {
+            return false;
+        }
+        
+        try {
+            // Try to convert both parts to numbers
+            int width = Integer.parseInt(parts[0]);
+            int height = Integer.parseInt(parts[1]);
+            
+            // Make sure both width and height are positive
+            return width &gt; 0 &amp;&amp; height &gt; 0;
+        } catch (NumberFormatException e) {
+            // If we can't convert to numbers, the format is invalid
+            return false;
+        }
+    }
+}
+
+public class PhotoPost extends MediaPost {
+    private String imageFile;
+    private String caption;
+    
+    @Override
+    public String generateThumbnail() {
+        // Photo-specific implementation
+        return "thumbnail_" + imageFile;
+    }
+}
+
+public class VideoPost extends MediaPost {
+    private String videoFile;
+    private String description;
+    private int duration;
+    
+    @Override
+    public String generateThumbnail() {
+        // Video-specific implementation
+        return "thumbnail_" + videoFile;
+    }
+}
+      </code>
+    </program>
+    
+    <p>This refinement allows us to place media-related fields and methods in the <c>MediaPost</c> class, where they logically belong, while keeping photo-specific and video-specific functionality in their respective subclasses.</p>
+  </subsection>
+  
+  <subsection xml:id="another-refinement-example">
+    <title>Another Example: Recognizing Identical Methods</title>
+
+    <p>Similarly, you might initially implement user tagging independently in each post class, only to discover the implementation is identical:</p>
+
+    <program language="java">
+      <code>
+// Initial implementation in each post class:
+
+// In TextPost initially
+public void tagUser(User user) {
+    // This exact code was duplicated in each post class
+    if (user == null) {
+        throw new IllegalArgumentException("Tagged user must not be null");
+    }
+    taggedUsers.add(user);
+}
+
+// In PhotoPost - notice the duplication!
+public void tagUser(User user) {
+    // Same code duplicated
+    if (user == null) {
+        throw new IllegalArgumentException("Tagged user must not be null");
+    }
+    taggedUsers.add(user);
+}
+      </code>
+    </program>
+
+    <p>This duplication is a clear signal to refine your hierarchy. You would revisit the first three steps:</p>
+
+    <ul>
+      <li><term>Step 0 revisited:</term> Update your problem statement to note that "all post types support user tagging."</li>
+      <li><term>Step 1 revisited:</term> Move the <c>taggedUsers</c> field up to the <c>Post</c> superclass.</li>
+      <li><term>Step 2 revisited:</term> Move <c>tagUser()</c> up to the superclass, so it's implemented only once.</li>
+    </ul>
+
+    <p>After refinement, you'd have a single implementation in the superclass:</p>
+
+    <program language="java">
+      <code>
+// In Post superclass after refinement
+public void tagUser(User user) {
+    // Now implemented only once, for all post types
+    if (user == null) {
+        throw new IllegalArgumentException("Tagged user must not be null");
+    }
+    taggedUsers.add(user);
+}
+      </code>
+    </program>
+
+    <p>This cycle ensures your class hierarchy stays well-organized and reduces code duplication.</p>
+  </subsection>
+  
+  <subsection xml:id="updating-data-methods">
+    <title>Updating Data Definitions and Method Signatures</title>
+    
+    <p>When you refine your hierarchy, you need to revisit and update your Step 1 (data definitions) and Step 2 (method signatures) artifacts. This ensures your documentation and design remain in sync with your evolving understanding.</p>
+    
+    <p>For each refinement:</p>
+    
+    <ul>
+      <li>Update your class diagrams or tables to reflect the new hierarchy</li>
+      <li>Move fields to their appropriate level in the hierarchy</li>
+      <li>Adjust method signatures to reflect new class relationships</li>
+      <li>Revise purpose statements to clarify new responsibilities</li>
+    </ul>
+    
+    <p>Here's an example of a revised data definition table after creating the <c>MediaPost</c> intermediate class:</p>
+    
+    <tabular>
+      <row header="yes">
+        <cell>Class</cell>
+        <cell>Fields</cell>
+        <cell>Invariants</cell>
+      </row>
+      <row>
+        <cell>Post (abstract)</cell>
+        <cell>author: String<br/>timestamp: Date<br/>likeCount: int<br/>comments: List&lt;Comment&gt;<br/>taggedUsers: List&lt;User&gt;</cell>
+        <cell>author not null or empty<br/>timestamp not null</cell>
+      </row>
+      <row>
+        <cell>MediaPost (abstract)</cell>
+        <cell>fileSize: int<br/>resolution: String</cell>
+        <cell>fileSize &gt; 0<br/>resolution in format "WidthxHeight"</cell>
+      </row>
+      <row>
+        <cell>TextPost</cell>
+        <cell>textContent: String<br/>wordCount: int</cell>
+        <cell>textContent not null</cell>
+      </row>
+      <row>
+        <cell>PhotoPost</cell>
+        <cell>imageFile: String<br/>caption: String</cell>
+        <cell>imageFile not null or empty</cell>
+      </row>
+      <row>
+        <cell>VideoPost</cell>
+        <cell>videoFile: String<br/>description: String<br/>duration: int</cell>
+        <cell>videoFile not null or empty<br/>duration &gt; 0</cell>
+      </row>
+    </tabular>
+    
+    <p>Notice how <c>fileSize</c> and <c>resolution</c> have been moved from <c>PhotoPost</c> and <c>VideoPost</c> to the new intermediate <c>MediaPost</c> class, and <c>taggedUsers</c> has been added to the <c>Post</c> superclass.</p>
+  </subsection>
+  
+  <subsection xml:id="when-to-refine">
+    <title>Signals That Refinement Is Needed</title>
+    
+    <p>How do you know when to refine your hierarchy? Look for these signals:</p>
+    
+    <ul>
+      <li><term>Duplicated code</term> in multiple subclasses that could be unified</li>
+      <li><term>Conditional logic</term> based on object type (suggesting missing subclasses)</li>
+      <li><term>Fields or methods</term> that only apply to some subclasses but not others</li>
+      <li><term>Conceptual groupings</term> that aren't reflected in your hierarchy</li>
+      <li><term>Awkward method overrides</term> that feel forced or unnatural</li>
+    </ul>
+    
+    <p>For example, if you notice that both <c>PhotoPost</c> and <c>VideoPost</c> have similar methods for generating thumbnails and managing media resolution, this suggests they share functionality that could be unified in a common parent class.</p>
+    
+    <insight>
+      <title>Iterative Refinement Saves Time</title>
+      <p>Iterating through Steps 0–2 as soon as you identify duplication or overlooked shared behavior prevents costly refactoring later. While refinement requires some upfront investment, it pays significant dividends by:</p>
+      <ul>
+        <li>Reducing code duplication and maintenance burden</li>
+        <li>Improving clarity of the design</li>
+        <li>Making future extensions more straightforward</li>
+        <li>Creating more robust, bug-resistant code</li>
+      </ul>
+      <p>Each iteration clarifies your design further, reducing the likelihood of errors and improving code quality.</p>
+    </insight>
+  </subsection>
+  
+  <subsection xml:id="balancing-refinement">
+    <title>Balancing Refinement with Progress</title>
+    
+    <p>While refinement is valuable, excessive perfectionism can impede progress. You don't need a perfect hierarchy before moving to implementation. Here are some guidelines for balancing refinement with forward progress:</p>
+    
+    <ul>
+      <li>Focus on refinements that eliminate significant duplication</li>
+      <li>Prioritize changes that improve understanding or maintainability</li>
+      <li>Consider deferring refinements that can be made easily later</li>
+      <li>Use interfaces to capture cross-cutting concerns without disrupting the hierarchy</li>
+    </ul>
+    
+    <p>Remember that iteration is normal—no design is perfect on the first try, and the goal is improvement, not perfection.</p>
+  </subsection>
+  
+  <subsection xml:id="reflection-iteration">
+    <title>Reflection Questions</title>
+    
+    <p>As you refine your class hierarchy, consider these questions:</p>
+    
+    <ul>
+      <li>What duplicated code or conceptual groupings suggest the need for intermediate classes?</li>
+      <li>Are there fields or methods that would be better placed at a different level in the hierarchy?</li>
+      <li>Have I updated my original problem restatement to reflect new insights?</li>
+      <li>Did I adjust my data definitions to capture common attributes properly?</li>
+      <li>Are my method signatures and purpose statements still clear and accurate?</li>
+      <li>Would introducing interfaces solve any cross-cutting concerns without complicating the hierarchy?</li>
+      <li>Does my refined hierarchy better capture the domain model and reduce duplication?</li>
+    </ul>
+    
+    <p>Regular reflection ensures your class hierarchy remains logical, clear, and easy to maintain, even as the requirements evolve.</p>
+  </subsection>
+  
+  <p>Next, we'll explore how well-designed class hierarchies directly support the DRY principle and improve code reusability.</p>
+</section> 

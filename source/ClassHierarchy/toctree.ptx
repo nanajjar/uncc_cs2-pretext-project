@@ -16,4 +16,12 @@
 <xi:include href="11_abstract_classes_methods.ptx" />
 <xi:include href="12_interfaces.ptx" />
 <xi:include href="13_abstract_vs_interfaces.ptx" />
+<xi:include href="14_inheritance_design_intro.ptx" />
+<xi:include href="15_step0_with_inheritance.ptx" />
+<xi:include href="16_step1_data_definitions.ptx" />
+<xi:include href="17_step2_method_signatures.ptx" />
+<xi:include href="18_refinement_hierarchy.ptx" />
+<xi:include href="19_dry_reusability.ptx" />
+<xi:include href="21_final_thoughts.ptx" />
+
 </chapter>

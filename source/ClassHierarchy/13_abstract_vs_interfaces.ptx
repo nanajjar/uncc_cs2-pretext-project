@@ -6,8 +6,8 @@
     <title>Understanding "Contracts" in Java</title>
     <p>Both abstract classes and interfaces define "contracts" but in different ways:</p>
     <ul>
-      <li><strong>Abstract classes</strong> represent a partial implementation contract: "Here's some common state and behavior, but you must implement these specific methods."</li>
-      <li><strong>Interfaces</strong> represent a pure responsibility contract: "Any class implementing this must provide these capabilities, regardless of its inheritance hierarchy."</li>
+      <li><term>Abstract classes</term> represent a partial implementation contract: "Here's some common state and behavior, but you must implement these specific methods."</li>
+      <li><term>Interfaces</term> represent a pure responsibility contract: "Any class implementing this must provide these capabilities, regardless of its inheritance hierarchy."</li>
     </ul>
     <p>Abstract classes focus on what a class <em>is</em> (identity), while interfaces focus on what a class can <em>do</em> (capability).</p>
   </note>
@@ -71,7 +71,7 @@
     </li>
   </ul>
 
-  <p><strong>Concrete Example Contrast:</strong></p>
+  <p><term>Concrete Example Contrast:</term></p>
   <sidebyside widths="48% 48%">
     <stack>
       <title>Abstract Class Example</title>
@@ -130,7 +130,7 @@ Trailer extends Vehicle, implements Towable
     <title>Hybrid Design: Combining Abstract Classes and Interfaces</title>
     <p>In complex applications, you'll often use both abstract classes and interfaces together. Let's build this up step by step using our vehicle example:</p>
     
-    <p><strong>Step 1:</strong> First, we define our abstract class for common vehicle behavior and state:</p>
+    <p><term>Step 1:</term> First, we define our abstract class for common vehicle behavior and state:</p>
     <program language="java">
       <code>// Abstract base class - handles common state and partial implementation
 public abstract class Vehicle {
@@ -148,7 +148,7 @@ public abstract class Vehicle {
 }</code>
     </program>
     
-    <p><strong>Step 2:</strong> Next, we define interfaces for optional capabilities vehicles might have:</p>
+    <p><term>Step 2:</term> Next, we define interfaces for optional capabilities vehicles might have:</p>
     <program language="java">
       <code>// Interface for vehicles that are electric powered
 public interface Electric {
@@ -163,7 +163,7 @@ public interface Towable {
 }</code>
     </program>
     
-    <p><strong>Step 3:</strong> Finally, we create concrete vehicle types that combine the abstract class with selected interfaces:</p>
+    <p><term>Step 3:</term> Finally, we create concrete vehicle types that combine the abstract class with selected interfaces:</p>
     <program language="java">
       <code>// Concrete class using both approaches
 public class ElectricTruck extends Vehicle 
@@ -324,7 +324,7 @@ public class Triangle {
       <solution>
         <p>Here's a refactored solution using an abstract class, implemented step by step:</p>
         
-        <p><strong>Step 1:</strong> First, create an abstract <c>Shape</c> class that defines the common contract:</p>
+        <p><term>Step 1:</term> First, create an abstract <c>Shape</c> class that defines the common contract:</p>
         <program language="java">
           <code>
 // Abstract base class for all shapes
@@ -338,7 +338,7 @@ public abstract class Shape {
           </code>
         </program>
         
-        <p><strong>Step 2:</strong> Refactor <c>Rectangle</c> to extend the abstract class:</p>
+        <p><term>Step 2:</term> Refactor <c>Rectangle</c> to extend the abstract class:</p>
         <program language="java">
           <code>
 public class Rectangle extends Shape {
@@ -364,7 +364,7 @@ public class Rectangle extends Shape {
           </code>
         </program>
         
-        <p><strong>Step 3:</strong> Refactor <c>Circle</c> and <c>Triangle</c> similarly:</p>
+        <p><term>Step 3:</term> Refactor <c>Circle</c> and <c>Triangle</c> similarly:</p>
         <program language="java">
           <code>
 public class Circle extends Shape {

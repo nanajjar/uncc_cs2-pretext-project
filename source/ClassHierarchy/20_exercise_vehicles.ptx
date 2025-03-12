@@ -1,0 +1,405 @@
+<section xml:id="exercise-vehicles">
+  <title>Hands-On Exercise: Designing a Vehicle Hierarchy</title>
+
+  <p>Now it's time to apply what you've learned by working through a practical example using the design recipe with inheritance in mind. We'll design a vehicle class hierarchy step by step, focusing on how inheritance considerations integrate into each phase of the design recipe.</p>
+
+  <subsection xml:id="exercise-problem-statement">
+    <title>Problem Statement</title>
+    
+    <p>You are building a traffic simulation system that needs to model different types of vehicles. Initially, you need to implement four vehicle types: <c>Car</c>, <c>Bicycle</c>, <c>Motorcycle</c>, and <c>Boat</c>. Each vehicle type has its own characteristics, but they share common properties and behaviors.</p>
+    
+    <p>Key requirements:</p>
+    <ul>
+      <li>All vehicles have position, direction, and speed attributes</li>
+      <li>All vehicles can accelerate, brake, and turn</li>
+      <li>Cars and motorcycles have engines with fuel consumption</li>
+      <li>Bicycles are powered by pedaling</li>
+      <li>Boats operate on water rather than roads</li>
+      <li>The simulation needs to be extensible to add more vehicle types later</li>
+    </ul>
+  </subsection>
+
+  <subsection xml:id="exercise-step0">
+    <title>Step 0: Understand and Restate with Inheritance in Mind</title>
+    
+    <p>Let's approach this by restating the problem with a focus on identifying shared characteristics that might suggest inheritance relationships:</p>
+    
+    <p><em>We need to create classes for vehicles in a traffic simulation. Looking at the requirements, I notice that all vehicles share certain basic properties (position, direction, speed) and actions (accelerate, brake, turn). This common functionality suggests we could benefit from a shared superclass.</em></p>
+    
+    <p><em>I also notice natural groupings among the vehicle types:</em></p>
+    <ul>
+      <li><em>Land vs. water vehicles: Cars, motorcycles, and bicycles operate on land, while boats operate on water</em></li>
+      <li><em>Motorized vs. non-motorized: Cars, motorcycles, and boats have engines, but bicycles don't</em></li>
+    </ul>
+    
+    <p><em>These groupings suggest we could create intermediate classes in our hierarchy to capture shared behavior within these groups.</em></p>
+    
+    <p>Based on this analysis, here's a potential class hierarchy:</p>
+    
+    <pre>
+Vehicle (abstract) - holds common attributes and behaviors for all vehicles
+ ├── LandVehicle (abstract) - for vehicles that operate on land
+ │    ├── MotorizedLandVehicle (abstract) - for land vehicles with engines
+ │    │    ├── Car
+ │    │    └── Motorcycle
+ │    └── Bicycle
+ └── WaterVehicle (abstract) - for vehicles that operate on water
+      └── Boat
+    </pre>
+    
+    <p>We also notice that some behaviors cut across our hierarchy. For instance, both <c>MotorizedLandVehicle</c> and <c>Boat</c> have engines but don't share a direct superclass (apart from <c>Vehicle</c>). This suggests we might need an interface:</p>
+    
+    <ul>
+      <li><c>Motorized</c> interface - for vehicles with engines, regardless of their type</li>
+    </ul>
+    
+    <p>This step illustrates how thinking about inheritance early helps us identify potential superclasses and interfaces before writing any code.</p>
+  </subsection>
+
+  <subsection xml:id="exercise-step1">
+    <title>Step 1: Data Definitions with Inheritance</title>
+    
+    <p>Now, let's define the data for each class in our hierarchy, clearly identifying what fields belong at each level:</p>
+    
+    <tabular>
+      <row header="yes">
+        <cell>Class</cell>
+        <cell>Fields</cell>
+        <cell>Invariants</cell>
+      </row>
+      <row>
+        <cell>Vehicle (abstract)</cell>
+        <cell>positionX: double<br/>positionY: double<br/>direction: double // in radians<br/>speed: double</cell>
+        <cell>speed &gt;= 0</cell>
+      </row>
+      <row>
+        <cell>LandVehicle (abstract)</cell>
+        <cell>roadGrip: double</cell>
+        <cell>roadGrip &gt; 0</cell>
+      </row>
+      <row>
+        <cell>MotorizedLandVehicle (abstract)</cell>
+        <cell>engineSize: double<br/>fuelLevel: double<br/>fuelEfficiency: double</cell>
+        <cell>engineSize &gt; 0<br/>fuelLevel &gt;= 0<br/>fuelEfficiency &gt; 0</cell>
+      </row>
+      <row>
+        <cell>Car</cell>
+        <cell>numberOfDoors: int<br/>isConvertible: boolean</cell>
+        <cell>numberOfDoors &gt;= 2</cell>
+      </row>
+      <row>
+        <cell>Motorcycle</cell>
+        <cell>hasSidecar: boolean</cell>
+        <cell>None</cell>
+      </row>
+      <row>
+        <cell>Bicycle</cell>
+        <cell>numberOfGears: int<br/>pedalPower: double</cell>
+        <cell>numberOfGears &gt; 0<br/>pedalPower &gt; 0</cell>
+      </row>
+      <row>
+        <cell>WaterVehicle (abstract)</cell>
+        <cell>waterDrag: double</cell>
+        <cell>waterDrag &gt; 0</cell>
+      </row>
+      <row>
+        <cell>Boat</cell>
+        <cell>engineSize: double<br/>fuelLevel: double<br/>hasSail: boolean</cell>
+        <cell>engineSize &gt; 0 (if not sailboat)<br/>fuelLevel &gt;= 0</cell>
+      </row>
+    </tabular>
+    
+    <p>Looking at this table, we notice a duplication: both <c>MotorizedLandVehicle</c> and <c>Boat</c> have <c>engineSize</c> and <c>fuelLevel</c> fields. This is exactly the type of duplication that signals an opportunity to apply the DRY principle!</p>
+    
+    <p>Since Java doesn't support multiple inheritance (a class can't extend two superclasses), we can use an interface to solve this problem:</p>
+    
+    <program language="java">
+      <code>
+/**
+ * Interface for any vehicle with a motor/engine
+ * This lets us share behavior between MotorizedLandVehicle and Boat
+ * without requiring them to share a parent class
+ */
+public interface Motorized {
+    // Methods that all motorized vehicles should implement
+    double getEngineSize();
+    double getFuelLevel();
+    void refuel(double amount);
+    double getFuelEfficiency();
+    
+    // Default method that all motorized vehicles can use
+    default boolean hasFuel() {
+        // A vehicle has fuel if its fuel level is above 0
+        return getFuelLevel() &gt; 0;
+    }
+}
+      </code>
+    </program>
+    
+    <p>Now both <c>MotorizedLandVehicle</c> and <c>Boat</c> can implement this interface, giving us a way to treat all motorized vehicles similarly when needed, without duplicating code.</p>
+    
+    <insight>
+      <title>Spotting Duplication During Data Definition</title>
+      <p>Step 1 is a critical point to identify potential duplication in your classes. When you see the same fields appearing in multiple classes, ask yourself:</p>
+      <ul>
+        <li>Should these classes share a common superclass?</li>
+        <li>Would an interface better capture this shared functionality?</li>
+        <li>Is this a sign I need to refine my initial hierarchy?</li>
+      </ul>
+      <p>Catching these opportunities early saves significant refactoring effort later.</p>
+    </insight>
+  </subsection>
+
+  <subsection xml:id="exercise-step2">
+    <title>Step 2: Method Signatures and Purpose Statements</title>
+    
+    <p>Now let's define the method signatures and purpose statements for our classes. We'll focus on the <c>Vehicle</c> superclass and <c>Car</c> subclass as examples:</p>
+    
+    <program language="java">
+      <code>
+/**
+ * Base class for all vehicles in the traffic simulation.
+ * Contains common properties and behaviors for all vehicle types.
+ */
+public abstract class Vehicle {
+    // Fields as defined in Step 1
+    protected double positionX;
+    protected double positionY;
+    protected double direction; // in radians
+    protected double speed;
+    
+    /**
+     * Creates a new vehicle at the specified position and direction.
+     * @param posX The initial X position.
+     * @param posY The initial Y position.
+     * @param direction The initial direction in radians.
+     * @throws IllegalArgumentException if any parameter is invalid.
+     */
+    public Vehicle(double posX, double posY, double direction) {
+        // Constructor implementation would check parameters
+        // and initialize fields
+        this.positionX = posX;
+        this.positionY = posY;
+        this.direction = direction;
+        this.speed = 0; // All vehicles start stationary
+    }
+    
+    /**
+     * Increases the vehicle's speed.
+     * Subclasses may override to implement type-specific acceleration.
+     * @param amount The amount to accelerate by, must be non-negative.
+     * @throws IllegalArgumentException if amount is negative.
+     */
+    public void accelerate(double amount) {
+        // Basic implementation that all vehicles can use
+        if (amount &lt; 0) {
+            throw new IllegalArgumentException("Amount must be positive");
+        }
+        speed += amount;
+    }
+    
+    /**
+     * Reduces the vehicle's speed.
+     * Subclasses may override to implement type-specific braking.
+     * @param amount The amount to reduce speed by, must be non-negative.
+     * @throws IllegalArgumentException if amount is negative.
+     */
+    public void brake(double amount) {
+        // Basic implementation that all vehicles can use
+        if (amount &lt; 0) {
+            throw new IllegalArgumentException("Amount must be positive");
+        }
+        speed = Math.max(0, speed - amount);
+    }
+    
+    /**
+     * Changes the vehicle's direction.
+     * Each subclass must implement its own turning behavior.
+     * @param angleChange The change in angle (radians).
+     */
+    public abstract void turn(double angleChange);
+    
+    /**
+     * Updates the vehicle's position based on its speed and direction.
+     * Each subclass must implement its own movement physics.
+     * @param timeDelta The time step in seconds.
+     */
+    public abstract void updatePosition(double timeDelta);
+    
+    // Getters for position, direction, and speed
+    public double getPositionX() { return positionX; }
+    public double getPositionY() { return positionY; }
+    public double getDirection() { return direction; }
+    public double getSpeed() { return speed; }
+}
+      </code>
+    </program>
+    
+    <p>Now let's implement a concrete subclass:</p>
+    
+    <program language="java">
+      <code>
+/**
+ * Represents a car in the traffic simulation.
+ * Cars have engines, consume fuel, and have specific handling characteristics.
+ */
+public class Car extends MotorizedLandVehicle {
+    // Car-specific fields from Step 1
+    private int numberOfDoors;
+    private boolean isConvertible;
+    
+    /**
+     * Creates a new car.
+     * @param posX The initial X position.
+     * @param posY The initial Y position.
+     * @param direction The initial direction in radians.
+     * @param engineSize The size of the engine in liters.
+     * @param fuelLevel The initial fuel level in gallons.
+     * @param numberOfDoors The number of doors.
+     * @param isConvertible Whether the car is a convertible.
+     * @throws IllegalArgumentException if any parameter is invalid.
+     */
+    public Car(double posX, double posY, double direction, 
+               double engineSize, double fuelLevel, 
+               int numberOfDoors, boolean isConvertible) {
+        // Call superclass constructor first
+        super(posX, posY, direction, engineSize, fuelLevel);
+        
+        // Validate and initialize Car-specific fields
+        if (numberOfDoors &lt; 2) {
+            throw new IllegalArgumentException("Cars must have at least 2 doors");
+        }
+        this.numberOfDoors = numberOfDoors;
+        this.isConvertible = isConvertible;
+    }
+    
+    /**
+     * Accelerates the car, consuming fuel based on engine efficiency.
+     * @param amount The amount to accelerate by, must be non-negative.
+     * @throws IllegalArgumentException if amount is negative.
+     */
+    @Override
+    public void accelerate(double amount) {
+        // Cars need fuel to accelerate
+        if (getFuelLevel() &lt;= 0) {
+            return; // Can't accelerate without fuel
+        }
+        
+        // Call the superclass method to handle basic acceleration
+        super.accelerate(amount);
+        
+        // Consume fuel based on acceleration
+        consumeFuel(amount * 0.01);
+    }
+    
+    /**
+     * Turns the car, accounting for speed and road grip.
+     * @param angleChange The change in angle (radians).
+     */
+    @Override
+    public void turn(double angleChange) {
+        // Implement car-specific turning
+        // Turning is affected by speed and roadGrip
+        double effectiveTurn = angleChange * (1.0 / (1.0 + 0.1 * speed));
+        direction += effectiveTurn;
+        
+        // Keep direction between 0 and 2π
+        direction = direction % (2 * Math.PI);
+        if (direction &lt; 0) {
+            direction += 2 * Math.PI;
+        }
+    }
+    
+    /**
+     * Updates the car's position based on physics simulation.
+     * @param timeDelta The time step in seconds.
+     */
+    @Override
+    public void updatePosition(double timeDelta) {
+        // Basic movement physics: position changes based on
+        // speed, direction, and time
+        positionX += speed * Math.cos(direction) * timeDelta;
+        positionY += speed * Math.sin(direction) * timeDelta;
+        
+        // Consume fuel during movement
+        if (speed &gt; 0) {
+            consumeFuel(speed * timeDelta * 0.001);
+        }
+    }
+    
+    /**
+     * Honks the car's horn.
+     * This is a car-specific method not in the superclass.
+     * @return A string representing the horn sound.
+     */
+    public String honkHorn() {
+        return "BEEP!";
+    }
+    
+    // Getters for car-specific properties
+    public int getNumberOfDoors() { return numberOfDoors; }
+    public boolean isConvertible() { return isConvertible; }
+}
+      </code>
+    </program>
+    
+    <p>Notice how we've designed our methods:</p>
+    <ul>
+      <li>Some methods like <c>accelerate()</c> and <c>brake()</c> have default implementations in the superclass that subclasses can use or override</li>
+      <li>Abstract methods like <c>turn()</c> and <c>updatePosition()</c> force subclasses to provide their own implementations</li>
+      <li>Some methods like <c>honkHorn()</c> exist only in specific subclasses</li>
+    </ul>
+    
+    <p>This approach gives us flexibility while ensuring that all vehicles support the core operations needed by the simulation.</p>
+  </subsection>
+
+  <subsection xml:id="exercise-refinement">
+    <title>Refinement and Reflection</title>
+    
+    <p>Looking back at our design, we might want to make some refinements:</p>
+    
+    <ol>
+      <li><term>Engine Management</term>: We noticed that both <c>MotorizedLandVehicle</c> and <c>Boat</c> need engine-related functionality, but they don't share a common superclass (other than <c>Vehicle</c>). Our <c>Motorized</c> interface solves this, allowing us to share engine-related code without forcing an unnatural inheritance relationship.</li>
+      
+      <li><term>Method Placement</term>: We might refine by making <c>turn()</c> a concrete method in the <c>Vehicle</c> class with a simple default implementation, while keeping <c>updatePosition()</c> abstract since movement physics vary greatly between vehicle types.</li>
+      
+      <li><term>Interface vs. Inheritance</term>: We could further refine by considering whether water and land vehicle movement is different enough to warrant separate interfaces, not just different classes.</li>
+    </ol>
+    
+    <p>These refinements demonstrate how the design recipe is iterative when working with inheritance hierarchies - we continually improve our design as we gain insights.</p>
+  </subsection>
+
+  <subsection xml:id="exercise-your-turn">
+    <title>Your Turn: Extend the Model</title>
+    
+    <p>Now it's your turn to apply the design recipe with inheritance. Extend our vehicle hierarchy by:</p>
+    
+    <ol>
+      <li><term>Step 0</term>: Consider adding a new vehicle type: <c>Truck</c>. How would this fit into our inheritance hierarchy? What commonalities does it share with existing classes?</li>
+      
+      <li><term>Step 1</term>: Define the data for the <c>Truck</c> class, specifying fields and invariants. What additional fields would a truck have compared to a car?</li>
+      
+      <li><term>Step 2</term>: Write method signatures and purpose statements for the <c>Truck</c> class, considering which methods it would inherit, which it would override, and which new methods it might add.</li>
+      
+      <li><term>Refinement</term>: Identify any improvements to the overall hierarchy that might be needed to better accommodate trucks. For example, should we create a new intermediate class for large vehicles?</li>
+    </ol>
+  </subsection>
+
+  <subsection xml:id="exercise-discussion-questions">
+    <title>Discussion Questions</title>
+    
+    <ol>
+      <li>How did thinking about inheritance during Steps 0-2 help you design a more maintainable vehicle hierarchy?</li>
+      
+      <li>What duplication did you prevent by planning the hierarchy upfront rather than implementing each vehicle type separately?</li>
+      
+      <li>How does the <c>Motorized</c> interface demonstrate the difference between "is-a" relationships (inheritance) and "can-do" capabilities (interfaces)?</li>
+      
+      <li>If you needed to add electric vehicles to the simulation, how would you extend this design? Would you create a new interface, a new abstract class, or both?</li>
+      
+      <li>Suppose you hadn't planned for inheritance and had implemented each vehicle type separately. What aspects of the code would be most difficult to change later?</li>
+    </ol>
+  </subsection>
+
+  <p>By working through this exercise, you've applied the design recipe with inheritance in mind, identifying opportunities for code reuse, creating appropriate abstractions, and building a flexible, maintainable class hierarchy.</p>
+</section> 
