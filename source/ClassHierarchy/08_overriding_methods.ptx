@@ -272,7 +272,7 @@
             built-in classes or extending your own superclasses.</p>
     </insight>
 
-    <exercise xml:id="quick-check-object-methods" type="check-understanding">
+    <!-- <exercise xml:id="quick-check-object-methods" type="check-understanding">
         <title>Quick Check: Object Methods</title>
         <statement>
             <p>Consider the following questions about overriding Object methods:</p>
@@ -299,49 +299,127 @@
                     objects can have the same hash code (a hash collision).</li>
             </ol>
         </response>
-    </exercise>
+    </exercise> -->
+
 </subsection>
+
+  <p><alert>Check Your Understanding</alert></p>
+
+    <exercise xml:id="mc-method-override">
+        <statement>
+            <p>What is method overriding in Java?</p>
+        </statement>
+        <choices randomize="yes">
+            <choice correct="yes">
+                <statement>
+                    <p>
+                        Providing a new implementation for an inherited method in a subclass.
+                    </p>
+                </statement>
+            </choice>
+            <choice>
+                <statement>
+                    <p>
+                        Defining multiple methods with the same name but different parameters in the same class.
+                    </p>
+                </statement>
+            </choice>
+            <choice>
+                <statement>
+                    <p>
+                        Using the final keyword to prevent method modifications.
+                    </p>
+                </statement>
+            </choice>
+            <choice>
+                <statement>
+                    <p>
+                        Creating a method with the same name but a different return type in a subclass.
+                    </p>
+                </statement>
+            </choice>
+            </choices>
+            </exercise>
+
+            <exercise xml:id="mc-method-override2">
+        <statement>
+            <p>What must be true for a method to be properly overridden in Java?</p>
+        </statement>
+        <choices randomize="yes">
+            <choice correct="yes">
+                <statement>
+                    <p>
+                        he method must have the same name, parameters, and return type as the superclass method.
+                    </p>
+                </statement>
+            </choice>
+            <choice>
+                <statement>
+                    <p>
+                        The method must have a different name but the same parameters.
+                    </p>
+                </statement>
+            </choice>
+            <choice>
+                <statement>
+                    <p>
+                    The method must be static in both the superclass and subclass.
+                    </p>
+                </statement>
+            </choice>
+            <choice>
+                <statement>
+                    <p>
+                        The method must have a different return type but the same name and parameters.
+                    </p>
+                </statement>
+            </choice>
+            </choices>
+            </exercise>
+            
+<exercise xml:id="mc-method-override3">
+        <statement>
+            <p>Can a subclass override a private method from its superclass?</p>
+        </statement>
+        <choices randomize="yes">
+            <choice>
+                <statement>
+                    <p>
+                        Yes, but only if the subclass is in the same package.
+                    </p>
+                </statement>
+            </choice>
+            <choice correct="yes">
+                <statement>
+                    <p>
+                        No, because private methods are not inherited.
+                    </p>
+                </statement>
+            </choice>
+            <choice>
+                <statement>
+                    <p>
+                        Yes, as long as the method is also declared private in the subclass.
+                    </p>
+                </statement>
+            </choice>
+            <choice>
+                <statement>
+                    <p>
+                        No, unless the subclass uses the super keyword to call the method.
+                    </p>
+                </statement>
+            </choice>
+            </choices>
+            </exercise>
+
 
 <!-- ==============================================
        2.8 Exercises
        ============================================= -->
-<exercises>
-    <exercise xml:id="mc-inheritance-basic-syntax" type="multiplechoice">
-        <title>Basic Inheritance Syntax</title>
-        <statement>
-            <p>Which keyword in Java indicates that one class is inheriting from another?</p>
-        </statement>
-        <choices>
-            <choice correct="yes">
-                <statement>
-                    <c>extends</c>
-                </statement>
-                <feedback>Correct. The <c>extends</c> keyword establishes an inheritance
-                    relationship between classes.</feedback>
-            </choice>
-            <choice>
-                <statement>
-                    <c>implements</c>
-                </statement>
-                <feedback>No, <c>implements</c> is used for interfaces, not class inheritance.</feedback>
-            </choice>
-            <choice>
-                <statement>
-                    <c>inherits</c>
-                </statement>
-                <feedback>No, Java doesn't have an <c>inherits</c> keyword.</feedback>
-            </choice>
-            <choice>
-                <statement>
-                    <c>super</c>
-                </statement>
-                <feedback>No, <c>super</c> is used inside a subclass to call its superclass
-                    constructor or methods.</feedback>
-            </choice>
-        </choices>
-    </exercise>
 
-    <exercise xml:id="exercise-critique-inheritance" type="reflect-and-critique">
+
+    <!-- <exercise xml:id="exercise-critique-inheritance" type="reflect-and-critique">
         <title>Critique and Fix a Flawed Inheritance Design</title>
         <statement>
             <p>Consider the following code that attempts to model different types of vehicles:</p>
@@ -532,5 +610,5 @@
             </ol>
         </solution>
     </exercise>
-</exercises>
+</exercises> -->
 </section>

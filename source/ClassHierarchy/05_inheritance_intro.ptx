@@ -163,8 +163,158 @@ public class Car {
     <p>With composition, the relationship is clearer: a <c>Car</c> has an <c>Engine</c>, but it is not an <c>Engine</c>. This design also makes it easier to change or replace the engine without affecting the car's implementation.</p>
   </subsection>
 
- 
+  <p><alert>Check Your Understanding</alert></p>
 
+  <exercise xml:id="mc-inheritance-benefit">
+      <statement>
+        <p>
+          What is the primary benefit of using inheritance in Java?
+        </p>
+      </statement>
+       <choices randomize="yes">
+       <choice>
+        <statement>
+          <p>
+            It allows multiple classes to have the same name.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            It prevents subclasses from modifying superclass behavior.
+          </p>
+        </statement>
+       </choice>
+       <choice correct="yes">
+        <statement>
+          <p>
+             It enables code reuse by allowing subclasses to inherit common fields and methods.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            It automatically generates code for all subclasses.
+          </p>
+        </statement>
+       </choice>
+       </choices>
+       </exercise>
 
+       <exercise xml:id="mc-inheritance">
+      <statement>
+        <p>
+          Which of the following statements about Java inheritance is true?
+        </p>
+      </statement>
+       <choices randomize="yes">
+       <choice>
+        <statement>
+          <p>
+            A subclass must always override all methods from its superclass.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            A subclass can inherit private fields and methods directly.
+          </p>
+        </statement>
+       </choice>
+       <choice correct="yes">
+        <statement>
+          <p>
+            A subclass automatically inherits all non-private fields and methods.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            A subclass cannot have additional fields or methods beyond what is inherited.
+          </p>
+        </statement>
+       </choice>
+       </choices>
+       </exercise>
+
+         <exercise xml:id="mc-inheritance-benefit2">
+      <statement>
+        <p>
+       How does inheritance help reduce code duplication?
+        </p>
+      </statement>
+       <choices randomize="yes">
+       <choice>
+        <statement>
+          <p>
+             By requiring each class to define its own fields and methods separately.
+          </p>
+        </statement>
+       </choice>
+       <choice correct ="yes">
+        <statement>
+          <p>
+            By allowing a superclass to share common code with multiple subclasses.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            By automatically copying code from the superclass into each subclass.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            By making all methods static so they can be used anywhere.
+          </p>
+        </statement>
+       </choice>
+       </choices>
+       </exercise>
+          
+      <exercise xml:id="mc-inheritance-poly">
+      <statement>
+        <p>
+          How does polymorphism enhance flexibility when using inheritance?
+        </p>
+      </statement>
+       <choices randomize="yes">
+       <choice correct="yes">
+        <statement>
+          <p>
+            It allows an object of a subclass to be treated as an instance of its superclass.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            It forces all subclasses to override superclass methods.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            It prevents method overriding in subclasses.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            It removes the need for constructors in subclasses.
+          </p>
+        </statement>
+       </choice>
+       </choices>
+       </exercise>
 
 </section>

@@ -1,6 +1,13 @@
  <section xml:id="inheritance-protected-private">
     <title>Protected vs. Private</title>
     <p>Java has three main access modifiers for fields and methods: <c>private</c> (accessible only within the same class), <c>public</c> (accessible from any class), and <c>protected</c> (accessible within the same class, subclasses, and classes in the same package).</p>
+      <p>
+       In Java, a package is a way of organizing related classes and interfaces into a namespace to prevent naming conflicts and control access. It serves as a logical grouping mechanism, similar to folders in a file system.
+
+We've already been using packages when we import built-in Java classes (e.g., <c>import java.util.ArrayList;</c>) and external libraries. This allows us to access functionality without needing to define everything from scratch.
+
+To use a class from a different package, you must import it using the import statement or refer to it using its fully qualified name. Later, we will learn more about how to organize our own code into packages to improve maintainability and structure.
+      </p>
     
     <p>In the example above, <c>health</c> is declared <c>protected</c>. That means subclasses of <c>Entity</c> can access it directly. If <c>health</c> were <c>private</c>, then only the <c>Entity</c> class itself could access <c>health</c>, and subclasses would need methods like <c>getHealth()</c> to interact with it.</p>
     

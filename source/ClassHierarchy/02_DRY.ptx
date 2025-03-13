@@ -1,6 +1,6 @@
 <section xml:id="inheritance-dry-principle">
     <title>The DRY Principle: Avoiding Repeated Code</title>
-    <p>In software development, repeating similar code across multiple classes can lead to significant issues. Consider a game that has multiple character types—such as <c>Player</c>, <c>Monster</c>, and <c>NPC</c>—each requiring common attributes like <c>health</c> and methods like <c>takeDamage()</c>. Without applying any reuse principles, your code might look like this:</p>
+    <p>In software development, repeating similar code across multiple classes can lead to significant issues. Consider a game that has multiple character types, such as <c>Player</c>, <c>Monster</c>, and <c>NPC</c>,each requiring common attributes like <c>health</c> and methods like <c>takeDamage()</c>. Without applying any reuse principles, your code might look like this:</p>
     <program language="java">
       <code>
 public class Player {
@@ -69,10 +69,11 @@ public class Monster extends GameEntity {
     </program>
     
     <note>
-      <p>While these examples show identical code duplication, inheritance is most appropriate when the duplicated elements represent a genuine specialization relationship. When shared behavior might evolve differently across classes or when the "is-a" relationship doesn't hold, consider alternatives like interfaces or composition.</p>
+      <p>While these examples show identical code duplication, inheritance is most appropriate when the duplicated elements represent a genuine specialization relationship. 
+      When shared behavior might evolve differently across classes or when the "is-a" relationship doesn't hold, consider alternatives like interfaces or composition.</p>
     </note>
     
-    <p>For example, while a <c>Monster</c> genuinely is a <c>GameEntity</c>, a <c>Game</c> is not a <c>Player</c>—it contains or manages players. Consider this example of inappropriate inheritance:</p>
+    <p>For example, while a <c>Monster</c> genuinely is a <c>GameEntity</c>, a <c>Game</c> is not a <c>Player</c> it contains or manages players. Consider this example of inappropriate inheritance:</p>
     <program language="java">
       <code>// Inappropriate inheritance example
 public class Game extends Player {
@@ -85,7 +86,7 @@ public class Game extends Player {
     
     <p>This design is problematic because a <c>Game</c> is not a specialized type of <c>Player</c>, yet it would inherit player-specific attributes like <c>health</c> and <c>experience</c> that don't make sense for a game. Additionally, changes to the <c>Player</c> class would unexpectedly affect the <c>Game</c> class. A better approach would use composition: <c>Game</c> would contain instances of <c>Player</c>, <c>Monster</c>, and other game elements.</p>
     
-    <exercise type="reflection" xml:id="reflection-dry-principle">
+    <!-- <exercise type="reflection" xml:id="reflection-dry-principle">
       <title>Reflecting on Code Duplication</title>
       <statement>
         <p>Consider the following points in your reflection:</p>
@@ -119,5 +120,91 @@ public class Child2 extends Parent {
           </code>
         </program>
       </solution>
+    </exercise> -->
+  <p><alert>Check Your Understanding</alert></p>
+  
+    <exercise xml:id="mc-dry">
+       <statement>
+          <p>
+      Which statement best describes the DRY (Don't Repeat Yourself) principle?
+          </p>
+        </statement>
+        <choices randomize="yes">
+        <choice correct = "yes">
+          <statement>
+            <p>
+              Every piece of knowledge should have a single, unambiguous representation in a system.
+            </p>
+          </statement>
+          <feedback>
+            <p>
+              Correct! Every piece of knowledge should have a single, unambiguous representation in a system.
+            </p>
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              Code should be duplicated whenever necessary to improve readability.
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              Methods should always be rewritten in every new class instead of inherited.
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              DRY only applies to database design, not to programming.
+            </p>
+          </statement>
+        </choice>
+        </choices>
+    </exercise>
+      <exercise xml:id="mc-inheritance-dry">
+        <statement>
+          <p>
+            How does the DRY (Don't Repeat Yourself) principle relate to inheritance in Java?
+          </p>
+        </statement>
+        <choices randomize="yes">
+        <choice correct = "yes">
+          <statement>
+            <p>
+               Inheritance reduces code duplication by allowing subclasses to reuse methods and attributes from a superclass.
+            </p>
+          </statement>
+          <feedback>
+            <p>
+              Correct! Inheritance reduces code duplication by allowing subclasses to reuse methods and attributes from a superclass.
+            </p>
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              Inheritance forces all subclasses to implement the same methods, ensuring uniformity.
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              Inheritance prevents code reuse by restricting access to superclass methods.
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              Inheritance eliminates the need for method overriding in subclasses.
+            </p>
+          </statement>
+        </choice>
+        </choices>
     </exercise>
   </section>

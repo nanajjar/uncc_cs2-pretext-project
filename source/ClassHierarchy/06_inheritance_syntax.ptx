@@ -112,4 +112,310 @@ public class Player extends Entity {
     </program>
     <p>When <c>Player</c> calls <c>super(playerName, initialHealth)</c>, it runs the <c>Entity</c> constructor to set up the parent class fields. Thanks to inheritance, you don't need to duplicate the <c>health</c> variable or <c>takeDamage()</c> method in <c>Player</c>. You inherit them all from <c>Entity</c>, while adding player-specific behaviors like gaining experience and leveling up.</p>
   </subsection>
+
+<subsection xml:id="inheritance-protected-private">
+    <title>Protected vs. Private</title>
+    <p>Java has three main access modifiers for fields and methods. We've already seen and used <c>private</c> (accessible only within the same class), <c>public</c> (accessible from any class). The third access modifier is <c>protected</c> which  makes methods and fields accessible within the same class, subclasses, and classes in the same package.</p>
+      <p>
+       In Java, a package is a way of organizing related classes and interfaces into a namespace to prevent naming conflicts and control access. It serves as a logical grouping mechanism, similar to folders in a file system.
+
+We've already been using packages when we import built-in Java classes (e.g., <c>import java.util.ArrayList;</c>) and external libraries. This allows us to access functionality without needing to define everything from scratch.
+
+To use a class from a different package, you must import it using the import statement or refer to it using its fully qualified name. Later, we will learn more about how to organize our own code into packages to improve maintainability and structure.
+      </p>
+    
+    <p>In the example above, <c>health</c> is declared <c>protected</c>. That means subclasses of <c>Entity</c> can access it directly. If <c>health</c> were <c>private</c>, then only the <c>Entity</c> class itself could access <c>health</c>, and subclasses would need methods like <c>getHealth()</c> to interact with it.</p>
+    
+    <sidebyside widths="50% 50%">
+      <stack>
+        <title>Use private fields when:</title>
+        <ul>
+          <li>The field's implementation might change in the future</li>
+          <li>You need to ensure validation when the field is modified</li>
+          <li>You want to maintain stricter encapsulation of internal state</li>
+        </ul>
+      </stack>
+      <stack>
+        <title>Use protected fields when:</title>
+        <ul>
+          <li>Subclasses legitimately need direct access to modify the field</li>
+          <li>The field's implementation is stable and unlikely to change</li>
+          <li>Performance is critical and getter/setter overhead must be avoided</li>
+        </ul>
+      </stack>
+    </sidebyside>
+    
+    <insight>
+      <title>Best Practice for Field Access</title>
+      <p>Default to <c>private</c> fields with accessor methods (getters/setters). This maintains better encapsulation and gives you more control over how fields are accessed and modified. Use <c>protected</c> sparingly and only when subclasses truly require direct field access for well-justified reasons.</p>
+      <p>Remember: You can always relax access restrictions later if needed, but tightening them may require significant refactoring.</p>
+    </insight>
+  </subsection>
+
+  <p><alert>Check Your Understanding</alert></p>
+
+    <exercise xml:id="mc-inheritance-basic-syntax" type="multiplechoice">
+        <title>Basic Inheritance Syntax</title>
+        <statement>
+            <p>Which keyword in Java indicates that one class is inheriting from another?</p>
+        </statement>
+        <choices randomize="yes">
+            <choice correct="yes">
+                <statement>
+                    <c>extends</c>
+                </statement>
+                <feedback>Correct. The <c>extends</c> keyword establishes an inheritance
+                    relationship between classes.</feedback>
+            </choice>
+            <choice>
+                <statement>
+                    <c>implements</c>
+                </statement>
+                <feedback>No, <c>implements</c> is used for interfaces, not class inheritance.</feedback>
+            </choice>
+            <choice>
+                <statement>
+                    <c>inherits</c>
+                </statement>
+                <feedback>No, Java doesn't have an <c>inherits</c> keyword.</feedback>
+            </choice>
+            <choice>
+                <statement>
+                    <c>super</c>
+                </statement>
+                <feedback>No, <c>super</c> is used inside a subclass to call its superclass
+                    constructor or methods.</feedback>
+            </choice>
+        </choices>
+    </exercise>
+ 
+    <exercise xml:id="mc-inheritance-syntax">
+      <statement>
+        <p>
+How do you declare that a class in Java inherits from another class?
+        </p>
+      </statement>
+       <choices randomize="yes">
+       <choice>
+        <statement>
+          <p>
+            <c> class Subclass inherits Superclass {} </c>
+          </p>
+        </statement>
+       </choice>
+       <choice correct="yes">
+        <statement>
+          <p>
+            <c>class Subclass extends Superclass {}</c>
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            <c>class Subclass implements Superclass {}</c>
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            <c>class Subclass includes Superclass {}</c>
+          </p>
+        </statement>
+       </choice>
+       </choices>
+        </exercise>
+
+ <exercise xml:id="mc-super-construct">
+      <statement>
+        <p>
+        What happens if a subclass does not explicitly call a superclass constructor?
+        </p>
+      </statement>
+       <choices randomize="yes">
+       <choice>
+        <statement>
+          <p>
+            The compiler throws an error.
+          </p>
+        </statement>
+       </choice>
+       <choice correct="yes">
+        <statement>
+          <p>
+            The default (no-argument) constructor of the superclass is automatically called.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            The subclass must explicitly call super() in every constructor.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            The superclass constructor is ignored.
+          </p>
+        </statement>
+       </choice>
+       </choices>
+       </exercise>
+       <exercise xml:id="mc-super">
+      <statement>
+        <p>
+        What is the purpose of the super keyword in Java?
+        </p>
+      </statement>
+       <choices randomize="yes">
+       <choice>
+        <statement>
+          <p>
+            To create an instance of the superclass.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            To access the private members of the superclass.
+          </p>
+        </statement>
+       </choice>
+       <choice correct="yes">
+        <statement>
+          <p>
+            To call a constructor or method from the superclass.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+          To indicate that a method cannot be overridden.
+          </p>
+        </statement>
+       </choice>
+       </choices>
+       </exercise>
+
+
+       <exercise xml:id="mc-access-modifier">
+      <statement>
+        <p>
+       What does the protected access modifier allow in Java?
+        </p>
+      </statement>
+       <choices randomize="yes">
+       <choice>
+        <statement>
+          <p>
+             Access only within the same class.
+          </p>
+        </statement>
+       </choice>
+       <choice correct="yes">
+        <statement>
+          <p>
+            Access within the same class, subclasses, and the same package.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            Access from any class in any package.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            Access only in subclasses, even if they are in different packages.
+          </p>
+        </statement>
+       </choice>
+       </choices>
+       </exercise>
+       
+         <exercise xml:id="mc-access-modifier-private">
+      <statement>
+        <p>
+       What would happen if a field in a superclass is private?
+        </p>
+      </statement>
+       <choices randomize="yes">
+       <choice>
+        <statement>
+          <p>
+            It can still be directly accessed by subclasses.
+          </p>
+        </statement>
+       </choice>
+       <choice correct="yes">
+        <statement>
+          <p>
+            It can only be accessed within the superclass itself.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            Subclasses in the same package can access it without any restrictions.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            It is automatically converted to protected when inherited.
+          </p>
+        </statement>
+       </choice>
+       </choices>
+       </exercise>
+
+         <exercise xml:id="mc-package-access">
+      <statement>
+        <p>
+       What must you do to use a class from a different package in Java?
+        </p>
+      </statement>
+       <choices randomize="yes">
+       <choice>
+        <statement>
+          <p>
+            Define the class in the same file.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            Copy and paste the class into your package.
+          </p>
+        </statement>
+       </choice>
+       <choice correct="yes">
+        <statement>
+          <p>
+            Import the class using the <c>import</c> statement or use its fully qualified name.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            Use the <c>extends</c> keyword to access the class directly.
+          </p>
+        </statement>
+       </choice>
+       </choices>
+       </exercise>
+
+
 </section>

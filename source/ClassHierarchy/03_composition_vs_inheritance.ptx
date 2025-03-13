@@ -48,7 +48,7 @@
     
     <p>It's also common to use both approaches together. For example, you might have a class hierarchy for game entities (inheritance) where each entity contains component objects like weapons or abilities (composition).</p>
 
-    <exercise type="reflection" xml:id="reflection-composition-scenario">
+    <!-- <exercise type="reflection" xml:id="reflection-composition-scenario">
       <title>When to Choose Composition</title>
       <statement>
         <p>For this exercise:</p>
@@ -89,6 +89,80 @@ public class Document {
           </code>
         </program>
       </solution>
+    </exercise> -->
+     <p><alert>Check Your Understanding</alert></p>
+
+    <exercise xml:id="mc-reuse">
+      <statement>
+        <p>
+        Which of the following best describes the two primary ways to reuse functionality between classes?
+        </p>
+      </statement>
+       <choices randomize="yes">
+       <choice>
+          <statement>
+            <p>
+              Using composition to model "is-a" relationships and inheritance for "has-a" relationships.   
+            </p>
+          </statement>
+        </choice>
+        <choice correct="yes">
+           <statement>
+            <p>
+               Using inheritance to derive behavior from a parent class and composition to include functionality from other classes.
+            </p>
+          </statement>
+          <feedback>
+            <p>
+               Using inheritance to derive behavior from a parent class and composition to include functionality from other classes.
+            </p>
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              Copying and pasting code between classes and using interfaces.
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              Writing separate methods for each class to avoid dependencies.
+            </p>
+          </statement>
+        </choice>
+        </choices>
+    </exercise>
+    <exercise xml:id="mc-composition-inheritance">
+      <statement>
+          <p>
+      In which scenario is composition a better choice than inheritance?
+          </p>
+        </statement>
+        <choices randomize="yes">
+        <choice correct="yes">
+          <statement>
+            <p>
+              When a class needs to share behavior across multiple unrelated classes.
+            </p>
+          </statement>
+        </choice>
+        <choice correct="yes">
+          <statement>
+            <p>
+               When a subclass needs to override most of the superclass methods.
+            </p>
+          </statement>
+        </choice>
+        <choice correct="yes">
+          <statement>
+            <p>
+              When a class represents a "has-a" relationship rather than an "is-a" relationship.
+            </p>
+          </statement>
+        </choice>
+      </choices>
     </exercise>
   </section>
 

@@ -324,13 +324,55 @@ public class Monster extends Entity {
   <!-- ==============================================
        3.5 Exercises
        ============================================= -->
-  <exercises>
+       <p>
+        <alert>Check Your Understanding</alert>
+       </p>
+
+        <exercise xml:id="super-" type="multiplechoice">
+        <statement>
+          <p>
+            Which of the following is a valid way to call a superclass constructor from a subclass?
+          </p>
+        </statement>
+        <choices randomize="yes">
+        <choice correct="yes">
+          <statement>
+            <p>
+              <c>super(...);</c>
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+             <c> this.super();</c>
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              <c>Superclass();</c>
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+             <c> parent();</c>
+            </p>
+          </statement>
+        </choice>
+        </choices>
+        </exercise>
+
+
     <exercise xml:id="constructor-chaining-order" type="multiplechoice">
       <title>Understanding Constructor Chaining</title>
       <statement>
         <p>Which statement correctly describes how Java executes constructors when creating a subclass object?</p>
       </statement>
-      <choices>
+      <choices randomize="yes">
         <choice correct="yes">
           <statement>The superclass constructor always executes first, followed by the subclass constructor.</statement>
           <feedback>Correct! Java enforces superclass initialization first to ensure that inherited fields are initialized before the subclass.</feedback>
@@ -346,7 +388,158 @@ public class Monster extends Entity {
       </choices>
     </exercise>
 
-    <exercise xml:id="writing-constructor-with-super" type="shortanswer">
+<exercise xml:id="super-pitfall" type="multiplechoice">
+        <statement>
+          <p>
+    What happens if a subclass constructor does not explicitly call <c>super(...)</c> when the superclass lacks a no-argument constructor?
+          </p>
+        </statement>
+        <choices randomize="yes">
+        <choice correct="yes">
+          <statement>
+            <p>
+              A compilation error occurs.
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              The compiler automatically inserts a call to the superclass's parameterized constructor.
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              The subclass compiles successfully but throws an error at runtime.
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              The subclass is forced to define its own no-argument constructor.
+            </p>
+          </statement>
+        </choice>
+        </choices>
+        </exercise>
+        <exercise xml:id="super-pitfall2" type="multiplechoice">
+        <statement>
+          <p>
+            Where must the <c>super(...)</c> call be placed in a constructor?
+        </p>
+        </statement>
+        <choices randomize="yes">
+        <choice correct="yes">
+          <statement>
+            <p>
+              As the very first statement inside the constructor.
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              Anywhere inside the constructor.
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              As the last statement inside the constructor.
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+               It is optional and can be omitted in all cases.
+            </p>
+          </statement>
+        </choice>
+        </choices>
+        </exercise>
+ 
+        <exercise xml:id="super-pitfall3" type="multiplechoice">
+        <statement>
+          <p>
+        What happens if a constructor tries to call <c>super(...)</c> but does so after another statement?
+        </p>
+        </statement>
+        <choices randomize="yes">
+        <choice>
+          <statement>
+            <p>
+              The program will still compile, but <c>super(...)</c> will be ignored.
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              The constructor will execute normally, but <c>super(...)</c> will run last.
+            </p>
+          </statement>
+        </choice>
+        <choice correct="yes">
+          <statement>
+            <p>
+              A compile-time error will occur.
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              Java will automatically reorder the statements to place <c>super(...)</c> first.
+            </p>
+          </statement>
+        </choice>
+        </choices>
+        </exercise>
+
+         <exercise xml:id="super-pitfall4" type="multiplechoice">
+        <statement>
+          <p>
+         If a subclass does not define any constructors, what happens?
+        </p>
+        </statement>
+        <choices randomize="yes">
+        <choice>
+          <statement>
+            <p>
+              It automatically inherits the superclass's constructors.
+            </p>
+          </statement>
+        </choice>
+        <choice correct="yes">
+          <statement>
+            <p>
+              The compiler generates a default constructor that calls <c>super()</c>.
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              It will fail to compile unless a constructor is explicitly provided.
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              The subclass cannot be instantiated.
+            </p>
+          </statement>
+        </choice>
+        </choices>
+      </exercise>        
+
+    <!-- <exercise xml:id="writing-constructor-with-super" type="shortanswer">
       <title>Practice Writing a Subclass Constructor</title>
       <statement>
         <p>Given a superclass <c>Person</c> that requires a <c>name</c> parameter in its constructor, write a constructor for a subclass <c>Student</c>. The subclass constructor should take a <c>name</c> and an integer <c>studentId</c>. Remember to use <c>super(...)</c> correctly.</p>
@@ -443,6 +636,5 @@ public class ElectricCar extends Vehicle {
         </program>
         <p>This design separates initialization sequence (which is final and can't be overridden) from the specific engine starting behavior (which can be safely overridden). Alternatively, the design could avoid calling overridable methods during construction altogether.</p>
       </solution>
-    </exercise>
-  </exercises>
+    </exercise> -->
 </section>
