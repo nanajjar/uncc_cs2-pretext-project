@@ -1,0 +1,320 @@
+<section xml:id="basic-inheritance-java">
+  <title>Basic Inheritance in Java</title>
+
+  <!-- ==============================================
+       2.1 Introducing Inheritance: Classes with Shared Behaviors
+       ============================================= -->
+  <subsection xml:id="inheritance-intro">
+    <title>Why Do We Need Inheritance?</title>
+    <p>As you saw before, repeating similar fields or methods in multiple classes can create a maintenance headache. Inheritance addresses this by letting one class "share" its common code with other classes. In Java, the class that provides shared code is called the <em>superclass</em>, while the classes that reuse this code are called <em>subclasses</em>.</p>
+    
+    <p>A subclass automatically inherits all non-private fields and methods from its superclass. This inheritance enables you to:</p>
+    <ul>
+      <li>Reuse existing code without copying it</li>
+      <li>Add new fields and methods to extend functionality</li>
+      <li>Override inherited methods to provide specialized behavior</li>
+      <li>Leverage polymorphism to write more flexible code</li>
+    </ul>
+    
+    <p>Imagine a game where <c>Entity</c> represents anything that can appear in the world. <c>Player</c> and <c>Monster</c> might both need a <c>health</c> field and a <c>takeDamage</c> method. Rather than copy-pasting them into each class, we can define these once in <c>Entity</c>. Subclasses like <c>Player</c> or <c>Monster</c> then inherit the same <c>health</c> and <c>takeDamage</c> logic, but are still free to add unique attributes or special behaviors.</p>
+    
+    <p>Perhaps the most powerful benefit of inheritance is <em>polymorphism</em> – the ability to treat objects of different subclasses as instances of their common superclass. This enables you to write code that operates on the general type while automatically getting the specialized behavior of specific subtypes:</p>
+    
+    <program language="java">
+      <code>// Using polymorphism
+// Collection holding different entity types
+List&lt;Entity&gt; entities = new ArrayList&lt;&gt;();
+entities.add(new Player("Hero", 100));
+entities.add(new Monster("Goblin", 50));
+entities.add(new NPC("Shopkeeper", 30));
+
+// Apply damage to all entities
+// Each will use its own version of takeDamage()
+for (Entity e : entities) {
+    e.takeDamage(10);  // Polymorphic call
+}
+</code>
+    </program>
+    
+    <p>In this example, the same <c>takeDamage()</c> call works differently depending on the actual type of entity, even though our code only deals with the general <c>Entity</c> type. This is a powerful mechanism that enables flexible and extensible designs.</p>
+  </subsection>
+
+  <!-- ==============================================
+       2.2 Subclasses and Superclasses
+       ============================================= -->
+  <subsection xml:id="subclasses-and-superclasses">
+    <title>Subclasses and Superclasses</title>
+    <p>The superclass is your general or "parent" class. Subclasses (sometimes called "child" classes) extend this superclass and become more specialized. This relationship is often described as "is-a": a <c>Monster</c> is-a(n) <c>Entity</c>. This helps you follow the DRY principle because you only write the shared logic once.</p>
+    
+    <p>Here are some examples of superclass-subclass relationships organized by domain:</p>
+    
+    <tabular>
+      <row header="yes">
+        <cell>Domain</cell>
+        <cell>Superclass</cell>
+        <cell>Subclasses</cell>
+        <cell>What's Inherited</cell>
+      </row>
+      <row>
+        <cell>Game Development</cell>
+        <cell><c>Entity</c></cell>
+        <cell><c>Player</c>, <c>Monster</c>, <c>NPC</c></cell>
+        <cell>position, health, collision detection</cell>
+      </row>
+      <row>
+        <cell>Financial Systems</cell>
+        <cell><c>Account</c></cell>
+        <cell><c>CheckingAccount</c>, <c>SavingsAccount</c></cell>
+        <cell>balance, deposit/withdraw methods</cell>
+      </row>
+      <row>
+        <cell>Graphics</cell>
+        <cell><c>Shape</c></cell>
+        <cell><c>Circle</c>, <c>Rectangle</c>, <c>Triangle</c></cell>
+        <cell>position, color, draw methods</cell>
+      </row>
+    </tabular>
+    
+    <p>Here's a visual representation of a simple class hierarchy:</p>
+    <pre>
+Entity
+ ├── Player
+ ├── Monster
+ └── NPC
+    </pre>
+    <p>This diagram shows <c>Entity</c> as the superclass with three subclasses: <c>Player</c>, <c>Monster</c>, and <c>NPC</c>. Each of these subclasses inherits properties and behaviors from <c>Entity</c>, while potentially adding their own specialized features.</p>
+    
+    <p>In this hierarchy, the <c>Entity</c> class would contain common attributes like position, health, and basic movement functionality. Each subclass then adds specialized behaviors:</p>
+    <ul>
+      <li><c>Player</c> adds user input handling, inventory management, and experience/leveling</li>
+      <li><c>Monster</c> adds AI pathfinding, aggression logic, and combat behaviors</li>
+      <li><c>NPC</c> adds dialogue systems, quest management, and interaction options</li>
+    </ul>
+    <p>This structure allows you to write code that works with any Entity while still leveraging specialized behaviors when needed.</p>
+  </subsection>
+
+  <!-- ==============================================
+       2.2.1 Common Inheritance Mistakes (NEW)
+       ============================================= -->
+  <subsection xml:id="common-inheritance-mistakes">
+    <title>Common Inheritance Mistakes</title>
+    
+    <note>
+      <title>Inheritance Anti-Patterns</title>
+      <p>The most common inheritance mistake is using it for "has-a" relationships instead of "is-a" relationships.</p>
+      <ul>
+        <li><term>Incorrect:</term> <c>Car extends Engine</c> (A car has an engine, it is not a type of engine)</li>
+        <li><term>Correct:</term> <c>Car</c> contains an <c>Engine</c> field (composition)</li>
+      </ul>
+      <p>Other common anti-patterns include:</p>
+      <ul>
+        <li><term>Deep inheritance hierarchies:</term> More than 2-3 levels deep creates fragile, difficult-to-maintain code where changes to base classes can have unexpected effects rippling throughout the hierarchy</li>
+        <li><term>Inheritance for code reuse only:</term> Using inheritance when there's no logical "is-a" relationship leads to confusing designs that violate the principle of least surprise</li>
+        <li><term>Inheriting from final classes or those not designed for extension:</term> This limits future flexibility and may violate assumptions made by the original class designer</li>
+      </ul>
+    </note>
+    
+    <p>Here's an example of incorrect use of inheritance:</p>
+    <program language="java">
+      <code>// Incorrect: Using inheritance inappropriately
+public class Car extends Engine {
+    private String model;
+    
+    // Car functionality...
+}</code>
+    </program>
+    
+    <p>This design is flawed because a <c>Car</c> is not a specialized type of <c>Engine</c>—it contains an engine as one of its components. The consequences of this flawed design include:</p>
+    
+    <ul>
+      <li>A car would inherit all engine methods like <c>ignite()</c> and <c>increaseFuelFlow()</c> at the top level, creating a confusing API</li>
+      <li>Changes to the Engine class would directly impact Car, creating tight coupling</li>
+      <li>You couldn't change the engine in a car without changing the car itself</li>
+    </ul>
+    
+    <p>Here's how it should be corrected using composition:</p>
+    
+    <program language="java">
+      <code>// Correct: Using composition for a "has-a" relationship
+public class Engine {
+    private int horsepower;
+    
+    public void start() {
+        // Engine starting logic
+    }
+}
+
+public class Car {
+    private Engine engine;  // Composition
+    private String model;
+    
+    public Car(Engine engine, String model) {
+        this.engine = engine;
+        this.model = model;
+    }
+    
+    public void startCar() {
+        engine.start();
+        // Additional car startup logic
+    }
+}</code>
+    </program>
+    
+    <p>With composition, the relationship is clearer: a <c>Car</c> has an <c>Engine</c>, but it is not an <c>Engine</c>. This design also makes it easier to change or replace the engine without affecting the car's implementation.</p>
+  </subsection>
+
+  <p><alert>Check Your Understanding</alert></p>
+
+  <exercise xml:id="mc-inheritance-benefit">
+      <statement>
+        <p>
+          What is the primary benefit of using inheritance in Java?
+        </p>
+      </statement>
+       <choices randomize="yes">
+       <choice>
+        <statement>
+          <p>
+            It allows multiple classes to have the same name.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            It prevents subclasses from modifying superclass behavior.
+          </p>
+        </statement>
+       </choice>
+       <choice correct="yes">
+        <statement>
+          <p>
+             It enables code reuse by allowing subclasses to inherit common fields and methods.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            It automatically generates code for all subclasses.
+          </p>
+        </statement>
+       </choice>
+       </choices>
+       </exercise>
+
+       <exercise xml:id="mc-inheritance">
+      <statement>
+        <p>
+          Which of the following statements about Java inheritance is true?
+        </p>
+      </statement>
+       <choices randomize="yes">
+       <choice>
+        <statement>
+          <p>
+            A subclass must always override all methods from its superclass.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            A subclass can inherit private fields and methods directly.
+          </p>
+        </statement>
+       </choice>
+       <choice correct="yes">
+        <statement>
+          <p>
+            A subclass automatically inherits all non-private fields and methods.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            A subclass cannot have additional fields or methods beyond what is inherited.
+          </p>
+        </statement>
+       </choice>
+       </choices>
+       </exercise>
+
+         <exercise xml:id="mc-inheritance-benefit2">
+      <statement>
+        <p>
+       How does inheritance help reduce code duplication?
+        </p>
+      </statement>
+       <choices randomize="yes">
+       <choice>
+        <statement>
+          <p>
+             By requiring each class to define its own fields and methods separately.
+          </p>
+        </statement>
+       </choice>
+       <choice correct ="yes">
+        <statement>
+          <p>
+            By allowing a superclass to share common code with multiple subclasses.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            By automatically copying code from the superclass into each subclass.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            By making all methods static so they can be used anywhere.
+          </p>
+        </statement>
+       </choice>
+       </choices>
+       </exercise>
+          
+      <exercise xml:id="mc-inheritance-poly">
+      <statement>
+        <p>
+          How does polymorphism enhance flexibility when using inheritance?
+        </p>
+      </statement>
+       <choices randomize="yes">
+       <choice correct="yes">
+        <statement>
+          <p>
+            It allows an object of a subclass to be treated as an instance of its superclass.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            It forces all subclasses to override superclass methods.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            It prevents method overriding in subclasses.
+          </p>
+        </statement>
+       </choice>
+       <choice>
+        <statement>
+          <p>
+            It removes the need for constructors in subclasses.
+          </p>
+        </statement>
+       </choice>
+       </choices>
+       </exercise>
+
+</section>

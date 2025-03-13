@@ -1,0 +1,38 @@
+ <section xml:id="inheritance-protected-private">
+    <title>Protected vs. Private</title>
+    <p>Java has three main access modifiers for fields and methods: <c>private</c> (accessible only within the same class), <c>public</c> (accessible from any class), and <c>protected</c> (accessible within the same class, subclasses, and classes in the same package).</p>
+      <p>
+       In Java, a package is a way of organizing related classes and interfaces into a namespace to prevent naming conflicts and control access. It serves as a logical grouping mechanism, similar to folders in a file system.
+
+We've already been using packages when we import built-in Java classes (e.g., <c>import java.util.ArrayList;</c>) and external libraries. This allows us to access functionality without needing to define everything from scratch.
+
+To use a class from a different package, you must import it using the import statement or refer to it using its fully qualified name. Later, we will learn more about how to organize our own code into packages to improve maintainability and structure.
+      </p>
+    
+    <p>In the example above, <c>health</c> is declared <c>protected</c>. That means subclasses of <c>Entity</c> can access it directly. If <c>health</c> were <c>private</c>, then only the <c>Entity</c> class itself could access <c>health</c>, and subclasses would need methods like <c>getHealth()</c> to interact with it.</p>
+    
+    <sidebyside widths="50% 50%">
+      <stack>
+        <title>Use private fields when:</title>
+        <ul>
+          <li>The field's implementation might change in the future</li>
+          <li>You need to ensure validation when the field is modified</li>
+          <li>You want to maintain stricter encapsulation of internal state</li>
+        </ul>
+      </stack>
+      <stack>
+        <title>Use protected fields when:</title>
+        <ul>
+          <li>Subclasses legitimately need direct access to modify the field</li>
+          <li>The field's implementation is stable and unlikely to change</li>
+          <li>Performance is critical and getter/setter overhead must be avoided</li>
+        </ul>
+      </stack>
+    </sidebyside>
+    
+    <insight>
+      <title>Best Practice for Field Access</title>
+      <p>Default to <c>private</c> fields with accessor methods (getters/setters). This maintains better encapsulation and gives you more control over how fields are accessed and modified. Use <c>protected</c> sparingly and only when subclasses truly require direct field access for well-justified reasons.</p>
+      <p>Remember: You can always relax access restrictions later if needed, but tightening them may require significant refactoring.</p>
+    </insight>
+  </section>

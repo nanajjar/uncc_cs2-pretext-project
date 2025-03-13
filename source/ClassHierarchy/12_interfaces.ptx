@@ -1,0 +1,126 @@
+<section xml:id="interfaces">
+  <title>Interfaces</title>
+
+  <p>An <term>interface</term> is a purely abstract contract specifying methods a class must implement. Interfaces differ from abstract classes in two crucial ways:</p>
+  <ul>
+    <li>They cannot contain instance fields (except for constants)</li>
+    <li>A class can implement multiple interfaces simultaneously</li>
+  </ul>
+
+  <p>Like abstract classes, interfaces cannot be instantiated directly since they define responsibilities without providing implementations. They are declared using the <c>interface</c> keyword:</p>
+
+  <program language="java">
+    <code>// Simple interface definition
+public interface Printable {
+    void print(); // Implicitly public and abstract
+}
+
+// Interface with a constant
+public interface Taxable {
+    double TAX_RATE = 0.07; // Implicitly public, static, and final
+    
+    double calculateTax(); // Calculate tax for this item
+}</code>
+  </program>
+  
+  <p>Note that interface methods are implicitly <c>public</c> and <c>abstract</c>, and any fields are implicitly <c>public</c>, <c>static</c>, and <c>final</c> (constants). This means interfaces cannot store per-instance state.</p>
+
+  <note>
+    <title>Interfaces Cannot Be Instantiated</title>
+    <p>Like abstract classes, interfaces cannot be instantiated directly. This makes sense since they contain no implementation for their methods (except for default methods).</p>
+    <program language="java">
+      <code>// These won't compile:
+Printable p = new Printable();       // ❌ Error
+Taxable t = new Taxable();           // ❌ Error</code>
+    </program>
+    <p>You must always create a concrete class that implements the interface, then instantiate that class.</p>
+  </note>
+
+  <p>To use an interface, a class "implements" it:</p>
+
+  <program language="java">
+    <code>// A class implementing an interface
+public class Product implements Taxable {
+    private String name;
+    private double price;
+    
+    public Product(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+    
+    @Override
+    public double calculateTax() {
+        return price * TAX_RATE;
+    }
+}</code>
+  </program>
+
+  <p>The power of interfaces becomes apparent when we implement multiple interfaces:</p>
+
+  <program language="java">
+    <code>// A class implementing multiple interfaces
+public class Invoice implements Printable, Taxable {
+    private String customer;
+    private double amount;
+    
+    // Constructor and other methods omitted for brevity
+    
+    @Override
+    public void print() {
+        System.out.println("Invoice for: " + customer);
+        System.out.println("Amount: $" + amount);
+        System.out.println("Tax: $" + calculateTax());
+    }
+    
+    @Override
+    public double calculateTax() {
+        return amount * TAX_RATE;
+    }
+}</code>
+  </program>
+
+  <note>
+    <title>Modern Java Feature: Default Methods</title>
+    <p>Since Java 8, interfaces can include <em>default methods</em>—methods with implementations. Default methods were introduced primarily to enable interface evolution without breaking existing code. Before Java 8, adding a new method to an interface would break all existing implementations.</p>
+    
+    <program language="java">
+      <code>public interface Sortable {
+    // Abstract method (no implementation)
+    void sort();
+    
+    // Default method (with implementation)
+    default void sortDescending() {
+        System.out.println("Default implementation - using sort() in reverse");
+        sort();  // Note: calls the abstract method that implementers must provide
+        // Reverse the order...
+    }
+}</code>
+    </program>
+    
+    <p>Even with default methods, interfaces still cannot contain instance fields. Default methods should generally be used for:</p>
+    <ul>
+      <li>Adding optional functionality that builds on the core abstract methods</li>
+      <li>Providing convenience methods that implementers shouldn't need to override</li> 
+      <li>Evolving existing interfaces without breaking backward compatibility</li>
+    </ul>
+    
+    <p><term>Caution:</term> Default methods should not be used to implement significant shared logic. That's what abstract classes are for. Default methods were primarily introduced to allow interfaces to evolve over time without breaking existing code. Overusing them can lead to:</p>
+    <ul>
+      <li>Blurred distinction between interfaces and abstract classes</li>
+      <li>Poor design where state management becomes difficult</li>
+      <li>Confusion about where behavior is defined</li>
+      <li>Maintenance issues when multiple interfaces provide conflicting default implementations</li>
+    </ul>
+  </note>
+  
+  <p><term>Key takeaways about interfaces:</term></p>
+  <ul>
+    <li>Interfaces define a contract that implementing classes must fulfill</li>
+    <li>Interface methods are implicitly <c>public</c> and <c>abstract</c></li>
+    <li>Interfaces cannot have instance fields (only constants)</li>
+    <li>Interfaces cannot have constructors (since they don't initialize instance state)</li>
+    <li>A class can implement multiple interfaces (unlike inheritance, which is limited to one superclass)</li>
+    <li>Default methods provide a way to add methods to interfaces without breaking existing implementations</li>
+  </ul>
+</section> 

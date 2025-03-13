@@ -1,0 +1,210 @@
+<section xml:id="inheritance-dry-principle">
+    <title>The DRY Principle: Avoiding Repeated Code</title>
+    <p>In software development, repeating similar code across multiple classes can lead to significant issues. Consider a game that has multiple character types, such as <c>Player</c>, <c>Monster</c>, and <c>NPC</c>,each requiring common attributes like <c>health</c> and methods like <c>takeDamage()</c>. Without applying any reuse principles, your code might look like this:</p>
+    <program language="java">
+      <code>
+public class Player {
+    private int health;
+
+    public void takeDamage(int amount) {
+        health -= amount;
+    }
+}
+
+public class Monster {
+    private int health;
+
+    public void takeDamage(int amount) {
+        health -= amount;
+    }
+}
+
+public class NPC {
+    private int health;
+
+    public void takeDamage(int amount) {
+        health -= amount;
+    }
+}
+      </code>
+    </program>
+    <p>Notice how the <c>takeDamage()</c> method and <c>health</c> field are identical in each class. Duplicating code this way is risky because:</p>
+    <ul>
+      <li>You must remember to update each class if the logic changes, which increases maintenance burden.</li>
+      <li>It's easy to introduce inconsistencies or errors if you miss updating one class.</li>
+      <li>The codebase quickly becomes bloated and difficult to manage.</li>
+    </ul>
+    <p>The <term>DRY principle (Don't Repeat Yourself)</term> advises avoiding this duplication by identifying and abstracting common behaviors into a single, shared implementation.</p>
+    
+    <p>Inheritance directly addresses the DRY principle by creating a shared parent class:</p>
+    
+    <program language="java">
+      <code>
+// Parent class with shared functionality
+public class GameEntity {
+    protected int health;
+    
+    public void takeDamage(int amount) {
+        health -= amount;
+    }
+}
+
+// Subclasses inherit common behavior and add specifics
+public class Player extends GameEntity {
+    private int experiencePoints;
+    
+    public void gainExperience(int amount) {
+        experiencePoints += amount;
+    }
+}
+
+public class Monster extends GameEntity {
+    private boolean isAggressive;
+    
+    public void setAggressive(boolean aggressive) {
+        isAggressive = aggressive;
+    }
+}
+      </code>
+    </program>
+    
+    <note>
+      <p>While these examples show identical code duplication, inheritance is most appropriate when the duplicated elements represent a genuine specialization relationship. 
+      When shared behavior might evolve differently across classes or when the "is-a" relationship doesn't hold, consider alternatives like interfaces or composition.</p>
+    </note>
+    
+    <p>For example, while a <c>Monster</c> genuinely is a <c>GameEntity</c>, a <c>Game</c> is not a <c>Player</c> it contains or manages players. Consider this example of inappropriate inheritance:</p>
+    <program language="java">
+      <code>// Inappropriate inheritance example
+public class Game extends Player {
+    private List&lt;Monster&gt; monsters;
+    
+    // Game methods...
+}
+      </code>
+    </program>
+    
+    <p>This design is problematic because a <c>Game</c> is not a specialized type of <c>Player</c>, yet it would inherit player-specific attributes like <c>health</c> and <c>experience</c> that don't make sense for a game. Additionally, changes to the <c>Player</c> class would unexpectedly affect the <c>Game</c> class. A better approach would use composition: <c>Game</c> would contain instances of <c>Player</c>, <c>Monster</c>, and other game elements.</p>
+    
+    <!-- <exercise type="reflection" xml:id="reflection-dry-principle">
+      <title>Reflecting on Code Duplication</title>
+      <statement>
+        <p>Consider the following points in your reflection:</p>
+        <ol>
+          <li>Think about a time when you duplicated similar logic across multiple classes or methods. What specific issues did you encounter?</li>
+          <li>How might following the DRY principle have helped in that situation?</li>
+          <li>Sketch a simple inheritance hierarchy that could have solved the problem.</li>
+        </ol>
+      </statement>
+      <solution>
+        <p>Duplicating code led to bugs or wasted effort in maintenance, as each instance of duplicated code had to be updated independently. Following DRY would have consolidated logic, reduced mistakes, and simplified updates.</p>
+        <p>A possible inheritance hierarchy might look like:</p>
+        <program language="java">
+          <code>
+public class Parent {
+    // Common fields and methods
+    private int sharedField;
+    
+    public void sharedMethod() {
+        // Shared implementation
+    }
+}
+
+public class Child1 extends Parent {
+    // Child-specific code
+}
+
+public class Child2 extends Parent {
+    // Another child-specific code
+}
+          </code>
+        </program>
+      </solution>
+    </exercise> -->
+  <p><alert>Check Your Understanding</alert></p>
+  
+    <exercise xml:id="mc-dry">
+       <statement>
+          <p>
+      Which statement best describes the DRY (Don't Repeat Yourself) principle?
+          </p>
+        </statement>
+        <choices randomize="yes">
+        <choice correct = "yes">
+          <statement>
+            <p>
+              Every piece of knowledge should have a single, unambiguous representation in a system.
+            </p>
+          </statement>
+          <feedback>
+            <p>
+              Correct! Every piece of knowledge should have a single, unambiguous representation in a system.
+            </p>
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              Code should be duplicated whenever necessary to improve readability.
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              Methods should always be rewritten in every new class instead of inherited.
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              DRY only applies to database design, not to programming.
+            </p>
+          </statement>
+        </choice>
+        </choices>
+    </exercise>
+      <exercise xml:id="mc-inheritance-dry">
+        <statement>
+          <p>
+            How does the DRY (Don't Repeat Yourself) principle relate to inheritance in Java?
+          </p>
+        </statement>
+        <choices randomize="yes">
+        <choice correct = "yes">
+          <statement>
+            <p>
+               Inheritance reduces code duplication by allowing subclasses to reuse methods and attributes from a superclass.
+            </p>
+          </statement>
+          <feedback>
+            <p>
+              Correct! Inheritance reduces code duplication by allowing subclasses to reuse methods and attributes from a superclass.
+            </p>
+          </feedback>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              Inheritance forces all subclasses to implement the same methods, ensuring uniformity.
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              Inheritance prevents code reuse by restricting access to superclass methods.
+            </p>
+          </statement>
+        </choice>
+        <choice>
+          <statement>
+            <p>
+              Inheritance eliminates the need for method overriding in subclasses.
+            </p>
+          </statement>
+        </choice>
+        </choices>
+    </exercise>
+  </section>

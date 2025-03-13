@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en-US">
+  <title>Class Hierarchy</title>
+
+
+<xi:include href="01_why_inheritence.ptx" />
+<xi:include href="02_DRY.ptx" />
+<xi:include href="03_composition_vs_inheritance.ptx" />
+<xi:include href="04_the_object_class.ptx" />
+<xi:include href="05_inheritance_intro.ptx" />
+<xi:include href="06_inheritance_syntax.ptx" />
+<!-- <xi:include href="07_protected_private.ptx" /> -->
+<xi:include href="08_overriding_methods.ptx" />
+<xi:include href="09_constructors_super.ptx" />
+</chapter>

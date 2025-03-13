@@ -1,0 +1,131 @@
+<section xml:id="inheritance-step-0-understand-restate">
+  <title>Step 0: Understand &amp; Restate the Problem with Inheritance in Mind</title>
+
+  <p>When applying Step 0 (Understand &amp; Restate), you typically paraphrase the problem, clarify inputs, outputs, and constraints, and document assumptions and edge cases. When planning a class hierarchy, this step should explicitly highlight overlapping or repeated requirements that suggest a superclass or an inheritance relationship.</p>
+
+  <p>For example, imagine you have the following problem statement:</p>
+
+  <blockquote>
+    <p>"We need to implement a social media application that allows users to create different types of posts: text-only posts, photo posts with captions, and video posts with descriptions. All posts need to track the author, timestamp, number of likes, and comments. Users should be able to like any post type and add comments to any post. Additionally, photo and video posts need to track media size and resolution."</p>
+  </blockquote>
+
+  <p>Applying Step 0 with inheritance explicitly in mind, you might restate the problem like this:</p>
+
+  <example>
+    <title>Restatement with Inheritance Focus</title>
+    <p>"We need classes to represent various post types in our social media application: <c>TextPost</c>, <c>PhotoPost</c>, and <c>VideoPost</c>. All posts share common attributes and behaviors: each has an <c>author</c>, <c>timestamp</c>, <c>likeCount</c>, and a collection of <c>comments</c>. All posts support operations like <c>addComment()</c> and <c>like()</c>. Media-based posts—specifically <c>PhotoPost</c> and <c>VideoPost</c>—share additional attributes related to the media itself, such as <c>fileSize</c> and <c>resolution</c>. Recognizing these similarities suggests we should introduce a general <c>Post</c> superclass for common fields and methods, and possibly an intermediate class like <c>MediaPost</c> to capture media-related properties."</p>
+  </example>
+
+  <p>Notice how clearly stating these overlaps early on gives you a roadmap for your class hierarchy even before defining any fields or writing any methods. In this step, you don't yet commit to a final design—you simply identify potential inheritance relationships based on common functionality or data.</p>
+
+  <subsection xml:id="identifying-common-attributes">
+    <title>Identifying Common Attributes and Behaviors</title>
+    
+    <p>When analyzing requirements for a system with multiple classes, pay special attention to phrases that indicate shared characteristics:</p>
+    
+    <ul>
+      <li>"All posts must track likes and comments"</li>
+      <li>"Every user type needs a username and password"</li>
+      <li>"Each notification requires a timestamp and message"</li>
+    </ul>
+    
+    <p>These common requirements often signal potential superclasses or shared interfaces. For example:</p>
+    
+    <sidebyside widths="48% 48%">
+      <stack>
+        <title>Original Requirements</title>
+        <p><em>Creating a social media app with the following post types:</em></p>
+        <ul>
+          <li>Text posts with content, author, timestamp, likes</li>
+          <li>Photo posts with image, caption, author, timestamp, likes</li>
+          <li>Video posts with video file, description, author, timestamp, likes</li>
+        </ul>
+      </stack>
+      <stack>
+        <title>Inheritance-Aware Restatement</title>
+        <p><em>Creating a social media app with various post types that share common attributes:</em></p>
+        <ul>
+          <li>Common to all posts: author, timestamp, likes, comments</li>
+          <li>Post-specific: content type (text/image/video) and related properties</li>
+          <li>Probable superclass: <c>Post</c> with common fields and methods</li>
+          <li>Subclasses: <c>TextPost</c>, <c>PhotoPost</c>, <c>VideoPost</c> with specialized content</li>
+        </ul>
+      </stack>
+    </sidebyside>
+    
+    <p>When analyzing requirements, create a simple table to track common vs. specialized attributes:</p>
+    
+    <tabular>
+      <row header="yes">
+        <cell>Entity</cell>
+        <cell>Common Attributes</cell>
+        <cell>Specialized Attributes</cell>
+      </row>
+      <row>
+        <cell>TextPost</cell>
+        <cell>author, timestamp, likeCount, comments, addComment(), like()</cell>
+        <cell>textContent, wordCount</cell>
+      </row>
+      <row>
+        <cell>PhotoPost</cell>
+        <cell>author, timestamp, likeCount, comments, addComment(), like()</cell>
+        <cell>imageFile, caption, resolution</cell>
+      </row>
+      <row>
+        <cell>VideoPost</cell>
+        <cell>author, timestamp, likeCount, comments, addComment(), like()</cell>
+        <cell>videoFile, description, duration, resolution</cell>
+      </row>
+    </tabular>
+    
+    <p>From this analysis, we can clearly see that the "Common Attributes" column identifies potential fields and methods for a <c>Post</c> superclass, while the "Specialized Attributes" belong in the respective subclasses.</p>
+  </subsection>
+  
+  <subsection xml:id="documenting-potential-hierarchies">
+    <title>Documenting Potential Hierarchies</title>
+    
+    <p>As part of Step 0, start documenting potential class hierarchies using simple diagrams or bullet-point lists:</p>
+    
+    <pre>
+Post (superclass)
+ ├── TextPost
+ ├── MediaPost (intermediate class)
+ │    ├── PhotoPost
+ │    └── VideoPost
+    </pre>
+    
+    <p>This early documentation serves as a working hypothesis for your class structure that you'll refine in subsequent steps of the design recipe.</p>
+    
+    <note>
+      <title>Going Beyond "is-a" Relationships</title>
+      <p>While looking for superclasses, also consider potential interfaces for capabilities that cross hierarchies. For example, both posts and user profiles might be <c>Likeable</c> but belong to different class hierarchies. This might suggest an interface like <c>Likeable</c> with methods such as <c>like()</c> and <c>getLikeCount()</c>.</p>
+    </note>
+  </subsection>
+
+  <insight>
+    <title>Anticipate Future Extensions</title>
+    <p>While restating the problem, consider potential future expansions or new classes you might add later. Ask yourself questions like:</p>
+    <ul>
+      <li>"Could we add more post types later (e.g., Poll posts or Event posts)? What would they have in common?"</li>
+      <li>"Would future content types share existing fields and methods? If yes, our superclass design becomes even more valuable."</li>
+      <li>"Are there scenarios where inheritance might complicate rather than simplify our structure (e.g., Stories that disappear after 24 hours)?"</li>
+    </ul>
+    <p>Explicitly documenting these thoughts helps you choose inheritance strategically rather than automatically.</p>
+  </insight>
+  
+  <subsection xml:id="reflection-step0">
+    <title>Reflection Questions</title>
+    
+    <p>As you complete Step 0 with inheritance in mind, consider these questions:</p>
+    
+    <ul>
+      <li>What repeated attributes or behaviors do you see across the post classes you need to implement?</li>
+      <li>Which of these shared elements would benefit from being defined once in a superclass?</li>
+      <li>Are there capabilities that might apply to multiple unrelated classes, suggesting an interface?</li>
+      <li>What specialized behavior might each subclass need to override or extend?</li>
+      <li>Which repeated capabilities might you see later in the project as it evolves?</li>
+    </ul>
+    
+    <p>By considering inheritance during Step 0, you create a solid foundation for the subsequent steps of the design recipe, making it easier to define cohesive data definitions and method signatures.</p>
+  </subsection>
+</section> 

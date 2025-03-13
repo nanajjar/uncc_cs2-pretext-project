@@ -1,0 +1,88 @@
+<section xml:id="ch-class-hierarchy">
+  <title>Why Inheritance?</title>
+
+  <objectives>
+    <ul>
+        <li>
+            <p>
+                Explain the purpose and benefits of inheritance in object-oriented programming
+            </p>
+        </li>
+        <li>
+            <p>
+                Apply the "is-a" relationship test to determine when inheritance is appropriate
+            </p>
+        </li>
+        <li>
+            <p>
+                Differentiate between inheritance and other code reuse mechanisms (methods, interfaces, composition)
+            </p>
+        </li>
+        <li>
+            <p>
+                Implement class hierarchies using Java's inheritance syntax
+            </p>
+        </li>
+        <li>
+            <p>
+                Apply appropriate access modifiers (protected, private) in inheritance contexts
+            </p>
+        </li>
+        <li>
+            <p>
+                Recognize the Object class as the root of all Java class hierarchies
+            </p>
+        </li>
+    </ul>
+  </objectives>
+
+  <p><term>Inheritance</term> is a fundamental mechanism in object-oriented programming where one class (the subclass) acquires the properties and behaviors of another class (the superclass). This establishes an "is-a" relationship, where the subclass represents a specialized version of the superclass. For example, a <c>SavingsAccount</c> is a specialized type of <c>BankAccount</c>.</p>
+  
+  <p>Consider this concrete example of inheritance in action:</p>
+  
+  <program language="java">
+    <code>
+// The superclass containing shared functionality
+public class BankAccount {
+    protected double balance;
+    
+    public void deposit(double amount) {
+        if (amount &gt;= 0) {
+            balance += amount;
+        }
+    }
+    
+    public void withdraw(double amount) {
+        if (amount &gt;= 0 &amp;&amp; amount &lt;= balance) {
+            balance -= amount;
+        }
+    }
+}
+
+// The subclass inherits and extends functionality
+public class SavingsAccount extends BankAccount {
+    private double interestRate;
+    
+    public void applyInterest() {
+        balance += balance * interestRate;
+    }
+}
+    </code>
+  </program>
+  
+  <p>This example demonstrates how inheritance reduces code duplication: <c>SavingsAccount</c> automatically gains the <c>deposit</c> and <c>withdraw</c> methods without rewriting them. Yet it also extends this functionality with its own <c>applyInterest</c> method that's specific to savings accounts.</p>
+  
+  <p>While inheritance powerfully enables code reuse, it creates stronger coupling between classes than other reuse mechanisms. This means changes to the superclass can potentially affect all subclasses, sometimes in unexpected ways. Effective use of inheritance requires careful consideration of these relationships.</p>
+
+  <p>Object-oriented programming offers several code reuse mechanisms, each serving different purposes:</p>
+  <ul>
+    <li><term>Methods:</term> Prefer simple methods when the shared functionality is a behavior that doesn't require shared state. <em>Example:</em> Use a utility method to calculate distance between two points, which can be called from any class.</li>
+    <li><term>Interfaces:</term> Use when you need to define a contract that multiple unrelated classes should implement. <em>Example:</em> A <c>Movable</c> interface could be implemented by both <c>Player</c> and <c>Vehicle</c> classes, allowing them to share movement-related method contracts.</li>
+    <li><term>Composition:</term> Choose when an object uses or contains another object but isn't a specialization of it. <em>Example:</em> A <c>Game</c> class containing <c>Player</c>, <c>Level</c>, and <c>Enemy</c> objects.</li>
+    <li><term>Inheritance:</term> Apply only when there's a clear "is-a" relationship and tight coupling between parent and child is acceptable. <em>Example:</em> A <c>SavingsAccount</c> class extending a base <c>BankAccount</c> class.</li>
+  </ul>
+  
+  <p>As a general guideline, favor composition as your default approach for code reuse. Composition creates more flexible, adaptable designs by reducing coupling between classes. Reserve inheritance for clear "is-a" relationships where shared behavior genuinely represents a specialization hierarchy.</p>
+
+  
+</section>

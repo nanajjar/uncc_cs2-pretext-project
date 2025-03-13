@@ -1,0 +1,393 @@
+<section xml:id="inheritance-step-2-method-signatures">
+  <title>Step 2: Method Signatures &amp; Purpose Statements in Class Hierarchies</title>
+
+  <p>In Step 2 of the Design Recipe, you specify clear method signatures, including parameter types, return types, and purpose statements. When dealing with class hierarchies and inheritance, this step becomes crucial for planning shared methods at the superclass level, as well as specialized methods or overrides in subclasses.</p>
+
+  <p>Continuing our social media post example, let's define method signatures and purpose statements explicitly considering our inheritance structure.</p>
+
+  <subsection xml:id="identifying-shared-methods">
+    <title>Identifying Shared Methods for the Superclass</title>
+
+    <p>From the data definitions in Step 1, we identified several methods common to all post types. These should be placed in the superclass, <c>Post</c>, to avoid duplication:</p>
+
+    <ul>
+      <li><c>like()</c> — increments the post's like count.</li>
+      <li><c>addComment(Comment)</c> — adds a new comment to the post.</li>
+      <li><c>getLikeCount()</c> — retrieves the current number of likes.</li>
+      <li><c>getComments()</c> — returns the list of comments.</li>
+    </ul>
+
+    <p>Here's how these might look as method signatures with clear purpose statements:</p>
+
+    <program language="java">
+      <code>
+/**
+ * Increments the number of likes for this post by one.
+ * Postcondition: likeCount increases by exactly 1.
+ */
+public void like();
+
+/**
+ * Adds a new comment to this post.
+ * @param comment The Comment object to add; must not be null.
+ * @throws IllegalArgumentException if comment is null.
+ * Postcondition: comments list size increases by exactly 1.
+ */
+public void addComment(Comment comment);
+
+/**
+ * Retrieves the current number of likes for this post.
+ * @return The total number of likes.
+ */
+public int getLikeCount();
+
+/**
+ * Retrieves the list of comments for this post.
+ * @return An unmodifiable list of comments.
+ */
+public List&lt;Comment&gt; getComments();
+      </code>
+    </program>
+
+    <p>By placing these methods in the superclass, all subclasses automatically inherit consistent behavior, significantly reducing redundancy.</p>
+  </subsection>
+
+  <subsection xml:id="method-placement">
+    <title>Deciding Method Placement in a Hierarchy</title>
+    
+    <p>When determining where to place a method in your class hierarchy, consider these guidelines:</p>
+    
+    <ul>
+      <li><term>Place in superclass</term> if all subclasses will use the exact same implementation (like <c>like()</c> and <c>addComment()</c> in our <c>Post</c> class)</li>
+      <li><term>Declare abstract in superclass</term> if all subclasses need to implement the method but with different logic</li>
+      <li><term>Provide default implementation in superclass</term> if most subclasses will use it, but some might override</li>
+      <li><term>Place only in specific subclasses</term> if the method applies only to those types</li>
+    </ul>
+    
+    <p>Here's an example implementation using our social media hierarchy:</p>
+    
+    <program language="java">
+      <code>
+public abstract class Post {
+    // Fields as defined in Step 1...
+    
+    /**
+     * Increments the number of likes for this post by one.
+     * This implementation is identical for all post types.
+     */
+    public void like() {
+        likeCount++;
+    }
+    
+    /**
+     * Renders the post for display in the feed.
+     * Subclasses must override to provide content-specific rendering.
+     * @return HTML string representing the post.
+     */
+    public abstract String renderPost();
+    
+    /**
+     * Checks if this post contains sensitive content that might need a warning.
+     * Default implementation assumes no sensitive content.
+     * Subclasses may override if they need content-specific checks.
+     * @return true if post contains sensitive content, false otherwise.
+     */
+    public boolean containsSensitiveContent() {
+        return false;  // Default implementation
+    }
+}
+
+public class VideoPost extends MediaPost {
+    // Fields as defined in Step 1...
+    
+    /**
+     * Renders the video post with embedded video player and description.
+     * @return HTML string for displaying the video post.
+     */
+    @Override
+    public String renderPost() {
+        return String.format(
+            "<div class='video-post'><video src='%s'></video><p>%s</p></div>",
+            videoFile, description
+        );
+    }
+    
+    /**
+     * Checks content sensitivity based on video metadata.
+     * @return true if video contains sensitive content.
+     */
+    @Override
+    public boolean containsSensitiveContent() {
+        // Video-specific implementation checks metadata or content tags
+        return containsAgeRestriction || containsGraphicContent;
+    }
+    
+    /**
+     * Gets the duration of the video.
+     * Note: This method exists only in VideoPost, not in the Post superclass.
+     * @return The duration in seconds.
+     */
+    public int getDuration() {
+        return duration;
+    }
+}
+      </code>
+    </program>
+    
+    <p>Notice how <c>like()</c> has a complete implementation in the superclass, <c>renderPost()</c> is declared abstract requiring subclass implementation, <c>containsSensitiveContent()</c> has a default implementation that VideoPost overrides, and <c>getDuration()</c> exists only in the VideoPost subclass.</p>
+  </subsection>
+  
+  <subsection xml:id="subclass-method-overrides">
+    <title>Subclass-Specific Methods and Overrides</title>
+
+    <p>Subclasses may need specialized methods or overrides to reflect their unique behaviors. For example:</p>
+
+    <ul>
+      <li><c>TextPost</c> might need a method to summarize content, which doesn't apply to other post types.</li>
+      <li><c>MediaPost</c> subclasses might override methods to include media-specific validation or to provide a preview.</li>
+    </ul>
+
+    <p>Consider these subclass-specific method signatures and purpose statements:</p>
+
+    <program language="java">
+      <code>
+// In TextPost subclass - method that only exists in TextPost:
+/**
+ * Provides a short summary of the text content.
+ * @param wordLimit The maximum number of words in the summary.
+ * @return A summarized version of textContent containing up to wordLimit words.
+ */
+public String summarizeContent(int wordLimit) {
+    // This method only exists in TextPost since only text posts need summarizing
+    String[] words = textContent.split("\\s+");
+    if (words.length &lt;= wordLimit) {
+        return textContent;
+    }
+    
+    StringBuilder summary = new StringBuilder();
+    for (int i = 0; i &lt; wordLimit; i++) {
+        summary.append(words[i]).append(" ");
+    }
+    return summary.toString().trim() + "...";
+}
+
+// In MediaPost superclass - abstract method that forces all media posts to implement:
+/**
+ * Generates a short preview of the media content.
+ * @return A string representing the preview (could be a URL, thumbnail, or description).
+ */
+public abstract String generatePreview();
+
+// In PhotoPost subclass - implementing the required method:
+/**
+ * Generates a preview for the photo, typically a thumbnail URL.
+ * @return URL or path to a thumbnail image.
+ */
+@Override
+public String generatePreview() {
+    // PhotoPost-specific implementation
+    // Returns a path for the thumbnail (e.g., X.jpg -&gt; "thumbnails/X_thumb.jpg")
+    return "thumbnails/" + imageFile.replace(".", "_thumb.");
+}
+
+// In VideoPost subclass - implementing the required method differently:
+/**
+ * Generates a short preview clip or thumbnail for the video.
+ * @return URL or path to the preview media.
+ */
+@Override
+public String generatePreview() {
+    // VideoPost-specific implementation
+    // Returns a path for the video preview (e.g., X.mp4 -&gt; "previews/X_preview.mp4")
+    return "previews/" + videoFile.replace(".", "_preview.");
+}
+      </code>
+    </program>
+
+    <p>Abstract methods like <c>generatePreview()</c> ensure each subclass provides its own specific implementation. Notice how <c>PhotoPost</c> and <c>VideoPost</c> each implement the method differently, based on their specific media type, while <c>TextPost</c> has its own unique methods that don't exist in other classes.</p>
+  </subsection>
+  
+  <subsection xml:id="javadoc-inheritance">
+    <title>Writing Inheritance-Aware Purpose Statements</title>
+    
+    <p>Purpose statements (often written as Javadoc comments) are particularly important in inheritance hierarchies. They tell other programmers not just what a method does, but also which methods can or should be overridden by subclasses.</p>
+    
+    <p>When writing purpose statements for methods in a hierarchy:</p>
+    
+    <ul>
+      <li>Clearly indicate if subclasses should, may, or must not override the method</li>
+      <li>Document what inputs are required and what outputs are guaranteed</li>
+      <li>Specify any rules that all implementations must follow</li>
+      <li>Use <c>@Override</c> in subclasses to clearly indicate when you're overriding a method</li>
+    </ul>
+    
+    <p>Here are examples of well-written purpose statements for our post hierarchy:</p>
+    
+    <program language="java">
+      <code>
+/**
+ * Returns a shareable link for this post.
+ * Subclasses must override this to provide type-specific sharing formats.
+ * @return A URL string for sharing this post.
+ */
+public abstract String generateShareLink();
+
+/**
+ * Checks if the post has media attachments.
+ * The default implementation returns false for text posts.
+ * MediaPost subclasses should override to return true.
+ * @return true if the post has attached media, false otherwise.
+ */
+public boolean hasMediaAttachment() {
+    // Default implementation for TextPost
+    return false;
+}
+
+/**
+ * Archives this post, making it invisible in regular feeds.
+ * This method is final and cannot be overridden by subclasses
+ * to ensure consistent archiving behavior across all post types.
+ */
+public final void archivePost() {
+    // Implementation details...
+}
+      </code>
+    </program>
+    
+    <p>These comments clearly communicate which methods must be overridden, which should be overridden, and which cannot be overridden. This helps subclass authors understand your intentions and reduces mistakes.</p>
+  </subsection>
+  
+  <subsection xml:id="inheritance-contracts">
+    <title>Designing Method Contracts in Hierarchies</title>
+    
+    <p>In inheritance hierarchies, method signatures establish expectations between the superclass and its subclasses. These expectations specify what each method requires (inputs and conditions) and what it guarantees (outputs and results).</p>
+    
+    <p>When overriding methods in subclasses, follow these guidelines to maintain consistency:</p>
+    
+    <ul>
+      <li>Subclasses may accept <em>more</em> inputs than the superclass method (be more flexible), but not fewer</li>
+      <li>Subclasses may provide <em>stronger</em> guarantees (better results) than the superclass, but not weaker ones</li>
+      <li>Subclasses must maintain all guarantees made by the superclass</li>
+    </ul>
+    
+    <p>For example:</p>
+    
+    <program language="java">
+      <code>
+// Superclass
+public abstract class Post {
+    /**
+     * Returns the estimated time to consume this post.
+     * @return A non-negative time value in seconds.
+     */
+    public abstract int getTimeToConsume();
+    
+    /**
+     * Updates the content of the post.
+     * @param newContent Content to update, must not be null.
+     * @throws IllegalArgumentException if newContent is null.
+     */
+    public void updateContent(String newContent) {
+        // Superclass requires non-null content
+        if (newContent == null) {
+            throw new IllegalArgumentException("New content must not be null");
+        }
+        // Implementation details...
+    }
+}
+
+// Subclass
+public class VideoPost extends MediaPost {
+    // Fields...
+    
+    /**
+     * Returns the estimated time to watch this video post.
+     * @return The exact duration of the video in seconds.
+     */
+    @Override
+    public int getTimeToConsume() {
+        // VideoPost provides a better guarantee: exact time instead of estimate
+        return duration;  // Returns exact time, a stronger guarantee
+    }
+    
+    /**
+     * Updates the content of the video post.
+     * @param newContent Content to update, can be null or empty (treated as no description).
+     */
+    @Override
+    public void updateContent(String newContent) {
+        // VideoPost is more flexible than Post: it accepts null values
+        // This is allowed because we're accepting MORE inputs than the parent
+        if (newContent == null) {
+            this.description = "";  // Handle null by setting empty description
+        } else {
+            this.description = newContent;
+        }
+        // Additional video-specific update logic...
+    }
+}
+      </code>
+    </program>
+    
+    <p>In this example, <c>VideoPost.getTimeToConsume()</c> provides a better guarantee by returning an exact time rather than an estimate, while <c>VideoPost.updateContent()</c> is more flexible by accepting null values. Both approaches maintain compatibility with the superclass while adding subclass-specific improvements.</p>
+  </subsection>
+
+  <insight>
+    <title>Organizing Code with Abstract Methods</title>
+
+    <p>Using abstract methods in your superclass is a powerful technique that lets you define the outline of an algorithm in a superclass while deferring implementation specifics to subclasses. This strategy helps you design clear and maintainable class hierarchies by explicitly indicating methods subclasses must implement.</p>
+    
+    <p>For example, a <c>Post.publish()</c> method might define a sequence of steps, some shared across all post types and others requiring specific implementations:</p>
+    
+    <program language="java">
+      <code>
+public abstract class Post {
+    // Method that defines the algorithm structure
+    public final void publish() {
+        validateContent();        // Common validation logic for all posts
+        prepareContent();         // Each post type prepares content differently
+        updateDatabase();         // Common database logic for all posts
+        notifyFollowers();        // Common notification logic for all posts
+    }
+    
+    // Common implementation shared by all subclasses
+    private void validateContent() { 
+        // All posts need validation, so we implement it once here
+        if (author == null || author.isEmpty()) {
+            throw new IllegalArgumentException("Author cannot be empty");
+        }
+        // Other common validation...
+    }
+    
+    // Abstract method that subclasses must implement
+    protected abstract void prepareContent();
+    // ^ This forces each post type to define its own preparation step
+    
+    // Common implementations
+    private void updateDatabase() { /* shared implementation */ }
+    private void notifyFollowers() { /* shared implementation */ }
+}
+      </code>
+    </program>
+    
+    <p>This approach ensures consistent behavior where needed while allowing variation where appropriate. The final method <c>publish()</c> creates a structured framework, while the abstract method <c>prepareContent()</c> gives each subclass the freedom to implement their type-specific preparation.</p>
+  </insight>
+  
+  <subsection xml:id="reflection-step2">
+    <title>Reflection Questions</title>
+    
+    <p>As you complete Step 2 with inheritance in mind, consider these questions:</p>
+    
+    <ul>
+      <li>Have you placed methods that are common across subclasses into the superclass?</li>
+      <li>Did you clearly mark abstract methods, forcing subclasses to implement critical functionality?</li>
+      <li>Are your purpose statements explicit about when subclass overrides are expected or required?</li>
+      <li>Have you identified any methods that might need subclass-specific implementations even if a default superclass implementation exists?</li>
+      <li>Do your method signatures clearly communicate their contracts, including what they require and guarantee?</li>
+      <li>Have you used appropriate access modifiers (public, protected, private) for methods in your hierarchy?</li>
+      <li>Do your subclass methods respect the requirements and guarantees established by their parent classes?</li>
+    </ul>
+    
+    <p>Answering these questions ensures your inheritance structure remains robust, clear, and maintainable as you move toward implementation and testing.</p>
+  </subsection>
+</section> 

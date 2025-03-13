@@ -1,0 +1,614 @@
+  <!-- ==============================================
+       2.6 Method Overriding
+       ============================================= -->
+<section xml:id="inheritance-overriding-methods">
+    <title>Overriding Methods</title>
+    <introduction>
+    <objectives>
+        <ul>
+            <li>
+                <p>
+                    Explain how method overriding allows subclasses to modify inherited behavior while maintaining the same method signature
+                </p>
+            </li>
+            <li>
+                <p>
+                    Apply the <c>@Override</c> annotation correctly to ensure compile-time verification of overridden methods
+                </p>
+            </li>
+            <li>
+                <p>
+                    Distinguish between appropriate and inappropriate scenarios for method overriding
+                </p>
+            </li>
+            <li>
+                <p>
+                    Implement subclass methods that call their parent's implementation using the <c>super</c> keyword
+                </p>
+            </li>
+        </ul>
+    </objectives>
+    
+    <p>Inheritance allows you to take a method from your superclass and replace it with your own
+        version in the subclass. This is called <em>method overriding</em>. To override a method,
+        define a method in your subclass with exactly the same signature as the superclass method.</p>
+
+    <p>Always use the <c>@Override</c> annotation when overriding methods. While optional, this
+        annotation helps the compiler catch mistakes if you accidentally change the method's name or
+        parameters.</p>
+
+    <program language="java">
+        <code>public class Monster extends Entity {
+    private boolean isUndead;
+
+    public Monster(String name, int initialHealth, boolean isUndead) {
+        super(name, initialHealth);
+        this.isUndead = isUndead;
+    }
+
+    @Override
+    public void takeDamage(int amount) {
+        // Undead monsters take half damage
+        if (isUndead) {
+            int reducedAmount = amount / 2;
+            System.out.println(getName() + " resists damage due to undead nature!");
+            super.takeDamage(reducedAmount); // Call the parent version with reduced damage
+        } else {
+            // Call the original implementation for non-undead monsters
+            super.takeDamage(amount);
+        }
+    }
+
+    @Override
+    public void heal(int amount) {
+        // Undead monsters are damaged by healing
+        if (isUndead) {
+            System.out.println("Healing harms the undead " + getName() + "!");
+            takeDamage(amount);
+        } else {
+            super.heal(amount);
+        }
+    }
+}</code>
+    </program>
+    <p>Here, <c>Monster</c> inherits and overrides both the <c>takeDamage</c> and <c>heal</c>
+        methods to implement specialized behavior for undead monsters: they take half damage but are
+        harmed by healing effects.</p>
+
+    <note>
+        <title>When to Override vs. When to Avoid Overriding</title>
+        <p>Method overriding is most appropriate when:</p>
+        <ul>
+            <li>The subclass needs to modify or extend the superclass behavior while maintaining the
+                same method contract</li>
+            <li>The override still fulfills the original purpose of the method without breaking code
+                that might use this object through its parent type</li>
+            <li>The behavior change is a natural specialization that users of the class would expect</li>
+        </ul>
+        <p>Avoid overriding when:</p>
+        <ul>
+            <li>The override would drastically change the expected behavior, violating the
+                superclass contract</li>
+            <li>The override would disable or "turn off" functionality expected from the superclass</li>
+            <li>You find yourself overriding many methods of the superclass, indicating the
+                inheritance relationship might not be appropriate</li>
+        </ul>
+    </note>
+
+    <insight>
+        <title>@Override Best Practices</title>
+        <p>Always use the <c>@Override</c> annotation when overriding methods in subclasses. It
+            costs nothing to add but provides two significant benefits:</p>
+        <ul>
+            <li>The compiler verifies that you're actually overriding a superclass method</li>
+            <li>It makes your code more readable by explicitly indicating overridden methods</li>
+        </ul>
+        <p>Without <c>@Override</c>, common mistakes like typos in method names, parameter type
+            mismatches, or return type differences will create a new method instead of overriding
+            the superclass method, leading to subtle bugs.</p>
+    </insight>
+
+    <p>For instance, consider this common mistake:</p>
+    <program language="java">
+        <code>
+        // A bug without @Override
+        public class Monster extends Entity {
+            // ...
+
+            // Typo in method name - note the "i" in "takeDimage"
+            public void takeDimage(int amount) {
+                // This doesn't override Entity.takeDamage()
+                // It creates a completely new method!
+                health -= (amount / 2);
+            }
+        }
+
+        // Usage elsewhere in code
+        Monster zombie = new Monster("Zombie", 100, true);
+        zombie.takeDamage(20); // Will call Entity.takeDamage, not the Monster version!</code>
+    </program>
+
+    <p>In this example, the typo creates a new method rather than overriding the existing one. When 
+    <c>takeDamage</c> is called on a <c>Monster</c>, it will use the original <c>Entity</c>
+        implementation, not the intended specialized version. With <c>@Override</c>, the compiler
+        would catch this error immediately with a message like: 
+        <c>"Method does not override method from its superclass"</c>.
+    </p>
+</introduction>
+
+<!-- ==============================================
+       2.7 Overriding Object Methods
+       ============================================= -->
+<subsection xml:id="inheritance-overriding-object-methods">
+    <title>Overriding Object Methods</title>
+    <p>As we saw in the previous chapter, every Java class implicitly inherits from <c>Object</c>.
+        This means you can override <c>Object</c>'s methods to customize behavior that makes sense
+        for your specific classes. Three of the most commonly overridden methods are <c>toString()</c>
+        , <c>equals()</c>, and <c>hashCode()</c>.</p>
+
+    <p>Let's look at examples of overriding these methods and understand why doing so is important:</p>
+
+    <subsubsection xml:id="overriding-toString">
+        <title>Overriding toString()</title>
+        <p>The <c>toString()</c> method provides a string representation of an object. By default,
+            it returns a string containing the class name followed by an @ symbol and the object's
+            hash code in hexadecimal format.</p>
+
+        <program language="java">
+            <code>
+            public class Player extends Entity {
+                private int experiencePoints;
+                private int level;
+
+                // Constructor and other methods...
+
+                @Override
+                public String toString() {
+                    return "Player{name='" + getName() + "', health=" + getHealth() +
+                        ", level=" + level + ", xp=" + experiencePoints + "}";
+                }
+            }
+            </code>
+        </program>
+
+        <p>Overriding <c>toString()</c> has several benefits:</p>
+        <ul>
+            <li>Makes debugging easier by providing meaningful object information</li>
+            <li>Improves logs and error messages</li>
+            <li>Simplifies debugging arrays and collections</li>
+        </ul>
+
+        <p>With the override above, <c>System.out.println(player)</c> now produces readable output
+            like: <c>Player{name='Hero', health=100, level=1, xp=0}</c></p>
+    </subsubsection>
+
+    <subsubsection xml:id="overriding-equals-hashcode">
+        <title>Overriding equals() and hashCode()</title>
+        <p>The <c>equals()</c> method determines whether two objects are equivalent. By default, it
+            uses reference equality (==), checking if two variables refer to exactly the same object
+            instance in memory.</p>
+
+        <p>The <c>hashCode()</c> method returns a numeric value that uniquely represents an object and is 
+            used in various operations that require efficient lookups.
+        </p>
+
+        <note>
+            <title>The equals/hashCode Contract</title>
+            <p>There's a critical rule in Java: if you override <c>equals()</c>, you <em>must</em>
+                also override <c>hashCode()</c> to ensure consistent behavior. Two objects that are
+                equal according to <c>equals()</c> must return the same <c>hashCode()</c> value.</p>
+        </note>
+
+        <program language="java">
+            <code>
+            public class Item {
+                private String name;
+                private int value;
+
+                public Item(String name, int value) {
+                    this.name = name;
+                    this.value = value;
+                }
+
+                // Getters omitted for brevity
+
+                @Override
+                public boolean equals(Object obj) {
+                    if (this == obj) return true;
+                    if (obj == null || getClass() != obj.getClass()) return false;
+
+                    Item other = (Item) obj;
+                    return value == other.value &amp;&amp; Objects.equals(name, other.name);
+                }
+
+                @Override
+                public int hashCode() {
+                    return Objects.hash(name, value);
+                }
+            }</code>
+        </program>
+
+        <p>With these overrides, two different <c>Item</c> objects with the same name and value will
+            be considered equal:</p>
+
+        <program language="java">
+            <code>
+                Item sword1 = new Item("Sword", 50);
+                Item sword2 = new Item("Sword", 50);
+
+                // Without overriding equals, this would print "false"
+                // With our override, it prints "true"
+                System.out.println(sword1.equals(sword2));
+            </code>
+        </program>
+
+        <p>
+            If you override <c>equals()</c> but don't override <c>hashCode()</c>, unexpected behavior can occur in certain situations where objects are expected to be uniquely identified.
+        Here's a real-world example of what can go wrong when you override <c>equals()</c> but
+            not <c>hashCode()</c>.</p>
+
+
+            <p>
+            The reason for this is that many Java collections (such as <c>HashSet</c> and <c>HashMap</c>) rely on <c>hashCode()</c> to efficiently organize and retrieve objects. 
+            If two objects are considered equal according to <c>equals()</c>, they must have the same <c>hashCode()</c> to avoid unexpected behavior in these collections.
+            However, for this course, we won't be using hash-based collections, so you don't need to worry about overriding <c>hashCode()</c>. 
+            That said, it's a good practice to keep in mind for future Java programming, especially when working with data structures that optimize lookups.
+</p>
+
+        <!-- <p>Overriding <c>equals()</c> and <c>hashCode()</c> is crucial when:</p>
+        <ul>
+            <li>Your objects are used as keys in maps or stored in sets</li>
+            <li>You need to compare objects based on their content rather than identity</li>
+            <li>You're implementing domain objects that should be comparable based on their field
+                values</li>
+        </ul> -->
+    </subsubsection>
+
+    <insight>
+        <title>Practical Benefits</title>
+        <p>Overriding Object methods demonstrates a key inheritance principle: you can leverage the
+            general structure provided by the superclass while customizing behavior for your
+            specific needs. This pattern applies throughout Java development, whether customizing
+            built-in classes or extending your own superclasses.</p>
+    </insight>
+
+    <!-- <exercise xml:id="quick-check-object-methods" type="check-understanding">
+        <title>Quick Check: Object Methods</title>
+        <statement>
+            <p>Consider the following questions about overriding Object methods:</p>
+            <ol>
+                <li>What happens if <c>equals()</c> isn't overridden in a class that needs
+                    content-based comparisons?</li>
+                <li>How do <c>equals()</c> and <c>hashCode()</c> relate to each other in
+                    collections?</li>
+                <li>If two objects have the same <c>hashCode()</c> value, does that mean they're
+                    equal according to <c>equals()</c>?</li>
+            </ol>
+        </statement>
+        <response>
+            <ol>
+                <li>Without overriding <c>equals()</c>, objects will only be considered equal if
+                    they are the exact same instance (reference equality). Two objects with
+                    identical content but different memory references will be considered different.</li>
+                <li>Hash-based collections like <c>HashMap</c> and <c>HashSet</c> use <c>hashCode()</c>
+                    to determine where to store objects internally. They then use <c>equals()</c> to
+                    check for duplicates. If <c>hashCode()</c> is inconsistent with <c>equals()</c>,
+                    collections may behave incorrectly.</li>
+                <li>No. Objects with the same hash code are not necessarily equal. The <c>hashCode()</c>
+                    contract only requires that equal objects have the same hash code. Different
+                    objects can have the same hash code (a hash collision).</li>
+            </ol>
+        </response>
+    </exercise> -->
+
+</subsection>
+
+  <p><alert>Check Your Understanding</alert></p>
+
+    <exercise xml:id="mc-method-override">
+        <statement>
+            <p>What is method overriding in Java?</p>
+        </statement>
+        <choices randomize="yes">
+            <choice correct="yes">
+                <statement>
+                    <p>
+                        Providing a new implementation for an inherited method in a subclass.
+                    </p>
+                </statement>
+            </choice>
+            <choice>
+                <statement>
+                    <p>
+                        Defining multiple methods with the same name but different parameters in the same class.
+                    </p>
+                </statement>
+            </choice>
+            <choice>
+                <statement>
+                    <p>
+                        Using the final keyword to prevent method modifications.
+                    </p>
+                </statement>
+            </choice>
+            <choice>
+                <statement>
+                    <p>
+                        Creating a method with the same name but a different return type in a subclass.
+                    </p>
+                </statement>
+            </choice>
+            </choices>
+            </exercise>
+
+            <exercise xml:id="mc-method-override2">
+        <statement>
+            <p>What must be true for a method to be properly overridden in Java?</p>
+        </statement>
+        <choices randomize="yes">
+            <choice correct="yes">
+                <statement>
+                    <p>
+                        he method must have the same name, parameters, and return type as the superclass method.
+                    </p>
+                </statement>
+            </choice>
+            <choice>
+                <statement>
+                    <p>
+                        The method must have a different name but the same parameters.
+                    </p>
+                </statement>
+            </choice>
+            <choice>
+                <statement>
+                    <p>
+                    The method must be static in both the superclass and subclass.
+                    </p>
+                </statement>
+            </choice>
+            <choice>
+                <statement>
+                    <p>
+                        The method must have a different return type but the same name and parameters.
+                    </p>
+                </statement>
+            </choice>
+            </choices>
+            </exercise>
+            
+<exercise xml:id="mc-method-override3">
+        <statement>
+            <p>Can a subclass override a private method from its superclass?</p>
+        </statement>
+        <choices randomize="yes">
+            <choice>
+                <statement>
+                    <p>
+                        Yes, but only if the subclass is in the same package.
+                    </p>
+                </statement>
+            </choice>
+            <choice correct="yes">
+                <statement>
+                    <p>
+                        No, because private methods are not inherited.
+                    </p>
+                </statement>
+            </choice>
+            <choice>
+                <statement>
+                    <p>
+                        Yes, as long as the method is also declared private in the subclass.
+                    </p>
+                </statement>
+            </choice>
+            <choice>
+                <statement>
+                    <p>
+                        No, unless the subclass uses the super keyword to call the method.
+                    </p>
+                </statement>
+            </choice>
+            </choices>
+            </exercise>
+
+
+<!-- ==============================================
+       2.8 Exercises
+       ============================================= -->
+
+
+    <!-- <exercise xml:id="exercise-critique-inheritance" type="reflect-and-critique">
+        <title>Critique and Fix a Flawed Inheritance Design</title>
+        <statement>
+            <p>Consider the following code that attempts to model different types of vehicles:</p>
+            <program language="java">
+                <code>// A flawed inheritance design
+                    public class Bicycle {
+                    private int numGears;
+                    private int speed;
+
+                    public void pedal() {
+                    speed += 1;
+                    }
+
+                    public void brake() {
+                    speed = Math.max(0, speed - 1);
+                    }
+                    }
+
+                    public class Car extends Bicycle {
+                    private int fuelLevel;
+
+                    // Override to make it work differently
+                    @Override
+                    public void pedal() {
+                    // Cars don't have pedals, so redefine this
+                    // to press the gas pedal instead
+                    speed += 5;
+                    fuelLevel -= 1;
+                    }
+
+                    // Add car-specific methods
+                    public void refuel() {
+                    fuelLevel = 100;
+                    }
+                    }</code>
+            </program>
+
+            <p>Complete the following tasks:</p>
+            <ol>
+                <li>Identify why this inheritance relationship is inappropriate. Does it satisfy the
+                    "is-a" test?</li>
+                <li>List two specific problems that arise from this faulty design.</li>
+                <li>Create a better design using proper inheritance hierarchy that fixes these
+                    issues.</li>
+                <li>Briefly explain how your redesign solves the original problems.</li>
+            </ol>
+
+            <p>Present your solution as a class diagram or code snippet showing the recommended
+                class structure.</p>
+        </statement>
+        <solution>
+            <p>Problems with this design:</p>
+            <ol>
+                <li><term>Inappropriate "is-a" relationship:</term> A Car is not a specialized type
+                    of Bicycle. They are both vehicles, but one doesn't inherit from the other.</li>
+                <li><term>Violation of behavioral substitution:</term> The <c>pedal()</c> method in
+                    Car completely changes the meaning of the method from the parent class.</li>
+                <li><term>Forced overriding of irrelevant methods:</term> Cars don't have pedals, so
+                    they shouldn't need to override a pedal method at all.</li>
+            </ol>
+
+            <p>A better design would use a common superclass with appropriate specialization:</p>
+            <program language="java">
+                <code>// Better design with proper inheritance
+                    public abstract class Vehicle {
+                    protected int speed;
+
+                    public void brake() {
+                    speed = Math.max(0, speed - 1);
+                    }
+
+                    // Common methods for all vehicles
+                    public int getSpeed() {
+                    return speed;
+                    }
+                    }
+
+                    public class Bicycle extends Vehicle {
+                    private int numGears;
+
+                    public void pedal() {
+                    speed += 1;
+                    }
+                    }
+
+                    public class Car extends Vehicle {
+                    private int fuelLevel;
+
+                    public void accelerate() {
+                    speed += 5;
+                    fuelLevel -= 1;
+                    }
+
+                    public void refuel() {
+                    fuelLevel = 100;
+                    }
+                    }</code>
+            </program>
+
+            <p>This improved design:</p>
+            <ul>
+                <li>Creates a proper hierarchy with Vehicle as the superclass</li>
+                <li>Places common behavior (brake, getSpeed) in the superclass</li>
+                <li>Allows each subclass to define only methods that make sense for it</li>
+                <li>Avoids forcing inappropriate overrides</li>
+            </ul>
+        </solution>
+    </exercise>
+
+    <exercise xml:id="reflection-inheritance-why" type="reflection">
+        <title>Reflecting on Inheritance Benefits and Challenges</title>
+        <statement>
+            <p>You're building a game with different character types (Player, Monster, NPC) that all
+                need position, health, and movement tracking. Consider each of the following
+                questions:</p>
+            <ol>
+                <li>How would you structure an inheritance hierarchy to minimize code duplication?
+                    (Identify classes and their relationships)</li>
+                <li>What specific fields and methods would you place in the parent class versus the
+                    subclasses?</li>
+                <li>As your game grows, you need to add specialized monster types: <c>FlyingMonster</c>
+                    , <c>AquaticMonster</c>, and <c>BossMonster</c>. What specific maintenance
+                    challenges do you anticipate with this deeper hierarchy?</li>
+                <li>How might you mitigate these challenges while still benefiting from inheritance?
+                    (Consider alternatives or hybrid approaches)</li>
+            </ol>
+            <p>For each point, provide a brief explanation (2-3 sentences) and include code examples
+                or diagrams where appropriate.</p>
+        </statement>
+        <solution>
+            <p>Inheritance reduces code duplication by allowing shared fields and methods to exist
+                in a single superclass instead of copying them into multiple classes. This makes
+                updates easier and ensures consistency.</p>
+
+            <ol>
+                <li>
+                    <p><term>Inheritance hierarchy:</term> A sensible structure would have a base 
+                    <c>GameCharacter</c> class at the top, with <c>Player</c>, <c>Monster</c>, and 
+                    <c>NPC</c> classes extending it.</p>
+                </li>
+
+                <li>
+                    <p>
+                        <term>Parent vs. subclass responsibilities:</term>
+                    </p>
+                    <ul>
+                        <li><term>Parent class (<c>GameCharacter</c>):</term> Would contain position
+                            coordinates (x, y), health, basic movement methods, collision detection,
+                            and damage handling.</li>
+                        <li><term>Subclasses:</term> <c>Player</c> would add inventory, experience
+                            points, and user input handling. <c>Monster</c> would add AI behavior
+                            and aggression levels. <c>NPC</c> would add dialog systems and
+                            quest-giving capabilities.</li>
+                    </ul>
+                </li>
+
+                <li>
+                    <p>
+                        <term>Deep hierarchy challenges:</term>
+                    </p>
+                    <ul>
+                        <li><term>Ripple effects:</term> Changes to the <c>Monster</c> class affect
+                            all specialized monster types</li>
+                        <li><term>Cross-cutting concerns:</term> What if we need a <c>FlyingBossMonster</c> 
+                            with properties from multiple specialized classes?</li>
+                        <li><term>Code comprehension:</term> Understanding a specialized class
+                            requires tracing behavior through multiple inheritance levels</li>
+                        <li><term>Method resolution complexity:</term> With multiple levels of
+                            overridden methods, it becomes harder to predict which implementation
+                            will be called</li>
+                    </ul>
+                </li>
+
+                <li>
+                    <p>
+                        <term>Mitigation strategies:</term>
+                    </p>
+                    <ul>
+                        <li>Use composition alongside inheritance for behaviors that don't fit the
+                            hierarchy cleanly</li>
+                        <li>Keep the inheritance hierarchy shallow (max 2-3 levels deep)</li>
+                        <li>Consider interfaces for cross-cutting behaviors (like <c>Flying</c> or 
+                        <c>Aquatic</c>)</li>
+                        <li>Design parent classes carefully with clear extension points</li>
+                        <li>Document intended override behavior for future maintainers</li>
+                    </ul>
+                </li>
+            </ol>
+        </solution>
+    </exercise>
+</exercises> -->
+</section>
