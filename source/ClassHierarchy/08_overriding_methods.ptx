@@ -349,7 +349,7 @@
             <choice correct="yes">
                 <statement>
                     <p>
-                        he method must have the same name, parameters, and return type as the superclass method.
+                        The method must have the same name, parameters, and return type as the superclass method.
                     </p>
                 </statement>
             </choice>
