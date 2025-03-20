@@ -1,0 +1,265 @@
+<section xml:id="inheritance-dry-reusability">
+  <title>Inheritance, DRY Principle, and Code Reusability</title>
+
+  <p>One of the primary benefits of carefully planning your class hierarchy, particularly through the iterative refinement approach discussed earlier, is that it directly supports the <term>DRY (Don't Repeat Yourself)</term> principle. The DRY principle emphasizes that you should avoid unnecessary duplication of code, logic, or data throughout your system. Proper use of inheritance is a powerful tool for adhering to this principle.</p>
+
+  <subsection xml:id="recognizing-dry-opportunities">
+    <title>Recognizing Opportunities to Stay DRY</title>
+
+    <p>As you've seen in the social media post example, duplication often signals opportunities to create superclasses or intermediate abstract classes:</p>
+
+    <ul>
+      <li>If multiple subclasses (like <c>TextPost</c>, <c>PhotoPost</c>, and <c>VideoPost</c>) share identical fields (<c>author</c>, <c>timestamp</c>, <c>likeCount</c>, <c>taggedUsers</c>) or methods (<c>like()</c>, <c>tagUser()</c>, <c>addComment()</c>), these are prime candidates to move up into a common superclass (<c>Post</c>).</li>
+      <li>If you find specific subsets of subclasses (like <c>PhotoPost</c> and <c>VideoPost</c>) sharing specialized attributes or behaviors (such as handling <c>fileSize</c>, <c>resolution</c>, or generating thumbnails), consider introducing an intermediate class (<c>MediaPost</c>).</li>
+    </ul>
+
+    <p>Explicitly documenting these overlaps in your Data Definitions step ensures you consciously spot and exploit these DRY opportunities.</p>
+    
+    <p>Let's examine a concrete example of how early inheritance planning supports the DRY principle:</p>
+    
+    <sidebyside widths="48% 48%">
+      <stack>
+        <title>Without Inheritance Planning</title>
+        <program language="java">
+          <code>
+public class Car {
+    private double speed;
+    private double positionX;
+    private double positionY;
+    
+    public void accelerate(double amount) {
+        if (amount &lt; 0) {
+            throw new IllegalArgumentException("Amount must be positive");
+        }
+        speed += amount;
+    }
+    
+    public void brake(double amount) {
+        if (amount &lt; 0) {
+            throw new IllegalArgumentException("Amount must be positive");
+        }
+        speed = Math.max(0, speed - amount);
+    }
+    
+    // Other car-specific methods...
+}
+
+public class Bicycle {
+    private double speed;
+    private double positionX;
+    private double positionY;
+    
+    public void accelerate(double amount) {
+        if (amount &lt; 0) {
+            throw new IllegalArgumentException("Amount must be positive");
+        }
+        speed += amount;
+    }
+    
+    public void brake(double amount) {
+        if (amount &lt; 0) {
+            throw new IllegalArgumentException("Amount must be positive");
+        }
+        speed = Math.max(0, speed - amount);
+    }
+    
+    // Other bicycle-specific methods...
+}
+          </code>
+        </program>
+      </stack>
+      <stack>
+        <title>With Inheritance Planning</title>
+        <program language="java">
+          <code>
+public abstract class Vehicle {
+    protected double speed;
+    protected double positionX;
+    protected double positionY;
+    
+    public void accelerate(double amount) {
+        if (amount &lt; 0) {
+            throw new IllegalArgumentException("Amount must be positive");
+        }
+        speed += amount;
+    }
+    
+    public void brake(double amount) {
+        if (amount &lt; 0) {
+            throw new IllegalArgumentException("Amount must be positive");
+        }
+        speed = Math.max(0, speed - amount);
+    }
+    
+    // Other common methods...
+}
+
+public class Car extends Vehicle {
+    // Only car-specific fields and methods
+    private double engineSize;
+    
+    // Car-specific methods...
+}
+
+public class Bicycle extends Vehicle {
+    // Only bicycle-specific fields and methods
+    private int numberOfGears;
+    
+    // Bicycle-specific methods...
+}
+          </code>
+        </program>
+      </stack>
+    </sidebyside>
+    
+    <p>Notice how the inheritance-based approach eliminates duplicated fields and methods, resulting in cleaner, more maintainable code.</p>
+  </subsection>
+
+  <subsection xml:id="long-term-maintainability">
+    <title>Inheritance and Long-Term Maintainability</title>
+
+    <p>Inheritance doesn't just reduce code duplication, it significantly improves long-term maintainability:</p>
+
+    <ul>
+      <li>Fixing a bug or making enhancements in a superclass (<c>Vehicle</c>) automatically benefits all subclasses (<c>Car</c>, <c>Bicycle</c>).</li>
+      <li>Consistency is easier to maintain across subclasses, ensuring a unified behavior for methods like <c>accelerate()</c> or <c>brake()</c>.</li>
+      <li>Introducing new subclasses (e.g., <c>Motorcycle</c> or <c>Scooter</c>) becomes straightforward because the superclass already contains the essential shared behaviors.</li>
+    </ul>
+    
+    <p>For example, if we need to add position tracking to all vehicles, we only need to modify the <c>Vehicle</c> class:</p>
+    
+    <program language="java">
+      <code>
+public abstract class Vehicle {
+    // Existing fields and methods...
+    
+    // New functionality added once, benefits all subclasses
+    private List&lt;Position&gt; positionHistory = new ArrayList&lt;&gt;();
+    
+    public void recordPosition() {
+        positionHistory.add(new Position(positionX, positionY));
+    }
+    
+    public List&lt;Position&gt; getRouteHistory() {
+        return new ArrayList&lt;&gt;(positionHistory); // Return defensive copy
+    }
+}
+      </code>
+    </program>
+    
+    <p>With this single change, every vehicle type now has position tracking capabilities, without having to modify any subclasses.</p>
+
+    <insight>
+      <title>Why DRY Matters Beyond Initial Implementation</title>
+      <p>At first glance, duplication may seem trivial. However, the true cost of duplication is usually realized during maintenance:</p>
+      <ul>
+        <li>Every duplicated method is another place where you could introduce errors during bug fixes or feature enhancements.</li>
+        <li>Repeated logic requires repeated testing, increasing your testing burden.</li>
+        <li>Duplication often leads to subtle inconsistencies that degrade user experience and complicate debugging.</li>
+      </ul>
+      <p>By carefully designing inheritance hierarchies that support DRY principles, you minimize these hidden maintenance costs.</p>
+    </insight>
+  </subsection>
+
+  <subsection xml:id="interfaces-complement-inheritance">
+    <title>Using Interfaces to Complement Inheritance</title>
+
+    <p>While inheritance handles "is-a" relationships, interfaces are ideal for capturing cross-cutting capabilities. For example, suppose your traffic simulation application also supports other entities like <c>TrafficLight</c> and <c>PedestrianCrossing</c>, both of which can be "located on a map" or "toggled." However, these entities don't share a direct inheritance relationship with <c>Vehicle</c>.</p>
+
+    <p>In this case, defining interfaces such as <c>Mappable</c> or <c>Toggleable</c> is a powerful complement to inheritance:</p>
+
+    <program language="java">
+      <code>
+// Interface defining a capability to be placed on a map
+public interface Mappable {
+    double getPositionX();
+    double getPositionY();
+    void setPosition(double x, double y);
+}
+
+// Interface defining something that can be turned on/off
+public interface Toggleable {
+    void turnOn();
+    void turnOff();
+    boolean isOn();
+}
+
+// Vehicle superclass implements Mappable
+public abstract class Vehicle implements Mappable {
+    protected double positionX;
+    protected double positionY;
+    
+    @Override
+    public double getPositionX() {
+        return positionX;
+    }
+    
+    @Override
+    public double getPositionY() {
+        return positionY;
+    }
+    
+    @Override
+    public void setPosition(double x, double y) {
+        this.positionX = x;
+        this.positionY = y;
+    }
+}
+
+// TrafficLight class implements both Mappable and Toggleable
+public class TrafficLight implements Mappable, Toggleable {
+    private double positionX;
+    private double positionY;
+    private boolean isOn;
+    
+    // Mappable implementation
+    @Override
+    public double getPositionX() { return positionX; }
+    
+    @Override
+    public double getPositionY() { return positionY; }
+    
+    @Override
+    public void setPosition(double x, double y) {
+        this.positionX = x;
+        this.positionY = y;
+    }
+    
+    // Toggleable implementation
+    @Override
+    public void turnOn() { isOn = true; }
+    
+    @Override
+    public void turnOff() { isOn = false; }
+    
+    @Override
+    public boolean isOn() { return isOn; }
+}
+      </code>
+    </program>
+
+    <p>Using interfaces in conjunction with inheritance gives you the flexibility to model shared behaviors across unrelated class hierarchies, further enhancing reusability and adhering to DRY.</p>
+    
+    <insight>
+      <title>Abstraction vs. Implementation</title>
+      <p>Remember that inheritance creates both an <em>is-a</em> relationship (abstraction) and a mechanism for code reuse (implementation). The abstraction aspect should drive your design decisions, with code reuse as a beneficial consequence.</p>
+      <p>A common mistake is to create inheritance hierarchies solely for code reuse without a meaningful abstraction. This leads to confusing designs where the "is-a" relationship doesn't make intuitive sense. Always ask: "Does it make sense to say that SubclassX <em>is a</em> SuperclassY?" If not, consider composition or interfaces instead.</p>
+    </insight>
+  </subsection>
+
+  <!-- <subsection xml:id="reflection-dry-reusability">
+    <title>Reflection Questions</title>
+
+    <p>As you reflect on your inheritance design and its alignment with DRY and reusability, consider:</p>
+
+    <ul>
+      <li>Where do you see duplication in your current design that inheritance or interfaces could remove?</li>
+      <li>How would centralizing common behavior in a superclass make your code more maintainable?</li>
+      <li>What future extensions might you anticipate, and how does your hierarchy support them?</li>
+      <li>Are your abstractions based on meaningful "is-a" relationships, or are you using inheritance primarily for code reuse?</li>
+      <li>Could you use interfaces to capture behaviors shared across unrelated hierarchies?</li>
+    </ul>
+
+    <p>Thoughtful answers to these questions ensure your design promotes maintainability and scalability while adhering to the DRY principle.</p>
+  </subsection> -->
+</section> 

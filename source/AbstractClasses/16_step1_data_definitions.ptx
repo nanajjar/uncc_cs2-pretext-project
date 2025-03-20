@@ -1,0 +1,240 @@
+<section xml:id="inheritance-step-1-data-definitions">
+  <title>Step 1: Data Definitions &amp; Class Hierarchy Design</title>
+
+  <p>In Step 1 of the Design Recipe, you typically define the structure and constraints of the data your classes or methods will use. When considering inheritance, this step becomes particularly important because it establishes how your classes relate and what common structures should be shared through inheritance.</p>
+
+  <p>Continuing our social media application example from Step 0, let's explicitly define the data structures for our classes and organize them to highlight potential superclasses:</p>
+
+  <subsection xml:id="creating-inheritance-aware-data-definitions">
+    <title>Creating Inheritance-Aware Data Definitions</title>
+    
+    <p>Start by clearly documenting each class's attributes, categorizing them into shared versus specialized:</p>
+    
+    <tabular bottom="minor" halign="center">
+      <col width="20%"/>
+      <col width="55%"/>
+      <col width="25%"/>
+
+      <row header="yes">
+        <cell>Class</cell>
+        <cell>Shared Attributes and Methods</cell>
+        <cell>Specialized Attributes and Methods</cell>
+      </row>
+      <row>
+        <cell><c>Post</c> (superclass)</cell>
+        <cell>
+          <ul>
+            <li><c>author</c> (String)</li>
+            <li><c>timestamp</c> (Date)</li>
+            <li><c>likeCount</c> (int)</li>
+            <li><c>comments</c> (List&lt;Comment&gt;)</li>
+            <li><c>like()</c></li>
+            <li><c>addComment(Comment)</c></li>
+          </ul>
+        </cell>
+        <cell><em>None (only shared fields here)</em></cell>
+      </row>
+      <row>
+        <cell><c>TextPost</c></cell>
+        <cell><em>Inherits all from <c>Post</c></em></cell>
+        <cell>
+          <ul>
+            <li><c>textContent</c> (String)</li>
+            <li><c>wordCount</c> (int)</li>
+          </ul>
+        </cell>
+      </row>
+      <row>
+        <cell><p><c>MediaPost</c></p><p>(intermediate superclass)</p></cell>
+        <cell><em>Inherits from <c>Post</c></em></cell>
+        <cell>
+          <ul>
+            <li><c>fileSize</c> (int, in KB)</li>
+            <li><c>resolution</c> (String, e.g., "1920x1080")</li>
+          </ul>
+        </cell>
+      </row>
+      <row>
+        <cell><c>PhotoPost</c></cell>
+        <cell><em>Inherits from <c>MediaPost</c></em></cell>
+        <cell>
+          <ul>
+            <li><c>imageFile</c> (String)</li>
+            <li><c>caption</c> (String)</li>
+          </ul>
+        </cell>
+      </row>
+      <row>
+        <cell><c>VideoPost</c></cell>
+        <cell><em>Inherits from <c>MediaPost</c></em></cell>
+        <cell>
+          <ul>
+            <li><c>videoFile</c> (String)</li>
+            <li><c>description</c> (String)</li>
+            <li><c>duration</c> (int, seconds)</li>
+          </ul>
+        </cell>
+      </row>
+    </tabular>
+    
+    <p>Clearly listing attributes in this way makes inheritance relationships visually apparent and helps you identify the logical placement of fields and methods.</p>
+    
+    <p>Let's see how this translates to Java code:</p>
+    
+    <program language="java">
+      <code>
+/**
+ * Represents a social media post with author, timestamp, likes, and comments.
+ * Invariants:
+ * - author must not be null or empty
+ * - timestamp must not be null
+ * - likeCount must be non-negative
+ */
+public abstract class Post {
+    // All posts have these common attributes
+    protected String author;
+    protected Date timestamp;
+    protected int likeCount;
+    protected List&lt;Comment&gt; comments;
+    
+    // No fields for text content, media files, etc. - those belong in subclasses
+}
+
+/**
+ * Represents a text-only post.
+ * Invariants:
+ * - textContent must not be null
+ * - wordCount must match the actual number of words in textContent
+ */
+public class TextPost extends Post {
+    private String textContent;
+    private int wordCount;
+}
+
+/**
+ * Represents a post containing media (abstract intermediate class).
+ * Invariants:
+ * - fileSize must be positive
+ * - resolution must be in format "WidthxHeight" (e.g., "1920x1080")
+ */
+public abstract class MediaPost extends Post {
+    private int fileSize;  // in KB
+    private String resolution;
+}
+      </code>
+    </program>
+    
+    <p>Notice how the shared fields (<c>author</c>, <c>timestamp</c>, <c>likeCount</c>, <c>comments</c>) are defined in the superclass, while specialized fields are in their respective subclasses. The comments also document the invariants for each class.</p>
+  </subsection>
+  
+  <subsection xml:id="documenting-relationships-uml">
+    <title>Documenting Relationships with Diagrams</title>
+    
+    <p>A simple class diagram or textual hierarchy helps visualize these relationships explicitly:</p>
+    
+    <pre>
+Post (author, timestamp, likeCount, comments, like(), addComment())
+├── TextPost (textContent, wordCount)
+└── MediaPost (fileSize, resolution)
+      ├── PhotoPost (imageFile, caption)
+      └── VideoPost (videoFile, description, duration)
+    </pre>
+    
+    <p>This visual documentation provides a quick reference during implementation and helps ensure your class hierarchy remains clear and consistent as your project evolves.</p>
+  </subsection>
+  
+  <subsection xml:id="inheritance-constraints">
+    <title>Handling Constraints in Hierarchies</title>
+    
+    <p>When defining data for a class hierarchy, pay special attention to invariants (conditions that must always hold true) and where they belong:</p>
+    
+    <ul>
+      <li><term>Superclass invariants</term> apply to all subclasses (e.g., author must not be null for all posts)</li>
+      <li><term>Subclass invariants</term> apply only to that specific type (e.g., video posts must have a positive duration)</li>
+    </ul>
+    
+    <p>Document these constraints clearly, as they will inform validation logic in constructors and methods. For example:</p>
+    
+    <program language="java">
+      <code>
+public abstract class Post {
+    // Fields as before...
+    
+    // Constructor enforces superclass invariants
+    public Post(String author, Date timestamp) {
+        // Enforce invariant: author must not be null or empty
+        if (author == null || author.isEmpty()) {
+            throw new IllegalArgumentException("Author must not be null or empty");
+        }
+        // Enforce invariant: timestamp must not be null
+        if (timestamp == null) {
+            throw new IllegalArgumentException("Timestamp must not be null");
+        }
+        this.author = author;
+        this.timestamp = timestamp;
+        this.likeCount = 0;
+        this.comments = new ArrayList&lt;&gt;();
+    }
+}
+
+public class VideoPost extends MediaPost {
+    // Fields as before...
+    
+    // Constructor enforces both superclass and subclass invariants
+    public VideoPost(String author, Date timestamp, int fileSize, String resolution,
+                    String videoFile, String description, int duration) {
+        // Call superclass constructor to enforce its invariants
+        super(author, timestamp, fileSize, resolution);
+        
+        // Enforce subclass invariants
+        if (videoFile == null || videoFile.isEmpty()) {
+            throw new IllegalArgumentException("Video file must not be null or empty");
+        }
+        if (duration &lt;= 0) {
+            throw new IllegalArgumentException("Duration must be positive");
+        }
+        this.videoFile = videoFile;
+        this.description = description;
+        this.duration = duration;
+    }
+}
+      </code>
+    </program>
+    
+    <p>This pattern ensures that invariants are enforced at the appropriate level in the hierarchy.</p>
+    
+    <insight>
+      <title>Honoring Superclass Guarantees in Subclasses</title>
+      <p>When defining data constraints, keep in mind a fundamental principle of inheritance: A subclass should behave in a way that anyone using a superclass reference would expect, even if they don't know the actual subclass type.</p>
+      <p>This means subclasses should not add stricter requirements than their parent class or provide weaker guarantees. For example, if the <c>Post</c> class allows any non-empty author string, a <c>TextPost</c> subclass shouldn't restrict author names to a specific format - that would break the expectation set by the superclass.</p>
+    </insight>
+  </subsection>
+
+  <insight>
+    <title>Leveraging Invariants &amp; Preconditions with Inheritance</title>
+    <p>Inheritance isn't just about sharing attributes and behaviors; it's also about enforcing shared constraints and invariants. For instance:</p>
+    <ul>
+      <li>All <c>Post</c> subclasses must ensure the <c>timestamp</c> is always set at creation.</li>
+      <li><c>MediaPost</c> subclasses must guarantee that <c>fileSize</c> and <c>resolution</c> are always valid and non-empty.</li>
+    </ul>
+    <p>Clearly documenting these invariants at the superclass level can simplify validation logic, avoid redundancy, and improve maintainability.</p>
+  </insight>
+  
+  <!-- <subsection xml:id="reflection-step1">
+    <title>Reflection Questions</title>
+    
+    <p>As you complete Step 1 with inheritance in mind, consider these questions:</p>
+    
+    <ul>
+      <li>Have you clearly distinguished between shared and specialized attributes?</li>
+      <li>Are your class diagrams or tables simple and intuitive?</li>
+      <li>Are there additional intermediate superclasses that might simplify your structure?</li>
+      <li>Do your invariants or preconditions apply logically at the superclass level?</li>
+      <li>Are invariants documented at the appropriate level (superclass or subclass)?</li>
+      <li>Does your data definition account for appropriate access modifiers (private, protected, public)?</li>
+      <li>Would any fields benefit from being moved up or down the hierarchy?</li>
+    </ul>
+    
+    <p>Answering these questions ensures your class hierarchy remains clear, maintainable, and logically sound as you proceed to define method signatures in Step 2.</p>
+  </subsection> -->
+</section> 
