@@ -282,8 +282,8 @@ public class ElectricTruck extends Vehicle
           </p>
         </statement>
       </choice>
-     <choice>
-      <statement correct="yes">
+     <choice correct="yes">
+      <statement>
         <p>
           Interface
         </p>
@@ -302,9 +302,9 @@ public class ElectricTruck extends Vehicle
       (cars, boats, planes) have specialized behaviors.
       </p>
      </statement>
-     <choices>
+     <choices  correct="yes">
       <choice>
-        <statement correct="yes">
+        <statement>
           <p>
             Abstract class
           </p>
@@ -338,8 +338,8 @@ public class ElectricTruck extends Vehicle
           </p>
         </statement>
       </choice>
-     <choice>
-      <statement correct="yes">
+     <choice correct="yes">
+      <statement>
         <p>
           Interface
         </p>
@@ -359,8 +359,8 @@ public class ElectricTruck extends Vehicle
       </p>
      </statement>
      <choices>
-      <choice>
-        <statement correct="yes">
+      <choice correct="yes">
+        <statement>
           <p>
             Abstract class
           </p>
@@ -378,11 +378,10 @@ public class ElectricTruck extends Vehicle
 
    
 
-        <p>Determine whether each statement is true or false:</p>
 
     <exercise xml:id="abstract-interface-true-false">
         <statement correct="no">
-          <p>An interface can have constructors.</p>
+          <p>True or False: An interface can have constructors.</p>
         </statement>
          <feedback>
           <p>Interfaces cannot have constructors. Constructors are used to initialize object state, but interfaces cannot contain instance variables (except constants).</p>
@@ -392,7 +391,7 @@ public class ElectricTruck extends Vehicle
 
             <exercise xml:id="abstract-interface-true-false1">
         <statement correct="no">
-          <p>Abstract classes can contain only abstract methods.</p>
+          <p>True or False: Abstract classes can contain only abstract methods.</p>
         </statement>
           <feedback>
           <p>Abstract classes can contain a mix of abstract methods AND concrete methods with implementations. In fact, this is one of their key advantages over interfaces.</p>
@@ -400,7 +399,7 @@ public class ElectricTruck extends Vehicle
         </exercise>
             <exercise xml:id="abstract-interface-true-false2">
         <statement correct="yes">
-          <p>A class can implement multiple interfaces at the same time.</p>
+          <p>True or False: A class can implement multiple interfaces at the same time.</p>
         </statement>
         <feedback>
           <p>This is correct. Java allows a class to implement multiple interfaces simultaneously, which is a way to achieve a form of multiple inheritance for behavior.</p>
@@ -408,7 +407,7 @@ public class ElectricTruck extends Vehicle
         </exercise>
             <exercise xml:id="abstract-interface-true-false3">
         <statement correct="no">
-          <p>You can create an instance of an abstract class directly.</p>
+          <p>True or False: You can create an instance of an abstract class directly.</p>
         </statement>
          <feedback>
           <p>You cannot instantiate abstract classes directly. You must create a concrete subclass that implements all abstract methods, then instantiate that subclass.</p>
@@ -416,7 +415,7 @@ public class ElectricTruck extends Vehicle
         </exercise>
             <exercise xml:id="abstract-interface-true-false4">
         <statement correct="yes">
-          <p>Interface methods are implicitly public and abstract.</p>
+          <p>True or False: Interface methods are implicitly public and abstract.</p>
         </statement>
            <feedback>
           <p>This is correct. In interfaces, methods are implicitly public and abstract (except for default methods, which have implementations).</p>

@@ -123,6 +123,8 @@ public class Invoice implements Printable, Taxable {
     <li>A class can implement multiple interfaces (unlike inheritance, which is limited to one superclass)</li>
     <li>Default methods provide a way to add methods to interfaces without breaking existing implementations</li>
   </ul>
+<exercises>
+  
 
   <exercise xml:id="mc_abstract-interface1">
     <statement>
@@ -187,8 +189,8 @@ public class Invoice implements Printable, Taxable {
         When should you use an interface instead of an abstract class?
       </p>
     </statement>
-    <choices>
-      <choice>
+    <choices randomize="yes">
+      <choice correct="yes">
         <statement>
           <p>
             When you want to enforce method signatures across unrelated classes.
@@ -244,7 +246,7 @@ public class Invoice implements Printable, Taxable {
         Which statement is true regarding constructors in interfaces and abstract classes?
       </p>
     </statement>
-    <choices>
+    <choices randomize="yes">
       <choice>
         <statement>
           <p>
@@ -296,6 +298,6 @@ public class Invoice implements Printable, Taxable {
     </choices>
   </exercise>
 
-
+</exercises>
 
 </section> 

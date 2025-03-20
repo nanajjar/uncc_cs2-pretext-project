@@ -342,7 +342,7 @@ for (Vehicle v : vehicles) {
     Which of the following is true regarding abstract classes or abstract methods? (Select all that apply)
   </p>
 </statement>
-<choices>
+<choices randomize="yes">
   <choice correct = "yes">
     <statement>
       <p>
@@ -398,7 +398,7 @@ public class hrSystem {
   </pre>
 </statement>
 <choices>
-  <choice correct = "yes">
+  <choice correct = "yes" randomize="yes">
     <statement>
       <p>
         Compiler error because Manager is abstract so an instance cannot be created. 
@@ -441,7 +441,7 @@ public class hrSystem {
         What kind of classes are <c>Manager</c> and <c>Executive</c>, respectively?
       </p>
   </statement>
-  <choices>
+  <choices randomize="yes">
     <choice correct="yes">
       <statement>
         <p>
@@ -479,7 +479,7 @@ public class hrSystem {
     Why should you use the <c>@Override</c> annotation when implementing an abstract method?
   </p>
 </statement>
-<choices>
+<choices randomize="yes">
   <choice>
     <statement>
       <p>
@@ -536,7 +536,7 @@ public class hrSystem {
     Which of the following statements about abstract methods is true?
   </p>
 </statement>
-<choices>
+<choices randomize="yes">
   <choice>
     <statement>
       <p>
@@ -596,7 +596,7 @@ public class hrSystem {
     What is one of the key benefits of using abstract classes?
   </p>
 </statement>
-  <choices>
+  <choices randomize="yes">
     <choice>
       <statement>
         <p>
