@@ -1,0 +1,69 @@
+<section xml:id="class-hierarchy-design-recipe">
+  <title>Class Hierarchy and the Design Recipe</title>
+  
+  <objectives>
+    <ul>
+        <li>
+            <p>
+                Identify opportunities for inheritance early in the design process
+            </p>
+        </li>
+        <li>
+            <p>
+                Integrate class hierarchy planning into Steps 0, 1, and 2 of the Design Recipe
+            </p>
+        </li>
+        <li>
+            <p>
+                Create data definitions that clearly separate shared vs. specialized attributes
+            </p>
+        </li>
+        <li>
+            <p>
+                Design method signatures with clear rules for what subclasses must, may, or must not override
+            </p>
+        </li>
+        <li>
+            <p>
+                Apply iterative refinement to improve class hierarchies
+            </p>
+        </li>
+        <li>
+            <p>
+                Apply the DRY principle to reduce code duplication through appropriate inheritance
+            </p>
+        </li>
+    </ul>
+  </objectives>
+  
+  <p>When developing software with multiple related classes, you'll often notice patterns of repetition. Consider a social media application where you're implementing different post types: <c>TextPost</c>, <c>PhotoPost</c>, and <c>VideoPost</c>. Without inheritance, you might find yourself repeatedly coding the same fields like <c>author</c>, <c>timestamp</c>, and <c>likes</c>, along with identical methods such as <c>addComment()</c> and <c>like()</c>. This duplication is a clear signal that these classes share a common conceptual parent.</p>
+  
+  <p>In this section, we explicitly integrate the concept of class hierarchies and inheritance into the early steps of our Design Recipe, especially <term>Steps 0 (Understand &amp; Restate)</term> and <term>1 (Data Definitions)</term>. By carefully examining and iteratively refining our initial understanding and data definitions, we identify shared structures early, thereby creating opportunities for well-designed superclasses or interfaces.</p>
+  
+  <p>This approach directly aligns with the <term>DRY (Don't Repeat Yourself)</term> principle: instead of repeating code, we consolidate shared behaviors into a single superclass. Planning for this ahead of time not only reduces redundancy but also significantly simplifies future maintenance and extension of our codebase.</p>
+  
+  <p>By the end of this section, you will:</p>
+  <ul>
+    <li>Understand how to recognize commonality among classes early in the design process.</li>
+    <li>Learn how to document these shared attributes and behaviors in Steps 0 and 1 of your Design Recipe.</li>
+    <li>Gain practice designing an effective and maintainable class hierarchy before writing any implementation code.</li>
+    <li>See how proper inheritance planning makes your code more maintainable, extensible, and organized.</li>
+  </ul>
+  
+  <insight>
+    <title>The Cost of Retrofitting Inheritance</title>
+    <p>Adding inheritance to an existing codebase is much more challenging than designing with inheritance in mind from the start. When you realize multiple completed classes share common functionality, retrofitting a superclass requires:</p>
+    <ul>
+      <li>Identifying all duplicated code across classes</li>
+      <li>Extracting shared fields and methods to a superclass</li>
+      <li>Updating all references throughout your code</li>
+      <li>Thoroughly testing to ensure the refactoring didn't break functionality</li>
+      <li>Possibly redesigning aspects that don't fit cleanly into the hierarchy</li>
+    </ul>
+    <p>By integrating inheritance considerations into the early stages of your design recipe, you can avoid this costly refactoring process.</p>
+  </insight>
+  
+  <p>Consider this scenario: you've already implemented several social media post classes (<c>TextPost</c>, <c>PhotoPost</c>, and <c>VideoPost</c>) each with identical fields for tracking authors, timestamps, and likes. Now you need to add a new feature for tagging users in any post type. Without a proper hierarchy, you'd need to duplicate this tagging functionality across all three classes. This is precisely the kind of refactoring challenge that early inheritance planning would have prevented.</p>
+  
+  <p>Let's begin by revisiting Step 0, this time with inheritance in mind.</p>
+</section> 
