@@ -42,7 +42,7 @@
   
   <p>This approach directly aligns with the <term>DRY (Don't Repeat Yourself)</term> principle: instead of repeating code, we consolidate shared behaviors into a single superclass. Planning for this ahead of time not only reduces redundancy but also significantly simplifies future maintenance and extension of our codebase.</p>
   
-  <p>By the end of this section, you will:</p>
+  <p>In the next few sections, you will:</p>
   <ul>
     <li>Understand how to recognize commonality among classes early in the design process.</li>
     <li>Learn how to document these shared attributes and behaviors in Steps 0 and 1 of your Design Recipe.</li>
