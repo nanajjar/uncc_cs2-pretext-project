@@ -90,6 +90,7 @@ public class PostDemo {
         PhotoPost photoPost = new PhotoPost("Bob", "Vacation sunset", "sunset.jpg", "1920x1080");
         VideoPost videoPost = new VideoPost("Charlie", "My Java tutorial", "tutorial.mp4", "1280x720", 300);
         
+        System.out.println();
         System.out.println("===== Basic Post Information =====");
         displayPostInfo(textPost);
         displayPostInfo(photoPost);
@@ -124,7 +125,7 @@ public class PostDemo {
                            photoPost.getTimeToConsume() + " seconds");
         System.out.println("Time to consume " + videoPost.getTitle() + ": " + 
                            videoPost.getTimeToConsume() + " seconds");
-                           
+
         System.out.println();                           
         System.out.println("===== Text Post-Specific Features =====");
         System.out.println(textPost.getTitle() + " - Word count: " + textPost.getWordCount());
