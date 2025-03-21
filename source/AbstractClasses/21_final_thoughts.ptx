@@ -90,14 +90,12 @@ public class PostDemo {
         PhotoPost photoPost = new PhotoPost("Bob", "Vacation sunset", "sunset.jpg", "1920x1080");
         VideoPost videoPost = new VideoPost("Charlie", "My Java tutorial", "tutorial.mp4", "1280x720", 300);
         
-        System.out.println();
-        System.out.println("===== Basic Post Information =====");
+        System.out.println("\n***** Basic Post Information *****");
         displayPostInfo(textPost);
         displayPostInfo(photoPost);
         displayPostInfo(videoPost);
         
-        System.out.println();
-        System.out.println("===== User Interaction =====");
+        System.out.println("\n***** User Interaction *****");
         // Like various posts
         textPost.like();
         photoPost.like();
@@ -111,23 +109,20 @@ public class PostDemo {
         photoPost.addComment("Beautiful shot!");
         photoPost.addComment("Where was this taken?");
         videoPost.addComment("Very helpful tutorial!");
-
-        System.out.println();
-        System.out.println("==== Updated Post Information =====");
+        
+        System.out.println("\n***** Updated Post Information *****");
         displayPostInfo(textPost);
         displayPostInfo(photoPost);
         displayPostInfo(videoPost);
         
-        System.out.println();
-        System.out.println("===== Media-Specific Features =====");
+        System.out.println("\n***** Media-Specific Features *****");
         // Demonstrate media-specific methods
         System.out.println("Time to consume " + photoPost.getTitle() + ": " + 
                            photoPost.getTimeToConsume() + " seconds");
         System.out.println("Time to consume " + videoPost.getTitle() + ": " + 
                            videoPost.getTimeToConsume() + " seconds");
-
-        System.out.println();                           
-        System.out.println("===== Text Post-Specific Features =====");
+                           
+        System.out.println("\n***** Text Post-Specific Features *****");
         System.out.println(textPost.getTitle() + " - Word count: " + textPost.getWordCount());
         System.out.println("Summary: " + textPost.getSummary(3));
     }
