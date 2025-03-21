@@ -79,7 +79,7 @@
     <p><term>Note:</term> To work within Runestone's constraints, all classes are combined in a single file. In a real project, each class would typically be in its own file.</p>
     
     <program xml:id="social_media_inheritance" interactive="activecode" language="java">
-      <input>
+      <code>
 /**
  * Main class that demonstrates our social media post hierarchy in action
  */
@@ -90,12 +90,12 @@ public class PostDemo {
         PhotoPost photoPost = new PhotoPost("Bob", "Vacation sunset", "sunset.jpg", "1920x1080");
         VideoPost videoPost = new VideoPost("Charlie", "My Java tutorial", "tutorial.mp4", "1280x720", 300);
         
-        System.out.println("\n===== Basic Post Information =====");
+        System.out.println("\n ===== Basic Post Information =====");
         displayPostInfo(textPost);
         displayPostInfo(photoPost);
         displayPostInfo(videoPost);
         
-        System.out.println("\n===== User Interaction =====");
+        System.out.println("\n ===== User Interaction =====");
         // Like various posts
         textPost.like();
         photoPost.like();
@@ -356,7 +356,7 @@ class VideoPost extends MediaPost {
         return durationInSeconds;
     }
 }
-      </input>
+      </code>
     </program>
 
     <p>Try experimenting with this code! Here are some things you might modify:</p>
