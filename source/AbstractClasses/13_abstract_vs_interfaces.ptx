@@ -302,8 +302,8 @@ public class ElectricTruck extends Vehicle
       (cars, boats, planes) have specialized behaviors.
       </p>
      </statement>
-     <choices  correct="yes">
-      <choice>
+     <choices>
+      <choice correct="yes">
         <statement>
           <p>
             Abstract class
