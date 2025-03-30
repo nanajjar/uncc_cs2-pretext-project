@@ -1,0 +1,413 @@
+<section xml:id="generics-wildcards">
+<title>Wildcard Type Parameters</title>
+
+<introduction>
+ <p>
+  We've seen how generic types like <c>List&lt;String&gt;</c> provide compile-time safety, ensuring a list intended for strings only holds strings. We also saw how bounded types like <c>&lt;T extends Number&gt;</c> allow generic methods to work with types having specific capabilities.
+ </p>
+ <p>
+  However, this specificity can sometimes be too restrictive. Consider a simple method designed to print all elements in any list:
+ </p>
+ <program language="java"><code>import java.util.List;
+import java.util.Arrays; // Needed for Arrays.asList
+
+public class ListPrinterProblem {
+    // This works ONLY for List&lt;Object&gt;
+    public static void printListObjects(List&lt;Object&gt; list) {
+        for (Object elem : list) {
+            System.out.print(elem + " ");
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        List&lt;String&gt; names = Arrays.asList("Alice", "Bob");
+        List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 3);
+
+        // printListObjects(names);   // Compile Error! Why?
+        // printListObjects(numbers); // Compile Error! Why?
+    }
+}</code></program>
+ <p>
+  Why do these calls fail? It's because of a key rule in generics: even though <c>String</c> is a subtype of <c>Object</c>, a <c>List&lt;String&gt;</c> is <term>not</term> considered a subtype of <c>List&lt;Object&gt;</c>. This property is called <term>invariance</term>, meaning that generic types parameterized by different type arguments generally have no subtype relationship, even if their type arguments do. Let's see why this restriction is crucial for type safety.
+ </p>
+ <note>
+  <title>Why Generics are Invariant (Type Safety)</title>
+  <p>
+   Imagine if Java <term>did</term> allow assigning a <c>List&lt;String&gt;</c> to a <c>List&lt;Object&gt;</c>. The following unsafe scenario could occur:
+  </p>
+  <program language="java"><code>List&lt;String&gt; strings = new java.util.ArrayList&lt;&gt;();
+strings.add("Safe");
+
+// Imagine this assignment was allowed (it is NOT in Java):
+// List&lt;Object&gt; objects = strings; // Hypothetically allowed
+
+// Now, using the 'objects' reference, we could add non-Strings:
+// objects.add(Integer.valueOf(42)); // This would corrupt the list 'strings'!
+
+// Later, trying to get an element assuming it's a String would fail:
+// String s = strings.get(1); // Runtime ClassCastException! Would crash here.
+</code></program>
+  <p>
+   To prevent this exact kind of type corruption, generic types like <c>List&lt;T&gt;</c> are invariant by default. This ensures compile-time safety, preventing the kind of runtime exceptions (<c>ClassCastException</c>) that could occur if a list of strings were accidentally treated as a list capable of holding any object.
+  </p>
+ </note>
+ <p>
+  So, how do we write a method like <c>printList</c> that can accept a list of <term>anything</term> safely? Or a method that can process a list containing any kind of <c>Number</c>? This is where <term>wildcards</term> (<c>?</c>) come in. Wildcards represent an unknown type and allow us to create more flexible method signatures that can accept a wider range of generic type instantiations while maintaining defined safety rules.
+ </p>
+</introduction>
+
+<subsection xml:id="generics-wildcards-unbounded">
+ <title>Unbounded Wildcards (<c>?</c>)</title>
+ <p>
+  The simplest wildcard is the unbounded wildcard, represented by a question mark (<c>?</c>). It means "a list (or other generic type) of some unknown type".
+ </p>
+ <p>
+  Let's rewrite our <c>printList</c> method using an unbounded wildcard:
+ </p>
+ <program language="java"><code>import java.util.List;
+import java.util.Arrays;
+
+public class ListPrinter {
+    // This method accepts a List of ANY type
+    public static void printAnyList(List&lt;?&gt; list) {
+        System.out.print("[");
+        for (int i = 0; i &lt; list.size(); i++) {
+            // We can safely get elements, but only as Object
+            Object elem = list.get(i);
+            System.out.print(elem);
+            if (i &lt; list.size() - 1) {
+                System.out.print(", ");
+            }
+        }
+        System.out.println("]");
+
+        // Limitations: Cannot safely add elements (except null)
+        // list.add("new element"); // Compile Error! Can't add String to List&lt;?&gt;
+                                  // The compiler doesn't know if '?' is String or a supertype.
+        // list.add(null); // This is allowed (see note below)
+    }
+
+    public static void main(String[] args) {
+        List&lt;String&gt; names = Arrays.asList("Alice", "Bob");
+        List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 3);
+        List&lt;Object&gt; objects = Arrays.asList("Mixed", 42, true);
+        // List&lt;Player&gt; players = Arrays.asList(new Player("P1")); // Assuming Player exists
+
+        printAnyList(names);   // Now OK!
+        printAnyList(numbers); // Now OK!
+        printAnyList(objects); // OK
+        // printAnyList(players); // OK
+    }
+}</code></program>
+ <p>
+  Using <c>List&lt;?&gt;</c> allows the method to accept lists parameterized with any type. Inside the method, however, the compiler only knows that the list holds objects of "some unknown type". Therefore:
+ </p>
+ <ul>
+  <li>You <term>can</term> safely read elements, but they are treated as type <c>Object</c>.</li>
+  <li>You <term>can</term> call methods that don't depend on the type parameter (like <c>size()</c>, <c>isEmpty()</c>, <c>clear()</c>).</li>
+  <li>You <term>cannot</term> safely add elements to the list (except <c>null</c>), because the compiler doesn't know the exact type that <c>?</c> represents. Adding anything other than <c>null</c> could violate the type safety of the original list (e.g., adding an <c>Integer</c> to what might be a <c>List&lt;String&gt;</c>).</li>
+ </ul>
+ <note>
+  <title>Why is Adding <c>null</c> Allowed?</title>
+  <p>
+   You might wonder why adding <c>null</c> is permitted for <c>List&lt;?&gt;</c> when other additions are not. This is because the value <c>null</c> is considered compatible with <term>any</term> reference type in Java. Since <c>?</c> represents some unknown reference type, adding <c>null</c> doesn't violate type safety, although it's often not practically useful in these scenarios.
+  </p>
+ </note>
+ <p>
+  Unbounded wildcards are useful when the method's logic works entirely with methods from <c>Object</c> or methods of the generic type itself that don't involve the type parameter (like <c>size()</c>).
+ </p>
+ <note>
+   <title><c>List&lt;Object&gt;</c> vs. <c>List&lt;?&gt;</c></title>
+   <p>
+    It's important to distinguish these two. A <c>List&lt;Object&gt;</c> is a list that can specifically hold objects of <term>any</term> type (because all classes extend <c>Object</c>). You <term>can</term> add any object to a <c>List&lt;Object&gt;</c>. However, as we saw, a <c>List&lt;String&gt;</c> cannot be assigned to a <c>List&lt;Object&gt;</c> variable.
+   </p>
+   <p>
+    A <c>List&lt;?&gt;</c>, on the other hand, represents a list of a <term>fixed but unknown</term> type. You can assign a <c>List&lt;String&gt;</c> or a <c>List&lt;Integer&gt;</c> to a <c>List&lt;?&gt;</c> variable, but you cannot safely add elements to it because the specific type is unknown to the compiler. <c>List&lt;?&gt;</c> offers more flexibility for method parameters that read from lists, while <c>List&lt;Object&gt;</c> offers flexibility for storing diverse types but requires casting on retrieval.
+   </p>
+  </note>
+</subsection>
+
+<subsection xml:id="generics-wildcards-upper-bounded">
+ <title>Upper Bounded Wildcards (<c>? extends Type</c>)</title>
+ <p>
+  Sometimes, we need a method to accept lists of various subtypes, but we also need to call methods specific to a common superclass or interface of those subtypes. For example, calculating the sum of a list containing any kind of <c>Number</c> (<c>Integer</c>, <c>Double</c>, etc.). An unbounded wildcard <c>List&lt;?&gt;</c> isn't enough, because retrieving elements only gives us <c>Object</c>, which doesn't have methods like <c>doubleValue()</c>.
+ </p>
+ <p>
+  This is where <term>upper bounded wildcards</term> come in. The syntax <c>? extends Type</c> means "an unknown type that is either <c>Type</c> or a subtype of <c>Type</c>". This is useful when the method needs to <term>read</term> items from the generic structure and treat them as at least type <c>Type</c>.
+ </p>
+ <program language="java"><code>import java.util.List;
+import java.util.Arrays;
+
+public class Calculator {
+    // Accepts a List of Number or any subclass (Integer, Double, Float, etc.)
+    public static double sumList(List&lt;? extends Number&gt; list) {
+        double sum = 0.0;
+        for (Number num : list) {
+            // Safe to get elements and treat them as Number (the bound)
+            // because we know ? is guaranteed to be at least a Number.
+            sum += num.doubleValue(); // Can safely call Number methods
+        }
+        // Cannot safely add elements (compiler doesn't know exact subtype)
+        // list.add(Integer.valueOf(5)); // Compile Error! Cannot add Integer to List&lt;? extends Number&gt;
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        List&lt;Integer&gt; ints = Arrays.asList(1, 2, 3);
+        List&lt;Double&gt; doubles = Arrays.asList(1.1, 2.2, 3.3);
+        List&lt;String&gt; strings = Arrays.asList("a", "b"); // Cannot use String list here
+
+        System.out.println("Sum of ints: " + sumList(ints));     // OK! Integer extends Number
+        System.out.println("Sum of doubles: " + sumList(doubles)); // OK! Double extends Number
+        // System.out.println(sumList(strings)); // Compile Error! String doesn't extend Number
+    }
+}</code></program>
+ <p>
+  The signature <c>List&lt;? extends Number&gt;</c> allows the <c>sumList</c> method to accept both <c>List&lt;Integer&gt;</c> and <c>List&lt;Double&gt;</c> (and lists of any other <c>Number</c> subtype). Inside the method:
+ </p>
+ <ul>
+  <li>You <term>can</term> safely <term>read</term> elements and treat them as the bound type (<c>Number</c> in this case), allowing you to call methods defined in <c>Number</c> (like <c>doubleValue()</c>).</li>
+  <li>You still <term>cannot</term> safely <term>add</term> elements (except <c>null</c>) because the compiler doesn't know if the list is specifically a <c>List&lt;Integer&gt;</c> or a <c>List&lt;Double&gt;</c>, etc. Adding an <c>Integer</c> to a <c>List&lt;Double&gt;</c> would violate type safety.</li>
+ </ul>
+ <p>
+  Rule of thumb: Use an upper bounded wildcard (<c>? extends Type</c>) when your method needs to <term>read</term> elements from a generic structure and treat them as type <c>Type</c>.
+ </p>
+</subsection>
+
+<subsection xml:id="generics-wildcards-lower-bounded">
+ <title>Lower Bounded Wildcards (<c>? super Type</c>)</title>
+ <p>
+  Conversely, sometimes you need a method that can add elements of a specific type <term>to</term> a list, where the list itself might be parameterized with that specific type <term>or any of its supertypes</term>. For example, adding <c>Integer</c>s to a <c>List&lt;Integer&gt;</c>, a <c>List&lt;Number&gt;</c>, or even a <c>List&lt;Object&gt;</c>. We need flexibility in what kind of list we pass in, as long as it can safely accept <c>Integer</c>s.
+ </p>
+ <p>
+  This is achieved using <term>lower bounded wildcards</term>. The syntax <c>? super Type</c> means "an unknown type that is either <c>Type</c> or a supertype of <c>Type</c>". This is useful when the method needs to <term>write</term> items of type <c>Type</c> into the generic structure.
+ </p>
+ <program language="java"><code>import java.util.List;
+import java.util.ArrayList;
+
+public class ListAdder {
+
+    // Accepts a List of Integer or any supertype (Number, Object)
+    public static void addNumbersToList(List&lt;? super Integer&gt; list) {
+        // It's safe to ADD Integers (or subtypes like int via autoboxing)
+        // because any list that can hold Integer or its supertypes
+        // (Number, Object) can definitely hold an Integer.
+        list.add(10);
+        list.add(20);
+        list.add(Integer.valueOf(30));
+
+        // Reading elements is limited - compiler only guarantees Object
+        // Object obj = list.get(0); // This is safe
+        // Integer i = list.get(0); // Compile Error! Might not be an Integer (could be Number or Object).
+    }
+
+    public static void main(String[] args) {
+        List&lt;Integer&gt; integerList = new ArrayList&lt;&gt;();
+        List&lt;Number&gt; numberList = new ArrayList&lt;&gt;();
+        List&lt;Object&gt; objectList = new ArrayList&lt;&gt;();
+        List&lt;Double&gt; doubleList = new ArrayList&lt;&gt;(); // Double is not a supertype of Integer
+
+        addNumbersToList(integerList); // OK
+        addNumbersToList(numberList);  // OK
+        addNumbersToList(objectList);  // OK
+        // addNumbersToList(doubleList); // Compile Error! List&lt;Double&gt; cannot safely accept Integer
+
+        System.out.println("integerList: " + integerList);
+        System.out.println("numberList: " + numberList);
+        System.out.println("objectList: " + objectList);
+    }
+}</code></program>
+ <p>
+  The signature <c>List&lt;? super Integer&gt;</c> allows <c>addNumbersToList</c> to accept lists that are guaranteed to be able to hold <c>Integer</c> objects. Inside the method:
+ </p>
+ <ul>
+  <li>You <term>can</term> safely <term>add</term> objects of type <c>Integer</c> (or its subtypes, though none exist) to the list.</li>
+  <li>You <term>cannot</term> safely <term>read</term> elements expecting a specific type other than <c>Object</c>, because the list might be a <c>List&lt;Number&gt;</c> or <c>List&lt;Object&gt;</c>, and retrieving an element only guarantees it's an <c>Object</c>.</li>
+ </ul>
+ <p>
+  Rule of thumb: Use a lower bounded wildcard (<c>? super Type</c>) when your method needs to <term>write</term> objects of type <c>Type</c> into a generic structure.
+ </p>
+</subsection>
+
+<subsection xml:id="generics-wildcards-summary">
+ <title>Summary: Wildcards</title>
+ <p>
+  Wildcards (<c>?</c>) provide essential flexibility when designing methods that accept generic types as parameters, allowing them to work with a range of related generic instantiations instead of just one specific type argument.
+ </p>
+ <ul>
+  <li><c>&lt;?&gt;</c> (Unbounded): Accepts any type argument. Useful when the code only relies on <c>Object</c> methods or methods independent of the type parameter. Reading yields <c>Object</c>; writing is generally disallowed (except <c>null</c>).</li>
+  <li><c>&lt;? extends Type&gt;</c> (Upper Bound): Accepts <c>Type</c> or any subtype. Use when you need to <term>read</term> elements as type <c>Type</c>. Writing is disallowed (except <c>null</c>).</li>
+  <li><c>&lt;? super Type&gt;</c> (Lower Bound): Accepts <c>Type</c> or any supertype. Use when you need to <term>write</term> elements of type <c>Type</c>. Reading only guarantees <c>Object</c>.</li>
+  <li>If a method needs to reliably <term>both read and write</term> elements using their specific generic type, use a named type parameter (e.g., <c>&lt;T&gt;</c>) instead of a wildcard. (See note below).</li>
+ </ul>
+ <p>
+  Wildcards are a crucial part of leveraging generics effectively, particularly when designing flexible APIs and utility methods that work with various generic collections or containers. Understanding how they interact with type safety is essential. Now that we've seen how generics work on the surface, let's briefly look at how Java implements them internally through a process called type erasure.
+ </p>
+</subsection>
+
+<note xml:id="generics-wildcards-no-wildcard-needed-note">
+ <title>Advanced: When Wildcards Aren't Enough (Reading and Writing)</title>
+ <p>
+  What if your method needs to <term>both</term> reliably read elements as a specific type <term>and</term> write elements of that same type? In such cases, wildcards usually don't work because neither <c>extends</c> nor <c>super</c> allows both operations safely. For these situations, you typically need a specific type parameter, often declared on the method itself (making it a generic method).
+ </p>
+ <p>
+  Consider a method to swap the first two elements of a list:
+ </p>
+ <program language="java"><code>import java.util.List;
+import java.util.Arrays;
+
+public class ListSwapper {
+    // Needs to get elements as T AND write (set) elements as T.
+    // Therefore, uses a type parameter T, not a wildcard.
+    public static &lt;T&gt; void swapFirstTwo(List&lt;T&gt; list) {
+        if (list == null || list.size() &lt; 2) {
+            return; // Cannot swap if list has fewer than 2 elements
+        }
+        T first = list.get(0);  // Read as T
+        T second = list.get(1); // Read as T
+        list.set(0, second);    // Write T
+        list.set(1, first);     // Write T
+    }
+
+    public static void main(String[] args) {
+        List&lt;String&gt; names = Arrays.asList("First", "Second", "Third");
+        // Note: Arrays.asList returns a fixed-size list. To modify it:
+        List&lt;String&gt; mutableNames = new java.util.ArrayList&lt;&gt;(names);
+
+        System.out.println("Before swap: " + mutableNames);
+        swapFirstTwo(mutableNames); // OK, compiler infers T is String
+        System.out.println("After swap: " + mutableNames);
+
+        // swapFirstTwo(List&lt;? extends String&gt; list) // Wouldn't compile: list.set is disallowed
+        // swapFirstTwo(List&lt;? super String&gt; list) // Wouldn't compile: list.get returns Object
+    }
+}</code></program>
+ <p>
+  Here, we declare a generic method <c>&lt;T&gt; void swapFirstTwo(List&lt;T&gt; list)</c>. Using the type parameter <c>T</c> allows the method to safely <c>get</c> elements (knowing they are type <c>T</c>) and safely <c>set</c> elements (knowing the list expects type <c>T</c>). Using wildcards like <c>List&lt;? extends T&gt;</c> or <c>List&lt;? super T&gt;</c> would prevent either the <c>get</c> or the <c>set</c> operation from being type-safe.
+ </p>
+</note>
+
+<exercises>
+  <exercise xml:id="mcq-generics-wildcards-1">
+    <statement>
+      <p>Why is a <c>List&lt;String&gt;</c> not a subtype of <c>List&lt;Object&gt;</c> in Java?</p>
+    </statement>
+    <choices>
+      <choice>
+        <statement><p>Because type erasure prevents the detection of element types at runtime.</p></statement>
+        <feedback><p>While type erasure is a mechanism in Java generics implementation, it's not the primary reason for this invariance property.</p></feedback>
+      </choice>
+      <choice correct="yes">
+        <statement><p>For type safety, to prevent unsafe operations like adding an Integer to what is actually a List of Strings.</p></statement>
+        <feedback><p>Correct! If a <c>List&lt;String&gt;</c> were allowed to be assigned to a <c>List&lt;Object&gt;</c> variable, it would be possible to add non-String objects to it, which would break type safety when the list is used elsewhere expecting only Strings.</p></feedback>
+      </choice>
+      <choice>
+        <statement><p>Because the Object class cannot represent the behaviors of its subclasses.</p></statement>
+        <feedback><p>This is not the reason. In fact, an Object reference can point to any subclass instance, but this is a different concept from generic type relationships.</p></feedback>
+      </choice>
+      <choice>
+        <statement><p>Due to limitations in the JVM architecture.</p></statement>
+        <feedback><p>The JVM architecture is not the limiting factor here. This is a deliberate design choice in the Java type system to ensure type safety.</p></feedback>
+      </choice>
+    </choices>
+  </exercise>
+
+  <exercise xml:id="mcq-generics-wildcards-2">
+    <statement>
+      <p>Which of the following is true about operations on a variable of type <c>List&lt;?&gt;</c>?</p>
+    </statement>
+    <choices>
+      <choice>
+        <statement><p>You can add any object to it.</p></statement>
+        <feedback><p>This is incorrect. You cannot add objects (except null) to a <c>List&lt;?&gt;</c> because the specific type is unknown and adding arbitrary objects would violate type safety.</p></feedback>
+      </choice>
+      <choice>
+        <statement><p>You can add elements of the same type as those already in the list.</p></statement>
+        <feedback><p>Even if you can determine the runtime type of elements in the list, the compiler still doesn't know the type parameter, so you cannot add elements.</p></feedback>
+      </choice>
+      <choice correct="yes">
+        <statement><p>You can only retrieve elements as Objects, and cannot add elements (except null).</p></statement>
+        <feedback><p>Correct! With <c>List&lt;?&gt;</c>, elements can only be retrieved as Objects, and adding elements (except null) is not allowed since the compiler cannot verify type safety.</p></feedback>
+      </choice>
+      <choice>
+        <statement><p>You cannot perform any operations on the list at all.</p></statement>
+        <feedback><p>This is not true. You can still call methods like size(), isEmpty(), get() (returning Object), etc. on a <c>List&lt;?&gt;</c>.</p></feedback>
+      </choice>
+    </choices>
+  </exercise>
+
+  <exercise xml:id="mcq-generics-wildcards-3">
+    <statement>
+      <p>A method with the signature <c>void processElements(List&lt;? extends Number&gt; list)</c> can:</p>
+    </statement>
+    <choices>
+      <choice>
+        <statement><p>Add any Number subclass (like Integer or Double) to the list.</p></statement>
+        <feedback><p>This is not safe. Even though the list contains Number subtypes, the compiler doesn't know the exact type (could be List&lt;Integer&gt; or List&lt;Double&gt;), so adding is not allowed.</p></feedback>
+      </choice>
+      <choice correct="yes">
+        <statement><p>Safely read elements as Number objects and call Number methods on them.</p></statement>
+        <feedback><p>Correct! When using <c>&lt;? extends Number&gt;</c>, you know that each element is at least a Number, so you can safely read elements and use them as Number instances.</p></feedback>
+      </choice>
+      <choice>
+        <statement><p>Only work with lists that contain exactly Number objects, not subclasses.</p></statement>
+        <feedback><p>The wildcard <c>&lt;? extends Number&gt;</c> actually means the list can contain Number or any of its subclasses like Integer, Double, etc.</p></feedback>
+      </choice>
+      <choice>
+        <statement><p>Cast each element to any Number subclass without checking.</p></statement>
+        <feedback><p>This would be unsafe. Even though elements are guaranteed to be Number or a subclass, you don't know which specific subclass, so arbitrary casting is not safe.</p></feedback>
+      </choice>
+    </choices>
+  </exercise>
+
+  <exercise xml:id="mcq-generics-wildcards-4">
+    <statement>
+      <p>What is the purpose of a lower bounded wildcard like <c>&lt;? super Integer&gt;</c>?</p>
+    </statement>
+    <choices>
+      <choice>
+        <statement><p>To allow the list to hold only subtypes of Integer.</p></statement>
+        <feedback><p>This is incorrect. Integer has no subtypes, and <c>&lt;? super Integer&gt;</c> would allow Integer or any of its supertypes.</p></feedback>
+      </choice>
+      <choice>
+        <statement><p>To ensure you can safely read elements as Integer objects.</p></statement>
+        <feedback><p>This is not the primary purpose. With <c>&lt;? super Integer&gt;</c>, you can only read elements as Objects, not as Integers specifically.</p></feedback>
+      </choice>
+      <choice correct="yes">
+        <statement><p>To allow safely adding Integer objects to the collection.</p></statement>
+        <feedback><p>Correct! <c>&lt;? super Integer&gt;</c> means the list can hold Integer or any supertype, so it's safe to add Integer objects to it.</p></feedback>
+      </choice>
+      <choice>
+        <statement><p>To permit numeric operations on all elements in the list.</p></statement>
+        <feedback><p>This is not correct. <c>&lt;? super Integer&gt;</c> does not guarantee that all elements have numeric operations, as they could be Object instances.</p></feedback>
+      </choice>
+    </choices>
+  </exercise>
+
+  <exercise xml:id="mcq-generics-wildcards-5">
+    <statement>
+      <p>When should you use a type parameter <c>&lt;T&gt;</c> instead of a wildcard <c>&lt;?&gt;</c>?</p>
+    </statement>
+    <choices>
+      <choice>
+        <statement><p>Always, as type parameters are always more flexible than wildcards.</p></statement>
+        <feedback><p>This is not true. Each has their use cases, and wildcards are sometimes more appropriate.</p></feedback>
+      </choice>
+      <choice>
+        <statement><p>Only when dealing with collections.</p></statement>
+        <feedback><p>The choice between wildcards and type parameters is not determined by whether you're working with collections.</p></feedback>
+      </choice>
+      <choice>
+        <statement><p>When you need to ensure type safety at runtime.</p></statement>
+        <feedback><p>Due to type erasure, neither type parameters nor wildcards provide runtime type safety beyond what normal Java classes offer.</p></feedback>
+      </choice>
+      <choice correct="yes">
+        <statement><p>When you need to both read elements as a specific type and write elements of that same type.</p></statement>
+        <feedback><p>Correct! Type parameters are appropriate when you need to both read and write with the same specific type, which wildcards don't easily allow.</p></feedback>
+      </choice>
+    </choices>
+  </exercise>
+</exercises>
+
+</section>

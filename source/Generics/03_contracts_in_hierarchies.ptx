@@ -1,0 +1,218 @@
+<section xml:id="generics-contracts-in-hierarchies">
+<title>Contracts in Hierarchies</title>
+
+<p>
+In the previous section, we established that types act as "contracts" enforced by the Java compiler, ensuring safety by checking your code before it runs. Now, let's connect this idea to the class relationships you've already learned about: <term>inheritance</term> (<c>extends</c>) and <term>interfaces</term> (<c>implements</c>), concepts you've learned about in previous chapters. You've likely used these features, perhaps creating a <c>SavingsAccount extends BankAccount</c> or similar structures. But maybe you've also been frustrated when a method you <term>knew</term> existed in your specific subclass wasn't directly usable through a variable of the superclass type. Why does that happen? It's because these mechanisms specifically define how type contracts relate to each other, and the compiler strictly follows those relationships.
+</p>
+
+<subsection xml:id="generics-contracts-inheritance">
+ <title>Inheritance (<c>extends</c>) as Contract Extension</title>
+ <p>
+  When you declare a class using <c>extends</c>, like <c>public class Car extends Vehicle</c>, you're telling the compiler more than just that a <c>Car</c> reuses code from <c>Vehicle</c>. You are declaring that a <c>Car</c> fulfills the <term>entire public contract</term> of a <c>Vehicle</c> (and its protected contract available to subclasses). It promises to provide all the non-private methods and fields defined by <c>Vehicle</c>, potentially adding its own specific features or overriding some behaviors. This establishes the "is-a" relationship which directly influences how the compiler checks your code. Defining these relationships clearly aligns with <term>Step 1 (Data Definitions)</term> and <term>Step 2 (Method Signatures)</term> of our Design Recipe, helping ensure correctness and clarity at compile time.
+ </p>
+ <p>
+  Visually, this "is-a" relationship looks like this:
+ </p>
+ <pre>
+   Vehicle (Superclass Contract)
+      ↑
+      │ extends (Inherits and Extends Contract)
+     Car (Subclass Contract)
+ </pre>
+ <p>
+  The compiler uses this "is-a" understanding to allow for safe substitution. Because a <c>Car</c> guarantees it can do everything a <c>Vehicle</c> can (according to the <c>Vehicle</c> contract), you can assign a <c>Car</c> object to a <c>Vehicle</c> variable:
+ </p>
+ <program language="java"><code>// Assuming Car extends Vehicle
+Vehicle myVehicle = new Car(/* constructor args */); // OK! A Car fulfills the Vehicle contract.
+
+// We can call methods defined in the Vehicle contract
+myVehicle.accelerate(10.0); // Assumed defined in Vehicle
+// double speed = myVehicle.getSpeed(); // Also OK if getSpeed() is in Vehicle</code></program>
+ <p>
+  This works because the compiler knows, based on the <c>extends</c> relationship, that any object assigned to <c>myVehicle</c> is guaranteed to have the methods defined in the <c>Vehicle</c> class contract.
+ </p>
+ <p>
+  Crucially, the <term>declared type</term> of the variable (here, <c>Vehicle</c>) determines the contract enforced by the compiler for direct method calls on that variable, <term>not</term> the actual type of the object it happens to hold at runtime (here, a <c>Car</c>). Therefore, you cannot directly call methods specific only to the <c>Car</c> class using the <c>Vehicle</c> variable:
+ </p>
+ <program language="java"><code>// Assume Car has a specific method like openTrunk() not present in Vehicle
+// Vehicle myVehicle = new Car(...);
+
+// myVehicle.openTrunk(); // Compile Error! Method openTrunk() undefined for type Vehicle.</code></program>
+ <p>
+  This results in a compile error because the method <c>openTrunk()</c> is <term>not part</term> of the <c>Vehicle</c> contract that the <c>myVehicle</c> variable promises to uphold. The compiler only guarantees what's defined by the variable's declared type.
+ </p>
+ <note>
+  <title>Accessing Subclass Methods: Casting</title>
+  <p>
+   <term>Casting</term> in Java is the process of explicitly telling the compiler to treat an object reference as if it were of a different type (usually a more specific subtype). For example, <c>(Car) myVehicle;</c> attempts to cast the <c>myVehicle</c> reference to the <c>Car</c> type. To access <c>Car</c>-specific methods through a <c>Vehicle</c> variable, you would need to perform such a cast, typically after ensuring it's safe using a runtime check with <c>instanceof</c>:
+  </p>
+  <program language="java"><code>Vehicle myVehicle = new Car(...);
+
+if (myVehicle instanceof Car) {
+    Car myCar = (Car) myVehicle; // Cast the Vehicle reference to a Car reference
+    myCar.openTrunk();         // OK! Now the compiler knows it has the Car contract.
+}</code></program>
+  <p>
+   While casting works, it moves the essential type verification from the compiler (compile time) to the JVM (runtime). This is inherently riskier because if the object <term>isn't</term> actually a <c>Car</c> when the cast executes (perhaps due to a logic error elsewhere), a <c>ClassCastException</c> occurs, crashing the program. Compile-time checks prevent such crashes entirely. If you find yourself using frequent casting, it might indicate your design could benefit from more precise type contracts or potentially features like Generics, which we'll explore soon. Furthermore, if the class contract changes later (e.g., the <c>openTrunk</c> method is renamed or removed from <c>Car</c>), the compiler immediately catches errors in code directly using a <c>Car</c> reference, but the runtime cast might only fail later during execution if not properly updated, leading to unexpected crashes.
+  </p>
+ </note>
+</subsection>
+
+<subsection xml:id="generics-contracts-interfaces">
+ <title>Interfaces (<c>implements</c>) as Added Contracts</title>
+ <p>
+  Interfaces work similarly but define contracts based on capabilities ("can-do" or "capability-based" relationships) rather than a hierarchical "is-a" relationship. When a class declares that it <c>implements</c> an interface, like <c>public class Circle implements Drawable</c>, it's making a promise to the compiler: "I guarantee that I provide implementations for all the methods defined in the <c>Drawable</c> interface contract." Again, this definition of capabilities fits within <term>Step 1</term> and <term>Step 2</term> of the Design Recipe.
+ </p>
+ <p>
+  Visually, the relationship is about fulfilling a contract:
+ </p>
+ <pre>
+   Circle ──────→ implements ──────→ Drawable (Interface Contract)
+   (Class)                           (Provides draw() method contract)
+ </pre>
+ <program language="java"><code>// Simple interface contract
+public interface Drawable {
+    void draw(); // Contract: Implementing classes must provide a draw() method
+}
+
+// Class fulfilling the contract
+public class Circle implements Drawable {
+    private double radius;
+    // Constructor...
+
+    @Override
+    public void draw() {
+        System.out.println("Drawing a circle with radius " + radius);
+    }
+
+    public double getRadius() { // Circle-specific method, not part of Drawable contract
+        return radius;
+    }
+}</code></program>
+ <p>
+  Because the <c>Circle</c> class fulfills the <c>Drawable</c> contract, the compiler allows safe substitution:
+ </p>
+ <program language="java"><code>Drawable shape = new Circle(/* constructor args */); // OK! A Circle fulfills the Drawable contract.
+
+// We can call methods defined in the Drawable contract
+shape.draw();</code></program>
+ <p>
+  The compiler permits this because it knows any object assigned to <c>shape</c> is guaranteed to have the <c>draw()</c> method defined in the <c>Drawable</c> contract.
+ </p>
+ <p>
+  As with inheritance, the variable <c>shape</c>'s declared type (<c>Drawable</c>) governs the compiler's checks. You cannot directly call methods specific to the <c>Circle</c> class using the <c>Drawable</c> variable:
+ </p>
+ <program language="java"><code>// Drawable shape = new Circle(...);
+
+// double r = shape.getRadius(); // Compile Error! Method getRadius() undefined for type Drawable.</code></program>
+ <p>
+  This gives a compile error because <c>getRadius()</c> is part of the <c>Circle</c>'s specific contract, not the general <c>Drawable</c> contract held by the <c>shape</c> variable. Accessing it would require a cast, similar to the inheritance example.
+ </p>
+</subsection>
+
+<subsection xml:id="generics-contracts-hierarchies-summary">
+ <title>Understanding Relationships for Flexibility</title>
+ <p>
+  In summary, <c>extends</c> and <c>implements</c> are powerful tools that define relationships between type contracts. Inheritance (<c>extends</c>) signifies an extension and specialization of a contract ("is-a"), while interfaces (<c>implements</c>) signify the addition of capability contracts ("can-do"). The compiler leverages these declared relationships to allow for safe substitution – treating more specific objects (like a <c>Car</c> or <c>Circle</c>) through the lens of their more general contract (<c>Vehicle</c> or <c>Drawable</c>). This simplifies code and ensures flexibility, enabling related types to be treated uniformly as long as they adhere to the same shared contract. This ability to treat related types uniformly based on their shared contracts is the essence of polymorphism, which we will explore in action in the next section. As we'll see shortly, Java provides an elegant solution called Generics to address some of the rigidity we encounter when using inheritance and interfaces alone, especially concerning casting and type safety in collections.
+ </p>
+</subsection>
+
+<exercises>
+ <exercise xml:id="mcq-generics-hierarchy-1" type="multiplechoice">
+     <statement>
+         <p>If class <c>Dog extends Animal</c>, what does this relationship primarily imply about their contracts from the compiler's perspective?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice>
+             <statement><p>The <c>Dog</c> contract completely replaces the <c>Animal</c> contract.</p></statement>
+             <feedback><p>Incorrect. Inheritance means <c>Dog</c> inherits and extends the <c>Animal</c> contract; it doesn't replace it.</p></feedback>
+         </choice>
+         <choice correct="yes">
+             <statement><p>A <c>Dog</c> object is guaranteed to fulfill the public contract defined by the <c>Animal</c> class.</p></statement>
+             <feedback><p>Correct. The `extends` keyword establishes an "is-a" relationship, meaning the subclass contract includes the public (and protected) parts of the superclass contract.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>An <c>Animal</c> object can always be treated as a <c>Dog</c>.</p></statement>
+             <feedback><p>Incorrect. While a `Dog` can be treated as an `Animal`, the reverse is not true without an explicit (and potentially unsafe) cast.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>The <c>Dog</c> class can only access <c>private</c> members of the <c>Animal</c> class.</p></statement>
+             <feedback><p>Incorrect. Subclasses cannot access `private` members of the superclass directly. They inherit `public` and `protected` members.</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+
+ <exercise xml:id="mcq-generics-hierarchy-2" type="multiplechoice">
+     <statement>
+         <p>Why does the code <c>Vehicle myVehicle = new Car(); myVehicle.openTrunk();</c> cause a compile error if <c>openTrunk()</c> is defined only in <c>Car</c> and not in <c>Vehicle</c>?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice>
+             <statement><p>Because <c>myVehicle</c> might actually hold a <c>Bicycle</c> object at runtime.</p></statement>
+             <feedback><p>Incorrect. While true that `myVehicle` could hold other subtypes, the compile error occurs because the *declared type* `Vehicle` dictates the contract, not the runtime object type.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>Because calling subclass-specific methods is never allowed in Java.</p></statement>
+             <feedback><p>Incorrect. It is allowed, but requires casting the reference to the specific subclass type first.</p></feedback>
+         </choice>
+         <choice correct="yes">
+             <statement><p>Because the compiler only checks method calls against the contract of the variable's declared type (<c>Vehicle</c>), which doesn't include <c>openTrunk()</c>.</p></statement>
+             <feedback><p>Correct. The compiler enforces the contract based on the variable's type (`Vehicle`), ignoring the fact it currently holds a `Car` unless explicitly cast.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>Because <c>Car</c> must override all methods from <c>Vehicle</c>.</p></statement>
+             <feedback><p>Incorrect. Subclasses only need to override methods if required (e.g., abstract methods) or desired; adding new methods is common.</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+
+ <exercise xml:id="mcq-generics-hierarchy-3" type="multiplechoice">
+     <statement>
+         <p>What is the primary risk associated with using casting (e.g., <c>Car myCar = (Car) myVehicle;</c>) to access subclass-specific methods?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice>
+             <statement><p>It causes compile-time errors if the subclass method doesn't exist.</p></statement>
+             <feedback><p>Incorrect. The primary risk is at runtime. If the cast itself is invalid, a runtime error occurs before any method call.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>It makes the code significantly slower due to the casting operation.</p></statement>
+             <feedback><p>Incorrect. While there might be a minuscule performance cost, the main risk is related to type safety, not speed.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>It prevents the use of polymorphism.</p></statement>
+             <feedback><p>Incorrect. Casting is often used *after* polymorphism has allowed different object types to be stored or passed using a common supertype reference.</p></feedback>
+         </choice>
+         <choice correct="yes">
+             <statement><p>It moves type checking from compile time to runtime, potentially causing a <c>ClassCastException</c> if the object isn't of the expected type.</p></statement>
+             <feedback><p>Correct. Casting bypasses the compiler's guarantee for that specific operation, deferring the check to runtime where it can fail with a `ClassCastException` if the object's actual type is incompatible with the cast type.</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+
+ <exercise xml:id="mcq-generics-hierarchy-4" type="multiplechoice">
+     <statement>
+         <p>If <c>class Button implements Clickable</c>, what contract does <c>Button</c> primarily make to the compiler?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice>
+             <statement><p>That <c>Button</c> is a subtype of <c>Clickable</c>.</p></statement>
+             <feedback><p>Incorrect. Implementing an interface establishes a "can-do" relationship (fulfills a contract), not an "is-a" subtype relationship in the sense of class inheritance.</p></feedback>
+         </choice>
+         <choice correct="yes">
+             <statement><p>That <c>Button</c> guarantees to provide implementations for all methods defined in the <c>Clickable</c> interface.</p></statement>
+             <feedback><p>Correct. The `implements` keyword signifies a promise to fulfill the contract specified by the interface by implementing its methods.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>That <c>Clickable</c> can access all <c>public</c> methods of <c>Button</c>.</p></statement>
+             <feedback><p>Incorrect. References of the interface type (`Clickable`) can only access methods defined within the `Clickable` interface itself.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>That <c>Button</c> inherits fields from <c>Clickable</c>.</p></statement>
+             <feedback><p>Incorrect. Interfaces (prior to default methods providing some implementation) primarily define method signatures (contracts) and constants, not inheritable instance fields.</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+</exercises>
+
+</section>

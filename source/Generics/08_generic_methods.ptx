@@ -1,0 +1,326 @@
+<section xml:id="generics-generic-methods">
+<title>Generic Methods</title>
+
+<introduction>
+ <p>
+  In the previous section, we saw how generic types, like <c>Box&lt;T&gt;</c> or <c>List&lt;E&gt;</c>, allow us to define reusable blueprints for classes and interfaces that operate safely on different types specified at instantiation. This effectively solves the problem of choosing between the unsafe reusability of <c>Object</c> and the safe-but-duplicated code of type-specific classes like <c>StringBox</c>.
+ </p>
+ <p>
+  But what if the need for type parameterization applies only to a single method, perhaps a static utility method, rather than an entire class? For instance, imagine wanting to write a single utility method that can print the contents of <term>any</term> type of array, not just an <c>int[]</c> or a <c>String[]</c>. Creating a whole generic class just for this one method might feel like overkill. Writing one reusable utility is much better than duplicating near-identical methods like <c>printIntArray</c>, <c>printStringArray</c>, etc. This is where <term>generic methods</term> come into play.
+ </p>
+ <p>
+  Generic methods declare their own type parameters, which are scoped specifically to that single method declaration. This allows us to write reusable algorithms or utility functions that are type-safe without needing the entire enclosing class to be generic.
+ </p>
+</introduction>
+
+<subsection xml:id="generics-methods-syntax">
+ <title>Syntax for Declaring Generic Methods</title>
+ <p>
+  The key syntactic difference for a generic method is that the type parameter list (e.g., <c>&lt;T&gt;</c> or <c>&lt;E&gt;</c>) is declared <term>before</term> the method's return type.
+ </p>
+ <program language="java"><code>[access_modifier] [static] &lt;TypeParameterList&gt; ReturnType methodName(ParameterList) {
+    // Method body using the parameters from TypeParameterList
+}
+
+// Example: Static generic method with one type parameter E
+public static &lt;E&gt; void printElement(E element) {
+    System.out.println("Element: " + element);
+}
+
+// Example: Non-static generic method with one type parameter T returning T
+public &lt;T&gt; T identity(T item) {
+    return item;
+}
+
+// Example: Static method with multiple type parameters
+// Assuming Pair&lt;K, V&gt; class exists with getKey() and getValue() methods
+public static &lt;K, V&gt; boolean comparePairs(Pair&lt;K, V&gt; p1, Pair&lt;K, V&gt; p2) {
+    return p1.getKey().equals(p2.getKey()) &amp;&amp;
+           p1.getValue().equals(p2.getValue());
+}</code></program>
+ <p>
+  The crucial part is the <c>&lt;TypeParameterList&gt;</c> appearing <term>after</term> any modifiers (like <c>public static</c>) but <term>before</term> the return type (<c>void</c>, <c>T</c>, <c>boolean</c> in the examples). This declaration makes the type parameter(s) available for use within the method's signature (return type, parameter types) and its body.
+ </p>
+ <note>
+  <title>Scope of Method Type Parameters</title>
+  <p>
+   A type parameter declared for a generic method (like <c>E</c> in <c>printElement</c>) is known <term>only within the scope of that method</term>. It is independent of any type parameters the enclosing class might have (if the class itself is generic). This allows, for example, a non-generic class to contain a generic method, or a generic class <c>Box&lt;T&gt;</c> to have a generic method <c>&lt;U&gt; void inspect(U otherItem)</c> that uses a different type parameter <c>U</c>.
+  </p>
+ </note>
+ <note>
+  <title>Naming Conventions</title>
+  <p>
+   The naming conventions for type parameters in generic methods are the same as for generic types (typically single uppercase letters like <c>T</c>, <c>E</c>, <c>K</c>, <c>V</c>).
+  </p>
+ </note>
+</subsection>
+
+<subsection xml:id="generics-methods-example-printarray">
+ <title>Example 1: A Static Generic Utility Method</title>
+ <p>
+  Let's revisit the idea of a utility method to print elements of an array. Without generics, we'd need separate methods for each array type, leading to duplication:
+ </p>
+ <program language="java"><code>// Non-generic approach (Duplication)
+public static void printIntArray(int[] array) { /* ... */ }
+public static void printStringArray(String[] array) { /* ... */ }
+public static void printPlayerArray(Player[] array) { /* ... */ }
+// etc...</code></program>
+ <p>
+  A generic method solves this elegantly:
+ </p>
+ <program language="java"><code>public class ArrayUtils { // A non-generic utility class
+
+    // Generic static method to print elements of any reference type array
+    public static &lt;E&gt; void printArray(E[] inputArray) {
+        System.out.print("[");
+        for (int i = 0; i &lt; inputArray.length; i++) {
+            // We can use methods from Object, like toString() (called implicitly by print)
+            System.out.print(inputArray[i]);
+            if (i &lt; inputArray.length - 1) {
+                System.out.print(", ");
+            }
+        }
+        System.out.println("]");
+    }
+
+    public static void main(String[] args) {
+        // Create some arrays (using wrapper class for int)
+        Integer[] integerArray = { 1, 2, 3, 4, 5 };
+        String[] stringArray = { "Hello", "World" };
+        Player[] playerArray = { new Player("Link"), new Player("Zelda") }; // Assumes Player exists
+
+        System.out.print("Integer Array: ");
+        ArrayUtils.printArray(integerArray); // Compiler infers E is Integer
+
+        System.out.print("String Array: ");
+        ArrayUtils.printArray(stringArray);  // Compiler infers E is String
+
+        System.out.print("Player Array: ");
+        ArrayUtils.printArray(playerArray);  // Compiler infers E is Player
+    }
+}</code></program>
+ <p>
+  Here, <c>printArray</c> is declared with its own type parameter <c>E</c>. When we call <c>printArray(integerArray)</c>, the compiler performs <term>type inference</term>. It sees that <c>integerArray</c> is of type <c>Integer[]</c>, so it infers that for this specific call, <c>E</c> must be <c>Integer</c>. Similarly, for the other calls, it infers <c>E</c> as <c>String</c> and <c>Player</c>. This allows the single <c>printArray</c> method to work correctly and safely for different reference array types without any code duplication.
+ </p>
+ <note>
+  <title>Type Inference</title>
+  <p>
+   <term>Type inference</term> is the process where the Java compiler automatically determines the type argument(s) for a generic method call based on the types of the arguments passed to the method and/or the context in which the result is used. This often saves you from having to explicitly specify the type argument in angle brackets before the method call (e.g., <c>ArrayUtils.&lt;Integer&gt;printArray(integerArray)</c>), making the code cleaner.
+  </p>
+ </note>
+ <note>
+  <title>Generics and Primitives Reminder</title>
+  <p>
+   Just like with generic types, type inference for generic methods works with object types (reference types). If you passed an <c>int[]</c> to our <c>printArray&lt;E&gt;</c> method, it would result in a compile error because <c>int</c> is a primitive, not an object type that can substitute for <c>E</c>. You need to use wrapper types like <c>Integer[]</c>. This limitation arises from how Java implements generics through a process called 'type erasure,' which we'll explore further in Section 11.
+  </p>
+ </note>
+</subsection>
+
+<subsection xml:id="generics-methods-example-return">
+ <title>Example 2: Generic Method with Type Parameter in Return Type</title>
+ <p>
+  Generic methods can also use their type parameters in the return type, providing type safety for methods that produce values based on their inputs. Consider a method to get the first element from a list:
+ </p>
+ <program language="java"><code>import java.util.List;
+import java.util.ArrayList; // Assuming usage of ArrayList
+
+public class ListUtils {
+
+    // Generic method that returns the first element of type T from a List&lt;T&gt;
+    public static &lt;T&gt; T getFirstElement(List&lt;T&gt; list) {
+        if (list == null || list.isEmpty()) {
+            return null; // Or throw exception / return Optional&lt;T&gt; (see note)
+        }
+        return list.get(0); // Returns type T
+    }
+
+    public static void main(String[] args) {
+        List&lt;String&gt; names = new ArrayList&lt;&gt;();
+        names.add("Alice");
+        names.add("Bob");
+
+        List&lt;Integer&gt; scores = new ArrayList&lt;&gt;();
+        scores.add(100);
+        scores.add(95);
+
+        // Call the generic method - compiler infers T
+        String first = ListUtils.getFirstElement(names);     // Compiler knows return is String
+        Integer score = ListUtils.getFirstElement(scores);   // Compiler knows return is Integer
+
+        System.out.println("First name: " + first.toUpperCase()); // OK to call String methods
+        System.out.println("First score: " + score);
+
+        // String wrong = ListUtils.getFirstElement(scores); // Compile Error! Cannot convert Integer to String
+    }
+}</code></program>
+ <note>
+  <title>Handling Absence: Returning Null vs. Optional</title>
+  <p>
+   Our <c>getFirstElement</c> example returns <c>null</c> for an empty or null list. While simple, returning <c>null</c> can sometimes lead to <c>NullPointerException</c>s if the caller isn't careful. In modern Java development, a safer approach for methods that might not return a value is often to return <c>java.util.Optional&lt;T&gt;</c>. This makes the potential absence of a value explicit in the method's contract, forcing the caller to handle it consciously. We use <c>null</c> here for simplicity, but be aware of <c>Optional</c> as a best practice.
+  </p>
+ </note>
+ <p>
+  Here, the type parameter <c>T</c> connects the input (<c>List&lt;T&gt;</c>) to the output (<c>T</c>). When we call <c>getFirstElement(names)</c>, the compiler infers <c>T</c> is <c>String</c> and knows the method returns a <c>String</c>. When called with <c>scores</c>, it infers <c>T</c> is <c>Integer</c> and knows the return type is <c>Integer</c>. This provides compile-time safety for the return value, eliminating the need for casting and preventing potential <c>ClassCastException</c>s that would arise if the method simply returned <c>Object</c>. This directly addresses the type safety issue we saw with the <c>ObjectBox.get()</c> method.
+ </p>
+</subsection>
+
+<subsection xml:id="generics-methods-vs-types">
+ <title>Generic Methods vs. Methods in Generic Classes</title>
+ <p>
+  It's important to distinguish between a generic method (which declares its <term>own</term> type parameters) and a regular instance method inside a generic class (which uses the <term>class's</term> type parameters).
+ </p>
+ <program language="java"><code>// Generic Class Box&lt;T&gt;
+public class Box&lt;T&gt; {
+    private T item;
+
+    // Regular method using the CLASS's type parameter T
+    public T get() {
+        return item;
+    }
+
+    // A generic method WITHIN the generic class, using its OWN type parameter U
+    // Note: U is independent of T
+    public &lt;U&gt; void inspect(U value) {
+        System.out.println("Box holds type: " + (item != null ? item.getClass().getName() : "null"));
+        System.out.println("Inspected value type: " + value.getClass().getName());
+    }
+}
+
+// Non-generic class with a generic method
+public class Utility {
+    // Static generic method - independent of any class type parameter
+    public static &lt;E&gt; boolean containsNull(E[] array) {
+        if (array == null) return false; // Handle null array case
+        for (E element : array) {
+            if (element == null) {
+                return true;
+            }
+        }
+        return false;
+    }
+}</code></program>
+ <p>
+  In <c>Box&lt;T&gt;</c>, the <c>get()</c> method uses <c>T</c>, which is the type parameter belonging to the <c>Box</c> class itself, specified when a <c>Box</c> object is created. The <c>inspect</c> method, however, is a generic method within <c>Box</c>; it declares its own type parameter <c>U</c>, which is determined by the type of argument passed to <c>inspect</c> each time it's called, and it might be completely different from <c>T</c>. The <c>Utility</c> class shows that a class doesn't need to be generic itself to contain useful static generic methods. Generic methods provide type parameterization specifically for the operation they perform.
+ </p>
+</subsection>
+
+<subsection xml:id="generics-methods-apis">
+ <title>Generic Methods in the Java Standard Library</title>
+ <p>
+  Generic methods are not just an academic concept; they are used extensively throughout the standard Java libraries to provide type-safe and reusable functionality. You've likely already used some!
+ </p>
+ <note>
+  <title>Examples from Java APIs</title>
+  <ul>
+   <li>
+    <c>java.util.Arrays.asList(T... a)</c>: This static generic method takes a variable number of arguments of type <c>T</c> and returns a fixed-size <c>List&lt;T&gt;</c> containing those elements. The compiler infers <c>T</c> based on the arguments you pass.
+   </li>
+   <li>
+    <c>java.util.Collections.sort(List&lt;T&gt; list)</c>: This method sorts a list, but requires <c>T</c> to implement the <c>Comparable</c> interface (we'll see how this constraint works in the next section).
+   </li>
+   <li>
+    <c>java.util.Collections.emptyList()</c>: This returns an empty, immutable <c>List&lt;T&gt;</c>. The compiler infers the type <c>T</c> based on the context where the list is assigned (e.g., <c>List&lt;String&gt; s = Collections.emptyList();</c> infers <c>T</c> as <c>String</c>).
+   </li>
+   <li>
+    Methods in the Stream API, like <c>Stream.of(T... values)</c> or <c>Collectors.toList()</c>.
+   </li>
+  </ul>
+  <p>
+   Seeing these examples helps illustrate how generic methods enable the creation of powerful, type-safe utility libraries.
+  </p>
+ </note>
+</subsection>
+
+<subsection xml:id="generics-methods-summary">
+ <title>Summary: Generic Methods</title>
+ <p>
+  Generic methods allow us to declare type parameters directly on a method signature, scoped only to that method. This is particularly useful for static utility methods or methods whose type flexibility is independent of the enclosing class.
+ </p>
+ <ul>
+  <li>Syntax: The type parameter list (<c>&lt;T&gt;</c>, <c>&lt;E&gt;</c>, etc.) appears <term>before</term> the method's return type.</li>
+  <li>Type Inference: The compiler often infers the type arguments based on the method arguments passed during the call, simplifying usage.</li>
+  <li>Benefits: Provides code reuse for algorithms and utility functions while maintaining compile-time type safety, avoiding the need for casting and preventing runtime errors like <c>ClassCastException</c>.</li>
+ </ul>
+ <p>
+  By reducing code duplication and ensuring compile-time type safety, generic methods provide an elegant way to write robust, reusable algorithms and utilities—making them indispensable tools in Java programming.
+ </p>
+ <p>
+  While generic methods (and types) are powerful, our examples so far (<c>printArray</c>, <c>getFirstElement</c>) could only safely use methods available on <c>Object</c> (like <c>toString</c>) for the parameters of type <c>E</c> or <c>T</c>. What if a generic method needs its type parameter objects to have specific capabilities, like being comparable or having numeric methods? We need a way to add constraints. In the next section, we'll explore <term>bounded type parameters</term>, which allow us to do just that.
+ </p>
+</subsection>
+
+<exercises>
+ <exercise xml:id="mcq-generics-methods-1" type="multiplechoice">
+     <statement>
+         <p>What distinguishes the syntax of a generic method declaration from a regular method declaration?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice>
+             <statement><p>Generic methods must always be static.</p></statement>
+             <feedback><p>Incorrect. Generic methods can be either static or non-static (instance) methods.</p></feedback>
+         </choice>
+         <choice correct="yes">
+             <statement><p>A type parameter list (e.g., <c>&lt;T&gt;</c>) is declared before the method's return type.</p></statement>
+             <feedback><p>Correct. The declaration of method-specific type parameters like `&lt;T&gt;` or `&lt;E&gt;` just before the return type signifies that it's a generic method.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>Generic methods cannot have any parameters.</p></statement>
+             <feedback><p>Incorrect. Generic methods often use their type parameters within their parameter list (e.g., `void method(T item)`).</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>The return type must be identical to the type parameter (e.g., must return <c>T</c> if the parameter is <c>&lt;T&gt;</c>).</p></statement>
+             <feedback><p>Incorrect. While common (like in `&lt;T&gt; T identity(T item)`), the return type can be different (e.g., `&lt;T&gt; void process(T item)` or `&lt;T, R&gt; R convert(T item)`).</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+
+ <exercise xml:id="mcq-generics-methods-2" type="multiplechoice">
+     <statement>
+         <p>Consider the generic method: <c>public static &lt;E&gt; void printValue(E value)</c>. What is the scope of the type parameter <c>E</c>?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice>
+             <statement><p>It is available throughout the entire class containing the method.</p></statement>
+             <feedback><p>Incorrect. A type parameter declared on a method is local to that method only, unless it comes from the class itself.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>It is available to all static methods within the same class.</p></statement>
+             <feedback><p>Incorrect. The scope is limited strictly to the single method where it is declared.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>It is determined by the type parameter of the class containing the method (if any).</p></statement>
+             <feedback><p>Incorrect. A generic method declares its *own* type parameters, which are independent of any class-level type parameters.</p></feedback>
+         </choice>
+         <choice correct="yes">
+             <statement><p>It is known only within the declaration and body of the <c>printValue</c> method itself.</p></statement>
+             <feedback><p>Correct. Type parameters declared as part of a method's signature are local to that specific method.</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+
+ <exercise xml:id="mcq-generics-methods-3" type="multiplechoice">
+     <statement>
+         <p>When calling a generic method like <c>ArrayUtils.printArray(integerArray)</c>, how does the compiler typically determine the type for the parameter <c>E</c> in <c>&lt;E&gt; void printArray(E[] inputArray)</c>?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice correct="yes">
+             <statement><p>Through type inference, by examining the type of the argument passed (<c>integerArray</c>).</p></statement>
+             <feedback><p>Correct. The compiler analyzes the method arguments to infer the most specific type argument that fits the type parameter(s).</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>By requiring the programmer to explicitly specify the type, like <c>ArrayUtils.&lt;Integer&gt;printArray(...)</c>.</p></statement>
+             <feedback><p>Incorrect. While explicit specification is possible, type inference usually makes it unnecessary.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>By defaulting the type parameter <c>E</c> to <c>Object</c>.</p></statement>
+             <feedback><p>Incorrect. Type inference attempts to find the specific type; it doesn't just default to Object unless that's the only possibility.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>By looking at the return type context where the result (if any) is assigned.</p></statement>
+             <feedback><p>Incorrect. While return context can sometimes influence inference, it's primarily driven by the argument types passed to the method.</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+</exercises>
+
+</section>

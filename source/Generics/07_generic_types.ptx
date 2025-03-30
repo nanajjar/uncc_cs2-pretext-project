@@ -1,0 +1,327 @@
+<section xml:id="generics-generic-types">
+<title>Generic Types: Parameterizing Classes and Interfaces</title>
+
+<introduction>
+ <p>
+  We've established the need for a mechanism in Java that allows us to write <term>reusable</term> code (like a single <c>Box</c> class) while maintaining <term>compile-time type safety</term> (unlike the <c>ObjectBox</c> which required risky runtime casts). Generics provide exactly this solution by allowing us to define classes and interfaces that are <term>parameterized</term> by type. Instead of fixing the type (like <c>String</c> in <c>StringBox</c>) or using the overly general <c>Object</c>, we use a placeholder. Let's see how this works.
+ </p>
+</introduction>
+
+<subsection xml:id="generics-type-parameters">
+ <title>Introducing Type Parameters (<c>&lt;T&gt;</c>)</title>
+ <p>
+  Generics introduce the concept of a <term>type parameter</term>, which acts as a placeholder for an actual type that will be specified later when the generic class or interface is used. These type parameters are declared within angle brackets (<c>&lt;</c> and <c>&gt;</c>) immediately after the class or interface name.
+ </p>
+ <p>
+  By convention, type parameters are usually single, uppercase letters. Common conventions include:
+ </p>
+ <ul>
+  <li><c>T</c> - for Type (a generic type placeholder)</li>
+  <li><c>E</c> - for Element (often used as the type of elements in collection classes)</li>
+  <li><c>K</c> - for Key (used as the type for keys in map-like structures)</li>
+  <li><c>V</c> - for Value (used as the type for values in map-like structures)</li>
+  <li><c>N</c> - for Number</li>
+  <li><c>S</c>, <c>U</c>, <c>V</c>, etc. - for second, third, fourth type parameters</li>
+ </ul>
+ <p>
+  Think of <c>T</c> or <c>E</c> as a variable, but instead of holding a value at runtime, it holds a <term>type</term> that is determined at compile time based on how you use the generic class.
+ </p>
+</subsection>
+
+<subsection xml:id="generics-syntax-declaration">
+ <title>Syntax for Declaring Generic Classes and Interfaces</title>
+ <p>
+  Now that we understand the concept of a type parameter like <c>T</c>, let's look at the precise syntax – the "grammar" – for defining our own generic classes and interfaces. The key is the placement of the type parameter list.
+ </p>
+ <p>
+  <term>Generic Class Syntax:</term> The type parameter list, enclosed in angle brackets, is placed immediately after the class name, before the class body begins.
+ </p>
+ <program language="java"><code>[access_modifier] class ClassName&lt;TypeParameterList&gt; {
+    // Class body using the parameters from TypeParameterList
+    // Example field: private T data;
+    // Example method: public T getData() { ... }
+}
+
+// Example with one type parameter T:
+public class Box&lt;T&gt; { /* ... body uses T ... */ }
+
+// Example with two type parameters K and V:
+public class Pair&lt;K, V&gt; {
+    private K key;
+    private V value;
+    // ... body uses K and V ...
+}</code></program>
+ <p>
+  The <c>TypeParameterList</c> contains one or more type parameter declarations (like <c>T</c>, or <c>K, V</c>), separated by commas. These declared parameters (<c>T</c>, <c>K</c>, <c>V</c>) can then be used just like regular types within the class body <c>{...}</c> – for fields, method parameters, return types, and even local variables inside methods.
+ </p>
+ <p>
+  <term>Generic Interface Syntax:</term> The structure is identical for interfaces. The type parameter list follows the interface name, before the body.
+ </p>
+ <program language="java"><code>[access_modifier] interface InterfaceName&lt;TypeParameterList&gt; {
+    // Interface body using parameters from TypeParameterList in method signatures
+    // Example method signature: E next();
+    // Example method signature: void add(E element);
+}
+
+// Example with one type parameter E:
+public interface List&lt;E&gt; {
+    boolean add(E element);
+    E get(int index);
+    // ... other methods using E ...
+}
+
+// Example you might have seen (simplified):
+public interface Comparable&lt;T&gt; {
+    int compareTo(T other); // Uses T in a method parameter
+}</code></program>
+ <p>
+  Again, the interface name (<c>List</c>, <c>Comparable</c>) is followed immediately by the type parameter list (<c>&lt;E&gt;</c> or <c>&lt;T&gt;</c>). These parameters can then be used as types within the abstract method signatures defined by the interface.
+ </p>
+ <p>
+  Understanding this basic grammar – placing the type parameter declaration <c>&lt;...&gt;</c> immediately after the name – is the key to creating your own generic types. Now let's apply this to define our reusable, type-safe <c>Box</c>.
+ </p>
+</subsection>
+
+<subsection xml:id="generics-defining-generic-class">
+ <title>Defining a Generic Class: The <c>Box&lt;T&gt;</c> Example</title>
+ <p>
+  Let's apply the syntax we just learned to our <c>Box</c> example from Section 6. Instead of using <c>Object</c> or creating separate <c>StringBox</c>, <c>IntegerBox</c> classes, we define a single, generic <c>Box</c> class using the type parameter <c>T</c>:
+ </p>
+ <program language="java"><code>// A Generic Box class applying the syntax: public class Box&lt;T&gt;
+public class Box&lt;T&gt; {
+    // The field 'item' is now of the placeholder type T
+    private T item;
+
+    // The parameter of the set method is also type T
+    public void set(T newItem) {
+        this.item = newItem;
+    }
+
+    // The return type of the get method is also T
+    public T get() {
+        return item;
+    }
+}</code></program>
+ <p>
+  The class <c>Box&lt;T&gt;</c> isn't tied to any single type yet; it's a blueprint for creating boxes that can hold <term>any</term> reference type <c>T</c>, where <c>T</c> will be specified when we create an instance.
+ </p>
+ <note>
+  <title>Generics and Primitive Types</title>
+  <p>
+   An important point: Generic type parameters in Java cannot directly represent primitive types (like <c>int</c>, <c>double</c>, <c>boolean</c>). They only work with reference types (objects). If you need to store primitives in a generic structure, you must use their corresponding <term>wrapper classes</term> (<c>Integer</c>, <c>Double</c>, <c>Boolean</c>, etc.). For example, you would create a <c>Box&lt;Integer&gt;</c>, not a <c>Box&lt;int&gt;</c>. Java's <term>autoboxing</term> feature often makes this seamless (automatically converting between <c>int</c> and <c>Integer</c>), but it's crucial to remember that generics fundamentally operate on objects. This limitation is related to how generics are implemented via type erasure, which we'll touch upon later.
+  </p>
+ </note>
+</subsection>
+
+<subsection xml:id="generics-using-generic-class">
+ <title>Using a Generic Class: Instantiation and Type Arguments</title>
+ <p>
+  To use our generic <c>Box&lt;T&gt;</c>, we need to provide an actual <term>type argument</term> inside the angle brackets when we declare a variable and create an instance. This tells the compiler what specific type the placeholder <c>T</c> should represent for that particular box instance.
+ </p>
+ <program language="java"><code>// Create a Box specifically for Strings
+// We provide String as the type argument for T
+Box&lt;String&gt; stringBox = new Box&lt;String&gt;();
+
+// Create a Box specifically for Integers
+// We provide Integer (the wrapper class) as the type argument for T
+Box&lt;Integer&gt; integerBox = new Box&lt;Integer&gt;();
+
+// Create a Box specifically for Player objects
+Box&lt;Player&gt; playerBox = new Box&lt;Player&gt;(); // Assuming Player class exists</code></program>
+ <p>
+  Here, <c>Box&lt;String&gt;</c> represents a Box specialized to hold only <c>String</c> objects. The compiler effectively treats <c>T</c> as <c>String</c> for all operations related to <c>stringBox</c>. Similarly, <c>integerBox</c> is specialized for <c>Integer</c> objects.
+ </p>
+ <note>
+  <title>The Diamond Operator (<c>&lt;&gt;</c>)</title>
+  <p>
+   You might notice that repeating the type argument in the constructor call (<c>new Box&lt;String&gt;()</c>) feels a bit redundant. Java introduced the <term>diamond operator</term> (<c>&lt;&gt;</c>) as a shorthand. If the compiler can infer the type argument from the variable declaration, you can use empty angle brackets in the constructor call:
+  </p>
+  <program language="java"><code>Box&lt;String&gt; inferredStringBox = new Box&lt;&gt;(); // Compiler infers &lt;String&gt;
+Box&lt;Integer&gt; inferredIntBox = new Box&lt;&gt;();   // Compiler infers &lt;Integer&gt;</code></program>
+  <p>
+   This is the preferred, more concise syntax in modern Java when the type can be clearly inferred.
+  </p>
+ </note>
+</subsection>
+
+<subsection xml:id="generics-compile-time-safety-achieved">
+ <title>Compile-Time Type Safety Achieved</title>
+ <p>
+  Now comes the crucial benefit. Because we specified the type argument when creating each <c>Box</c>, the compiler can enforce type safety <term>at compile time</term> for each specific instance:
+ </p>
+ <program language="java"><code>Box&lt;String&gt; stringBox = new Box&lt;&gt;();
+Box&lt;Integer&gt; integerBox = new Box&lt;&gt;();
+
+// Using stringBox: Compiler expects Strings
+stringBox.set("Safe and Sound"); // OK
+
+// stringBox.set(123); // Compile Error! Expected String, got int.
+
+// Using integerBox: Compiler expects Integers
+integerBox.set(42); // OK (int 42 is autoboxed to Integer)
+
+// integerBox.set("Incorrect"); // Compile Error! Expected Integer, got String.</code></program>
+ <p>
+  The compiler catches the type mismatches immediately, preventing us from putting an <c>Integer</c> into a <c>Box&lt;String&gt;</c> or a <c>String</c> into a <c>Box&lt;Integer&gt;</c>. This is exactly the compile-time safety we lost when using <c>ObjectBox</c>.
+ </p>
+ <p>
+  Furthermore, when retrieving items, no casting is needed! The compiler knows the exact type returned by the <c>get()</c> method based on the box's instantiation:
+ </p>
+ <program language="java"><code>String s = stringBox.get(); // OK! Compiler knows get() returns String for Box&lt;String&gt;
+Integer i = integerBox.get(); // OK! Compiler knows get() returns Integer for Box&lt;Integer&gt;
+
+System.out.println("Retrieved String: " + s.toUpperCase());
+System.out.println("Retrieved Integer: " + i * 2);</code></program>
+ <p>
+  Compare this to the examples in the previous section. With generics, the compiler prevents exactly those risky casts associated with the <c>ObjectBox</c> approach and eliminates the need for duplicated classes like <c>StringBox</c> and <c>IntegerBox</c>. Generics give us that powerful combination of type safety and reusability we were looking for.
+ </p>
+</subsection>
+
+<subsection xml:id="generics-generic-interfaces">
+ <title>Generic Interfaces</title>
+ <p>
+  Just as classes can be generic, interfaces can also be parameterized with type parameters, following the syntax we discussed earlier. You have likely already used one of the most common generic interfaces: <c>java.util.List&lt;E&gt;</c>, where <c>E</c> stands for the type of Element the list will hold.
+ </p>
+ <program language="java"><code>// Simplified view of the List interface definition
+public interface List&lt;E&gt; {
+    boolean add(E element); // Method parameter uses the type parameter E
+    E get(int index);    // Return type uses the type parameter E
+    int size();
+    // ... other methods
+}
+
+// ArrayList implements the generic List interface
+public class ArrayList&lt;E&gt; implements List&lt;E&gt; {
+    // Internal implementation using type E...
+    @Override
+    public boolean add(E element) { /* ... */ return true; }
+
+    @Override
+    public E get(int index) { /* ... */ return null; } // Placeholder
+
+    @Override
+    public int size() { /* ... */ return 0; } // Placeholder
+    // ...
+}</code></program>
+ <p>
+  When you declare and use a list like this:
+ </p>
+ <program language="java"><![CDATA[// We specify String as the type argument E for this List
+List<String> names = new ArrayList<>();
+
+names.add("Alice"); // OK
+names.add("Bob");   // OK
+// names.add(123);   // Compile Error! Expected String, got int.
+
+String firstName = names.get(0); // OK! No cast needed, compiler knows it's a String.]]></program>
+ <p>
+  You are providing <c>String</c> as the type argument for <c>E</c>. The compiler then ensures, throughout your use of the <c>names</c> variable, that you only <c>add</c> <c>String</c> objects and that the <c>get</c> method returns a <c>String</c> (without needing a cast). This demonstrates the power of generic interfaces combined with generic classes, providing robust compile-time type safety for collections and other parameterized structures you commonly use.
+ </p>
+</subsection>
+
+<subsection xml:id="generics-generic-types-summary">
+ <title>Summary: The Power of Generic Types</title>
+ <p>
+  Generic types, declared using type parameters like <c>&lt;T&gt;</c> or <c>&lt;E&gt;</c>, allow us to write class and interface definitions that act as blueprints parameterized by type. When we instantiate these generic types (e.g., <c>Box&lt;String&gt;</c>, <c>List&lt;Player&gt;</c>), we provide specific type arguments. The Java compiler then uses these arguments to enforce type safety at compile time, ensuring that only compatible types are used with that specific instance and eliminating the need for manual casting during retrieval. This elegantly solves the conflict between code reusability and type safety that we encountered with pre-generic approaches, allowing us to write safer, more flexible, and more maintainable code.
+ </p>
+</subsection>
+
+<exercises>
+ <exercise xml:id="mcq-generics-types-1" type="multiplechoice">
+     <statement>
+         <p>What is the primary purpose of the type parameter <c>T</c> in a generic class definition like <c>public class Box&lt;T&gt;</c>?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice>
+             <statement><p>To specify that the class can only hold objects of type <c>T</c>, which must be defined elsewhere.</p></statement>
+             <feedback><p>Incorrect. `T` is a placeholder; the actual type (like String or Integer) is specified when an instance is created, not when `T` itself is defined.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>To provide a default type of <c>Object</c> if no type argument is given.</p></statement>
+             <feedback><p>Incorrect. Using the raw type `Box` defaults to Object-like behavior due to erasure, but `T` itself is a placeholder, not a default type.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>To restrict the class to only work with primitive types.</p></statement>
+             <feedback><p>Incorrect. Generic type parameters work with reference types (objects), not directly with primitive types (like `int`). Wrapper classes (`Integer`) must be used.</p></feedback>
+         </choice>
+         <choice correct="yes">
+             <statement><p>To act as a placeholder for an actual type that will be provided when an instance of the class is created (e.g., <c>Box&lt;String&gt;</c>).</p></statement>
+             <feedback><p>Correct. `T` serves as a parameter for a type, allowing the class blueprint to be defined once and used safely with various specific types provided later.</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+
+ <exercise xml:id="mcq-generics-types-2" type="multiplechoice">
+     <statement>
+         <p>Consider the code: <c>Box&lt;String&gt; myBox = new Box&lt;&gt;();</c>. What does the <c>&lt;&gt;</c> (diamond operator) achieve here?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice correct="yes">
+             <statement><p>It allows the compiler to infer the type argument (<c>String</c>) from the variable declaration, making the constructor call more concise.</p></statement>
+             <feedback><p>Correct. The diamond operator `&lt;&gt;` is shorthand, telling the compiler to infer the type argument(s) from the context, avoiding redundancy.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>It signifies that this <c>Box</c> can hold any type, similar to <c>ObjectBox</c>.</p></statement>
+             <feedback><p>Incorrect. The type is explicitly declared as `Box&lt;String&gt;`; the diamond operator is just constructor syntax sugar. The box can only hold Strings.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>It indicates that the type parameter <c>T</c> has no bounds.</p></statement>
+             <feedback><p>Incorrect. The diamond operator relates to type inference during instantiation, not to the bounds defined on the generic class itself.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>It creates an anonymous inner class implementation of <c>Box</c>.</p></statement>
+             <feedback><p>Incorrect. The diamond operator is specifically for inferring type arguments during generic constructor calls.</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+
+ <exercise xml:id="mcq-generics-types-3" type="multiplechoice">
+     <statement>
+         <p>What is the main advantage of using <c>Box&lt;Integer&gt;</c> over the non-generic <c>ObjectBox</c> from the previous section?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice>
+             <statement><p><c>Box&lt;Integer&gt;</c> uses less memory because it knows the type.</p></statement>
+             <feedback><p>Incorrect. Due to type erasure, the runtime object structure is very similar. The main advantage relates to compile-time checks.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p><c>Box&lt;Integer&gt;</c> allows storing both <c>Integer</c> and <c>int</c> types directly.</p></statement>
+             <feedback><p>Incorrect. Generics work with reference types; primitives like `int` are handled via autoboxing to `Integer`, not stored directly as primitives within the generic structure.</p></feedback>
+         </choice>
+         <choice correct="yes">
+             <statement><p><c>Box&lt;Integer&gt;</c> provides compile-time type safety, preventing non-Integer types from being added and eliminating the need for casting on retrieval.</p></statement>
+             <feedback><p>Correct. The compiler enforces that only Integers (or compatible types via autoboxing) are used, and `get()` returns `Integer` directly, preventing `ClassCastException`s and removing cast boilerplate.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p><c>Box&lt;Integer&gt;</c> can be used polymorphically where a <c>Box&lt;Number&gt;</c> is expected.</p></statement>
+             <feedback><p>Incorrect. Due to invariance, `Box&lt;Integer&gt;` is not a subtype of `Box&lt;Number&gt;`. Wildcards are needed for that kind of flexibility (covered later).</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+
+ <exercise xml:id="mcq-generics-types-4" type="multiplechoice">
+     <statement>
+         <p>Why must you use <c>List&lt;Integer&gt;</c> instead of <c>List&lt;int&gt;</c> in Java?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice>
+             <statement><p>Because <c>int</c> is an interface, not a class.</p></statement>
+             <feedback><p>Incorrect. `int` is a primitive type, not an interface or a class.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>Because <c>Integer</c> provides more methods than <c>int</c>.</p></statement>
+             <feedback><p>While `Integer` does provide methods, the primary reason for using it with generics is the limitation of generics themselves.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>To ensure backward compatibility with older Java versions.</p></statement>
+             <feedback><p>Incorrect. Backward compatibility (via type erasure) is related to how generics work internally, but the direct reason for using wrapper classes is a limitation of the generic mechanism itself.</p></feedback>
+         </choice>
+         <choice correct="yes">
+             <statement><p>Because Java generics work only with reference types (objects), and <c>Integer</c> is the wrapper class for the primitive type <c>int</c>.</p></statement>
+             <feedback><p>Correct. Generic type parameters must be bound to reference types. Primitives like `int` cannot be used directly as type arguments; their corresponding wrapper classes must be used instead.</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+</exercises>
+
+</section>

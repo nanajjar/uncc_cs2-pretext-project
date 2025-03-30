@@ -1,0 +1,16 @@
+<section xml:id="generics-why-revisit-types">
+<title>Why Revisit Types?</title>
+
+<p>
+In our journey through Java so far, we've worked extensively with types. We started with primitive types like <c>int</c> and <c>boolean</c>, and quickly moved on to object types like <c>String</c>. We then learned to define our own types using classes, such as <c>Player</c>, <c>BankAccount</c>, or <c>Vehicle</c>, and explored relationships between them using inheritance. You might feel you already understand types well, so why revisit this seemingly basic concept now?
+</p>
+
+<p>
+The reason is crucial for what comes next. We are about to explore <term>Generics</term>, one of Java's most powerful features for creating flexible and reusable code. Generics allow us to create classes and methods that can work flexibly with different types of data while preserving compile-time safety. But Generics were introduced specifically to solve problems that arise <term>because</term> of Java's strict type system. Perhaps you've already encountered some frustration, like writing nearly identical container classes (<c>IntList</c>, <c>StringList</c>, <c>PlayerList</c>) just to hold different types of objects, or dealing with confusing compile errors related to types? To truly appreciate <term>why</term> Generics are necessary and how they work safely, we must first solidify our understanding of the hidden layer: how the Java compiler rigorously uses type information.
+</p>
+
+<p>
+In the next few sections, we will explore types from the compiler's perspective, thinking of them as "contracts" that guarantee safety. We'll see how the compiler enforces these contracts, review the flexibility we <term>already</term> have with related types (through polymorphism), and then clearly see the limitations that motivated the creation of Generics. This foundation will make learning Generics much more intuitive.
+</p>
+
+</section>
