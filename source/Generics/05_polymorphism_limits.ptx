@@ -45,7 +45,8 @@ However, this flexibility, born from Java's strict static type checking, has inh
  <p>
   Polymorphism allows a <c>List&lt;Vehicle&gt;</c> to hold <c>Car</c>s, <c>Bicycle</c>s, etc. This is often useful. However, what if we needed a collection that could hold <term>any</term> kind of object? Before generics, the only way to do this was to use the ultimate superclass, <c>Object</c>.
  </p>
- <program language="java"><code>// Pre-Generics way to hold anything (using ArrayList for example)
+ <program language="java">
+// Pre-Generics way to hold anything (using ArrayList for example)
 // Note: Using 'raw' ArrayList like this is discouraged in modern Java.
 java.util.List anythingList = new java.util.ArrayList&lt;Object&gt;(); // Holds Objects
 
@@ -58,7 +59,8 @@ Object item = anythingList.get(0); // Compiler only knows it's an Object
 String s = (String) item; // Requires a cast - potentially unsafe!
 
 // What if we get the wrong item by mistake?
-// Integer i = (Integer) anythingList.get(0); // Runtime ClassCastException!</code></program>
+// Integer i = (Integer) anythingList.get(0); // Runtime ClassCastException!
+</program>
  <p>
   Using <c>Object</c> provides maximum flexibility (you can put literally anything in the list), but it completely sacrifices compile-time type safety for the elements <term>within</term> the collection. You lose all information about what specific types are actually stored, forcing casts upon retrieval and pushing type error detection entirely to runtime via potential <c>ClassCastException</c>s. While you can partially guard against these runtime type errors using <c>instanceof</c> checks before casting, doing so adds significant complexity and overhead, and still doesn't solve the fundamental problem: the compiler cannot verify type correctness for the collection's contents, leaving potential errors hidden until your program runs. There's no way for the compiler to guarantee that a list declared to hold <c>Object</c>s actually contains only <c>String</c>s or only <c>Integer</c>s at a particular point.
  </p>

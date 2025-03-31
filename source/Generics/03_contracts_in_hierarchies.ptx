@@ -22,22 +22,26 @@ In the previous section, we established that types act as "contracts" enforced b
  <p>
   The compiler uses this "is-a" understanding to allow for safe substitution. Because a <c>Car</c> guarantees it can do everything a <c>Vehicle</c> can (according to the <c>Vehicle</c> contract), you can assign a <c>Car</c> object to a <c>Vehicle</c> variable:
  </p>
- <program language="java"><code>// Assuming Car extends Vehicle
+ <program language="java">
+// Assuming Car extends Vehicle
 Vehicle myVehicle = new Car(/* constructor args */); // OK! A Car fulfills the Vehicle contract.
 
 // We can call methods defined in the Vehicle contract
 myVehicle.accelerate(10.0); // Assumed defined in Vehicle
-// double speed = myVehicle.getSpeed(); // Also OK if getSpeed() is in Vehicle</code></program>
+// double speed = myVehicle.getSpeed(); // Also OK if getSpeed() is in Vehicle
+</program>
  <p>
   This works because the compiler knows, based on the <c>extends</c> relationship, that any object assigned to <c>myVehicle</c> is guaranteed to have the methods defined in the <c>Vehicle</c> class contract.
  </p>
  <p>
   Crucially, the <term>declared type</term> of the variable (here, <c>Vehicle</c>) determines the contract enforced by the compiler for direct method calls on that variable, <term>not</term> the actual type of the object it happens to hold at runtime (here, a <c>Car</c>). Therefore, you cannot directly call methods specific only to the <c>Car</c> class using the <c>Vehicle</c> variable:
  </p>
- <program language="java"><code>// Assume Car has a specific method like openTrunk() not present in Vehicle
+ <program language="java">
+// Assume Car has a specific method like openTrunk() not present in Vehicle
 // Vehicle myVehicle = new Car(...);
 
-// myVehicle.openTrunk(); // Compile Error! Method openTrunk() undefined for type Vehicle.</code></program>
+// myVehicle.openTrunk(); // Compile Error! Method openTrunk() undefined for type Vehicle.
+</program>
  <p>
   This results in a compile error because the method <c>openTrunk()</c> is <term>not part</term> of the <c>Vehicle</c> contract that the <c>myVehicle</c> variable promises to uphold. The compiler only guarantees what's defined by the variable's declared type.
  </p>
@@ -46,12 +50,13 @@ myVehicle.accelerate(10.0); // Assumed defined in Vehicle
   <p>
    <term>Casting</term> in Java is the process of explicitly telling the compiler to treat an object reference as if it were of a different type (usually a more specific subtype). For example, <c>(Car) myVehicle;</c> attempts to cast the <c>myVehicle</c> reference to the <c>Car</c> type. To access <c>Car</c>-specific methods through a <c>Vehicle</c> variable, you would need to perform such a cast, typically after ensuring it's safe using a runtime check with <c>instanceof</c>:
   </p>
-  <program language="java"><code>Vehicle myVehicle = new Car(...);
+  <program language="java">
+Vehicle myVehicle = new Car(...);
 
 if (myVehicle instanceof Car) {
     Car myCar = (Car) myVehicle; // Cast the Vehicle reference to a Car reference
     myCar.openTrunk();         // OK! Now the compiler knows it has the Car contract.
-}</code></program>
+}</program>
   <p>
    While casting works, it moves the essential type verification from the compiler (compile time) to the JVM (runtime). This is inherently riskier because if the object <term>isn't</term> actually a <c>Car</c> when the cast executes (perhaps due to a logic error elsewhere), a <c>ClassCastException</c> occurs, crashing the program. Compile-time checks prevent such crashes entirely. If you find yourself using frequent casting, it might indicate your design could benefit from more precise type contracts or potentially features like Generics, which we'll explore soon. Furthermore, if the class contract changes later (e.g., the <c>openTrunk</c> method is renamed or removed from <c>Car</c>), the compiler immediately catches errors in code directly using a <c>Car</c> reference, but the runtime cast might only fail later during execution if not properly updated, leading to unexpected crashes.
   </p>
@@ -70,7 +75,8 @@ if (myVehicle instanceof Car) {
    Circle ──────→ implements ──────→ Drawable (Interface Contract)
    (Class)                           (Provides draw() method contract)
  </pre>
- <program language="java"><code>// Simple interface contract
+ <program language="java">
+// Simple interface contract
 public interface Drawable {
     void draw(); // Contract: Implementing classes must provide a draw() method
 }
@@ -88,23 +94,27 @@ public class Circle implements Drawable {
     public double getRadius() { // Circle-specific method, not part of Drawable contract
         return radius;
     }
-}</code></program>
+}</program>
  <p>
   Because the <c>Circle</c> class fulfills the <c>Drawable</c> contract, the compiler allows safe substitution:
  </p>
- <program language="java"><code>Drawable shape = new Circle(/* constructor args */); // OK! A Circle fulfills the Drawable contract.
+ <program language="java">
+ Drawable shape = new Circle(/* constructor args */); // OK! A Circle fulfills the Drawable contract.
 
 // We can call methods defined in the Drawable contract
-shape.draw();</code></program>
+shape.draw();
+</program>
  <p>
   The compiler permits this because it knows any object assigned to <c>shape</c> is guaranteed to have the <c>draw()</c> method defined in the <c>Drawable</c> contract.
  </p>
  <p>
   As with inheritance, the variable <c>shape</c>'s declared type (<c>Drawable</c>) governs the compiler's checks. You cannot directly call methods specific to the <c>Circle</c> class using the <c>Drawable</c> variable:
  </p>
- <program language="java"><code>// Drawable shape = new Circle(...);
+ <program language="java">
+// Drawable shape = new Circle(...);
 
-// double r = shape.getRadius(); // Compile Error! Method getRadius() undefined for type Drawable.</code></program>
+// double r = shape.getRadius(); // Compile Error! Method getRadius() undefined for type Drawable.
+</program>
  <p>
   This gives a compile error because <c>getRadius()</c> is part of the <c>Circle</c>'s specific contract, not the general <c>Drawable</c> contract held by the <c>shape</c> variable. Accessing it would require a cast, similar to the inheritance example.
  </p>

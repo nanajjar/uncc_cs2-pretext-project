@@ -10,7 +10,8 @@ In the previous section, we identified the key limitations of using polymorphism
  <p>
   Suppose we want a simple container class, a <c>Box</c>, that can hold a single item of <term>any</term> type. Before generics, the only way to achieve this flexibility was to use <c>Object</c> as the type for the item.
  </p>
- <program language="java"><code>// A Box class using Object to hold any type
+ <program language="java">
+// A Box class using Object to hold any type
 public class ObjectBox {
     private Object item; // Can hold a reference to any object
 
@@ -21,11 +22,12 @@ public class ObjectBox {
     public Object get() {
         return item;
     }
-}</code></program>
+}</program>
  <p>
   This seems flexible – we can indeed store any object type:
  </p>
- <program language="java"><code>ObjectBox stringBox = new ObjectBox();
+ <program language="java">
+ ObjectBox stringBox = new ObjectBox();
 stringBox.set("Secrets"); // Storing a String - OK
 
 ObjectBox numberBox = new ObjectBox();
@@ -33,24 +35,28 @@ numberBox.set(Integer.valueOf(42)); // Storing an Integer - OK
 
 ObjectBox playerBox = new ObjectBox();
 playerBox.set(new Player("Zelda")); // Storing a Player - OK (Assuming Player class exists)
-</code></program>
+</program>
  <p>
   The flexibility is there, but the problems arise when we try to <term>use</term> the items stored in the box. Since the <c>get()</c> method returns <c>Object</c>, the compiler only knows the returned item fulfills the <c>Object</c> contract. To use it as its original, specific type, we <term>must</term> perform a cast:
  </p>
- <program language="java"><code>Object retrievedItem = stringBox.get();
+ <program language="java">
+ Object retrievedItem = stringBox.get();
 // We know it's a String, but the compiler doesn't guarantee it.
 String secret = (String) retrievedItem; // Explicit cast needed
 
-System.out.println("The secret is: " + secret.toUpperCase()); // Now we can call String methods</code></program>
+System.out.println("The secret is: " + secret.toUpperCase()); // Now we can call String methods
+</program>
  <p>
   This cast tells the compiler, "Trust me, I know this <c>Object</c> reference is actually pointing to a <c>String</c>." The compiler allows this, but it defers the actual type check until <term>runtime</term>. This is where the danger lies. What if we make a mistake?
  </p>
- <program language="java"><code>ObjectBox boxWithNumber = new ObjectBox();
+ <program language="java">
+ ObjectBox boxWithNumber = new ObjectBox();
 boxWithNumber.set(Integer.valueOf(100));
 
 // Later, perhaps mistakenly...
 Object retrievedValue = boxWithNumber.get();
-// String oops = (String) retrievedValue; // Compiles OK, but... BANG at runtime!</code></program>
+// String oops = (String) retrievedValue; // Compiles OK, but... BANG at runtime!
+</program>
  <p>
   This code compiles perfectly fine! The compiler trusts your cast. However, when this line executes, the Java Virtual Machine (JVM) checks if the object retrieved from the box is actually a <c>String</c>. Since it's an <c>Integer</c>, the cast is invalid, and the program crashes immediately, throwing a <term>ClassCastException</term>. Although we could attempt to prevent this specific crash by always checking the type at runtime with <c>instanceof</c> before casting, this approach adds significant complexity and overhead, and still pushes what ideally should be a compile-time check to runtime. It doesn't solve the fundamental problem that the compiler cannot verify type correctness for us when using <c>Object</c>.
  </p>
@@ -70,7 +76,8 @@ Object retrievedValue = boxWithNumber.get();
  <p>
   Okay, so using <c>Object</c> is unsafe. How could we achieve compile-time type safety for our <c>Box</c> before generics? The only way was to create separate classes for each type we wanted to store:
  </p>
- <program language="java"><code>// A Box specifically for Strings
+ <program language="java">
+// A Box specifically for Strings
 public class StringBox {
     private String item; // Only holds Strings
 
@@ -101,15 +108,17 @@ public class PlayerBox {
     private Player item; // Only holds Players
     // ... identical set() and get() logic ...
 }
-</code></program>
+</program>
  <p>
   This approach <term>is</term> type-safe. The compiler will now prevent errors:
  </p>
- <program language="java"><code>StringBox myStringBox = new StringBox();
+ <program language="java">
+ StringBox myStringBox = new StringBox();
 myStringBox.set("Safe!");
 // myStringBox.set(123); // Compile Error! Can't put an Integer in StringBox.
 
-String safeString = myStringBox.get(); // No cast needed! Compiler knows it's a String.</code></program>
+String safeString = myStringBox.get(); // No cast needed! Compiler knows it's a String.
+</program>
  <p>
   We regain compile-time safety, and no casting is needed. However, look closely at the code for <c>StringBox</c>, <c>IntegerBox</c>, and <c>PlayerBox</c>. The internal logic for the <c>set</c> and <c>get</c> methods is <term>absolutely identical</term> except for the type name!
  </p>

@@ -36,16 +36,20 @@
  <p>
   Consider our <c>Box&lt;String&gt;</c>:
  </p>
- <program language="java"><code>Box&lt;String&gt; stringBox = new Box&lt;&gt;();
+ <program language="java">
+Box&lt;String&gt; stringBox = new Box&lt;&gt;();
 stringBox.set("Type Safe");
-String s = stringBox.get(); // No cast needed in source code</code></program>
+String s = stringBox.get(); // No cast needed in source code
+</program>
  <p>
   At the bytecode level, this roughly translates (conceptually, not as literal bytecode instructions) to something like:
  </p>
- <program language="java"><code>// Conceptual Bytecode-Level Approximation (after erasure)
+ <program language="java">
+// Conceptual Bytecode-Level Approximation (after erasure)
 Box rawBox = new Box(); // T replaced by Object
 rawBox.set("Type Safe"); // Argument is treated as Object
-String s = (String) rawBox.get(); // Compiler inserts the cast automatically and safely!</code></program>
+String s = (String) rawBox.get(); // Compiler inserts the cast automatically and safely!
+</program>
  <p>
   The key takeaway is that the JVM itself, at runtime, generally has very little knowledge of the generic type parameters used in the source code. The safety is enforced primarily by the compiler <term>before</term> erasure happens.
  </p>
@@ -75,12 +79,14 @@ String s = (String) rawBox.get(); // Compiler inserts the cast automatically and
   <p>
    Because of type erasure, Java still allows the use of <term>raw types</term> – using a generic class or interface without specifying any type arguments (e.g., just <c>Box</c> instead of <c>Box&lt;String&gt;</c>, or <c>List</c> instead of <c>List&lt;Integer&gt;</c>). When you use a raw type, you essentially opt out of generic type checking for that variable or method signature, reverting to the pre-generics behavior of working directly with <c>Object</c> and requiring manual casts.
   </p>
-  <program language="java"><code>Box rawBox = new Box(); // Using the raw type (no &lt;...&gt;)
+  <program language="java">
+Box rawBox = new Box(); // Using the raw type (no &lt;...&gt;)
 rawBox.set("A String"); // Compiles (treated as Object)
 rawBox.set(123);      // Compiles (treated as Object) - Potential for mix-ups!
 
 // Requires casting and risks ClassCastException, just like ObjectBox
-String s = (String) rawBox.get(); // Risky! Currently holds an Integer.</code></program>
+String s = (String) rawBox.get(); // Risky! Currently holds an Integer.
+</program>
   <p>
    Using raw types completely bypasses the compile-time safety provided by generics and should be <term>avoided</term> in modern Java code. They exist mainly for compatibility with legacy code written before Java 5. Always specify type arguments (e.g., <c>Box&lt;String&gt;</c>, <c>List&lt;Object&gt;</c> if you truly need to hold anything) to leverage the benefits of generics.
   </p>
@@ -96,14 +102,17 @@ String s = (String) rawBox.get(); // Risky! Currently holds an Integer.</code></
   <li>
    <p><term>Cannot Create Instances of Type Parameters (<c>new T()</c>)</term></p>
    <p>Due to erasure, you cannot directly create an instance of a type parameter <c>T</c> using <c>new T()</c>. At runtime, the JVM only sees <c>Object</c> (or the bound type) and wouldn't know which specific class constructor (<c>new String()</c>? <c>new Player()</c>?) to actually call.</p>
-   <program language="java"><code>public class Factory&lt;T&gt; {
+   <program language="java">
+public class Factory&lt;T&gt; {
     public T createInstance() {
         // return new T(); // Compile Error! Cannot instantiate the type T due to erasure.
         return null; // Placeholder
     }
-}</code></program>
+}
+</program>
    <p><em>Common Workarounds:</em> One common pattern is to pass a <c>Class&lt;T&gt;</c> object (which retains type information at runtime) to the constructor or method, and then use reflection methods like <c>newInstance()</c> (though this itself has limitations and potential exceptions to handle).</p>
-   <program language="java"><code>// Example using Class&lt;T&gt; token (simplified)
+   <program language="java">
+// Example using Class&lt;T&gt; token (simplified)
 public class ReflectiveFactory&lt;T&gt; {
     private Class&lt;T&gt; typeToken;
 
@@ -127,12 +136,14 @@ public class ReflectiveFactory&lt;T&gt; {
 
 // Usage:
 // ReflectiveFactory&lt;String&gt; stringFactory = new ReflectiveFactory&lt;&gt;(String.class);
-// String myNewString = stringFactory.createInstance();</code></program>
+// String myNewString = stringFactory.createInstance();
+</program>
   </li>
   <li>
    <p><term>Cannot Create Arrays of Generic Types (<c>new T[size]</c>)</term></p>
    <p>Due to erasure, you cannot create an array whose element type is a generic type parameter, like <c>new T[10]</c>. Arrays in Java store their component type information at runtime for type checking array assignments. Since <c>T</c> is erased, the runtime wouldn't know the actual required type, potentially leading to type safety violations (<term>heap pollution</term>) if it were allowed.</p>
-   <program language="java"><code>public class GenericArrayHolder&lt;T&gt; {
+   <program language="java">
+public class GenericArrayHolder&lt;T&gt; {
     private T[] elements;
 
     public GenericArrayHolder(int size) {
@@ -140,13 +151,15 @@ public class ReflectiveFactory&lt;T&gt; {
         // Common but unsafe workaround (requires cast, disables array store checks):
         // this.elements = (T[]) new Object[size];
     }
-}</code></program>
+}
+</program>
    <p><em>Common Workarounds:</em> Avoid creating generic arrays directly. Use a generic collection like <c>ArrayList&lt;T&gt;</c>, which manages an internal <c>Object[]</c> safely. If an array is truly needed, use <c>Object[]</c> and manage casts carefully, or use reflection-based array creation (which is complex).</p>
   </li>
   <li>
    <p><term>Cannot Use <c>instanceof</c> with Parameterized Types</term></p>
    <p>Due to erasure, you generally cannot use <c>instanceof</c> to check if an object is an instance of a specific generic parameterization at runtime. The type argument information (<c>String</c> in <c>Box&lt;String&gt;</c>) isn't available for the check.</p>
-   <program language="java"><code>Box&lt;String&gt; stringBox = new Box&lt;&gt;();
+   <program language="java">
+Box&lt;String&gt; stringBox = new Box&lt;&gt;();
 Box&lt;Integer&gt; integerBox = new Box&lt;&gt;();
 
 // if (stringBox instanceof Box&lt;String&gt;) { ... } // Compile Error! Illegal generic type for instanceof
@@ -154,13 +167,15 @@ Box&lt;Integer&gt; integerBox = new Box&lt;&gt;();
 // You CAN check against the raw type (erased type):
 if (stringBox instanceof Box) { // OK - Checks if it's any kind of Box
     System.out.println("It's a Box!");
-}</code></program>
+}
+</program>
    <p>At runtime, both <c>stringBox</c> and <c>integerBox</c> are just instances of the raw type <c>Box</c>.</p>
   </li>
   <li>
    <p><term>Static Context Restrictions</term></p>
    <p>Due to erasure, a class's type parameter (<c>T</c> in <c>Box&lt;T&gt;</c>) cannot be referenced from static methods, static fields, or static inner classes of that generic class. Static members belong to the class itself (e.g., <c>Box.staticMethod()</c>), not to any particular instance like <c>Box&lt;String&gt;</c> or <c>Box&lt;Integer&gt;</c>. Since static members exist independently of any instance-specific type argument for <c>T</c>, they cannot use <c>T</c>.</p>
-   <program language="java"><code>public class Counter&lt;T&gt; {
+   <program language="java">
+public class Counter&lt;T&gt; {
     private T instanceItem; // OK - Instance field
 
     // private static T staticItem; // Compile Error! Cannot make a static reference to type T.
@@ -169,7 +184,8 @@ if (stringBox instanceof Box) { // OK - Checks if it's any kind of Box
 
     // Note: Static generic methods ARE allowed, but they declare their OWN type parameters:
     public static &lt;E&gt; E identity(E item) { return item; } // OK
-}</code></program>
+}
+</program>
   </li>
  </ol>
  <p>

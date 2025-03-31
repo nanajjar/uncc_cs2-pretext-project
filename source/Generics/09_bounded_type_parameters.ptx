@@ -8,7 +8,8 @@
  <p>
   But what if your generic algorithm or data structure needs to perform operations that are <term>not</term> defined in <c>Object</c>? Consider trying to write a generic method to find the larger of two items:
  </p>
- <program language="java"><code>// Attempting a generic max method - THIS WON'T COMPILE!
+ <program language="java">
+// Attempting a generic max method - THIS WON'T COMPILE!
 public static &lt;T&gt; T findMaximum(T item1, T item2) {
     // if (item1 &gt; item2) { // Compile Error! The &gt; operator is not defined for all Objects T.
     // if (item1.compareTo(item2) &gt; 0) { // Compile Error! Cannot assume T has compareTo().
@@ -17,7 +18,8 @@ public static &lt;T&gt; T findMaximum(T item1, T item2) {
     //     return item2;
     // }
     return null; // Placeholder - actual comparison logic fails
-}</code></program>
+}
+</program>
  <p>
   This code fails to compile because the compiler has no guarantee that objects of an arbitrary type <c>T</c> can be compared using operators like <c>&gt;</c> or even that they have a specific method like <c>compareTo()</c>. The <c>T</c> could be a <c>String</c>, a <c>Player</c>, or some other type where these operations aren't defined.
  </p>
@@ -34,7 +36,8 @@ public static &lt;T&gt; T findMaximum(T item1, T item2) {
  <p>
   The syntax looks like this:
  </p>
- <program language="java"><code>// Bound with a class: T must be Number or a subclass of Number
+ <program language="java">
+// Bound with a class: T must be Number or a subclass of Number
 &lt;T extends Number&gt;
 
 // Bound with an interface: T must implement the Comparable interface
@@ -45,7 +48,8 @@ public static &lt;T&gt; T findMaximum(T item1, T item2) {
 public class NumericBox&lt;N extends Number&gt; { /* ... */ }
 
 // Bound for a generic method definition
-public static &lt;E extends Runnable&gt; void runTask(E task) { /* ... */ }</code></program>
+public static &lt;E extends Runnable&gt; void runTask(E task) { /* ... */ }
+</program>
  <p>
   Key points about the <c>extends</c> keyword in bounds:
  </p>
@@ -61,7 +65,8 @@ public static &lt;E extends Runnable&gt; void runTask(E task) { /* ... */ }</cod
  <p>
   Let's say we want a generic method that can inspect any kind of <c>Number</c> (<c>Integer</c>, <c>Double</c>, <c>Float</c>, etc.) and return its value as a <c>double</c>. We need to call the <c>doubleValue()</c> method, which is defined in the abstract <c>Number</c> class (the superclass for all standard numeric wrapper types). We use a bound to guarantee this method exists:
  </p>
- <program language="java"><code>public class NumericUtils {
+ <program language="java">
+public class NumericUtils {
 
     // Generic method constrained to Number types (or subtypes)
     public static &lt;N extends Number&gt; double getDoubleValue(N number) {
@@ -86,7 +91,8 @@ public static &lt;E extends Runnable&gt; void runTask(E task) { /* ... */ }</cod
         // "Inferred type 'String' for type parameter 'N' is not within its bound;
         // should extend 'java.lang.Number'"
     }
-}</code></program>
+}
+</program>
  <p>
   The bound <c>&lt;N extends Number&gt;</c> ensures that only subtypes of <c>Number</c> can be passed to <c>getDoubleValue</c>. Inside the method, the compiler now knows that any object of type <c>N</c> will have the <c>doubleValue()</c> method available, making the call safe. Trying to call the method with a non-Number type like <c>String</c> results in a clear compile-time error, preserving type safety.
  </p>
@@ -97,7 +103,8 @@ public static &lt;E extends Runnable&gt; void runTask(E task) { /* ... */ }</cod
  <p>
   Now let's fix our earlier <c>findMaximum</c> method. To compare two objects using <c>compareTo</c>, they generally need to implement the <c>Comparable</c> interface. We use this interface as a bound:
  </p>
- <program language="java"><code>import java.util.Arrays; // Needed just for List example below
+ <program language="java">
+import java.util.Arrays; // Needed just for List example below
 
 public class ComparisonUtils {
 
@@ -130,13 +137,15 @@ public class ComparisonUtils {
         // If Player implemented Comparable (see note below):
         // Player maxPlayer = findMaximum(p1, p2); // This would then compile
     }
-}</code></program>
+}
+</program>
  <note>
   <title>Implementing <c>Comparable</c> (Example)</title>
   <p>
    To make the <c>findMaximum(p1, p2)</c> call work, the <c>Player</c> class would need to implement the interface, like this minimal example:
   </p>
- <program language="java"><code>public class Player implements Comparable&lt;Player&gt; {
+ <program language="java">
+public class Player implements Comparable&lt;Player&gt; {
     private String name;
     // Constructor and other methods...
 
@@ -150,7 +159,8 @@ public class ComparisonUtils {
 
     // toString() might be useful too
     @Override public String toString() { return name; }
-}</code></program>
+}
+</program>
   <p>
    By implementing <c>Comparable&lt;Player&gt;</c> and providing the <c>compareTo</c> method, <c>Player</c> objects now satisfy the bound required by <c>findMaximum</c>.
   </p>
@@ -176,7 +186,8 @@ public class ComparisonUtils {
   <li>If a class bound is present, it must be listed <term>first</term> in the bounds list.</li>
   <li>You can specify <term>multiple interface</term> bounds, listed after the class bound (if any) and separated by the ampersand (<c>&amp;</c>) character.</li>
  </ul>
- <program language="java"><code>// Syntax: Class bound (optional, max 1, must be first) &amp; Interface bounds
+ <program language="java">
+// Syntax: Class bound (optional, max 1, must be first) &amp; Interface bounds
 &lt;T extends ClassBound &amp; InterfaceBound1 &amp; InterfaceBound2&gt;
 
 // Example: T must be a subclass of Vehicle AND implement both Runnable and Serializable
@@ -194,7 +205,8 @@ public void readAndClose(S source) throws java.io.IOException {
      // Can safely call methods from both Readable and Closeable interfaces
      // ... read data using source.read(...) ... (method from Readable)
      source.close(); // method from Closeable
-}</code></program>
+}
+</program>
  <p>
   Why use multiple bounds? They allow you to create generic types or methods that operate on objects needing a specific <term>combination</term> of structural inheritance and specific capabilities. For example, our <c>processVehicleTask</c> needs something that <term>is-a</term> <c>Vehicle</c> but also <term>can-do</term> the actions defined by <c>Runnable</c> and <c>Serializable</c>. Multiple bounds provide precise compile-time guarantees for these complex requirements.
  </p>

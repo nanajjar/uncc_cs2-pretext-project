@@ -20,7 +20,8 @@ In the previous section, we saw how the compiler understands the relationships d
  <p>
   Imagine a method designed to process any kind of <c>Vehicle</c>:
  </p>
- <program language="java"><code>// Method that accepts any object fulfilling the Vehicle contract
+ <program language="java">
+ // Method that accepts any object fulfilling the Vehicle contract
 public static void simulateMovement(Vehicle v, double timeStep) {
     // We can safely call methods defined in the Vehicle contract
     v.updatePosition(timeStep); // Assumes updatePosition is in Vehicle
@@ -39,7 +40,7 @@ Motorcycle myMotorcycle = new Motorcycle(/*...*/);
 simulateMovement(myCar, 0.1);        // Works! Car 'is-a' Vehicle
 simulateMovement(myBike, 0.1);       // Works! Bicycle 'is-a' Vehicle
 simulateMovement(myMotorcycle, 0.1); // Works! Motorcycle 'is-a' Vehicle
-</code></program>
+</program>
  <p>
   The <c>simulateMovement</c> method doesn't need to know the specific type of vehicle (<c>Car</c>, <c>Bicycle</c>, etc.). It only relies on the guarantee that any object passed in will fulfill the <c>Vehicle</c> contract, allowing it to safely call methods like <c>updatePosition</c> and <c>getSpeed</c>. This significantly reduces code duplication – we write the simulation logic once, and it works for all current and future vehicle types that extend <c>Vehicle</c>.
  </p>
@@ -53,7 +54,8 @@ simulateMovement(myMotorcycle, 0.1); // Works! Motorcycle 'is-a' Vehicle
  <p>
   Consider a method that can draw any object that knows how to draw itself, using the <c>Drawable</c> interface from the previous section:
  </p>
- <program language="java"><code>// Method that accepts any object fulfilling the Drawable contract
+ <program language="java">
+ // Method that accepts any object fulfilling the Drawable contract
 public static void renderOnScreen(Drawable item) {
     System.out.println("Preparing to draw...");
     // We can safely call methods defined in the Drawable contract
@@ -71,7 +73,7 @@ FancyButton button = new FancyButton(/*...*/); // Even UI elements can be Drawab
 renderOnScreen(circle);    // Works! Circle implements Drawable
 renderOnScreen(rectangle); // Works! Rectangle implements Drawable
 renderOnScreen(button);    // Works! FancyButton implements Drawable
-</code></program>
+</program>
  <p>
   The <c>renderOnScreen</c> method works with completely unrelated types (<c>Circle</c>, <c>Rectangle</c>, <c>FancyButton</c>) as long as they fulfill the <c>Drawable</c> contract by implementing the <c>draw</c> method. This provides enormous flexibility, allowing different parts of a system to interact through shared capability contracts (interfaces) without needing to know about each other's specific implementation details or inheritance structure.
  </p>

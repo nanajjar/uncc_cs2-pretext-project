@@ -36,7 +36,8 @@
  <p>
   <term>Generic Class Syntax:</term> The type parameter list, enclosed in angle brackets, is placed immediately after the class name, before the class body begins.
  </p>
- <program language="java"><code>[access_modifier] class ClassName&lt;TypeParameterList&gt; {
+ <program language="java">
+[access_modifier] class ClassName&lt;TypeParameterList&gt; {
     // Class body using the parameters from TypeParameterList
     // Example field: private T data;
     // Example method: public T getData() { ... }
@@ -50,14 +51,16 @@ public class Pair&lt;K, V&gt; {
     private K key;
     private V value;
     // ... body uses K and V ...
-}</code></program>
+}
+</program>
  <p>
   The <c>TypeParameterList</c> contains one or more type parameter declarations (like <c>T</c>, or <c>K, V</c>), separated by commas. These declared parameters (<c>T</c>, <c>K</c>, <c>V</c>) can then be used just like regular types within the class body <c>{...}</c> – for fields, method parameters, return types, and even local variables inside methods.
  </p>
  <p>
   <term>Generic Interface Syntax:</term> The structure is identical for interfaces. The type parameter list follows the interface name, before the body.
  </p>
- <program language="java"><code>[access_modifier] interface InterfaceName&lt;TypeParameterList&gt; {
+ <program language="java">
+[access_modifier] interface InterfaceName&lt;TypeParameterList&gt; {
     // Interface body using parameters from TypeParameterList in method signatures
     // Example method signature: E next();
     // Example method signature: void add(E element);
@@ -73,7 +76,8 @@ public interface List&lt;E&gt; {
 // Example you might have seen (simplified):
 public interface Comparable&lt;T&gt; {
     int compareTo(T other); // Uses T in a method parameter
-}</code></program>
+}
+</program>
  <p>
   Again, the interface name (<c>List</c>, <c>Comparable</c>) is followed immediately by the type parameter list (<c>&lt;E&gt;</c> or <c>&lt;T&gt;</c>). These parameters can then be used as types within the abstract method signatures defined by the interface.
  </p>
@@ -87,7 +91,8 @@ public interface Comparable&lt;T&gt; {
  <p>
   Let's apply the syntax we just learned to our <c>Box</c> example from Section 6. Instead of using <c>Object</c> or creating separate <c>StringBox</c>, <c>IntegerBox</c> classes, we define a single, generic <c>Box</c> class using the type parameter <c>T</c>:
  </p>
- <program language="java"><code>// A Generic Box class applying the syntax: public class Box&lt;T&gt;
+ <program language="java">
+// A Generic Box class applying the syntax: public class Box&lt;T&gt;
 public class Box&lt;T&gt; {
     // The field 'item' is now of the placeholder type T
     private T item;
@@ -101,7 +106,8 @@ public class Box&lt;T&gt; {
     public T get() {
         return item;
     }
-}</code></program>
+}
+</program>
  <p>
   The class <c>Box&lt;T&gt;</c> isn't tied to any single type yet; it's a blueprint for creating boxes that can hold <term>any</term> reference type <c>T</c>, where <c>T</c> will be specified when we create an instance.
  </p>
@@ -118,7 +124,8 @@ public class Box&lt;T&gt; {
  <p>
   To use our generic <c>Box&lt;T&gt;</c>, we need to provide an actual <term>type argument</term> inside the angle brackets when we declare a variable and create an instance. This tells the compiler what specific type the placeholder <c>T</c> should represent for that particular box instance.
  </p>
- <program language="java"><code>// Create a Box specifically for Strings
+ <program language="java">
+// Create a Box specifically for Strings
 // We provide String as the type argument for T
 Box&lt;String&gt; stringBox = new Box&lt;String&gt;();
 
@@ -127,7 +134,8 @@ Box&lt;String&gt; stringBox = new Box&lt;String&gt;();
 Box&lt;Integer&gt; integerBox = new Box&lt;Integer&gt;();
 
 // Create a Box specifically for Player objects
-Box&lt;Player&gt; playerBox = new Box&lt;Player&gt;(); // Assuming Player class exists</code></program>
+Box&lt;Player&gt; playerBox = new Box&lt;Player&gt;(); // Assuming Player class exists
+</program>
  <p>
   Here, <c>Box&lt;String&gt;</c> represents a Box specialized to hold only <c>String</c> objects. The compiler effectively treats <c>T</c> as <c>String</c> for all operations related to <c>stringBox</c>. Similarly, <c>integerBox</c> is specialized for <c>Integer</c> objects.
  </p>
@@ -136,8 +144,10 @@ Box&lt;Player&gt; playerBox = new Box&lt;Player&gt;(); // Assuming Player class 
   <p>
    You might notice that repeating the type argument in the constructor call (<c>new Box&lt;String&gt;()</c>) feels a bit redundant. Java introduced the <term>diamond operator</term> (<c>&lt;&gt;</c>) as a shorthand. If the compiler can infer the type argument from the variable declaration, you can use empty angle brackets in the constructor call:
   </p>
-  <program language="java"><code>Box&lt;String&gt; inferredStringBox = new Box&lt;&gt;(); // Compiler infers &lt;String&gt;
-Box&lt;Integer&gt; inferredIntBox = new Box&lt;&gt;();   // Compiler infers &lt;Integer&gt;</code></program>
+  <program language="java">
+Box&lt;String&gt; inferredStringBox = new Box&lt;&gt;(); // Compiler infers &lt;String&gt;
+Box&lt;Integer&gt; inferredIntBox = new Box&lt;&gt;();   // Compiler infers &lt;Integer&gt;
+</program>
   <p>
    This is the preferred, more concise syntax in modern Java when the type can be clearly inferred.
   </p>
@@ -149,7 +159,8 @@ Box&lt;Integer&gt; inferredIntBox = new Box&lt;&gt;();   // Compiler infers &lt;
  <p>
   Now comes the crucial benefit. Because we specified the type argument when creating each <c>Box</c>, the compiler can enforce type safety <term>at compile time</term> for each specific instance:
  </p>
- <program language="java"><code>Box&lt;String&gt; stringBox = new Box&lt;&gt;();
+ <program language="java">
+Box&lt;String&gt; stringBox = new Box&lt;&gt;();
 Box&lt;Integer&gt; integerBox = new Box&lt;&gt;();
 
 // Using stringBox: Compiler expects Strings
@@ -160,18 +171,21 @@ stringBox.set("Safe and Sound"); // OK
 // Using integerBox: Compiler expects Integers
 integerBox.set(42); // OK (int 42 is autoboxed to Integer)
 
-// integerBox.set("Incorrect"); // Compile Error! Expected Integer, got String.</code></program>
+// integerBox.set("Incorrect"); // Compile Error! Expected Integer, got String.
+</program>
  <p>
   The compiler catches the type mismatches immediately, preventing us from putting an <c>Integer</c> into a <c>Box&lt;String&gt;</c> or a <c>String</c> into a <c>Box&lt;Integer&gt;</c>. This is exactly the compile-time safety we lost when using <c>ObjectBox</c>.
  </p>
  <p>
   Furthermore, when retrieving items, no casting is needed! The compiler knows the exact type returned by the <c>get()</c> method based on the box's instantiation:
  </p>
- <program language="java"><code>String s = stringBox.get(); // OK! Compiler knows get() returns String for Box&lt;String&gt;
+ <program language="java">
+String s = stringBox.get(); // OK! Compiler knows get() returns String for Box&lt;String&gt;
 Integer i = integerBox.get(); // OK! Compiler knows get() returns Integer for Box&lt;Integer&gt;
 
 System.out.println("Retrieved String: " + s.toUpperCase());
-System.out.println("Retrieved Integer: " + i * 2);</code></program>
+System.out.println("Retrieved Integer: " + i * 2);
+</program>
  <p>
   Compare this to the examples in the previous section. With generics, the compiler prevents exactly those risky casts associated with the <c>ObjectBox</c> approach and eliminates the need for duplicated classes like <c>StringBox</c> and <c>IntegerBox</c>. Generics give us that powerful combination of type safety and reusability we were looking for.
  </p>
@@ -182,7 +196,8 @@ System.out.println("Retrieved Integer: " + i * 2);</code></program>
  <p>
   Just as classes can be generic, interfaces can also be parameterized with type parameters, following the syntax we discussed earlier. You have likely already used one of the most common generic interfaces: <c>java.util.List&lt;E&gt;</c>, where <c>E</c> stands for the type of Element the list will hold.
  </p>
- <program language="java"><code>// Simplified view of the List interface definition
+ <program language="java">
+// Simplified view of the List interface definition
 public interface List&lt;E&gt; {
     boolean add(E element); // Method parameter uses the type parameter E
     E get(int index);    // Return type uses the type parameter E
@@ -202,7 +217,8 @@ public class ArrayList&lt;E&gt; implements List&lt;E&gt; {
     @Override
     public int size() { /* ... */ return 0; } // Placeholder
     // ...
-}</code></program>
+}
+</program>
  <p>
   When you declare and use a list like this:
  </p>

@@ -17,15 +17,19 @@ As mentioned, thinking of types as "contracts" is a helpful way to understand th
  <p>
   Variable contracts are fundamental. Consider a simple declaration:
  </p>
- <program language="java"><code>int score = 0;</code></program>
+ <program language="java">
+ int score = 0;
+ </program>
  <p>
   By declaring <c>score</c> as type <c>int</c>, you make a promise to the compiler: "This variable, <c>score</c>, will only ever hold integer values." This directly relates to <term>Step 1 (Data Definitions)</term> of the Design Recipe, where we precisely define the type and intended use of our data. The compiler remembers this promise.
  </p>
  <p>
   If you accidentally try to break this contract, the compiler immediately objects:
  </p>
- <program language="java"><code>int score = 0;
-// score = "High Score!"; // Compile Error! Incompatible types.</code></program>
+ <program language="java">
+ int score = 0;
+// score = "High Score!"; // Compile Error! Incompatible types.
+ </program>
  <p>
   Why does this compile-time error matter practically? Without it, you might accidentally assign text to a variable you expected to hold a number. Later, if you tried to perform arithmetic on <c>score</c> (e.g., <c>score = score + 10;</c>), your program could crash or produce nonsensical results at runtime. The compiler, by enforcing the type contract early, prevents this entire category of bugs, saving you from potentially difficult debugging later.
  </p>
@@ -36,7 +40,8 @@ As mentioned, thinking of types as "contracts" is a helpful way to understand th
  <p>
   Method signatures add another layer, creating contracts for behavior and interaction between different parts of your code. They specify the types of data the method <term>accepts</term> (parameters) and the type of data it <term>returns</term>. Think of it like a detailed job description: it lists the required inputs ('qualifications') and the guaranteed output ('result'). This aligns closely with <term>Step 2 (Method Signature &amp; Purpose Statement)</term> of the Design Recipe, where we define the interface for our methods.
  </p>
- <program language="java"><code>/**
+ <program language="java">
+ /**
  * Calculates the area of a rectangle.
  * Contract: Requires two positive doubles (width, height), returns their area as a double.
  */
@@ -46,16 +51,18 @@ public double calculateArea(double width, double height) {
         return 0.0;
     }
     return width * height;
-}</code></program>
+}</program>
  <p>
   The compiler enforces both the input and output parts of this contract:
  </p>
- <program language="java"><code>double area = calculateArea(10.5, 5.2); // OK: Matches the contract
+ <program language="java">
+ double area = calculateArea(10.5, 5.2); // OK: Matches the contract
 
 // double errorArea = calculateArea(10, "5"); // Compile Error! Argument type mismatch.
 
 double result = calculateArea(4.0, 3.0); // OK: Return type matches variable type
-// String message = calculateArea(4.0, 3.0); // Compile Error! Incompatible types.</code></program>
+// String message = calculateArea(4.0, 3.0); // Compile Error! Incompatible types.
+</program>
  <p>
   Calling <c>calculateArea</c> with a <c>String</c> violates the parameter contract. Trying to assign the <c>double</c> result to a <c>String</c> violates the return type contract. If the compiler <term>didn't</term> enforce this, you could call methods with incorrect data, potentially leading to internal calculation errors or crashes only discovered much later when the program runs, making debugging significantly harder.
  </p>
@@ -66,7 +73,8 @@ double result = calculateArea(4.0, 3.0); // OK: Return type matches variable typ
  <p>
   Classes bring everything together, defining the most comprehensive contracts. A class declaration acts as a blueprint for objects, specifying all the fields (state) and methods (behaviors) that objects of that type possess. This blueprint is the ultimate contract the compiler uses. If this contract changes later (e.g., a method is renamed or removed), the compiler will immediately flag errors in any code that tries to use the old contract, preventing runtime failures.
  </p>
- <program language="java"><code>public class Player {
+ <program language="java">
+ public class Player {
     private String username;
     private int health;
     // ... other fields
@@ -88,14 +96,16 @@ double result = calculateArea(4.0, 3.0); // OK: Return type matches variable typ
         return username;
     }
     // ... other methods
-}</code></program>
+}</program>
  <p>
   This contract tells the compiler exactly what a <c>Player</c> object is and what it can do. The compiler uses this blueprint to ensure you interact with <c>Player</c> objects correctly:
  </p>
- <program language="java"><code>Player player1 = new Player("Hero");
+ <program language="java">
+ Player player1 = new Player("Hero");
 player1.takeDamage(10);   // OK: takeDamage(int) is part of the Player contract
 
-// player1.heal(); // Compile Error! Cannot find symbol 'method heal()'.</code></program>
+// player1.heal(); // Compile Error! Cannot find symbol 'method heal()'.
+</program>
  <p>
   Assuming <c>heal()</c> hasn't been defined in the <c>Player</c> class, the attempt to call it fails at compile time. The compiler, referencing the <c>Player</c> contract (its class definition), knows that no such method exists. Imagine if this check didn't happen! Your program might compile, but it could crash unexpectedly at runtime whenever it encountered code trying to call a method that wasn't actually part of the object's definition.
  </p>

@@ -8,7 +8,8 @@
  <p>
   However, this specificity can sometimes be too restrictive. Consider a simple method designed to print all elements in any list:
  </p>
- <program language="java"><code>import java.util.List;
+ <program language="java">
+import java.util.List;
 import java.util.Arrays; // Needed for Arrays.asList
 
 public class ListPrinterProblem {
@@ -27,7 +28,8 @@ public class ListPrinterProblem {
         // printListObjects(names);   // Compile Error! Why?
         // printListObjects(numbers); // Compile Error! Why?
     }
-}</code></program>
+}
+</program>
  <p>
   Why do these calls fail? It's because of a key rule in generics: even though <c>String</c> is a subtype of <c>Object</c>, a <c>List&lt;String&gt;</c> is <term>not</term> considered a subtype of <c>List&lt;Object&gt;</c>. This property is called <term>invariance</term>, meaning that generic types parameterized by different type arguments generally have no subtype relationship, even if their type arguments do. Let's see why this restriction is crucial for type safety.
  </p>
@@ -36,7 +38,8 @@ public class ListPrinterProblem {
   <p>
    Imagine if Java <term>did</term> allow assigning a <c>List&lt;String&gt;</c> to a <c>List&lt;Object&gt;</c>. The following unsafe scenario could occur:
   </p>
-  <program language="java"><code>List&lt;String&gt; strings = new java.util.ArrayList&lt;&gt;();
+  <program language="java">
+List&lt;String&gt; strings = new java.util.ArrayList&lt;&gt;();
 strings.add("Safe");
 
 // Imagine this assignment was allowed (it is NOT in Java):
@@ -47,7 +50,7 @@ strings.add("Safe");
 
 // Later, trying to get an element assuming it's a String would fail:
 // String s = strings.get(1); // Runtime ClassCastException! Would crash here.
-</code></program>
+</program>
   <p>
    To prevent this exact kind of type corruption, generic types like <c>List&lt;T&gt;</c> are invariant by default. This ensures compile-time safety, preventing the kind of runtime exceptions (<c>ClassCastException</c>) that could occur if a list of strings were accidentally treated as a list capable of holding any object.
   </p>
@@ -65,7 +68,8 @@ strings.add("Safe");
  <p>
   Let's rewrite our <c>printList</c> method using an unbounded wildcard:
  </p>
- <program language="java"><code>import java.util.List;
+ <program language="java">
+import java.util.List;
 import java.util.Arrays;
 
 public class ListPrinter {
@@ -99,7 +103,8 @@ public class ListPrinter {
         printAnyList(objects); // OK
         // printAnyList(players); // OK
     }
-}</code></program>
+}
+</program>
  <p>
   Using <c>List&lt;?&gt;</c> allows the method to accept lists parameterized with any type. Inside the method, however, the compiler only knows that the list holds objects of "some unknown type". Therefore:
  </p>
@@ -136,7 +141,8 @@ public class ListPrinter {
  <p>
   This is where <term>upper bounded wildcards</term> come in. The syntax <c>? extends Type</c> means "an unknown type that is either <c>Type</c> or a subtype of <c>Type</c>". This is useful when the method needs to <term>read</term> items from the generic structure and treat them as at least type <c>Type</c>.
  </p>
- <program language="java"><code>import java.util.List;
+ <program language="java">
+import java.util.List;
 import java.util.Arrays;
 
 public class Calculator {
@@ -162,7 +168,8 @@ public class Calculator {
         System.out.println("Sum of doubles: " + sumList(doubles)); // OK! Double extends Number
         // System.out.println(sumList(strings)); // Compile Error! String doesn't extend Number
     }
-}</code></program>
+}
+</program>
  <p>
   The signature <c>List&lt;? extends Number&gt;</c> allows the <c>sumList</c> method to accept both <c>List&lt;Integer&gt;</c> and <c>List&lt;Double&gt;</c> (and lists of any other <c>Number</c> subtype). Inside the method:
  </p>
@@ -183,7 +190,8 @@ public class Calculator {
  <p>
   This is achieved using <term>lower bounded wildcards</term>. The syntax <c>? super Type</c> means "an unknown type that is either <c>Type</c> or a supertype of <c>Type</c>". This is useful when the method needs to <term>write</term> items of type <c>Type</c> into the generic structure.
  </p>
- <program language="java"><code>import java.util.List;
+ <program language="java">
+import java.util.List;
 import java.util.ArrayList;
 
 public class ListAdder {
@@ -217,7 +225,8 @@ public class ListAdder {
         System.out.println("numberList: " + numberList);
         System.out.println("objectList: " + objectList);
     }
-}</code></program>
+}
+</program>
  <p>
   The signature <c>List&lt;? super Integer&gt;</c> allows <c>addNumbersToList</c> to accept lists that are guaranteed to be able to hold <c>Integer</c> objects. Inside the method:
  </p>
@@ -254,7 +263,8 @@ public class ListAdder {
  <p>
   Consider a method to swap the first two elements of a list:
  </p>
- <program language="java"><code>import java.util.List;
+ <program language="java">
+import java.util.List;
 import java.util.Arrays;
 
 public class ListSwapper {
@@ -282,7 +292,8 @@ public class ListSwapper {
         // swapFirstTwo(List&lt;? extends String&gt; list) // Wouldn't compile: list.set is disallowed
         // swapFirstTwo(List&lt;? super String&gt; list) // Wouldn't compile: list.get returns Object
     }
-}</code></program>
+}
+</program>
  <p>
   Here, we declare a generic method <c>&lt;T&gt; void swapFirstTwo(List&lt;T&gt; list)</c>. Using the type parameter <c>T</c> allows the method to safely <c>get</c> elements (knowing they are type <c>T</c>) and safely <c>set</c> elements (knowing the list expects type <c>T</c>). Using wildcards like <c>List&lt;? extends T&gt;</c> or <c>List&lt;? super T&gt;</c> would prevent either the <c>get</c> or the <c>set</c> operation from being type-safe.
  </p>

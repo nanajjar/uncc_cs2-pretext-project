@@ -18,7 +18,8 @@
  <p>
   The key syntactic difference for a generic method is that the type parameter list (e.g., <c>&lt;T&gt;</c> or <c>&lt;E&gt;</c>) is declared <term>before</term> the method's return type.
  </p>
- <program language="java"><code>[access_modifier] [static] &lt;TypeParameterList&gt; ReturnType methodName(ParameterList) {
+ <program language="java">
+[access_modifier] [static] &lt;TypeParameterList&gt; ReturnType methodName(ParameterList) {
     // Method body using the parameters from TypeParameterList
 }
 
@@ -37,7 +38,8 @@ public &lt;T&gt; T identity(T item) {
 public static &lt;K, V&gt; boolean comparePairs(Pair&lt;K, V&gt; p1, Pair&lt;K, V&gt; p2) {
     return p1.getKey().equals(p2.getKey()) &amp;&amp;
            p1.getValue().equals(p2.getValue());
-}</code></program>
+}
+</program>
  <p>
   The crucial part is the <c>&lt;TypeParameterList&gt;</c> appearing <term>after</term> any modifiers (like <c>public static</c>) but <term>before</term> the return type (<c>void</c>, <c>T</c>, <c>boolean</c> in the examples). This declaration makes the type parameter(s) available for use within the method's signature (return type, parameter types) and its body.
  </p>
@@ -60,15 +62,18 @@ public static &lt;K, V&gt; boolean comparePairs(Pair&lt;K, V&gt; p1, Pair&lt;K, 
  <p>
   Let's revisit the idea of a utility method to print elements of an array. Without generics, we'd need separate methods for each array type, leading to duplication:
  </p>
- <program language="java"><code>// Non-generic approach (Duplication)
+ <program language="java">
+// Non-generic approach (Duplication)
 public static void printIntArray(int[] array) { /* ... */ }
 public static void printStringArray(String[] array) { /* ... */ }
 public static void printPlayerArray(Player[] array) { /* ... */ }
-// etc...</code></program>
+// etc.
+</program>
  <p>
   A generic method solves this elegantly:
  </p>
- <program language="java"><code>public class ArrayUtils { // A non-generic utility class
+ <program language="java">
+public class ArrayUtils { // A non-generic utility class
 
     // Generic static method to print elements of any reference type array
     public static &lt;E&gt; void printArray(E[] inputArray) {
@@ -98,7 +103,8 @@ public static void printPlayerArray(Player[] array) { /* ... */ }
         System.out.print("Player Array: ");
         ArrayUtils.printArray(playerArray);  // Compiler infers E is Player
     }
-}</code></program>
+}
+</program>
  <p>
   Here, <c>printArray</c> is declared with its own type parameter <c>E</c>. When we call <c>printArray(integerArray)</c>, the compiler performs <term>type inference</term>. It sees that <c>integerArray</c> is of type <c>Integer[]</c>, so it infers that for this specific call, <c>E</c> must be <c>Integer</c>. Similarly, for the other calls, it infers <c>E</c> as <c>String</c> and <c>Player</c>. This allows the single <c>printArray</c> method to work correctly and safely for different reference array types without any code duplication.
  </p>
@@ -121,7 +127,8 @@ public static void printPlayerArray(Player[] array) { /* ... */ }
  <p>
   Generic methods can also use their type parameters in the return type, providing type safety for methods that produce values based on their inputs. Consider a method to get the first element from a list:
  </p>
- <program language="java"><code>import java.util.List;
+ <program language="java">
+import java.util.List;
 import java.util.ArrayList; // Assuming usage of ArrayList
 
 public class ListUtils {
@@ -152,7 +159,8 @@ public class ListUtils {
 
         // String wrong = ListUtils.getFirstElement(scores); // Compile Error! Cannot convert Integer to String
     }
-}</code></program>
+}
+</program>
  <note>
   <title>Handling Absence: Returning Null vs. Optional</title>
   <p>
@@ -169,7 +177,8 @@ public class ListUtils {
  <p>
   It's important to distinguish between a generic method (which declares its <term>own</term> type parameters) and a regular instance method inside a generic class (which uses the <term>class's</term> type parameters).
  </p>
- <program language="java"><code>// Generic Class Box&lt;T&gt;
+ <program language="java">
+// Generic Class Box&lt;T&gt;
 public class Box&lt;T&gt; {
     private T item;
 
@@ -198,7 +207,8 @@ public class Utility {
         }
         return false;
     }
-}</code></program>
+}
+</program>
  <p>
   In <c>Box&lt;T&gt;</c>, the <c>get()</c> method uses <c>T</c>, which is the type parameter belonging to the <c>Box</c> class itself, specified when a <c>Box</c> object is created. The <c>inspect</c> method, however, is a generic method within <c>Box</c>; it declares its own type parameter <c>U</c>, which is determined by the type of argument passed to <c>inspect</c> each time it's called, and it might be completely different from <c>T</c>. The <c>Utility</c> class shows that a class doesn't need to be generic itself to contain useful static generic methods. Generic methods provide type parameterization specifically for the operation they perform.
  </p>
