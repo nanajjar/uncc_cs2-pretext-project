@@ -214,6 +214,26 @@ public class Utility {
  </p>
 </subsection>
 
+<note>
+  <title>The Comparable Interface</title>
+  <p>
+    Here's a simplified version of the <c>Comparable</c> interface, this interface is defined in the <c>java.lang</c> package which is automatically imported into every Java program.
+  </p>
+  <program language="java">
+public interface Comparable&lt;T&gt; {
+    /**
+     * Compares this object with the specified object for order.
+     * Returns a negative integer, zero, or a positive integer as this object
+     * is less than, equal to, or greater than the specified object.
+     */
+    public int compareTo(T o);
+}
+  </program>
+  <p>
+    For example, <c>String</c> implements <c>Comparable&lt;String&gt;</c> for alphabetical comparison, and <c>Integer</c> implements <c>Comparable&lt;Integer&gt;</c> for numerical comparison. When used with generics as a bound (<c>&lt;T extends Comparable&lt;T&gt;&gt;</c>), it guarantees that any type parameter will have a <c>compareTo</c> method, enabling generic algorithms like sorting or finding maximum values.
+  </p>
+</note>
+
 <subsection xml:id="generics-methods-apis">
  <title>Generic Methods in the Java Standard Library</title>
  <p>
