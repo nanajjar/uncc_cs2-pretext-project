@@ -3,7 +3,7 @@
 
 <introduction>
  <p>
-  This chapter embarked on a journey that started by reinforcing our understanding of Java's static type system – viewing types as fundamental contracts enforced by the compiler for safety. We revisited the flexibility offered by polymorphism through inheritance and interfaces, but also clearly identified its limitations, particularly the challenges of achieving both type safety and code reusability simultaneously, especially when dealing with containers or unrelated types.
+  This chapter embarked on a journey that started by reinforcing our understanding of Java's static type system - viewing types as fundamental contracts enforced by the compiler for safety. We revisited the flexibility offered by polymorphism through inheritance and interfaces, but also clearly identified its limitations, particularly the challenges of achieving both type safety and code reusability simultaneously, especially when dealing with containers or unrelated types.
  </p>
  <p>
   The problems of unsafe casting when using <c>Object</c> and the excessive code duplication required for type-specific classes highlighted the need for a more powerful mechanism. <term>Generics</term> emerged as Java's elegant solution, allowing us to write code that is both remarkably reusable and robustly type-safe at compile time.
@@ -237,7 +237,7 @@ class Player {
   <li>Bounds (<c>extends</c>) constrain type parameters, guaranteeing specific capabilities (methods) are available and enabling more powerful generic code.</li>
   <li>Wildcards (<c>?</c>, <c>? extends</c>, <c>? super</c>) provide flexibility for method parameters accepting various related generic types, especially for reading from or writing to collections.</li>
   <li>Be mindful of limitations stemming from type erasure (e.g., regarding <c>new T()</c>, <c>new T[]</c>, <c>instanceof</c>, static contexts), but rely on the compiler's checks for safety.</li>
-  <li>Integrating generics into your Design Recipe—particularly Steps 1 (Data Definitions) and 2 (Method Signatures)—helps design effective, maintainable, and error-resistant Java applications.</li>
+  <li>Integrating generics into your Design Recipe-particularly Steps 1 (Data Definitions) and 2 (Method Signatures)-helps design effective, maintainable, and error-resistant Java applications.</li>
   <li>Practice using generics, especially with the Java Collections Framework (<c>ArrayList&lt;E&gt;</c>, <c>HashMap&lt;K, V&gt;</c>, etc.), to solidify your understanding and leverage their full potential.</li>
  </ul>
 

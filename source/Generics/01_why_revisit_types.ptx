@@ -2,7 +2,7 @@
 <title>Why Revisit Types?</title>
 
 <p>
-In our journey through Java so far, we've worked extensively with types. We started with primitive types like <c>int</c> and <c>boolean</c>, and quickly moved on to object types like <c>String</c>. We then learned to define our own types using classes, such as <c>Player</c>, <c>BankAccount</c>, or <c>Vehicle</c>, and explored relationships between them using inheritance. You might feel you already understand types well, so why revisit this seemingly basic concept now?
+p to this point in Java, we've spent a lot of time working with types. We started with primitive types like <c>int</c> and <c>boolean</c>, and quickly moved on to object types like <c>String</c>. We then learned to define our own types using classes, such as <c>Player</c>, <c>BankAccount</c>, or <c>Vehicle</c>, and explored relationships between them using inheritance. You might feel you already understand types well, so why revisit this seemingly basic concept now?
 </p>
 
 <p>

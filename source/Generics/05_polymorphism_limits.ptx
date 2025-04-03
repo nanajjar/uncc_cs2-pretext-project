@@ -104,7 +104,7 @@ String s = (String) item; // Requires a cast - potentially unsafe!
  </tabular>
 
  <p>
-  Programmers needed a way to write code that was both <term>reusable</term> across different types (like using <c>Object</c>) <term>and</term> <term>type-safe</term> (like using specific types), allowing the compiler to verify correctness and prevent runtime errors. This capability would reduce debugging time, simplify code maintenance, and enhance readability—critical factors in creating robust, maintainable programs. This exact need led to the development of Generics in Java. In the next section, we'll see concrete examples of how using <c>Object</c> falls short and how code duplication arises, directly motivating the generic solution.
+  Programmers needed a way to write code that was both <term>reusable</term> across different types (like using <c>Object</c>) <term>and</term> <term>type-safe</term> (like using specific types), allowing the compiler to verify correctness and prevent runtime errors. This capability would reduce debugging time, simplify code maintenance, and enhance readability-critical factors in creating robust, maintainable programs. This exact need led to the development of Generics in Java. In the next section, we'll see concrete examples of how using <c>Object</c> falls short and how code duplication arises, directly motivating the generic solution.
  </p>
 </subsection>
 

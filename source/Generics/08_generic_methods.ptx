@@ -272,7 +272,7 @@ public interface Comparable&lt;T&gt; {
   <li>Benefits: Provides code reuse for algorithms and utility functions while maintaining compile-time type safety, avoiding the need for casting and preventing runtime errors like <c>ClassCastException</c>.</li>
  </ul>
  <p>
-  By reducing code duplication and ensuring compile-time type safety, generic methods provide an elegant way to write robust, reusable algorithms and utilities—making them indispensable tools in Java programming.
+  By reducing code duplication and ensuring compile-time type safety, generic methods provide an elegant way to write robust, reusable algorithms and utilities-making them indispensable tools in Java programming.
  </p>
  <p>
   While generic methods (and types) are powerful, our examples so far (<c>printArray</c>, <c>getFirstElement</c>) could only safely use methods available on <c>Object</c> (like <c>toString</c>) for the parameters of type <c>E</c> or <c>T</c>. What if a generic method needs its type parameter objects to have specific capabilities, like being comparable or having numeric methods? We need a way to add constraints. In the next section, we'll explore <term>bounded type parameters</term>, which allow us to do just that.
