@@ -1,0 +1,20 @@
+<chapter xml:id="ch-generics" xmlns:xi="http://www.w3.org/2001/XInclude">
+<title>Types, Java Compiler, and Generics</title>
+
+<xi:include href="./01_why_revisit_types.ptx" />
+<xi:include href="./02_types_as_contracts.ptx" />
+<xi:include href="./03_contracts_in_hierarchies.ptx" />
+
+<xi:include href="./04_flexibility_with_parameters.ptx" />
+<xi:include href="./05_polymorphism_limits.ptx" />
+
+<xi:include href="./06_motivation_for_generics.ptx" />
+
+<xi:include href="./07_generic_types.ptx" />
+<xi:include href="./08_generic_methods.ptx" />
+<xi:include href="./09_bounded_type_parameters.ptx" />
+<xi:include href="./10_wildcards.ptx" />
+<xi:include href="./11_type_erasure.ptx" />
+
+<xi:include href="./20_generics_conclusion.ptx" />
+</chapter>

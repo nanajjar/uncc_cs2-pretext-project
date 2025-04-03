@@ -1,0 +1,202 @@
+<section xml:id="generics-types-as-contracts">
+<title>Types as Contracts: The Compiler's Perspective</title>
+
+<p>
+As mentioned, thinking of types as "contracts" is a helpful way to understand their role in Java. Why is "contract" a good metaphor? Because just like a real-world contract creates binding agreements and sets expectations, declaring a type in Java establishes a strict agreement with the compiler about what kind of data a variable can hold, what a method requires and returns, or what an object can do. The compiler then acts as a vigilant enforcer of these contracts, checking your code <term>before</term> it even runs. You've been implicitly relying on these contracts all along whenever you wrote or used classes and methods; now we'll make them explicit to better understand the compiler's vital role in helping you write correct code.
+</p>
+
+<note>
+ <title>Compile-Time vs. Runtime Errors: Why the Distinction Matters</title>
+ <p>
+  It's important to distinguish between errors caught by the compiler (<term>compile-time errors</term>) and errors that occur only when the program is running (<term>runtime errors</term>). Compile-time errors, like syntax mistakes or the type mismatches we'll see here, prevent your code from even being turned into executable bytecode. They are often easier to fix because the compiler usually tells you the exact line and nature of the problem. Runtime errors, like the <c>NullPointerException</c> or <c>ArrayIndexOutOfBoundsException</c> you might have encountered when working with arrays or objects, happen during execution. They can crash your program unexpectedly and are often harder to trace back to the original mistake in your code. Java's static typing aims to catch as many errors as possible at compile time. <em>Catching errors early, during compilation, saves significant debugging time, reduces the cost of development, and ultimately leads to more reliable and robust software</em> – critical factors in any programming project. This relates directly back to our Design Recipe principles: defining clear contracts in Steps 1 and 2 helps the compiler catch potential errors early.
+ </p>
+</note>
+
+<subsection xml:id="generics-contracts-variables">
+ <title>Variable Declarations as Contracts</title>
+ <p>
+  Variable contracts are fundamental. Consider a simple declaration:
+ </p>
+ <program language="java">
+ int score = 0;
+ </program>
+ <p>
+  By declaring <c>score</c> as type <c>int</c>, you make a promise to the compiler: "This variable, <c>score</c>, will only ever hold integer values." This directly relates to <term>Step 1 (Data Definitions)</term> of the Design Recipe, where we precisely define the type and intended use of our data. The compiler remembers this promise.
+ </p>
+ <p>
+  If you accidentally try to break this contract, the compiler immediately objects:
+ </p>
+ <program language="java">
+ int score = 0;
+// score = "High Score!"; // Compile Error! Incompatible types.
+ </program>
+ <p>
+  Why does this compile-time error matter practically? Without it, you might accidentally assign text to a variable you expected to hold a number. Later, if you tried to perform arithmetic on <c>score</c> (e.g., <c>score = score + 10;</c>), your program could crash or produce nonsensical results at runtime. The compiler, by enforcing the type contract early, prevents this entire category of bugs, saving you from potentially difficult debugging later.
+ </p>
+</subsection>
+
+<subsection xml:id="generics-contracts-methods">
+ <title>Method Signatures as Contracts</title>
+ <p>
+  Method signatures add another layer, creating contracts for behavior and interaction between different parts of your code. They specify the types of data the method <term>accepts</term> (parameters) and the type of data it <term>returns</term>. Think of it like a detailed job description: it lists the required inputs ('qualifications') and the guaranteed output ('result'). This aligns closely with <term>Step 2 (Method Signature &amp; Purpose Statement)</term> of the Design Recipe, where we define the interface for our methods.
+ </p>
+ <program language="java">
+ /**
+ * Calculates the area of a rectangle.
+ * Contract: Requires two positive doubles (width, height), returns their area as a double.
+ */
+public double calculateArea(double width, double height) {
+    if (width &lt;= 0 || height &lt;= 0) {
+        // In a real scenario, might throw an exception
+        return 0.0;
+    }
+    return width * height;
+}</program>
+ <p>
+  The compiler enforces both the input and output parts of this contract:
+ </p>
+ <program language="java">
+ double area = calculateArea(10.5, 5.2); // OK: Matches the contract
+
+// double errorArea = calculateArea(10, "5"); // Compile Error! Argument type mismatch.
+
+double result = calculateArea(4.0, 3.0); // OK: Return type matches variable type
+// String message = calculateArea(4.0, 3.0); // Compile Error! Incompatible types.
+</program>
+ <p>
+  Calling <c>calculateArea</c> with a <c>String</c> violates the parameter contract. Trying to assign the <c>double</c> result to a <c>String</c> violates the return type contract. If the compiler <term>didn't</term> enforce this, you could call methods with incorrect data, potentially leading to internal calculation errors or crashes only discovered much later when the program runs, making debugging significantly harder.
+ </p>
+</subsection>
+
+<subsection xml:id="generics-contracts-classes">
+ <title>Class Declarations as Contracts</title>
+ <p>
+  Classes bring everything together, defining the most comprehensive contracts. A class declaration acts as a blueprint for objects, specifying all the fields (state) and methods (behaviors) that objects of that type possess. This blueprint is the ultimate contract the compiler uses. If this contract changes later (e.g., a method is renamed or removed), the compiler will immediately flag errors in any code that tries to use the old contract, preventing runtime failures.
+ </p>
+ <program language="java">
+ public class Player {
+    private String username;
+    private int health;
+    // ... other fields
+
+    public Player(String username) {
+        this.username = username;
+        this.health = 100;
+    }
+
+    public void takeDamage(int amount) {
+        this.health -= amount;
+        if (this.health &lt; 0) {
+            this.health = 0;
+        }
+        System.out.println(username + " takes " + amount + " damage.");
+    }
+
+    public String getUsername() {
+        return username;
+    }
+    // ... other methods
+}</program>
+ <p>
+  This contract tells the compiler exactly what a <c>Player</c> object is and what it can do. The compiler uses this blueprint to ensure you interact with <c>Player</c> objects correctly:
+ </p>
+ <program language="java">
+ Player player1 = new Player("Hero");
+player1.takeDamage(10);   // OK: takeDamage(int) is part of the Player contract
+
+// player1.heal(); // Compile Error! Cannot find symbol 'method heal()'.
+</program>
+ <p>
+  Assuming <c>heal()</c> hasn't been defined in the <c>Player</c> class, the attempt to call it fails at compile time. The compiler, referencing the <c>Player</c> contract (its class definition), knows that no such method exists. Imagine if this check didn't happen! Your program might compile, but it could crash unexpectedly at runtime whenever it encountered code trying to call a method that wasn't actually part of the object's definition.
+ </p>
+</subsection>
+
+<subsection xml:id="generics-contracts-summary">
+ <title>The Benefit: Compile-Time Safety</title>
+ <p>
+  This rigorous enforcement of type contracts by the compiler is a cornerstone of Java's design, providing significant <term>compile-time safety</term>. By catching type mismatches, invalid method calls, and other contract violations before execution, the compiler prevents a vast range of potential runtime errors. This makes Java code generally more reliable and easier to debug than code written in some dynamically-typed languages (like Python or JavaScript), where similar errors might only surface when the program is actually run, often in unexpected situations causing frustrating bugs. This compile-time safety net, provided by the type system, saves development time, reduces project costs, enhances program reliability, and is precisely what we want to preserve even as we explore ways to write more flexible and reusable code using Generics. While powerful, we'll soon see how these strict contracts can sometimes limit our ability to reuse code elegantly, leading us toward the need for Generics.
+ </p>
+
+<note>
+ <title>Key Term: Compile-Time Safety</title>
+ <p>
+  <term>Compile-time safety</term> refers to the property of a programming language (like Java) where the compiler checks for type errors and other contract violations <term>before</term> the program runs. This catches many bugs early in the development cycle, preventing them from becoming more difficult-to-diagnose runtime errors and leading to more reliable software.
+ </p>
+</note>
+</subsection>
+
+<exercises>
+ <exercise xml:id="mcq-generics-contract-1" type="multiplechoice">
+     <statement>
+         <p>What is the primary benefit of Java's compile-time type checking, viewing types as contracts?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice>
+             <statement><p>It automatically converts between incompatible types at runtime.</p></statement>
+             <feedback><p>Incorrect. Compile-time checking prevents incompatible type assignments; it doesn't perform automatic runtime conversions beyond specific cases like autoboxing.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>It makes Java code run significantly faster by optimizing type usage.</p></statement>
+             <feedback><p>Incorrect. While compilers perform optimizations, the main goal of compile-time type checking is ensuring correctness and preventing errors, not primarily speed optimization.</p></feedback>
+         </choice>
+         <choice correct="yes">
+             <statement><p>It catches type-related errors before the program runs, improving reliability and reducing runtime crashes.</p></statement>
+             <feedback><p>Correct. By enforcing type contracts during compilation, the compiler finds many potential bugs early, leading to more robust and reliable software.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>It allows variables to hold values of any type, increasing flexibility.</p></statement>
+             <feedback><p>Incorrect. Compile-time type checking restricts variables to hold only values compatible with their declared type contract, ensuring safety rather than unlimited flexibility.</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+
+ <exercise xml:id="mcq-generics-contract-2" type="multiplechoice">
+     <statement>
+         <p>According to the "Types as Contracts" analogy, what does a method signature like <c>public String getName(int id)</c> primarily represent?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice>
+             <statement><p>A promise that the method can accept any type of argument.</p></statement>
+             <feedback><p>Incorrect. The signature specifically contracts that the method accepts only an <c>int</c>.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>A blueprint for creating objects of type <c>String</c>.</p></statement>
+             <feedback><p>Incorrect. A class declaration acts as a blueprint for objects. A method signature defines the contract for a specific behavior (method).</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>A guarantee that the method will never cause a runtime error.</p></statement>
+             <feedback><p>Incorrect. While the signature helps prevent type errors, it doesn't guarantee against all runtime errors (like <c>NullPointerException</c> within the method body).</p></feedback>
+         </choice>
+         <choice correct="yes">
+             <statement><p>A contract specifying the required input type (<c>int</c>) and the guaranteed output type (<c>String</c>).</p></statement>
+             <feedback><p>Correct. The method signature acts like a "job description," defining what type(s) it needs to be called and what type it promises to return, which the compiler enforces.</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+
+ <exercise xml:id="mcq-generics-contract-3" type="multiplechoice">
+     <statement>
+         <p>Consider the code: <c>Player p = new Player("Hero"); p.attack();</c>. If the <c>Player</c> class doesn't define an <c>attack()</c> method, why does the compiler report an error?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice correct="yes">
+             <statement><p>Because the call <c>p.attack()</c> violates the contract defined by the <c>Player</c> class, which doesn't include an <c>attack</c> method.</p></statement>
+             <feedback><p>Correct. The compiler checks the method call against the blueprint (contract) defined by the variable's type (<c>Player</c>). If the method isn't in the contract, it's an error.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>Because static type checking only works for primitive types, not objects like <c>Player</c>.</p></statement>
+             <feedback><p>Incorrect. Java's static type checking applies rigorously to object types, using their class definitions as contracts.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>Because the error can only be detected when the program runs, not during compilation.</p></statement>
+             <feedback><p>Incorrect. This specific error (calling a non-existent method) is a classic example of an error caught at compile time due to type contract enforcement.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>Because the <c>Player</c> object <c>p</c> hasn't been initialized properly.</p></statement>
+             <feedback><p>Incorrect. The variable <c>p</c> is initialized (<c>new Player("Hero")</c>). The error relates to the method call not matching the class definition (contract).</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+</exercises>
+
+</section>

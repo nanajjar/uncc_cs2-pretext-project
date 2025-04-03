@@ -1,0 +1,305 @@
+<section xml:id="generics-bounded-type-parameters">
+<title>Bounded Type Parameters: Adding Constraints</title>
+
+<introduction>
+ <p>
+  Generic types and methods, as introduced in the previous sections (<c>Box&lt;T&gt;</c>, <c>&lt;E&gt; void printArray(E[] arr)</c>), provide excellent flexibility and type safety. However, by default, the type parameter (like <c>T</c> or <c>E</c>) is treated essentially as a placeholder for <c>Object</c> within the generic code. This means you can only reliably call methods defined in the <c>Object</c> class (like <c>toString()</c>, <c>equals()</c>, <c>hashCode()</c>) on variables of the type parameter.
+ </p>
+ <p>
+  But what if your generic algorithm or data structure needs to perform operations that are <term>not</term> defined in <c>Object</c>? Consider trying to write a generic method to find the larger of two items:
+ </p>
+ <program language="java">
+// Attempting a generic max method - THIS WON'T COMPILE!
+public static &lt;T&gt; T findMaximum(T item1, T item2) {
+    // if (item1 &gt; item2) { // Compile Error! The &gt; operator is not defined for all Objects T.
+    // if (item1.compareTo(item2) &gt; 0) { // Compile Error! Cannot assume T has compareTo().
+    //     return item1;
+    // } else {
+    //     return item2;
+    // }
+    return null; // Placeholder - actual comparison logic fails
+}
+</program>
+ <p>
+  This code fails to compile because the compiler has no guarantee that objects of an arbitrary type <c>T</c> can be compared using operators like <c>&gt;</c> or even that they have a specific method like <c>compareTo()</c>. The <c>T</c> could be a <c>String</c>, a <c>Player</c>, or some other type where these operations aren't defined.
+ </p>
+ <p>
+  To solve this, Java generics allow us to specify <term>bounds</term> on type parameters. A <term>bounded type parameter</term> restricts the kinds of types that can be used as type arguments for that parameter. This restriction acts as a contract, guaranteeing the compiler that any supplied type will have certain required methods or characteristics (i.e., it fulfills a specific contract beyond just being an <c>Object</c>).
+ </p>
+</introduction>
+
+<subsection xml:id="generics-bounds-syntax">
+ <title>Syntax: Using <c>extends</c> for Bounds</title>
+ <p>
+  Bounds are specified using the <c>extends</c> keyword after the type parameter declaration within the angle brackets. This might seem confusing initially because <c>extends</c> is also used for class inheritance, but in the context of generic type parameters, <c>extends</c> serves a broader role, meaning "is-a-subtype-of" <term>or</term> "implements", essentially indicating an "is-a" relationship or required capability.
+ </p>
+ <p>
+  The syntax looks like this:
+ </p>
+ <program language="java">
+// Bound with a class: T must be Number or a subclass of Number
+&lt;T extends Number&gt;
+
+// Bound with an interface: T must implement the Comparable interface
+// Note: Comparable&lt;T&gt; itself is generic
+&lt;T extends Comparable&lt;T&gt;&gt;
+
+// Bound for a generic class definition
+public class NumericBox&lt;N extends Number&gt; { /* ... */ }
+
+// Bound for a generic method definition
+public static &lt;E extends Runnable&gt; void runTask(E task) { /* ... */ }
+</program>
+ <p>
+  Key points about the <c>extends</c> keyword in bounds:
+ </p>
+ <ul>
+  <li>It is used for bounds involving <term>both</term> classes and interfaces.</li>
+  <li>If the bound is a class (like <c>Number</c>), the type argument must be that class or one of its subclasses (e.g., <c>Integer</c>, <c>Double</c>).</li>
+  <li>If the bound is an interface (like <c>Comparable</c> or <c>Runnable</c>), the type argument must be a class that implements that interface (e.g., <c>String</c> implements <c>Comparable&lt;String&gt;</c>).</li>
+ </ul>
+</subsection>
+
+<subsection xml:id="generics-bounds-example-class">
+ <title>Example 1: Bound with a Class (<c>Number</c>)</title>
+ <p>
+  Let's say we want a generic method that can inspect any kind of <c>Number</c> (<c>Integer</c>, <c>Double</c>, <c>Float</c>, etc.) and return its value as a <c>double</c>. We need to call the <c>doubleValue()</c> method, which is defined in the abstract <c>Number</c> class (the superclass for all standard numeric wrapper types). We use a bound to guarantee this method exists:
+ </p>
+ <program language="java">
+public class NumericUtils {
+
+    // Generic method constrained to Number types (or subtypes)
+    public static &lt;N extends Number&gt; double getDoubleValue(N number) {
+        // Because N extends Number, we are guaranteed the doubleValue() method exists!
+        // The compiler allows this call because of the bound.
+        return number.doubleValue();
+    }
+
+    public static void main(String[] args) {
+        Integer i = 10;
+        Double d = 25.5;
+        Float f = 3.14f; // Float also extends Number
+
+        System.out.println("Double value of Integer " + i + ": " + getDoubleValue(i));
+        System.out.println("Double value of Double " + d + ": " + getDoubleValue(d));
+        System.out.println("Double value of Float " + f + ": " + getDoubleValue(f));
+
+        // Now, let's try an invalid type:
+        String s = "hello";
+        // System.out.println(getDoubleValue(s)); // Compile Error!
+        // Error message might be:
+        // "Inferred type 'String' for type parameter 'N' is not within its bound;
+        // should extend 'java.lang.Number'"
+    }
+}
+</program>
+ <p>
+  The bound <c>&lt;N extends Number&gt;</c> ensures that only subtypes of <c>Number</c> can be passed to <c>getDoubleValue</c>. Inside the method, the compiler now knows that any object of type <c>N</c> will have the <c>doubleValue()</c> method available, making the call safe. Trying to call the method with a non-Number type like <c>String</c> results in a clear compile-time error, preserving type safety.
+ </p>
+</subsection>
+
+<subsection xml:id="generics-bounds-example-interface">
+ <title>Example 2: Bound with an Interface (<c>Comparable</c>)</title>
+ <p>
+  Now let's fix our earlier <c>findMaximum</c> method. To compare two objects using <c>compareTo</c>, they generally need to implement the <c>Comparable</c> interface. We use this interface as a bound:
+ </p>
+ <program language="java">
+import java.util.Arrays; // Needed just for List example below
+
+public class ComparisonUtils {
+
+    // Generic method constrained to types that implement Comparable
+    // Note: Comparable itself is generic! Comparable&lt;T&gt; ensures type safety in comparison.
+    public static &lt;T extends Comparable&lt;T&gt;&gt; T findMaximum(T item1, T item2) {
+        // Because T extends Comparable&lt;T&gt;, we know compareTo(T) exists.
+        if (item1.compareTo(item2) &gt; 0) {
+            return item1; // item1 is greater
+        } else {
+            return item2; // item2 is greater or they are equal
+        }
+    }
+
+    public static void main(String[] args) {
+        // String implements Comparable&lt;String&gt;
+        System.out.println("Max of 'apple', 'banana': " + findMaximum("apple", "banana"));
+
+        // Integer implements Comparable&lt;Integer&gt;
+        System.out.println("Max of 100, 50: " + findMaximum(100, 50)); // Autoboxing works
+
+        // Player class would need to implement Comparable&lt;Player&gt; for this to work:
+        Player p1 = new Player("Alice"); // Assume Player class exists BUT doesn't implement Comparable
+        Player p2 = new Player("Bob");
+        // findMaximum(p1, p2); // Compile Error!
+        // Error message might be:
+        // "Inferred type 'Player' for type parameter 'T' is not within its bound;
+        // should implement 'java.lang.Comparable&lt;Player&gt;'
+
+        // If Player implemented Comparable (see note below):
+        // Player maxPlayer = findMaximum(p1, p2); // This would then compile
+    }
+}
+</program>
+ <note>
+  <title>Implementing <c>Comparable</c> (Example)</title>
+  <p>
+   To make the <c>findMaximum(p1, p2)</c> call work, the <c>Player</c> class would need to implement the interface, like this minimal example:
+  </p>
+ <program language="java">
+public class Player implements Comparable&lt;Player&gt; {
+    private String name;
+    // Constructor and other methods...
+
+    public Player(String name) { this.name = name; } // Example constructor
+
+    @Override
+    public int compareTo(Player other) {
+        // Compare players based on their names (alphabetically)
+        return this.name.compareTo(other.name);
+    }
+
+    // toString() might be useful too
+    @Override public String toString() { return name; }
+}
+</program>
+  <p>
+   By implementing <c>Comparable&lt;Player&gt;</c> and providing the <c>compareTo</c> method, <c>Player</c> objects now satisfy the bound required by <c>findMaximum</c>.
+  </p>
+ </note>
+ <p>
+  The bound <c>&lt;T extends Comparable&lt;T&gt;&gt;</c> guarantees that any type <c>T</c> passed to this method will have a <c>compareTo</c> method that accepts another object of the same type <c>T</c>. This makes the call <c>item1.compareTo(item2)</c> safe at compile time. Attempting to use <c>findMaximum</c> with a type that doesn't implement <c>Comparable</c> (like our original <c>Player</c> class) results in a compile error, as clearly shown in the example.
+ </p>
+ <note>
+  <title>Self-Referential Bounds like <c>Comparable&lt;T&gt;</c></title>
+  <p>
+   You might notice the bound uses <c>Comparable&lt;T&gt;</c>, where <c>T</c> refers back to the type parameter itself. This pattern is common for interfaces like <c>Comparable</c> to ensure type safety within the comparison method signature (i.e., you compare a <c>String</c> to another <c>String</c>, not to an <c>Integer</c>). The method signature <c>int compareTo(T other)</c> enforced by the bound guarantees this.
+  </p>
+ </note>
+</subsection>
+
+<subsection xml:id="generics-bounds-multiple">
+ <title>Multiple Bounds</title>
+ <p>
+  A type parameter can have multiple bounds, allowing you to require a type argument to satisfy several contracts simultaneously. There are specific rules for this:
+ </p>
+ <ul>
+  <li>You can specify <term>at most one class</term> as a bound.</li>
+  <li>If a class bound is present, it must be listed <term>first</term> in the bounds list.</li>
+  <li>You can specify <term>multiple interface</term> bounds, listed after the class bound (if any) and separated by the ampersand (<c>&amp;</c>) character.</li>
+ </ul>
+ <program language="java">
+// Syntax: Class bound (optional, max 1, must be first) &amp; Interface bounds
+&lt;T extends ClassBound &amp; InterfaceBound1 &amp; InterfaceBound2&gt;
+
+// Example: T must be a subclass of Vehicle AND implement both Runnable and Serializable
+&lt;T extends Vehicle &amp; Runnable &amp; Serializable&gt;
+public void processVehicleTask(T task) {
+    // Inside this method, we can safely call methods from Vehicle, Runnable, and use it as Serializable
+    task.accelerate(1.0); // Method from Vehicle contract
+    new Thread(task).start(); // Use as Runnable
+    // serializeObject(task); // Use as Serializable (assuming method exists)
+}
+
+// Example: Bound only by interfaces
+&lt;S extends Readable &amp; java.io.Closeable&gt;
+public void readAndClose(S source) throws java.io.IOException {
+     // Can safely call methods from both Readable and Closeable interfaces
+     // ... read data using source.read(...) ... (method from Readable)
+     source.close(); // method from Closeable
+}
+</program>
+ <p>
+  Why use multiple bounds? They allow you to create generic types or methods that operate on objects needing a specific <term>combination</term> of structural inheritance and specific capabilities. For example, our <c>processVehicleTask</c> needs something that <term>is-a</term> <c>Vehicle</c> but also <term>can-do</term> the actions defined by <c>Runnable</c> and <c>Serializable</c>. Multiple bounds provide precise compile-time guarantees for these complex requirements.
+ </p>
+</subsection>
+
+<subsection xml:id="generics-bounds-summary">
+ <title>Summary: Bounded Type Parameters</title>
+ <p>
+  Bounded type parameters are essential when your generic code needs to rely on methods or properties beyond those defined in the <c>Object</c> class.
+ </p>
+ <ul>
+  <li>Use <c>extends</c> within the angle brackets (<c>&lt;T extends BoundType&gt;</c>) to specify an upper bound (a class or interface).</li>
+  <li>The type argument supplied when using the generic type/method must be a subtype of the class bound or implement the interface bound(s).</li>
+  <li>This guarantees the availability of methods from the bound type(s) within the generic code, ensuring compile-time safety for calling those methods.</li>
+  <li>Multiple interface bounds can be specified using <c>&amp;</c>, but only one class bound is allowed, and it must come first.</li>
+ </ul>
+ <p>
+  Bounds allow us to write more powerful and specific generic algorithms and data structures, such as methods for numeric calculations, comparisons, sorting, or interacting with types having specific capabilities. However, bounds constrain the types that can be used. Sometimes we need the opposite: more flexibility in accepting related generic types as parameters, even if we don't know the exact type argument. For this, we use wildcards, which we explore next.
+ </p>
+</subsection>
+
+<exercises>
+ <exercise xml:id="mcq-generics-bounds-1" type="multiplechoice">
+     <statement>
+         <p>Why are bounded type parameters (e.g., <c>&lt;T extends Number&gt;</c>) necessary in some generic methods or classes?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice>
+             <statement><p>To allow the generic code to work with primitive types like <c>int</c>.</p></statement>
+             <feedback><p>Incorrect. Bounds restrict generic parameters to reference types that meet certain criteria; they don't enable direct use of primitives.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>To bypass type erasure at runtime.</p></statement>
+             <feedback><p>Incorrect. Bounds influence compile-time checks and how erasure occurs (replacing T with the bound instead of Object), but they don't prevent erasure.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>To allow the generic type to be instantiated using <c>new T()</c>.</p></statement>
+             <feedback><p>Incorrect. The inability to use `new T()` is a limitation due to type erasure, which bounds don't solve directly (though workarounds exist).</p></feedback>
+         </choice>
+         <choice correct="yes">
+             <statement><p>To guarantee that the type parameter <c>T</c> has access to specific methods beyond those defined in <c>Object</c> (e.g., <c>doubleValue()</c> or <c>compareTo()</c>).</p></statement>
+             <feedback><p>Correct. Bounds provide a contract to the compiler that objects of type T will have the methods defined by the bound (e.g., Number or Comparable), allowing the generic code to safely call them.</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+
+ <exercise xml:id="mcq-generics-bounds-2" type="multiplechoice">
+     <statement>
+         <p>What does the bound <c>&lt;T extends Comparable&lt;T&gt;&gt;</c> mean for the type parameter <c>T</c>?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice>
+             <statement><p><c>T</c> must be a direct subclass of a class named <c>Comparable</c>.</p></statement>
+             <feedback><p>Incorrect. `Comparable` is an interface, not a class, and `extends` is used for interface bounds here. Also, `Comparable` itself is generic.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p><c>T</c> can be any type, but it will be compared using methods from the <c>Object</c> class.</p></statement>
+             <feedback><p>Incorrect. The bound specifically requires `T` to implement the `Comparable` interface, guaranteeing the `compareTo` method.</p></feedback>
+         </choice>
+         <choice correct="yes">
+             <statement><p><c>T</c> must be a type that implements the <c>Comparable</c> interface for comparing objects of its own type.</p></statement>
+             <feedback><p>Correct. This bound ensures that any type used for T provides a `compareTo(T other)` method, allowing instances of T to be compared with each other.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p><c>T</c> must be either the <c>Comparable</c> interface itself or a subclass of it.</p></statement>
+             <feedback><p>Incorrect. T must be a class that *implements* the `Comparable` interface.</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+
+ <exercise xml:id="mcq-generics-bounds-3" type="multiplechoice">
+     <statement>
+         <p>Which of the following multiple bound declarations is syntactically <term>correct</term> according to Java's rules?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice>
+             <statement><p><c>&lt;T extends Runnable &amp; Thread&gt;</c></p></statement>
+             <feedback><p>Incorrect. If a class bound (`Thread`) is present, it must be listed first.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p><c>&lt;T extends Number &amp; Integer&gt;</c></p></statement>
+             <feedback><p>Incorrect. A type parameter can extend at most one class (`Number` or `Integer`, not both).</p></feedback>
+         </choice>
+         <choice correct="yes">
+             <statement><p><c>&lt;T extends Number &amp; Comparable&lt;T&gt; &amp; Serializable&gt;</c></p></statement>
+             <feedback><p>Correct. This follows the rule: at most one class bound (`Number`) listed first, followed by interface bounds (`Comparable`, `Serializable`) separated by ampersands.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p><c>&lt;T extends Comparable&lt;T&gt; , Serializable&gt;</c></p></statement>
+             <feedback><p>Incorrect. Multiple bounds must be separated by an ampersand (`&amp;`), not a comma.</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+</exercises>
+
+</section>

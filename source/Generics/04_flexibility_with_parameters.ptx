@@ -1,0 +1,215 @@
+<section xml:id="generics-flexibility-with-parameters">
+<title>Using Hierarchy in Parameters</title>
+
+<p>
+In the previous section, we saw how the compiler understands the relationships defined by <c>extends</c> and <c>implements</c>. It knows that a <c>Car</c> contract includes the <c>Vehicle</c> contract, and a <c>Circle</c> contract includes the <c>Drawable</c> contract. This understanding enables a core concept in object-oriented programming called <term>polymorphism</term>. Simply put, polymorphism allows us to treat objects of different specific types in a uniform way, based on their shared contract (defined by a common superclass or interface). One of the most common places we leverage this is in method parameters.
+</p>
+
+<note>
+ <title>Key Term: Polymorphism</title>
+ <p>
+  <term>Polymorphism</term> (from Greek meaning "many forms") is a core object-oriented principle. In this context, it means that a single variable of a superclass or interface type can refer to objects of different specific subclass or implementing class types at runtime. This allows methods to treat these different objects uniformly based on their shared contract, leading to flexible and extensible code.
+ </p>
+</note>
+
+<subsection xml:id="generics-polymorphism-inheritance-params">
+ <title>Handling Subclasses via Superclass Parameters</title>
+ <p>
+  Because a subclass contract includes the superclass contract, a method parameter declared with a superclass type can accept instances of <term>any</term> of its subclasses.
+ </p>
+ <p>
+  Imagine a method designed to process any kind of <c>Vehicle</c>:
+ </p>
+ <program language="java">
+ // Method that accepts any object fulfilling the Vehicle contract
+public static void simulateMovement(Vehicle v, double timeStep) {
+    // We can safely call methods defined in the Vehicle contract
+    v.updatePosition(timeStep); // Assumes updatePosition is in Vehicle
+    System.out.println(
+        "Vehicle moved. Current speed: " + v.getSpeed() // Assumes getSpeed is in Vehicle
+    );
+    // We cannot call v.openTrunk() or v.ringBell() here,
+    // because those are not part of the base Vehicle contract.
+}
+
+// We can call this method with different Vehicle subtypes
+Car myCar = new Car(/*...*/);
+Bicycle myBike = new Bicycle(/*...*/);
+Motorcycle myMotorcycle = new Motorcycle(/*...*/);
+
+simulateMovement(myCar, 0.1);        // Works! Car 'is-a' Vehicle
+simulateMovement(myBike, 0.1);       // Works! Bicycle 'is-a' Vehicle
+simulateMovement(myMotorcycle, 0.1); // Works! Motorcycle 'is-a' Vehicle
+</program>
+ <p>
+  The <c>simulateMovement</c> method doesn't need to know the specific type of vehicle (<c>Car</c>, <c>Bicycle</c>, etc.). It only relies on the guarantee that any object passed in will fulfill the <c>Vehicle</c> contract, allowing it to safely call methods like <c>updatePosition</c> and <c>getSpeed</c>. This significantly reduces code duplication – we write the simulation logic once, and it works for all current and future vehicle types that extend <c>Vehicle</c>.
+ </p>
+</subsection>
+
+<subsection xml:id="generics-polymorphism-interface-params">
+ <title>Handling Implementers via Interface Parameters</title>
+ <p>
+  Similarly, a method parameter declared with an interface type can accept instances of <term>any</term> class that implements that interface.
+ </p>
+ <p>
+  Consider a method that can draw any object that knows how to draw itself, using the <c>Drawable</c> interface from the previous section:
+ </p>
+ <program language="java">
+ // Method that accepts any object fulfilling the Drawable contract
+public static void renderOnScreen(Drawable item) {
+    System.out.println("Preparing to draw...");
+    // We can safely call methods defined in the Drawable contract
+    item.draw(); // The actual draw() method executed depends on the runtime type of 'item'
+    System.out.println("...drawing complete.");
+    // We cannot call item.getRadius() or item.getWidth() here,
+    // as those are specific to implementing classes, not the Drawable contract.
+}
+
+// Assume Circle, Rectangle, and FancyButton all implement Drawable
+Circle circle = new Circle(/*...*/);
+Rectangle rectangle = new Rectangle(/*...*/);
+FancyButton button = new FancyButton(/*...*/); // Even UI elements can be Drawable
+
+renderOnScreen(circle);    // Works! Circle implements Drawable
+renderOnScreen(rectangle); // Works! Rectangle implements Drawable
+renderOnScreen(button);    // Works! FancyButton implements Drawable
+</program>
+ <p>
+  The <c>renderOnScreen</c> method works with completely unrelated types (<c>Circle</c>, <c>Rectangle</c>, <c>FancyButton</c>) as long as they fulfill the <c>Drawable</c> contract by implementing the <c>draw</c> method. This provides enormous flexibility, allowing different parts of a system to interact through shared capability contracts (interfaces) without needing to know about each other's specific implementation details or inheritance structure.
+ </p>
+</subsection>
+
+<subsection xml:id="generics-polymorphism-collections">
+ <title>Polymorphism with Collections</title>
+ <p>
+  This principle extends powerfully to collections. If you have a collection, such as an <c>ArrayList</c>, that holds references based on a superclass or interface type, you can store various related subtypes within it and process them uniformly.
+ </p>
+ <program language="java"><![CDATA[// Assume ArrayList has been introduced
+// Using List<Vehicle> ensures only Vehicle objects (or subclasses) can be added
+java.util.List<Vehicle> traffic = new java.util.ArrayList<>();
+
+traffic.add(new Car(...));
+traffic.add(new Bicycle(...));
+traffic.add(new Car(...));
+traffic.add(new Motorcycle(...));
+
+// Process all vehicles uniformly using the Vehicle contract
+System.out.println("Updating all vehicle positions:");
+for (Vehicle v : traffic) {
+    // This works because every object in the list guarantees
+    // it fulfills the Vehicle contract, which includes accelerate()
+    v.accelerate(0.5); // Apply gentle acceleration to all
+    simulateMovement(v, 0.5); // Reuse our previous method
+}]]></program>
+ <p>
+  Here, we can iterate through the list and call methods defined in the <c>Vehicle</c> contract on every element, regardless of whether it's actually a <c>Car</c>, <c>Bicycle</c>, or <c>Motorcycle</c> object. This example also demonstrates <term>dynamic dispatch</term>: the actual implementation of methods like <c>accelerate</c> or <c>updatePosition</c> called at runtime will match the specific subclass of each object (e.g., the <c>Car</c> version for cars, the <c>Bicycle</c> version for bicycles, if they were overridden). Polymorphism thus combines compile-time safety (guaranteed contracts via the variable type <c>Vehicle</c>) with runtime flexibility (executing the behavior specific to the actual object type).
+ </p>
+
+<note>
+ <title>Key Term: Dynamic Dispatch</title>
+ <p>
+  <term>Dynamic dispatch</term> (also known as late binding) is the mechanism that makes polymorphism work for overridden methods. When you call a method like <c>v.accelerate(0.5)</c> on a variable <c>v</c> of type <c>Vehicle</c>, the decision about <term>which version</term> of the <c>accelerate</c> method to run (the one in <c>Vehicle</c>, or an overridden one in <c>Car</c>, <c>Motorcycle</c>, etc.) is made at <term>runtime</term>, based on the actual class of the object <c>v</c> currently refers to.
+ </p>
+</note>
+</subsection>
+
+<subsection xml:id="generics-polymorphism-benefits-summary">
+ <title>Benefits of Polymorphic Flexibility</title>
+ <p>
+  Using superclass and interface types in method parameters provides significant benefits, leveraging the contracts enforced by the compiler:
+ </p>
+ <ul>
+  <li>
+   <term>Code Reuse:</term> You can write a single method that operates on a whole family of related types (subclasses or implementing classes) instead of writing separate methods for each specific type.
+  </li>
+  <li>
+   <term>Flexibility:</term> Your methods can easily handle collections containing different subtypes, processing them based on their shared contract.
+  </li>
+  <li>
+   <term>Extensibility:</term> Adding new subclasses or implementing classes later (e.g., a new <c>ElectricScooter</c> extending <c>Vehicle</c>, or a <c>UserProfileWidget</c> implementing <c>Drawable</c>) is easier because existing polymorphic methods, like <c>simulateMovement</c> or <c>renderOnScreen</c>, typically require no modification at all to handle the new types, provided these new classes correctly implement the established contracts (<c>Vehicle</c> or <c>Drawable</c> respectively).
+  </li>
+ </ul>
+ <p>
+  This polymorphic flexibility, enabled by Java's type system and the contracts defined through inheritance and interfaces, is a powerful tool. However, as we'll see in the next section, it also has limitations, particularly when we need type safety for unrelated types or want to avoid the potential risks and verbosity of casting. These limitations pave the way for understanding the necessity of Generics.
+ </p>
+</subsection>
+
+<p>
+  As we'll see next, this flexibility is not unlimited—it introduces significant limitations when we require type safety across unrelated types or need to create reusable containers for arbitrary data types. These specific limitations directly motivated Java's introduction of Generics, which we'll explore after understanding the constraints of polymorphism alone.
+</p>
+
+<exercises>
+ <exercise xml:id="mcq-generics-poly-1" type="multiplechoice">
+     <statement>
+         <p>What is the primary concept that allows a single method like <c>void process(Vehicle v)</c> to accept objects of type <c>Car</c>, <c>Bicycle</c>, and <c>Motorcycle</c> (assuming they all extend <c>Vehicle</c>)?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice>
+             <statement><p>Encapsulation</p></statement>
+             <feedback><p>Incorrect. Encapsulation is about bundling data and methods within a class and controlling access, not about treating different types uniformly.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>Type Casting</p></statement>
+             <feedback><p>Incorrect. Casting might be needed to access specific subclass methods later, but polymorphism is what allows the method to *accept* the different subtypes initially based on the shared superclass contract.</p></feedback>
+         </choice>
+         <choice correct="yes">
+             <statement><p>Polymorphism</p></statement>
+             <feedback><p>Correct. Polymorphism allows a variable or parameter of a superclass type (Vehicle) to refer to objects of its subclass types (Car, Bicycle), enabling uniform treatment based on the superclass contract.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>Abstraction</p></statement>
+             <feedback><p>Incorrect. While polymorphism relies on abstraction (the common contract defined by the superclass/interface), polymorphism specifically refers to the ability to treat different types through that common interface.</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+
+ <exercise xml:id="mcq-generics-poly-2" type="multiplechoice">
+     <statement>
+         <p>When a method <c>renderOnScreen(Drawable item)</c> is called with a <c>Circle</c> object (where <c>Circle implements Drawable</c>), which version of the <c>draw()</c> method is executed?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice>
+             <statement><p>The version defined in the <c>Object</c> class.</p></statement>
+             <feedback><p>Incorrect. The `Object` class doesn't define a `draw` method relevant here. Dynamic dispatch selects the method from the actual object's class.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>A default version possibly defined in the <c>Drawable</c> interface.</p></statement>
+             <feedback><p>Incorrect. While interfaces *can* have default methods, polymorphism ensures that if the implementing class (`Circle`) provides its own version (`@Override`), that version is called.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>It depends on how the <c>renderOnScreen</c> method calls it.</p></statement>
+             <feedback><p>Incorrect. The calling method (`renderOnScreen`) doesn't determine which override runs; the actual type of the object (`item`) at runtime does, via dynamic dispatch.</p></feedback>
+         </choice>
+         <choice correct="yes">
+             <statement><p>The version of <c>draw()</c> implemented specifically within the <c>Circle</c> class.</p></statement>
+             <feedback><p>Correct. Due to dynamic dispatch, the JVM determines the actual type of the object referenced by `item` at runtime (which is `Circle`) and executes the `draw()` method belonging to that specific class.</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+
+ <exercise xml:id="mcq-generics-poly-3" type="multiplechoice">
+     <statement>
+         <p>What is a major benefit of using polymorphism with collections, such as storing <c>Car</c> and <c>Bicycle</c> objects in a <c>List&lt;Vehicle&gt;</c>?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice>
+             <statement><p>It allows you to call <c>Car</c>-specific methods directly on any element retrieved from the list without casting.</p></statement>
+             <feedback><p>Incorrect. When retrieving elements as `Vehicle`, you can only directly call methods defined in the `Vehicle` contract without casting.</p></feedback>
+         </choice>
+         <choice correct="yes">
+             <statement><p>You can process all elements uniformly using a loop that treats each element as a <c>Vehicle</c>, calling methods defined in the <c>Vehicle</c> contract.</p></statement>
+             <feedback><p>Correct. You can iterate through the collection and apply common operations defined in the superclass/interface type (`Vehicle`) to all elements, regardless of their specific subtype.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>It automatically converts all objects in the list to the <c>Vehicle</c> type, losing subclass information.</p></statement>
+             <feedback><p>Incorrect. The objects retain their specific types (`Car`, `Bicycle`) at runtime; only the reference variable used to access them in the loop has the more general type (`Vehicle`).</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>It ensures that only objects of the exact type <c>Vehicle</c> can be added, preventing subclasses.</p></statement>
+             <feedback><p>Incorrect. A `List&lt;Vehicle&gt;` specifically *allows* instances of `Vehicle` and any of its subclasses to be added.</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+</exercises>
+
+</section>

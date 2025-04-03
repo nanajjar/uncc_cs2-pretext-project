@@ -1,0 +1,184 @@
+<section xml:id="generics-polymorphism-limits">
+<title>The Limits of Polymorphic Flexibility</title>
+
+<p>
+As we saw in the previous section, polymorphism, enabled by inheritance and interfaces, offers significant flexibility. It allows us to write reusable methods like <c>simulateMovement(Vehicle v)</c> or <c>renderOnScreen(Drawable d)</c> that can handle various related types uniformly. This is a powerful feature of object-oriented programming.
+</p>
+
+<p>
+However, this flexibility, born from Java's strict static type checking, has inherent boundaries. These limitations aren't design oversights; they stem from the very nature of ensuring type safety through fixed contracts. Understanding these boundaries is key to appreciating why a necessary evolution like Generics was added to Java.
+</p>
+
+<subsection xml:id="generics-limits-related-types">
+ <title>Limitation 1: Only Works for Related Types</title>
+ <p>
+  The core mechanism of polymorphism relies on a shared contract defined by a common superclass or interface. The <c>simulateMovement</c> method works for <c>Car</c> and <c>Bicycle</c> because they both share the <c>Vehicle</c> contract. The <c>renderOnScreen</c> method works for <c>Circle</c> and <c>FancyButton</c> because they both share the <c>Drawable</c> contract.
+ </p>
+ <p>
+  But what if we want to write reusable code that operates on types that <term>don't</term> share a predefined relationship? For example, imagine needing a simple container class that can hold a single item, sometimes a <c>String</c>, sometimes an <c>Integer</c>, and sometimes a <c>Player</c> object. These types don't naturally share a useful common superclass or interface, unlike our examples in the previous section (vehicles or drawable shapes). While we could technically use <c>Object</c> as a common superclass since all classes inherit from it, doing so forces us to use casts constantly and eliminates all the practical <term>compile-time type safety</term> benefits we discussed earlier, leading directly to the problems detailed in the next limitations. Polymorphism based on meaningful hierarchies or interfaces doesn't directly help us write a <term>single, type-safe</term> container for these unrelated types.
+ </p>
+</subsection>
+
+<subsection xml:id="generics-limits-loss-specific-type">
+ <title>Limitation 2: Loss of Specific Type Information</title>
+ <p>
+  When we use a superclass or interface reference to achieve polymorphism (like <c>Vehicle v = new Car();</c> or <c>Drawable shape = new Circle();</c>), the compiler only "sees" the contract of the variable's declared type (<c>Vehicle</c> or <c>Drawable</c>). While this ensures safety for calling common methods, it means we lose access to the specific methods of the actual object's type (<c>Car</c> or <c>Circle</c>) without resorting to casting.
+ </p>
+ <p>
+  As we noted in the casting example earlier, checking with <c>instanceof</c> and then casting works, but it has drawbacks:
+ </p>
+ <ul>
+  <li>It adds verbosity and complexity to the code.</li>
+  <li>It moves type checking partially from compile time to runtime.</li>
+  <li>An incorrect cast (if not guarded by <c>instanceof</c> or if logic is flawed) results in a <c>ClassCastException</c> at runtime, potentially crashing the program.</li>
+ </ul>
+ <p>
+  Moreover, frequent casting makes code harder to read, debug, and maintain. Each cast is essentially a small "trust me" statement to the compiler, reducing its ability to catch type-related mistakes early. If your code requires many casts, it's usually a sign that the type system isn't being leveraged effectively.
+ </p>
+ <p>
+  This loss of specific type information becomes particularly inconvenient when you <term>know</term> more about the types than the compiler does based on the general variable type. For instance, if you manually ensure that a <c>List&lt;Vehicle&gt;</c> only contains <c>Car</c> objects, you still need to cast each element back to <c>Car</c> every time you want to call a <c>Car</c>-specific method like <c>openTrunk()</c>. Wouldn't it be better if the compiler could know and enforce that the list <term>only</term> contains cars?
+ </p>
+</subsection>
+
+<subsection xml:id="generics-limits-collection-safety">
+ <title>Limitation 3: Weak Type Enforcement in Collections (with Object)</title>
+ <p>
+  Polymorphism allows a <c>List&lt;Vehicle&gt;</c> to hold <c>Car</c>s, <c>Bicycle</c>s, etc. This is often useful. However, what if we needed a collection that could hold <term>any</term> kind of object? Before generics, the only way to do this was to use the ultimate superclass, <c>Object</c>.
+ </p>
+ <program language="java">
+// Pre-Generics way to hold anything (using ArrayList for example)
+// Note: Using 'raw' ArrayList like this is discouraged in modern Java.
+java.util.List anythingList = new java.util.ArrayList&lt;Object&gt;(); // Holds Objects
+
+anythingList.add("Hello");         // String is an Object - OK
+anythingList.add(Integer.valueOf(123)); // Integer is an Object - OK
+anythingList.add(new Car(...));    // Car is an Object - OK
+
+// The problem comes when retrieving items:
+Object item = anythingList.get(0); // Compiler only knows it's an Object
+String s = (String) item; // Requires a cast - potentially unsafe!
+
+// What if we get the wrong item by mistake?
+// Integer i = (Integer) anythingList.get(0); // Runtime ClassCastException!
+</program>
+ <p>
+  Using <c>Object</c> provides maximum flexibility (you can put literally anything in the list), but it completely sacrifices compile-time type safety for the elements <term>within</term> the collection. You lose all information about what specific types are actually stored, forcing casts upon retrieval and pushing type error detection entirely to runtime via potential <c>ClassCastException</c>s. While you can partially guard against these runtime type errors using <c>instanceof</c> checks before casting, doing so adds significant complexity and overhead, and still doesn't solve the fundamental problem: the compiler cannot verify type correctness for the collection's contents, leaving potential errors hidden until your program runs. There's no way for the compiler to guarantee that a list declared to hold <c>Object</c>s actually contains only <c>String</c>s or only <c>Integer</c>s at a particular point.
+ </p>
+ <note>
+  <title>Modern Java and Raw Types</title>
+  <p>
+   Using <term>raw types</term> (like <c>ArrayList</c> or <c>List</c> without the angle brackets and type parameters, e.g., <c>&lt;String&gt;</c>) is strongly discouraged in modern Java precisely because it bypasses the type-safety benefits provided by generics, leading back to the problems of casting and potential <c>ClassCastException</c>s described here. You might encounter raw types in older codebases, but understanding these problems helps us appreciate why generics were introduced and why modern Java code almost always uses them with collections like <c>ArrayList</c>.
+  </p>
+ </note>
+</subsection>
+
+<subsection xml:id="generics-limits-summary">
+ <title>The Need for a Better Solution</title>
+ <p>
+  These limitations highlight a gap:
+ </p>
+ <ul>
+  <li>Polymorphism based on inheritance/interfaces works well for related types but not for creating reusable code across unrelated types.</li>
+  <li>Using superclass/interface references leads to a loss of specific type information, often requiring risky and verbose casting.</li>
+  <li>Using <c>Object</c> for general-purpose containers or algorithms sacrifices all compile-time type safety regarding the contents or parameters.</li>
+ </ul>
+
+ <tabular>
+  <title>Summary: Limitations of Polymorphism Alone</title>
+  <row header="yes">
+   <cell>Limitation</cell>
+   <cell>Consequence</cell>
+  </row>
+  <row>
+   <cell>Relies on Shared Contract (Superclass/Interface)</cell>
+   <cell>Cannot directly handle unrelated types in a type-safe, reusable way.</cell>
+  </row>
+  <row>
+   <cell>Supertype Reference Hides Specific Type</cell>
+   <cell>Requires casting to access subclass methods; verbose, runtime risk (<c>ClassCastException</c>).</cell>
+  </row>
+  <row>
+   <cell>Using <c>Object</c> for Generality</cell>
+   <cell>Sacrifices compile-time type safety; requires casting, risks <c>ClassCastException</c>.</cell>
+  </row>
+ </tabular>
+
+ <p>
+  Programmers needed a way to write code that was both <term>reusable</term> across different types (like using <c>Object</c>) <term>and</term> <term>type-safe</term> (like using specific types), allowing the compiler to verify correctness and prevent runtime errors. This capability would reduce debugging time, simplify code maintenance, and enhance readability-critical factors in creating robust, maintainable programs. This exact need led to the development of Generics in Java. In the next section, we'll see concrete examples of how using <c>Object</c> falls short and how code duplication arises, directly motivating the generic solution.
+ </p>
+</subsection>
+
+<exercises>
+ <exercise xml:id="mcq-generics-limits-1" type="multiplechoice">
+     <statement>
+         <p>What does it mean for generic types like <c>List&lt;T&gt;</c> to be <term>invariant</term>?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice>
+             <statement><p>A <c>List&lt;String&gt;</c> can be safely used wherever a <c>List&lt;Object&gt;</c> is expected.</p></statement>
+             <feedback><p>Incorrect. Invariance means precisely the opposite; even though String is an Object, `List&lt;String&gt;` is NOT a subtype of `List&lt;Object&gt;`.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>Generic types cannot change after they are created.</p></statement>
+             <feedback><p>Incorrect. This describes immutability. Invariance relates to the subtype relationship between generic types with different type arguments.</p></feedback>
+         </choice>
+         <choice correct="yes">
+             <statement><p>Even if type <c>A</c> is a subtype of <c>B</c>, <c>GenericType&lt;A&gt;</c> is generally not a subtype of <c>GenericType&lt;B&gt;</c>.</p></statement>
+             <feedback><p>Correct. Invariance means the subtype relationship between the type arguments (like String and Object) does not carry over to the generic types themselves (like `List&lt;String&gt;` and `List&lt;Object&gt;`).</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>The type argument (like <c>String</c> in <c>List&lt;String&gt;</c>) cannot vary and must always be <c>Object</c>.</p></statement>
+             <feedback><p>Incorrect. The type argument can be varied (that's the point of generics), but the relationship between different parameterizations like `List&lt;String&gt;` and `List&lt;Object&gt;` is invariant.</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+
+ <exercise xml:id="mcq-generics-limits-2" type="multiplechoice">
+     <statement>
+         <p>What is a primary drawback of using <c>Object</c> as the element type in collections (e.g., pre-generics <c>ArrayList</c> or <c>List&lt;Object&gt;</c>) to store different types of items?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice>
+             <statement><p>It prevents adding objects of different types to the same collection.</p></statement>
+             <feedback><p>Incorrect. Using `Object` specifically *allows* adding any type of object, which is part of the problem regarding type safety.</p></feedback>
+         </choice>
+         <choice correct="yes">
+             <statement><p>It sacrifices compile-time type safety, requiring explicit casting on retrieval and risking runtime <c>ClassCastException</c>s.</p></statement>
+             <feedback><p>Correct. The compiler cannot guarantee the type of elements retrieved, forcing unsafe casts and pushing error detection to runtime.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>It significantly reduces the storage capacity of the collection.</p></statement>
+             <feedback><p>Incorrect. The element type declaration doesn't directly impact the collection's capacity in this way.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>It prevents the use of polymorphism within the collection.</p></statement>
+             <feedback><p>Incorrect. You can still leverage polymorphism with `Object`, but you lose the specific type information needed for safer operations beyond those defined in `Object`.</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+
+ <exercise xml:id="mcq-generics-limits-3" type="multiplechoice">
+     <statement>
+         <p>Why is the "loss of specific type information" when using superclass/interface references (e.g., <c>Vehicle v = new Car();</c>) considered a limitation?</p>
+     </statement>
+     <choices randomize="yes">
+         <choice>
+             <statement><p>Because it prevents the compiler from checking any method calls on the variable.</p></statement>
+             <feedback><p>Incorrect. The compiler *does* check method calls, but only against the contract of the declared type (e.g., `Vehicle`), not the specific subtype (`Car`).</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>Because the object actually changes its type to the superclass type.</p></statement>
+             <feedback><p>Incorrect. The object retains its specific runtime type (`Car`); only the reference variable (`v`) has the more general compile-time type (`Vehicle`).</p></feedback>
+         </choice>
+         <choice correct="yes">
+             <statement><p>Because accessing subclass-specific methods requires casting, which is verbose and carries a runtime risk (<c>ClassCastException</c>).</p></statement>
+             <feedback><p>Correct. While you gain flexibility by using the supertype reference, you lose direct, type-safe access to methods unique to the subclass without resorting to risky runtime casts.</p></feedback>
+         </choice>
+         <choice>
+             <statement><p>Because it violates the DRY principle.</p></statement>
+             <feedback><p>Incorrect. Using polymorphism often *supports* the DRY principle by allowing common methods to handle multiple types. The limitation is about accessing specific methods, not necessarily about duplication.</p></feedback>
+         </choice>
+     </choices>
+ </exercise>
+</exercises>
+</section>
