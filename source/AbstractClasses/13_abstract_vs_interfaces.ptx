@@ -222,17 +222,36 @@ public class ElectricTruck extends Vehicle
   
   <p><term>Key takeaways for choosing between abstract classes and interfaces:</term></p>
   <ul>
-    <li>Use abstract classes for "is-a" relationships with shared state and implementation</li>
-    <li>Use interfaces for "can-do" capabilities that may apply to diverse classes</li>
-    <li>Consider using both in combination for complex systems</li>
-    <li>Remember: Java allows single inheritance but multiple interface implementation</li>
-    <li>Avoid deep inheritance hierarchies (more than 2-3 levels) to reduce complexity. Deep hierarchies can lead to:
+    <li>
+      <p>
+        Use abstract classes for "is-a" relationships with shared state and implementation
+      </p>
+    </li>
+    <li>
+      <p>
+        Use interfaces for "can-do" capabilities that may apply to diverse classes
+      </p>
+    </li>
+    <li>
+      <p>
+        Consider using both in combination for complex systems
+      </p>
+    </li>
+    <li>
+      <p>
+        Remember: Java allows single inheritance but multiple interface implementation
+      </p>
+    </li>
+    <li>
+      <p>
+        Avoid deep inheritance hierarchies (more than 2-3 levels) to reduce complexity. Deep hierarchies can lead to:
       <ul>
         <li>Fragile code that breaks when superclasses change</li>
         <li>Difficulty understanding the full behavior of a class</li>
         <li>"Method origin confusion" (which superclass does this method come from?)</li>
         <li>Reduced maintainability and code flexibility</li>
       </ul>
+      </p>
     </li>
   </ul>
   
