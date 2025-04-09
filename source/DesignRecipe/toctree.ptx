@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en-US">
+<chapter xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en-US" xml:id="ch-design-recipe">
   <title>The Design Recipe</title>
   <xi:include href="./01_data_definition.ptx" />
   <xi:include href="./02_contracts_purpose.ptx" />

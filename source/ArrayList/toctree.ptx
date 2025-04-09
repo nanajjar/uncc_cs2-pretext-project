@@ -2,12 +2,13 @@
   <title>Capstone: Building a Generic ArrayList</title>
 
   <xi:include href="./01_intro_capstone.ptx" />
-  <xi:include href="./02_scope_structure.ptx" />
-  <xi:include href="./03_understanding_packages.ptx" />
-  <xi:include href="./04_using_imports.ptx" />
-  <xi:include href="./05_setting_up_workspace.ptx" />
 
-  <xi:include href="./06_list_adts.ptx" />
+  <xi:include href="./02_need_for_collections.ptx" />
+  <xi:include href="./03_interfaces_adts.ptx" />
+  <xi:include href="./04_packages_organization.ptx" />
+  <xi:include href="./05_imports_using_packages.ptx" />
+  <xi:include href="./06_setup_tooling_scope.ptx" />
+
   <xi:include href="./07_dr0_understand_task.ptx" />
   <xi:include href="./08_dr1_designing_data.ptx" />
   <xi:include href="./09_dr2_class_structure.ptx" />
@@ -24,5 +25,5 @@
 
   <xi:include href="./19_dr5_refining_impl.ptx" />
   <xi:include href="./20_conclusion.ptx" />
-  <xi:include href="./21_submission_further.ptx" /> 
+  <xi:include href="./21_submission_further.ptx" />
 </chapter> 

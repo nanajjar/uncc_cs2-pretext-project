@@ -1,0 +1,137 @@
+<section xml:id="sec-arraylist-using-imports">
+  <title>Using Code Across Packages: Imports</title>
+
+  <p>
+    In the previous section, we saw how <term>packages</term> organize our code into distinct namespaces, preventing naming conflicts and grouping related classes like <c>ADTs.ListADT</c> and <c>DataStructures.ArrayList</c>. This organization is essential.
+  </p>
+
+  <p>
+    However, it raises a practical question. Our <c>ArrayList</c> class, which will reside in the <c>DataStructures</c> package, needs to <c>implement</c> the <c>ListADT</c> interface, which lives in the separate <c>ADTs</c> package. How do we tell the Java compiler, inside <c>ArrayList.java</c>, that when we write "<c>ListADT</c>", we specifically mean the one defined in the <c>ADTs</c> package?
+  </p>
+
+  <p>
+    One way is to always use the <term>fully qualified name</term> everywhere the type is needed:
+  </p>
+  <program language="java">
+package DataStructures;
+
+// NO import statement used here yet
+
+// Using fully qualified names everywhere...
+public class ArrayList&lt;T&gt; implements ADTs.ListADT&lt;T&gt; { // Verbose!
+
+    // ... other fields ...
+
+    // Method parameter using fully qualified name
+    public boolean contains(ADTs.ListADT&lt;? extends T&gt; otherList) { // Very verbose!
+        // ... implementation ...
+        return false;
+    }
+
+    // Return type using fully qualified name
+    public ADTs.ListADT&lt;T&gt; getSublist(int fromIndex, int toIndex) { // Also verbose!
+        // ... implementation ...
+        return null;
+    }
+
+    // Method signatures inherited from ADTs.ListADT must also be implemented...
+    @Override
+    public T get(int index) { /* ... */ return null;} // Example method from interface
+
+    // ... many other methods ...
+}
+  </program>
+  <p>
+    While this works (the compiler knows exactly which <c>ListADT</c> you mean), it makes the code incredibly verbose, harder to read, and more tedious to write. Imagine typing <c>ADTs.ListADT</c> dozens of times throughout the file! This clearly violates our goal of writing clean, maintainable code.
+  </p>
+
+  <p>
+    The solution is the <c>import</c> statement. The <c>import</c> keyword allows you to tell the compiler which classes or interfaces you intend to use from other packages, enabling you to refer to them using only their <term>simple name</term> (e.g., <c>ListADT</c>) within your current file.
+  </p>
+  <p>
+    Import statements appear at the top of your <c>.java</c> file, <term>after</term> the <c>package</c> declaration (if one exists) but <term>before</term> the class or interface definition. The most common form is the <term>single-type import</term>:
+  </p>
+  <program language="java">
+import package.path.ClassName; // Imports a specific class or interface
+  </program>
+  <p>
+    Let's rewrite our <c>ArrayList</c> skeleton using an import for <c>ListADT</c>:
+  </p>
+  <program language="java">
+package DataStructures;
+
+import ADTs.ListADT; // Import the specific interface we need
+
+// Now we can use the simple name "ListADT"
+public class ArrayList&lt;T&gt; implements ListADT&lt;T&gt; { // Much cleaner!
+
+    // ... other fields ...
+
+    // Method parameter using simple name
+    public boolean contains(ListADT&lt;? extends T&gt; otherList) { // Readable!
+        // ... implementation ...
+        return false;
+    }
+
+    // Return type using simple name
+    public ListADT&lt;T&gt; getSublist(int fromIndex, int toIndex) { // Readable!
+        // ... implementation ...
+        return null;
+    }
+
+    @Override
+    public T get(int index) { /* ... */ return null;} // Still just needs simple name T
+
+    // ... many other methods ...
+}
+  </program>
+  <p>
+    By adding <c>import ADTs.ListADT;</c>, our code becomes significantly more readable and concise, as we can now use the simple name <c>ListADT</c> throughout the file.
+  </p>
+
+  <subsection xml:id="subsec-arraylist-import-types">
+    <title>Types of Imports</title>
+    <ul>
+      <li>
+        <p><term>Single-Type Import:</term> <c>import package.path.ClassName;</c><br />
+        Imports one specific public class or interface. This is the <term>recommended approach</term> because it makes the dependencies of your class explicitly clear just by looking at the import statements. Anyone reading the code knows exactly which types are being used from other packages.</p>
+      </li>
+      <li>
+        <p><term>On-Demand Import:</term> <c>import package.path.*;</c><br />
+        Imports <term>all</term> public types from the specified package. While sometimes convenient if you use many types from a single package (like <c>java.util.*</c>), it's generally discouraged in modern practice. Why? It can make it less clear exactly which types are being used, and if two different imported packages happen to contain types with the same simple name (e.g., both <c>packageA.*</c> and <c>packageB.*</c> contain a <c>Helper</c> class), it creates ambiguity that requires you to use fully qualified names anyway, defeating the purpose.</p>
+      </li>
+    </ul>
+  </subsection>
+
+  <note>
+    <title>Trade-off: Imports vs. Fully Qualified Names</title>
+    <p>
+        So, if imports make code cleaner, why would you ever use the fully qualified name like <c>ADTs.ListADT</c> or <c>java.util.ArrayList</c>?
+    </p>
+    <p>
+        You <term>always have the option</term> to use the fully qualified name instead of importing. The main reason to do so is to <term>resolve ambiguity</term> or <term>enhance clarity</term> when necessary. For instance:
+    </p>
+    <ul>
+        <li>If you needed to use <term>both</term> our <c>DataStructures.ArrayList</c> and Java's standard <c>java.util.ArrayList</c> in the <term>same file</term>, you couldn't import both with their simple name <c>ArrayList</c>. The compiler wouldn't know which one you meant. In this case, you would typically import one (perhaps the one used more frequently) and use the fully qualified name for the other (e.g., <c>import DataStructures.ArrayList; ... java.util.ArrayList stdList = ...;</c>).</li>
+        <li>Sometimes, for a type used only once or twice in a file, a developer might choose to use the fully qualified name just to be extremely explicit about where that less common type comes from, even without a direct conflict.</li>
+    </ul>
+    <p>
+        However, for types that you use frequently within a file and that don't have naming conflicts (like using <c>ListADT</c> throughout our <c>ArrayList</c> implementation, or using standard types like <c>java.util.List</c> or <c>java.util.Map</c>), using a single-type <c>import</c> statement is the standard convention. It significantly improves readability and reduces verbosity without sacrificing clarity about the code's dependencies, which are listed right at the top of the file.
+    </p>
+  </note>
+
+  <note>
+    <title>Implicit Imports: <c>java.lang</c> and Same Package</title>
+    <p>
+      You might wonder why you've never needed to import common types like <c>String</c>, <c>System</c>, <c>Integer</c>, <c>Exception</c>, or <c>Object</c>. That's because the Java compiler automatically imports all public types from the <c>java.lang</c> package into every source file. Since these core types reside in <c>java.lang</c>, they are always available by their simple names.
+    </p>
+    <p>
+      Additionally, you do not need to import types that are defined within the <term>same package</term> as the file you are currently writing. They are also automatically available by their simple names. Imports are only needed to access public types from <term>different</term> packages.
+    </p>
+  </note>
+
+  <p>
+    In our project, the <c>ArrayList.java</c> file (in package <c>DataStructures</c>) will definitely need <c>import ADTs.ListADT;</c>. You will also likely need imports for standard Java exceptions like <c>java.lang.IndexOutOfBoundsException</c> (although types in `java.lang` are implicitly imported, explicit imports for exceptions can sometimes aid clarity) and others not in `java.lang`, such as <c>java.util.NoSuchElementException</c>. Understanding imports is therefore essential before we start implementing our class.
+  </p>
+
+</section>
