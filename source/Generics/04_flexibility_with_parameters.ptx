@@ -135,7 +135,7 @@ for (Vehicle v : traffic) {
 </subsection>
 
 <p>
-  As we'll see next, this flexibility is not unlimited—it introduces significant limitations when we require type safety across unrelated types or need to create reusable containers for arbitrary data types. These specific limitations directly motivated Java's introduction of Generics, which we'll explore after understanding the constraints of polymorphism alone.
+  As we'll see next, this flexibility is not unlimited-it introduces significant limitations when we require type safety across unrelated types or need to create reusable containers for arbitrary data types. These specific limitations directly motivated Java's introduction of Generics, which we'll explore after understanding the constraints of polymorphism alone.
 </p>
 
 <exercises>

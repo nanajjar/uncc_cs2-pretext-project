@@ -3,6 +3,298 @@
 <section>
   <title>Exercises</title>
   <exercises>
+  <exercise label="pz_click_1">
+    <statement><p>Click to highlight the class declaration</p></statement>
+<areas>
+<cline><area correct="yes">public class Book</area>{</cline> 
+<cline/>
+<cline><area correct="no">private int isbn;</area></cline>
+<cline><area correct="no">private String title;</area></cline>
+<cline><area correct="no">private Author title;</area></cline>
+<cline/>
+<cline><area correct="no">public Book(int isbn, String title, Author author){</area></cline>
+<cline><area correct="no">   this.isbn = isbn;</area></cline>
+<cline><area correct="no">   this.title = title;</area></cline>
+<cline><area correct="no">   this.author = author;</area></cline>
+<cline>}</cline>
+<cline/>
+<cline><area correct="no">public int getIsbn(){</area></cline>
+<cline>   return isbn;</cline>
+<cline>}</cline>
+<cline/>
+
+<cline><area correct="no">public String getTitle(){</area></cline>
+<cline>   return title;</cline>
+<cline>}</cline>
+<cline/>
+
+<cline><area correct="no">public Author getAuthor(){</area></cline>
+<cline>   return author;</cline>
+<cline>}</cline>
+<cline/>
+<cline>}</cline>
+
+</areas></exercise>
+
+<exercise label="pz_click_2">
+    <statement><p>Click to highlight instance variable (field) declarations.</p></statement>
+<areas>
+<cline><area correct="no">public class Book</area>{</cline> 
+<cline/>
+<cline><area correct="yes">private int isbn;</area></cline>
+<cline><area correct="yes">private String title;</area></cline>
+<cline><area correct="yes">private Author title;</area></cline>
+<cline/>
+<cline><area correct="no">public Book(int isbn, String title, Author author){</area></cline>
+<cline><area correct="no">   this.isbn = isbn;</area></cline>
+<cline><area correct="no">   this.title = title;</area></cline>
+<cline><area correct="no">   this.author = author;</area></cline>
+<cline>}</cline>
+<cline/>
+<cline><area correct="no">public int getIsbn(){</area></cline>
+<cline>   return isbn;</cline>
+<cline>}</cline>
+<cline/>
+
+<cline><area correct="no">public String getTitle(){</area></cline>
+<cline>   return title;</cline>
+<cline>}</cline>
+<cline/>
+
+<cline><area correct="no">public Author getAuthor(){</area></cline>
+<cline>   return author;</cline>
+<cline>}</cline>
+<cline/>
+<cline>}</cline>
+
+</areas></exercise>
+
+<exercise label="pz_click_3">
+    <statement><p>Click to highlight the lines that are a part of the class's constructor</p></statement>
+<areas>
+<cline><area correct="no">public class Book</area>{</cline> 
+<cline/>
+<cline><area correct="no">private int isbn;</area></cline>
+<cline><area correct="no">private String title;</area></cline>
+<cline><area correct="no">private Author title;</area></cline>
+<cline/>
+<cline><area correct="yes">public Book(int isbn, String title, Author author){</area></cline>
+<cline><area correct="yes">   this.isbn = isbn;</area></cline>
+<cline><area correct="yes">   this.title = title;</area></cline>
+<cline><area correct="yes">   this.author = author;</area></cline>
+<cline><area correct="yes">}</area></cline>
+<cline/>
+<cline><area correct="no">public int getIsbn(){</area></cline>
+<cline>   return isbn;</cline>
+<cline>}</cline>
+<cline/>
+
+<cline><area correct="no">public String getTitle(){</area></cline>
+<cline>   return title;</cline>
+<cline>}</cline>
+<cline/>
+
+<cline><area correct="no">public Author getAuthor(){</area></cline>
+<cline>   return author;</cline>
+<cline>}</cline>
+<cline/>
+<cline>}</cline>
+
+</areas></exercise>
+
+<exercise label="pz_click_4">
+    <statement><p>Click to highlight the lines that are a part of a getter method.</p></statement>
+<areas>
+<cline><area correct="no">public class Book</area>{</cline> 
+<cline/>
+<cline><area correct="no">private int isbn;</area></cline>
+<cline><area correct="no">private String title;</area></cline>
+<cline><area correct="no">private Author title;</area></cline>
+<cline/>
+<cline><area correct="no">public Book(int isbn, String title, Author author){</area></cline>
+<cline><area correct="no">   this.isbn = isbn;</area></cline>
+<cline><area correct="no">   this.title = title;</area></cline>
+<cline><area correct="no">   this.author = author;</area></cline>
+<cline><area correct="no">}</area></cline>
+<cline/>
+<cline><area correct="yes">public int getIsbn(){</area></cline>
+<cline><area correct="yes">  return isbn;</area></cline>
+<cline><area correct="yes">}</area></cline>
+<cline/>
+
+<cline><area correct="yes">public String getTitle(){</area></cline>
+<cline><area correct="yes">  return title;</area></cline>
+<cline><area correct="yes">}</area></cline>
+<cline/>
+
+<cline><area correct="yes">public Author getAuthor(){</area></cline>
+<cline><area correct="yes">  return author;</area></cline>
+<cline><area correct="yes">}</area></cline>
+<cline/>
+
+<cline><area correct="no">public void setIsbn(int isbn){</area></cline>
+<cline><area correct="no">  this.isbn = isbn;</area></cline>
+<cline><area correct="no">}</area></cline>
+<cline/>
+
+<cline><area correct="no">public void setTitle(String title){</area></cline>
+<cline><area correct="no">  this.title = title;</area></cline>
+<cline><area correct="no">}</area></cline>
+<cline/>
+
+<cline><area correct="no">public void setAuthor(Author author){</area></cline>
+<cline><area correct="no">  this.author =  author;</area></cline>
+<cline><area correct="no">}</area></cline>
+<cline/>
+<cline>}</cline>
+
+</areas></exercise>
+
+<exercise label="pz_click_5">
+    <statement><p>Click to highlight the lines that are a part of a setter method.</p></statement>
+<areas>
+<cline><area correct="no">public class Book</area>{</cline> 
+<cline/>
+<cline><area correct="no">private int isbn;</area></cline>
+<cline><area correct="no">private String title;</area></cline>
+<cline><area correct="no">private Author title;</area></cline>
+<cline/>
+<cline><area correct="no">public Book(int isbn, String title, Author author){</area></cline>
+<cline><area correct="no">   this.isbn = isbn;</area></cline>
+<cline><area correct="no">   this.title = title;</area></cline>
+<cline><area correct="no">   this.author = author;</area></cline>
+<cline><area correct="no">}</area></cline>
+<cline/>
+<cline><area correct="no">public int getIsbn(){</area></cline>
+<cline><area correct="no">  return isbn;</area></cline>
+<cline><area correct="no">}</area></cline>
+<cline/>
+
+<cline><area correct="no">public String getTitle(){</area></cline>
+<cline><area correct="no">  return title;</area></cline>
+<cline><area correct="no">}</area></cline>
+<cline/>
+
+<cline><area correct="no">public Author getAuthor(){</area></cline>
+<cline><area correct="no">  return author;</area></cline>
+<cline><area correct="no">}</area></cline>
+<cline/>
+
+<cline><area correct="yes">public void setIsbn(int isbn){</area></cline>
+<cline><area correct="yes">  this.isbn = isbn;</area></cline>
+<cline><area correct="yes">}</area></cline>
+<cline/>
+
+<cline><area correct="yes">public void setTitle(String title){</area></cline>
+<cline><area correct="yes">  this.title = title;</area></cline>
+<cline><area correct="yes">}</area></cline>
+<cline/>
+
+<cline><area correct="yes">public void setAuthor(Author author){</area></cline>
+<cline><area correct="yes">  this.author =  author;</area></cline>
+<cline><area correct="yes">}</area></cline>
+<cline/>
+<cline>}</cline>
+
+</areas></exercise>
+
+<exercise label="pz_click_6">
+    <statement><p>Click to highlight parameters.</p></statement>
+<areas>
+<cline><area correct="no">public class Book</area>{</cline> 
+<cline/>
+<cline><area correct="no">private int isbn;</area></cline>
+<cline><area correct="no">private String title;</area></cline>
+<cline><area correct="no">private Author title;</area></cline>
+<cline/>
+<cline><area correct="no">public Book</area>(<area correct="yes">int isbn</area>, <area correct="yes">String title</area>, <area correct="yes">Author author</area>){</cline>
+<cline><area correct="no">   this.isbn = isbn;</area></cline>
+<cline><area correct="no">   this.title = title;</area></cline>
+<cline><area correct="no">   this.author = author;</area></cline>
+<cline><area correct="no">}</area></cline>
+<cline/>
+<cline><area correct="no">public int getIsbn(){</area></cline>
+<cline><area correct="no">  return isbn;</area></cline>
+<cline><area correct="no">}</area></cline>
+<cline/>
+
+<cline><area correct="no">public String getTitle(){</area></cline>
+<cline><area correct="no">  return title;</area></cline>
+<cline><area correct="no">}</area></cline>
+<cline/>
+
+<cline><area correct="no">public Author getAuthor(){</area></cline>
+<cline><area correct="no">  return author;</area></cline>
+<cline><area correct="no">}</area></cline>
+<cline/>
+
+<cline><area correct="no">public void setIsbn</area>(<area correct="yes">int isbn){</area></cline>
+<cline><area correct="no">  this.isbn = isbn;</area></cline>
+<cline><area correct="no">}</area></cline>
+<cline/>
+
+<cline><area correct="no">public void setTitle</area>(<area correct="yes">String title){</area></cline>
+<cline><area correct="no">  this.title = title;</area></cline>
+<cline><area correct="no">}</area></cline>
+<cline/>
+
+<cline><area correct="no">public void setAuthor</area>(<area correct="yes">Author author){</area></cline>
+<cline><area correct="no">  this.author =  author;</area></cline>
+<cline><area correct="no">}</area></cline>
+<cline/>
+<cline>}</cline>
+
+</areas></exercise>
+
+<exercise label="pz_click_7">
+    <statement><p>Click to highlight return types.</p></statement>
+<areas>
+<cline><area correct="no">public class Book</area>{</cline> 
+<cline/>
+<cline>private <area correct="no">int</area> isbn;</cline>
+<cline>private <area correct="no">String</area> title;</cline>
+<cline>private <area correct="no">Author</area> author;</cline>
+<cline/>
+<cline><area correct="no">public Book</area>(<area correct="no">int isbn</area>, <area correct="no">String title</area>, <area correct="no">Author author</area>){</cline>
+<cline><area correct="no">   this.isbn = isbn;</area></cline>
+<cline><area correct="no">   this.title = title;</area></cline>
+<cline><area correct="no">   this.author = author;</area></cline>
+<cline>}</cline>
+<cline/>
+<cline><area correct="no">public</area> <area correct="yes">int</area> <area correct ="no">getIsbn(){</area></cline>
+<cline>  return <area correct="no">isbn;</area></cline>
+<cline><area correct="no">}</area></cline>
+<cline/>
+
+<cline><area correct="no">public</area> <area correct="yes">String</area> <area correct ="no">getTitle(){</area></cline>
+<cline> return <area correct="no">title;</area></cline>
+<cline>}</cline>
+<cline/>
+
+<cline><area correct="no">public</area> <area correct="yes">Author</area> <area correct ="no">getAuthor(){</area></cline>
+<cline><area correct="no">  return author;</area></cline>
+<cline>}</cline>
+<cline/>
+
+<cline><area correct="no">public</area> <area correct="yes">void</area> <area correct ="no">setIsbn</area>(<area correct="no">int isbn){</area></cline>
+<cline><area correct="no">  this.isbn = isbn;</area></cline>
+<cline>}</cline>
+<cline/>
+
+<cline><area correct="no">public</area> <area correct="yes">void</area> <area correct ="no">setTitle</area>(<area correct="no">String title){</area></cline>
+<cline><area correct="no">  this.title = title;</area></cline>
+<cline>}</cline>
+<cline/>
+
+<cline><area correct="no">public</area> <area correct="yes">void</area> <area correct ="no">setAuthor</area>(<area correct="no">Author author){</area></cline>
+<cline><area correct="no">  this.author =  author;</area></cline>
+<cline>}</cline>
+<cline/>
+<cline>}</cline>
+
+</areas></exercise>
+
+
     <exercise label="pz-classes-1">
         <statement>
 

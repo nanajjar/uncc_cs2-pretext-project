@@ -164,7 +164,7 @@ String safeString = myStringBox.get(); // No cast needed! Compiler knows it's a 
   </row>
  </tabular>
  <p>
-  Neither situation is ideal. We want the <term>best of both worlds</term>: the ability to write reusable code (like a single <c>Box</c> class) that can work with many different types, <term>while still</term> getting the benefit of compile-time type checking for each specific use. We want the compiler to ensure that a <c>Box</c> intended for Strings only ever holds Strings, and a <c>Box</c> intended for Integers only ever holds Integers, all based on a single, reusable <c>Box</c> definition. Achieving both reusability and type safety significantly reduces the likelihood of errors slipping through to runtime, saves development time spent debugging, and makes code much clearer to understand and maintain—critical factors in creating robust, maintainable programs.
+  Neither situation is ideal. We want the <term>best of both worlds</term>: the ability to write reusable code (like a single <c>Box</c> class) that can work with many different types, <term>while still</term> getting the benefit of compile-time type checking for each specific use. We want the compiler to ensure that a <c>Box</c> intended for Strings only ever holds Strings, and a <c>Box</c> intended for Integers only ever holds Integers, all based on a single, reusable <c>Box</c> definition. Achieving both reusability and type safety significantly reduces the likelihood of errors slipping through to runtime, saves development time spent debugging, and makes code much clearer to understand and maintain-critical factors in creating robust, maintainable programs.
  </p>
 
  <p>
