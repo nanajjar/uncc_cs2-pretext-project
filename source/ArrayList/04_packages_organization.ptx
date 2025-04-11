@@ -1,0 +1,71 @@
+<section xml:id="sec-arraylist-packages-organization">
+  <title>Organizing the Code: Packages</title>
+
+  <p>
+    In the previous sections, we established our goal: to build a dynamic list (<c>ArrayList&lt;T&gt;</c>) that implements standard behaviors defined by interfaces (<c>CollectionADT&lt;T&gt;</c> and <c>ListADT&lt;T&gt;</c>). This immediately tells us our project will involve multiple <c>.java</c> files: at least one for each interface and one for our implementing class, plus the test code.
+  </p>
+
+  <p>
+    Now, imagine a real-world software project. It might contain dozens, hundreds, or even thousands of classes and interfaces! What happens if we just dump all these <c>.java</c> files into a single directory? It quickly becomes difficult to manage:
+  </p>
+  <ul>
+    <li><term>Finding Code:</term> Locating the specific file you need (e.g., the `ListADT` interface versus the `ArrayList` implementation) becomes tedious and error-prone among potentially many other files.</li>
+    <li><term>Naming Collisions:</term> What if you decide to name your list implementation <c>ArrayList</c>, but Java's standard library already provides a class named <c>java.util.ArrayList</c>? How does the Java compiler, and later the Java runtime, know which one you intend to use? What if two different teams working on the same large project both need a helper class called <c>Utils</c>? Without organization, their code cannot easily coexist.</li>
+  </ul>
+  <p>
+    Just like you organize files on your computer into folders and subfolders, Java provides a mechanism to organize code into logical groups called <term>packages</term>. Packages serve two primary purposes:
+  </p>
+  <ol>
+    <li><term>Organization:</term> They group related classes and interfaces together, making the codebase easier to navigate, understand, and maintain.</li>
+    <li><term>Namespace Management:</term> They create unique "spaces" for names. This prevents naming conflicts because a class's full identity includes its package name.</li>
+  </ol>
+
+  <p>
+    You declare that a class or interface belongs to a specific package using the <c>package</c> keyword as the <term>very first</term> statement in the <c>.java</c> file (before any imports or class/interface definitions).
+  </p>
+  <program language="java">
+package name.of.package; // Package declaration MUST be the first line
+
+// ... rest of the file (imports, class/interface definition) ...
+
+public class MyClass {
+    // ...
+}
+  </program>
+
+  <p>
+    Crucially, Java mandates that the package structure declared in your code <term>must exactly match</term> the directory structure on your file system, relative to a designated <term>source root</term> directory (often named <c>src</c>). If a file declares <c>package com.mycompany.utilities;</c>, then that file <term>must</term> reside inside a folder structure like <c>src/com/mycompany/utilities/</c>. Furthermore, if that file contains a <c>public</c> class or interface named <c>MyUtil</c>, the file itself <term>must</term> be named <c>MyUtil.java</c>. This strict mapping isn't just arbitrary; it's how Java tools work. Both the Java compiler (<c>javac</c>), when translating your <c>.java</c> files into <c>.class</c> files, and the Java Virtual Machine (JVM) runtime (<c>java</c>), when loading those <c>.class</c> files to execute your program, rely on this package-to-directory structure to locate the necessary code components.
+  </p>
+
+  <p>
+    Let's apply this to our project's structure:
+  </p>
+  <pre>
+YourProjectFolder/
+└── src/  &lt;-- Source Root
+    ├── ADTs/
+    │   └── ListADT.java      (Declares: package ADTs; Contains: public interface ListADT ...)
+    └── DataStructures/
+        └── ArrayList.java    (Will declare: package DataStructures; Will contain: public class ArrayList ...)
+  </pre>
+  <p>
+    Here, <c>src</c> is the source root. The <c>public interface ListADT</c> is correctly placed in <c>src/ADTs/ListADT.java</c> and declares <c>package ADTs;</c>. Similarly, your <c>public class ArrayList</c> must be in <c>src/DataStructures/ArrayList.java</c> and declare <c>package DataStructures;</c>.
+  </p>
+
+  <p>
+    Because packages provide this structured namespace, the <term>fully qualified name</term> of a type includes its package path. This resolves naming ambiguity:
+  </p>
+  <ul>
+    <li>Our list interface's full name is <c>ADTs.ListADT</c>.</li>
+    <li>Our implementation class's full name will be <c>DataStructures.ArrayList</c>.</li>
+    <li>Java's built-in ArrayList's full name is <c>java.util.ArrayList</c>.</li>
+  </ul>
+  <p>
+    The compiler and runtime can now clearly distinguish between <c>DataStructures.ArrayList</c> and <c>java.util.ArrayList</c> thanks to the package structure.
+  </p>
+
+  <p>
+    So, packages provide the organizational structure. But now we have a new question: if <c>ArrayList.java</c> is in the <c>DataStructures</c> package, how does it refer to <c>ListADT</c>, which is in the different <c>ADTs</c> package? We need a way to make types from one package visible to another. That's the role of the <c>import</c> statement, which we'll cover in the next section.
+  </p>
+
+</section>

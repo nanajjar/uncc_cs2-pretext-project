@@ -1,0 +1,108 @@
+<section xml:id="sec-arraylist-interfaces-adts">
+  <title>Standardizing Behavior: Interfaces and ADTs</title>
+
+  <p>
+    In the previous section, we established the need for a <term>dynamic collection</term>, specifically a list, that can grow as needed, overcoming the fixed-size limitation of basic arrays. Our goal is to build such a list, which we'll call <c>ArrayList&lt;T&gt;</c>.
+  </p>
+
+  <p>
+    Now, let's consider a new challenge. Imagine you and several classmates are all asked to create a dynamic list class. You might create an <c>add(item)</c> method, but another classmate might name theirs <c>insertElement(item)</c>, and a third might use <c>append(item)</c>. Similarly, methods to check the number of items might be called <c>getSize()</c>, <c>count()</c>, or <c>length()</c>. While each list might work internally, this inconsistency creates a major problem: <term>how can you write code that reliably uses any of these different list implementations?</term> For instance, if you wanted to write a simple utility method like <c>printAnyList( /* some list */ )</c>, you wouldn't know whether to call <c>.getSize()</c> or <c>.count()</c> to loop correctly! Code reuse becomes difficult, and combining different list implementations in a larger program turns into a confusing mess.
+  </p>
+
+  <program language="java">
+// --- Problem Illustration: Inconsistent List Implementations ---
+
+// Hypothetical List Class 1
+class MyListV1 {
+    void add(String item) { /* ... */ }
+    int getSize() { /* ... */ return 0;}
+    String getAtIndex(int index) { /* ... */ return null; }
+    // ... other methods ...
+}
+
+// Hypothetical List Class 2
+class AnotherList {
+    void insertItem(String data) { /* ... */ }
+    int count() { /* ... */ return 0;}
+    String retrieve(int pos) { /* ... */ return null; }
+    // ... other DIFFERENT methods ...
+}
+
+// Now, try writing a reusable method to print ANY list...
+class ListUtils {
+    static void printAnyList( ??? list ) { // What type should the parameter be??
+        System.out.print("[");
+        // How many times to loop? Call list.getSize()? or list.count()?
+        // ERROR: We don't know which method name exists!
+        int size = ??? ; // Problem 1: Which size method?
+
+        for (int i = 0; i &lt; size; i++) {
+            // How to get the element? list.getAtIndex(i)? or list.retrieve(i)?
+            // ERROR: We don't know which retrieval method exists!
+            String element = ??? ; // Problem 2: Which get method?
+            System.out.print(element);
+            if (i &lt; size - 1) {
+                System.out.print(", ");
+            }
+        }
+        System.out.println("]");
+        // This reusable method is impossible to write reliably without a standard contract!
+    }
+}
+  </program>
+
+  <p>
+    This is the problem that <term>interfaces</term> solve in object-oriented programming (See <xref ref="exceptions-and-interfaces" />, <xref ref="ch-abstract-classes" />). An interface acts as a <term>contract</term> or a blueprint for behavior. It defines a set of <c>public</c> method signatures (the method name, parameters, and return type) but provides <term>no implementation</term> for those methods (mostly; default methods are an exception we won't focus on here). Think of it as a list of required job functions without specifying exactly how to perform them.
+  </p>
+  <program language="java">
+// Example structure of an interface definition
+public interface SomeContract {
+    // Method signatures define WHAT implementing classes MUST provide
+    ReturnType methodName1(ParamType1 param1);
+    boolean anotherMethod(ParamType2 param2, ParamType3 param3);
+    // No method bodies { ... } here!
+}
+  </program>
+  <p>
+    When a class declares that it <c>implements</c> an interface (e.g., <c>public class MyList implements SomeContract</c>), it makes a binding promise to the Java compiler: "I guarantee I will provide concrete implementations for <c>methodName1</c> and <c>anotherMethod</c>, exactly as specified in the <c>SomeContract</c> interface." The compiler enforces this promise rigorously; if the class fails to provide an implementation for any method in the contract, a compile-time error occurs.
+  </p>
+
+  <p>
+    This concept of defining behavior separately from implementation is central to the idea of an <term>Abstract Data Type (ADT)</term>. An ADT is a conceptual model that specifies the <term>operations</term> a data type must support (like `add`, `remove`, `get`, `size` for a list) and the expected behavior of those operations, without dictating *how* the data is stored or how the operations are implemented internally. The interface is the Java mechanism we use to formally define the contract specified by an ADT.
+  </p>
+
+  <p>
+    For our <c>ArrayList&lt;T&gt;</c> project, we will work with two ADT interfaces that are provided for you:
+  </p>
+  <ol>
+    <li>
+      <p><c>CollectionADT&lt;T&gt;</c>: This interface defines the most fundamental behaviors common to nearly all collections, such as:</p>
+      <ul>
+          <li>Checking if the collection is empty (<c>isEmpty()</c>).</li>
+          <li>Getting the number of items (<c>size()</c>).</li>
+          <li>Checking if an item exists in the collection (<c>contains(T item)</c>).</li>
+      </ul>
+      <p>The <c>&lt;T&gt;</c> indicates this is a <term>generic interface</term> (See <xref ref="ch-generics" />), meaning it can define a collection holding any reference type (like <c>String</c>, <c>Player</c>, or <c>Integer</c>).</p>
+    </li>
+    <li>
+      <p><c>ListADT&lt;T&gt;</c>: This interface <c>extends CollectionADT&lt;T&gt;</c> (meaning it includes all methods from <c>CollectionADT</c>) and adds operations specific to ordered lists, where elements have positions (indices). Examples include:</p>
+       <ul>
+          <li>Adding an element at a specific index (<c>add(int index, T item)</c>).</li>
+          <li>Removing the element at a specific index (<c>remove(int index)</c>).</li>
+          <li>Getting the element at a specific index (<c>get(int index)</c>).</li>
+      </ul>
+    </li>
+  </ol>
+
+  <p>
+    <term>Connection to the Design Recipe:</term> These interfaces (<c>CollectionADT&lt;T&gt;</c> and <c>ListADT&lt;T&gt;</c>) represent our formal specification. They embody parts of <term>Step 0 (Understand &amp; Restate)</term> by defining the required operations, <term>Step 1 (Data Definitions)</term> at an abstract level by defining the *concept* of a generic List, and <term>Step 2 (Method Signature &amp; Purpose)</term> by providing the exact method signatures and intended purpose (which you can explore via the Javadoc comments in the provided interface files once we discuss the project setup). Our task in the subsequent Design Recipe steps will be to fulfill this contract using a dynamic array approach.
+  </p>
+
+  <note>
+    <title>Java's Standard Collection Interfaces</title>
+    <p>
+      It's worth noting that the interfaces we are using (<c>CollectionADT</c>, <c>ListADT</c>) are simplified versions designed for this educational exercise. Java's standard library (<c>java.util</c>) contains its own, more extensive interfaces that solve the same problem of standardization: <c>java.util.Collection&lt;E&gt;</c> and <c>java.util.List&lt;E&gt;</c>. The core concepts are the same: define a contract so that different implementations (<c>java.util.ArrayList</c>, <c>java.util.LinkedList</c>) can be used interchangeably where appropriate. You'll study these standard interfaces and their implementations in depth in subsequent courses like Data Structures and Algorithms.
+    </p>
+  </note>
+
+</section>

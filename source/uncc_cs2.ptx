@@ -32,8 +32,8 @@ How to Design Programs with Object Oriented Programming - From Python to Java   
     <xi:include href="./ClassHierarchy/toctree.ptx" />
     <xi:include href="./AbstractClasses/toctree.ptx" />
     <xi:include href="./Generics/toctree.ptx" />
-        <xi:include href="./PracticeZone/toctree.ptx" />
-
+    <xi:include href="./PracticeZone/toctree.ptx" />
+    <xi:include href="./ArrayList/toctree.ptx" />
 
     <!-- <xi:include href="./IntroToJava/toctree.ptx" /> -->
     <!-- <xi:include href="./ObjectOrientedProgramming/toctree.ptx" /> -->
