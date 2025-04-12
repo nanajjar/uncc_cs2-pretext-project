@@ -68,7 +68,7 @@ public interface SomeContract {
   </p>
 
   <p>
-    This concept of defining behavior separately from implementation is central to the idea of an <term>Abstract Data Type (ADT)</term>. An ADT is a conceptual model that specifies the <term>operations</term> a data type must support (like `add`, `remove`, `get`, `size` for a list) and the expected behavior of those operations, without dictating *how* the data is stored or how the operations are implemented internally. The interface is the Java mechanism we use to formally define the contract specified by an ADT.
+    This concept of defining behavior separately from implementation is central to the idea of an <term>Abstract Data Type (ADT)</term>. An ADT is a conceptual model that specifies the <term>operations</term> a data type must support (like <c>add</c>, <c>remove</c>, <c>get</c>, <c>size</c> for a list) and the expected behavior of those operations, without dictating *how* the data is stored or how the operations are implemented internally. The interface is the Java mechanism we use to formally define the contract specified by an ADT.
   </p>
 
   <p>

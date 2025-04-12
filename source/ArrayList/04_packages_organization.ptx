@@ -9,7 +9,7 @@
     Now, imagine a real-world software project. It might contain dozens, hundreds, or even thousands of classes and interfaces! What happens if we just dump all these <c>.java</c> files into a single directory? It quickly becomes difficult to manage:
   </p>
   <ul>
-    <li><term>Finding Code:</term> Locating the specific file you need (e.g., the `ListADT` interface versus the `ArrayList` implementation) becomes tedious and error-prone among potentially many other files.</li>
+    <li><term>Finding Code:</term> Locating the specific file you need (e.g., the <c>ListADT</c> interface versus the <c>ArrayList</c> implementation) becomes tedious and error-prone among potentially many other files.</li>
     <li><term>Naming Collisions:</term> What if you decide to name your list implementation <c>ArrayList</c>, but Java's standard library already provides a class named <c>java.util.ArrayList</c>? How does the Java compiler, and later the Java runtime, know which one you intend to use? What if two different teams working on the same large project both need a helper class called <c>Utils</c>? Without organization, their code cannot easily coexist.</li>
   </ul>
   <p>

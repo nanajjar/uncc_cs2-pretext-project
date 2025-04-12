@@ -326,7 +326,7 @@ for (int i = 3; i &lt;= 9; i++)
 </block></blocks></exercise>        </subsection>
   <subsection xml:id="_decrementing-loops">
             <title>Decrementing Loops</title>
-            <p>You can also count backwards in a loop starting from the last number and decrementing down to 0 or 1. All 3 parts of the loop must change to count backwards including the test of when to stop. For example, “for (int i=5; i &gt; 0; i–)`` counts from 5 down to 1.</p>
+            <p>You can also count backwards in a loop starting from the last number and decrementing down to 0 or 1. All 3 parts of the loop must change to count backwards including the test of when to stop. For example, <c>for (int i=5; i &gt; 0; i–)</c> counts from 5 down to 1.</p>
 
 <exercise label="lcfcp1">
     <statement>

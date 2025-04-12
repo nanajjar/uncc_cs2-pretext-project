@@ -1,4 +1,224 @@
 <section xml:id="sec-arraylist-dr4-skeletons-add">
-  <title>DR4: Building Skeletons (Add Methods)</title>
-  <p>Content placeholder.</p>
+  <title>Step 4.1: Building Skeletons (Add Methods)</title>
+
+  <p>
+    Following the Design Recipe, after understanding the specification (Step 0), defining data (Step 1), setting the class structure (Step 2), and creating examples (Step 3), we now plan the implementation logic in <term>Step 4: Skeleton / Method Template</term>. We outline the logical steps for each method using comments, focusing on *what* needs to happen based on our understanding and examples, before writing detailed Java code in Step 5. This structured planning helps prevent errors and clarifies the required logic.
+  </p>
+  <p>
+    We'll begin by developing skeletons for the methods related to adding elements to our <c>ArrayList&lt;T&gt;</c>.
+  </p>
+
+  <subsection xml:id="subsec-arraylist-dr4-add-methods-revised3">
+      <title>Planning the Add Operations</title>
+
+      <subsubsection xml:id="subsubsec-arraylist-dr4-add-index-analysis-revised">
+          <title>Analyzing and Planning <c>add(int index, T item)</c></title>
+          <p>
+              This is the primary insertion method. Let's revisit its contract from the <c>ListADT.java</c> Javadoc to guide our plan. (Remember, you can view this in VSCode by opening the file or hovering over the method name in <c>ArrayList.java</c> once you add the <c>@Override</c>.)
+          </p>
+          <program language="java">
+/**
+ * Inserts an element at the specified position. ...
+ * @param index position to insert (0 to size inclusive)
+ * @param item  element to insert (cannot be null)
+ * @throws IndexOutOfBoundsException if index is invalid
+ * @throws IllegalArgumentException if item is null
+ */
+public void add(int index, T item); // From ListADT
+          </program>
+          <p>
+              This tells us we must first perform crucial checks before attempting the insertion:
+          </p>
+          <ul>
+              <li><p><em>Input Check 1 (Null Item):</em> The Javadoc mandates throwing <c>IllegalArgumentException</c> if <c>item</c> is null. So, our first logical step is: <c>// 1. If item is null, throw IllegalArgumentException.</c></p></li>
+              <li><p><em>Input Check 2 (Index Bounds):</em> The Javadoc specifies the valid range for <c>index</c> is 0 up to and including <c>size</c>. An index outside this range is invalid. So, the next step is: <c>// 2. If index &lt; 0 or index &gt; size, throw IndexOutOfBoundsException.</c></p></li>
+          </ul>
+          <p>
+              Now, assuming the inputs are valid, we think about the core task: inserting <c>item</c> into our internal <c>buffer</c> array. Two immediate challenges arise from using an array:
+          </p>
+          <ul>
+              <li>
+                  <p><em>Problem: Capacity.</em> What if the array is already full? That is, what if <c>size</c> already equals <c>buffer.length</c>? There's no physical space to add another element, even if the <c>index</c> is valid (e.g., adding at the end when full).</p>
+                  <p><em>Addressing the Problem:</em> We realize we need a step to handle this *before* trying to insert. This leads to the third logical step: <c>// 3. Ensure internal array has capacity for one more element.</c> We haven't designed *how* to ensure capacity yet, but we recognize the *need* for this logical step.</p>
+              </li>
+              <li>
+                  <p><em>Problem: Overwriting and Order.</em> If we are inserting at an <c>index</c> that's less than the current <c>size</c>, that array slot (<c>buffer[index]</c>) already holds a valid element. We cannot just overwrite it, as that would lose data. Furthermore, the contract implies subsequent elements should shift to maintain order.</p>
+                  <p><em>Addressing the Problem:</em> To make space *without* losing data and *while* maintaining order and the "no gaps" rule (from Step 0), we must <term>shift</term> the existing elements currently occupying indices <c>index</c> through <c>size - 1</c> one position to the right. This leads to the fourth step: <c>// 4. If (index &lt; size), shift elements currently in index..size-1 to index+1..size.</c> Again, we plan the *what* (shifting needed), not the precise *how* (the loop/copy algorithm) in this skeleton step.</p>
+                  <p><em>Visualizing the Right Shift for <c>add(1, "X")</c>:</em></p>
+                  <pre>
+Initial State (size=3, capacity=5): buffer = [ A | B | C | ? | ? ]
+Indices:                                          0   1   2   3   4
+
+Need to insert "X" at index 1.
+
+1. Shift elements from index 1..2 right:
+   - Move C (index 2) to index 3
+   - Move B (index 1) to index 2
+   Intermediate State: buffer = [ A | B | B | C | ? ]
+                                      0   1   2   3   4
+
+2. Place "X" at index 1:
+   Final Array State: buffer = [ A | X | B | C | ? ]
+                                     0   1   2   3   4
+
+3. Increment size to 4.
+                  </pre>
+              </li>
+          </ul>
+           <p>
+              Only after ensuring capacity and making space (if needed by shifting) can we safely perform the insertion and update the list's state:
+          </p>
+           <ul>
+               <li><p><em>The Insertion:</em> <c>// 5. Place item at buffer[index].</c></p></li>
+               <li><p><em>Update State:</em> <c>// 6. Increment size.</c></p></li>
+           </ul>
+
+           <p>This detailed analysis, driven by the contract and the implications of using an array, leads us to the following skeleton plan for <c>add(int index, T item)</c>:</p>
+          <program language="java">
+    @Override
+    public void add(int index, T item) {
+        // --- Skeleton Plan ---
+        // 1. Check for null item; throw IllegalArgumentException if invalid.
+        // 2. Check index bounds (0 &lt;= index &lt;= size); throw IndexOutOfBoundsException if invalid.
+        // 3. Ensure internal array has capacity for one more element (handle resizing if size == buffer.length).
+        // 4. Shift elements buffer[index...size-1] right to positions buffer[index+1...size] (Helper handles index == size case).
+        // 5. Place 'item' at buffer[index].
+        // 6. Increment 'size'.
+    }
+          </program>
+      </subsubsection>
+
+      <subsubsection xml:id="subsubsec-arraylist-dr4-recognizing-private-helpers-revised">
+          <title>Identifying the Need for Helper Methods</title>
+          <p>
+              Looking at the skeleton for <c>add(index, item)</c>, steps 3 ("Ensure internal array has capacity...") and 4 ("...shift elements...") represent significant, potentially complex sub-tasks that might also be needed by other methods (like ensuring capacity before any <c>add</c> variant).
+          </p>
+          <p>
+              This suggests that during actual implementation (Step 5), encapsulating this logic into dedicated <term>private helper methods</term> would be good design. Why private? Because managing array capacity and the exact shifting mechanism are internal implementation details. They are not part of the public <c>ListADT</c> contract. Making them private prevents external code from interfering with the list's internal state management.
+          </p>
+          <p>
+              For now, in Step 4, we simply note these logical sub-tasks within the main skeleton. We don't need to design the helper method skeletons fully yet, just recognize the logical blocks:
+          </p>
+          <ul>
+              <li><p>Logical Block: <c>ensureCapacityForAdd</c> (Checks if <c>size == buffer.length</c>, if so, creates bigger array, copies elements, updates <c>buffer</c> reference).</p></li>
+              <li><p>Logical Block: <c>shiftRightFromIndex</c> (Moves elements <c>index</c> through <c>size-1</c> to positions <c>index+1</c> through <c>size</c>).</p></li>
+          </ul>
+          <p>
+              Our main skeleton uses these conceptual blocks. We'll refine them into actual private methods in Step 5.
+          </p>
+      </subsubsection>
+
+      <subsubsection xml:id="subsubsec-arraylist-dr4-add-first-revised2">
+          <title>Skeleton for <c>addFirst(T item)</c></title>
+          <p>
+              This method's contract is to add an item at the very beginning (index 0). Let's outline the direct logic based on our previous analysis:
+          </p>
+          <program language="java">
+    @Override
+    public void addFirst(T item) {
+        // 1. Check for null item (throw IllegalArgumentException).
+        // 2. Ensure capacity (logical block `ensureCapacityForAdd`).
+        // 3. Shift *all* existing elements (0 to size-1) one position right (logical block `shiftRightFromIndex(0)`).
+        // 4. Place item at buffer[0].
+        // 5. Increment size.
+    }
+          </program>
+          <p>
+              <em>Direct Logic as the Plan:</em> This direct sequence of steps (check null, ensure capacity, shift all, place at 0, increment) forms our initial implementation plan for <c>addFirst</c>. It clearly lays out the specific actions required.
+          </p>
+          <p>
+              <em>Comparison with <c>add(index, item)</c>:</em> Interestingly, if we compare these steps to the skeleton for <c>add(index, item)</c> when <c>index</c> is 0, we see they are identical! Both check null, ensure capacity, shift starting from index 0, place at index 0, and increment size. This observation suggests that *after* implementing and thoroughly testing both methods based on their direct logic, a potential future refinement for DRY (Don't Repeat Yourself) could be to have <c>addFirst(item)</c> simply call <c>add(0, item)</c>. However, for our initial implementation (Step 5), we will stick to the direct logic outlined above.
+          </p>
+          <!-- Original delegation plan removed/commented for clarity during initial direct implementation focus
+          <program language="java">
+            // Call add(0, item);
+          </program>
+          -->
+          <p>
+              <em>The Value of Direct Outlining:</em> Thinking through the direct logic first is a valuable Step 4 exercise. It confirms our understanding of the specific behavior and reinforces the core logic involved (like shifting *all* elements).
+          </p>
+      </subsubsection>
+
+       <subsubsection xml:id="subsubsec-arraylist-dr4-add-last-revised2">
+          <title>Skeleton for <c>addLast(T item)</c></title>
+          <p>
+              This method adds to the very end. Let's outline its direct logic:
+          </p>
+           <program language="java">
+    @Override
+    public void addLast(T item) {
+        // --- Direct Logic Skeleton ---
+        // 1. Check for null item (throw IllegalArgumentException).
+        // 2. Ensure capacity (logical block `ensureCapacityForAdd`).
+        // 3. Place item at buffer[size] (No shifting required!).
+        // 4. Increment size.
+    }
+           </program>
+           <p>
+              <em>Direct Logic as the Plan:</em> This direct sequence (check null, ensure capacity, place at <c>size</c>, increment) is our implementation plan for <c>addLast</c>. It's simpler because no shifting is required when adding at the very end.
+           </p>
+           <p>
+              <em>Comparison with <c>add(index, item)</c>:</em> Again, let's compare this direct plan to the skeleton for <c>add(index, item)</c> when <c>index</c> is equal to <c>size</c>:
+           </p>
+            <ul>
+                <li>Step 1 (Null check): Same.</li>
+                <li>Step 2 (Index check): <c>add(size, item)</c> check passes because <c>index &lt;= size</c>. Same effective check.</li>
+                <li>Step 3 (Ensure capacity): Same.</li>
+                <li>Step 4 (Shifting): <c>add(index, item)</c> checks <c>if (index &lt; size)</c>. When <c>index == size</c>, this condition is false, so no shifting occurs. Same behavior as <c>addLast</c>.</li>
+                <li>Step 5 (Place item): <c>add(index, item)</c> places item at <c>buffer[index]</c>, which is <c>buffer[size]</c>. Same behavior.</li>
+                <li>Step 6 (Increment size): Same.</li>
+            </ul>
+           <p>
+               The logic is identical in effect! This confirms that a potential future refinement could be to delegate to <c>add(size, item)</c>. However, implementing <c>addLast</c> directly is often preferred as it's slightly more efficient (it avoids the <c>if (index &lt; size)</c> check needed in the general <c>add</c> method) and reflects its specific, common use case. We will proceed with the direct implementation.
+           </p>
+           <!-- Original delegation plan removed/commented 
+            <program language="java">
+             // Call add(size, item);
+           </program>
+           -->
+      </subsubsection>
+
+      <subsubsection xml:id="subsubsec-arraylist-dr4-add-after-revised2">
+          <title>Skeleton for <c>addAfter(T existing, T item)</c></title>
+          <p>
+              This method combines searching and adding. Its skeleton relies on the logic we've planned for searching (which we'll formalize when we skeletonize <c>indexOf</c>) and adding.
+          </p>
+           <program language="java">
+    @Override
+    public boolean addAfter(T existing, T item) {
+        // --- Skeleton Steps ---
+
+        // 1. Check for null 'existing' or null 'item' (throw IllegalArgumentException, as per Javadoc).
+
+        // 2. Find the index of the 'existing' item.
+        //    - Plan: Perform the logic equivalent to `indexOf(existing)`:
+        //        - Iterate from index 0 to size-1.
+        //        - Compare buffer[i] with 'existing' using .equals() (null-safe).
+        //        - Store the first matching index found (`foundIndex`), or -1 if not found.
+
+        // 3. If 'existing' item was found (foundIndex >= 0):
+        //    - Plan: Execute the direct logic for adding 'item' at 'foundIndex + 1':
+        //        - Calculate insertionIndex = foundIndex + 1.
+        //        - Check null 'item' (already done in step 1).
+        //        - Check bounds for 'insertionIndex' (0 &lt;= insertionIndex &lt;= size).
+        //        - Ensure capacity (call logical block `ensureCapacityForAdd`).
+        //        - Shift right (call logical block `shiftRightFromIndex(insertionIndex)` - Helper handles no-shift case).
+        //        - Place 'item' at buffer[insertionIndex].
+        //        - Increment 'size'.
+        //    - Return true (indicating success).
+        // 4. Else ('existing' item was not found, foundIndex == -1):
+        //    - Return false.
+    }
+           </program>
+            <p>
+               This skeleton highlights how more complex operations are often built by combining the logic of simpler, core operations. During implementation, we would likely call our actual <c>indexOf</c> and <c>add</c> methods here.
+           </p>
+      </subsubsection>
+
+  </subsection>
+
+  <p>
+    By breaking down the requirements, analyzing different cases, and identifying common logical steps (potential helpers), we have created robust skeletons for the Add methods. This detailed plan in Step 4 provides a solid foundation for the actual coding in Step 5. Next, we will apply this same thinking process to create skeletons for the "Remove" operations.
+  </p>
+
 </section>

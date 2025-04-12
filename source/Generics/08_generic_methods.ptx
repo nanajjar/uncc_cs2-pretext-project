@@ -291,15 +291,15 @@ public interface Comparable&lt;T&gt; {
          </choice>
          <choice correct="yes">
              <statement><p>A type parameter list (e.g., <c>&lt;T&gt;</c>) is declared before the method's return type.</p></statement>
-             <feedback><p>Correct. The declaration of method-specific type parameters like `&lt;T&gt;` or `&lt;E&gt;` just before the return type signifies that it's a generic method.</p></feedback>
+             <feedback><p>Correct. The declaration of method-specific type parameters like <c>&lt;T&gt;</c> or <c>&lt;E&gt;</c> just before the return type signifies that it's a generic method.</p></feedback>
          </choice>
          <choice>
              <statement><p>Generic methods cannot have any parameters.</p></statement>
-             <feedback><p>Incorrect. Generic methods often use their type parameters within their parameter list (e.g., `void method(T item)`).</p></feedback>
+             <feedback><p>Incorrect. Generic methods often use their type parameters within their parameter list (e.g., <c>void method(T item)</c>).</p></feedback>
          </choice>
          <choice>
              <statement><p>The return type must be identical to the type parameter (e.g., must return <c>T</c> if the parameter is <c>&lt;T&gt;</c>).</p></statement>
-             <feedback><p>Incorrect. While common (like in `&lt;T&gt; T identity(T item)`), the return type can be different (e.g., `&lt;T&gt; void process(T item)` or `&lt;T, R&gt; R convert(T item)`).</p></feedback>
+             <feedback><p>Incorrect. While common (like in <c>&lt;T&gt; T identity(T item)</c>), the return type can be different (e.g., <c>&lt;T&gt; void process(T item)</c> or <c>&lt;T, R&gt; R convert(T item)</c>).</p></feedback>
          </choice>
      </choices>
  </exercise>

@@ -1,4 +1,300 @@
 <section xml:id="sec-arraylist-dr5-impl-remaining">
-  <title>DR5: Implementing Remaining Methods</title>
-  <p>Content placeholder.</p>
+  <title>Step 5.4: Implementing Remaining Methods</title> <introduction>
+    <p>
+      We're in the main phase of <term>Design Recipe Step 5: Implementation</term>. We've successfully implemented the core indexed add/remove methods and the essential resizing logic. Many of the remaining methods defined in the <c>ListADT&lt;T&gt;</c> interface can now be implemented more easily by <term>leveraging the core logic</term> we've already built and tested. This demonstrates a key benefit of good design: building reusable components.
+    </p>
+  </introduction>
+
+  <subsection xml:id="subsec-arraylist-dr5-impl-search">
+    <title>Implementing Search-Based Operations</title>
+    <p>
+      Methods like <c>indexOf</c>, <c>contains</c>, and <c>remove(T item)</c> all rely on searching through the list's elements. We planned the logic for <c>indexOf</c> in Step 4; let's implement it first, paying attention to null handling.
+    </p>
+
+    <subsubsection xml:id="subsubsec-arraylist-dr5-impl-indexof">
+      <title>Implementing <c>indexOf(T item)</c></title>
+      <p>
+        Following the Step 4 skeleton, we iterate from the beginning, looking for the first match using <c>equals</c>. We must handle the case where the <c>item</c> we are searching for is <c>null</c>, and also the case where elements within the <c>buffer</c> array might be <c>null</c> (although our <c>add</c>/<c>set</c> methods currently prevent adding nulls, a robust <c>indexOf</c> should be safe).
+      </p>
+      <program language="java">
+    // Inside the ArrayList&lt;T&gt; class...
+
+    /**
+     * Returns the position of the first occurrence of the specified element.
+     * Handles null search item correctly.
+     * @param item element to search for
+     * @return the index of the first occurrence, or -1 if not found
+     */
+    @Override
+    public int indexOf(T item) {
+        // --- Implementation based on Step 4 Skeleton ---
+        // 1. Iterate through the list elements with index 'i' from 0 to size - 1.
+        for (int i = 0; i &lt; this.size; i++) {
+            // 2. Inside loop, compare 'item' with buffer[i] using null-safe equals.
+            T currentElement = this.buffer[i];
+            if (item == null) {
+                // If searching for null, find the first null element
+                if (currentElement == null) {
+                    return i; // Found null at index i
+                }
+            } else {
+                // If searching for non-null, use item.equals()
+                // Ensure currentElement isn't null before calling equals on it
+                // (Though our current implementation prevents null elements)
+                if (item.equals(currentElement)) {
+                    return i; // Found match at index i
+                }
+            }
+        }
+        // 4. If loop finishes without finding a match, return -1.
+        return -1;
+    }
+      </program>
+      <note>
+        <title>Null-Safe Equality Check</title>
+        <p>
+          A common way to write null-safe equality is using <c>java.util.Objects.equals(a, b)</c>. This static method correctly handles cases where <c>a</c> or <c>b</c> (or both) might be null. Our loop logic implements this behavior directly.
+        </p>
+      </note>
+    </subsubsection>
+
+    <subsubsection xml:id="subsubsec-arraylist-dr5-impl-contains">
+      <title>Implementing <c>contains(T item)</c></title>
+      <p>
+        As we reasoned during the skeleton planning (Step 4), checking if the list contains an item is equivalent to checking if <c>indexOf(item)</c> returns a non-negative index.
+      </p>
+      <program language="java">
+    // Inside the ArrayList&lt;T&gt; class...
+
+    @Override
+    public boolean contains(T item) {
+        // --- Implementation based on Step 4 Skeleton (Leveraging indexOf) ---
+        // 1. Perform the logic for indexOf(item).
+        // 2. Return true if the index found is not -1.
+        return indexOf(item) >= 0;
+    }
+      </program>
+      <p>This implementation reuses our existing search logic effectively.</p>
+    </subsubsection>
+
+    <subsubsection xml:id="subsubsec-arraylist-dr5-impl-remove-item">
+      <title>Implementing <c>remove(T item)</c></title>
+      <p>
+        This method also leverages <c>indexOf</c> to find the item, and then uses our core <c>remove(int index)</c> method if the item is found.
+      </p>
+      <program language="java">
+    // Inside the ArrayList&lt;T&gt; class...
+
+    @Override
+    public boolean remove(T item) {
+        // --- Implementation based on Step 4 Skeleton ---
+        // 1. Find the index of the first occurrence of 'item'.
+        int foundIndex = indexOf(item); // Reuse indexOf()
+
+        // 2. Check if the item was found.
+        if (foundIndex >= 0) {
+            // Bounds check is implicit (foundIndex is 0 to size-1)
+
+            // Store item (optional, not needed for boolean return)
+            // T removedItem = this.buffer[foundIndex]; 
+
+            // If removing before the last one, shift left (Call helper)
+            if (foundIndex &lt; this.size - 1) {
+                shiftLeft(foundIndex); 
+            }
+
+            // Decrement size
+            this.size--; 
+
+            // Null out now-unused slot (Help GC)
+            this.buffer[this.size] = null;
+
+            return true;      // Indicate success
+        } else {
+            // 4. If not found, return false.
+            return false;
+        }
+    }
+      </program>
+       <p>Here we see reuse again: find the location (<c>indexOf</c>), then perform the action (<c>remove(index)</c>.</p>
+    </subsubsection>
+  </subsection>
+
+  <subsection xml:id="subsec-arraylist-dr5-impl-end-access">
+      <title>Implementing End Accessors (<c>first</c>, <c>last</c>)</title>
+      <p>
+          These methods provide access to the first and last elements, primarily involving an empty-list check before delegating to <c>get</c>.
+      </p>
+      <program language="java">
+    // Inside the ArrayList&lt;T&gt; class...
+
+    @Override
+    public T first() {
+        // --- Implementation based on Step 4 Skeleton ---
+        // 1. Check if empty
+        if (isEmpty()) { // Reuse isEmpty() method
+            throw new NoSuchElementException("List is empty.");
+        }
+        // 2. If not empty, delegate to get(0)
+        return get(0); // Reuse get() method
+    }
+
+    @Override
+    public T last() {
+        // --- Implementation based on Step 4 Skeleton ---
+        // 1. Check if empty
+        if (isEmpty()) { // Reuse isEmpty() method
+            throw new NoSuchElementException("List is empty.");
+        }
+        // 2. If not empty, delegate to get(size - 1)
+        return get(this.size - 1); // Reuse get() and size field/method
+    }
+      </program>
+      <p>These implementations clearly show how convenience methods are built upon core methods like <c>get</c>, <c>isEmpty</c>, and the <c>size</c> field, after handling their specific preconditions (the empty check).</p>
+  </subsection>
+
+  <subsection xml:id="subsec-arraylist-dr5-impl-convenience-add-remove">
+        <title>Implementing Convenience Add/Remove Methods</title>
+        <p>
+            We previously implemented <c>addFirst</c> using its direct logic sequence. Now we implement the remaining convenience methods: <c>removeFirst</c>, <c>removeLast</c> (also using their direct logic sequences), and <c>addAfter</c> (which demonstrates composition by using other methods).
+        </p>
+        <program language="java">
+    // Inside the ArrayList&lt;T&gt; class...
+
+    @Override
+    public T removeFirst() {
+        // --- Implementation based on Step 4 Skeleton ---
+        // 1. Check if empty
+        if (isEmpty()) {
+            throw new NoSuchElementException("List is empty.");
+        }
+        // 2. Store element at index 0
+        T removedItem = this.buffer[0];
+        // 3. Shift elements 1..size-1 left (if any exist)
+        if (this.size &gt; 1) { // Check if shifting is needed
+            shiftLeft(0); // Call helper
+        }
+        // 4. Decrement size
+        this.size--;
+        // 5. Null out the now-unused slot at the new end
+        this.buffer[this.size] = null; // Help GC
+        // 6. Return the stored element
+        return removedItem;
+    }
+
+    @Override
+    public T removeLast() {
+        // --- Implementation based on Step 4 Skeleton ---
+        // 1. Check if empty
+        if (isEmpty()) {
+            throw new NoSuchElementException("List is empty.");
+        }
+        // 2. Calculate last index
+        int lastIndex = this.size - 1;
+        // 3. Store element at last index
+        T removedItem = this.buffer[lastIndex];
+        // 4. Decrement size *before* nulling out
+        this.size--;
+        // 5. Null out the now-unused slot (at the new size, which was the old lastIndex)
+        this.buffer[this.size] = null; // Help GC - No shifting needed!
+        // 6. Return the stored element
+        return removedItem;
+    }
+
+    @Override
+    public boolean addAfter(T existing, T item) {
+        // --- Implementation based on Step 4 Skeleton ---
+        // 1. Check null arguments
+        if (existing == null || item == null) {
+            throw new IllegalArgumentException("Existing item and new item cannot be null.");
+        }
+        // 2. Find index of existing item
+        int foundIndex = indexOf(existing); // Reuse indexOf()
+
+        // 3. If found...
+        if (foundIndex >= 0) {
+            int insertionIndex = foundIndex + 1;
+            // Index bounds check (0 &lt;= insertionIndex &lt;= size)
+            // Note: If foundIndex is valid (0 to size-1), then 
+            // insertionIndex (1 to size) is always &lt;= size.
+            // We only need to ensure it's not &gt; size, which it won't be.
+            // The lower bound (&gt;=0) is also guaranteed.
+
+            // Ensure capacity (Call helper)
+            growIfNeeded(); 
+
+            // Shift right to make space (Call helper - handles no-shift case)
+            shiftRight(insertionIndex); 
+
+            // Place item
+            this.buffer[insertionIndex] = item;
+
+            // Increment size
+            this.size++;
+            return true;
+        } else {
+            // 5. If not found...
+            return false;
+        }
+    }
+        </program>
+        <p>
+            The implementations for <c>removeFirst</c> and <c>removeLast</c> show the explicit sequence of checks and helper calls needed for removing from the ends. The <c>addAfter</c> method illustrates building functionality by combining previously implemented and tested methods (<c>indexOf</c> and <c>add</c>).
+        </p>
+   </subsection>
+
+   <subsection xml:id="subsec-arraylist-dr5-impl-clear">
+      <title>Implementing <c>clear()</c></title>
+      <p>
+          Finally, the <c>clear</c> method needs to reset the list to an empty state. As planned in Step 4, this involves resetting the size and optionally nulling out array slots to help the garbage collector.
+      </p>
+      <program language="java">
+    // Inside the ArrayList&lt;T&gt; class...
+
+    @Override
+    public void clear() {
+        // --- Implementation based on Step 4 Skeleton ---
+
+        // 1. Optional (Helps GC): Null out references in the array slots
+        //    that were actually used (0 to size-1).
+        for (int i = 0; i &lt; this.size; i++) {
+            this.buffer[i] = null;
+        }
+
+        // 2. Reset the size to 0.
+        this.size = 0;
+
+        // Note: We could also resize buffer back to DEFAULT_CAPACITY here
+        //       if memory usage is a major concern, but it's not strictly required
+        //       by the ADT contract. We'll omit that for simplicity now.
+    }
+      </program>
+  </subsection>
+
+   <subsection xml:id="subsec-arraylist-dr5-testing-all">
+      <title>Run All Tests!</title>
+      <p>
+          Congratulations! You have now implemented skeletons for <term>all</term> methods defined in the <c>ListADT&lt;T&gt;</c> interface. This is the moment of truth.
+      </p>
+      <p>
+          Go to the VSCode Test Explorer and run the <term>entire test suite</term>. If your implementation correctly follows the logic planned in the skeletons and accurately reflects the <c>ListADT</c> contract (including all edge cases and error handling), all tests should now pass (✅✅✅)!
+      </p>
+      <p>
+          If you still have failing tests (❌), carefully examine the failure messages:
+      </p>
+      <ul>
+          <li>Which test method failed? What scenario was it testing?</li>
+          <li>Was it an <c>AssertionError</c> (wrong result)? What was expected vs. actual?</li>
+          <li>Was it an unexpected exception (like <c>NullPointerException</c>)? Where did it occur in your code (check the stack trace)?</li>
+          <li>Was it a missing expected exception (like <c>IndexOutOfBoundsException</c>)? Did your checks fail?</li>
+      </ul>
+      <p>
+          Use the detailed examples from Step 3 and the logic from your Step 4 skeletons to debug your implementation in <c>ArrayList.java</c> until all tests pass. Getting a completely "green" test bar is the goal.
+      </p>
+   </subsection>
+
+   <p>
+      Once all tests pass, you have a working, robust implementation of a generic <c>ArrayList</c> based on the provided specification. The final part of Step 5 involves reflecting on the implementation and considering potential refinements or improvements, which we will do in the next section.
+   </p>
+
 </section>

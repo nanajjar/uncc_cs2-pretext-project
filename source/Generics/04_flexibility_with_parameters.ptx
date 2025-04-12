@@ -170,19 +170,19 @@ for (Vehicle v : traffic) {
      <choices randomize="yes">
          <choice>
              <statement><p>The version defined in the <c>Object</c> class.</p></statement>
-             <feedback><p>Incorrect. The `Object` class doesn't define a `draw` method relevant here. Dynamic dispatch selects the method from the actual object's class.</p></feedback>
+             <feedback><p>Incorrect. The <c>Object</c> class doesn't define a <c>draw</c> method relevant here. Dynamic dispatch selects the method from the actual object's class.</p></feedback>
          </choice>
          <choice>
              <statement><p>A default version possibly defined in the <c>Drawable</c> interface.</p></statement>
-             <feedback><p>Incorrect. While interfaces *can* have default methods, polymorphism ensures that if the implementing class (`Circle`) provides its own version (`@Override`), that version is called.</p></feedback>
+             <feedback><p>Incorrect. While interfaces *can* have default methods, polymorphism ensures that if the implementing class (<c>Circle</c>) provides its own version (<c>@Override</c>), that version is called.</p></feedback>
          </choice>
          <choice>
              <statement><p>It depends on how the <c>renderOnScreen</c> method calls it.</p></statement>
-             <feedback><p>Incorrect. The calling method (`renderOnScreen`) doesn't determine which override runs; the actual type of the object (`item`) at runtime does, via dynamic dispatch.</p></feedback>
+             <feedback><p>Incorrect. The calling method (<c>renderOnScreen</c>) doesn't determine which override runs; the actual type of the object (<c>item</c>) at runtime does, via dynamic dispatch.</p></feedback>
          </choice>
          <choice correct="yes">
              <statement><p>The version of <c>draw()</c> implemented specifically within the <c>Circle</c> class.</p></statement>
-             <feedback><p>Correct. Due to dynamic dispatch, the JVM determines the actual type of the object referenced by `item` at runtime (which is `Circle`) and executes the `draw()` method belonging to that specific class.</p></feedback>
+             <feedback><p>Correct. Due to dynamic dispatch, the JVM determines the actual type of the object referenced by <c>item</c> at runtime (which is <c>Circle</c>) and executes the <c>draw()</c> method belonging to that specific class.</p></feedback>
          </choice>
      </choices>
  </exercise>
@@ -194,19 +194,19 @@ for (Vehicle v : traffic) {
      <choices randomize="yes">
          <choice>
              <statement><p>It allows you to call <c>Car</c>-specific methods directly on any element retrieved from the list without casting.</p></statement>
-             <feedback><p>Incorrect. When retrieving elements as `Vehicle`, you can only directly call methods defined in the `Vehicle` contract without casting.</p></feedback>
+             <feedback><p>Incorrect. When retrieving elements as <c>Vehicle</c>, you can only directly call methods defined in the <c>Vehicle</c> contract without casting.</p></feedback>
          </choice>
          <choice correct="yes">
              <statement><p>You can process all elements uniformly using a loop that treats each element as a <c>Vehicle</c>, calling methods defined in the <c>Vehicle</c> contract.</p></statement>
-             <feedback><p>Correct. You can iterate through the collection and apply common operations defined in the superclass/interface type (`Vehicle`) to all elements, regardless of their specific subtype.</p></feedback>
+             <feedback><p>Correct. You can iterate through the collection and apply common operations defined in the superclass/interface type (<c>Vehicle</c>) to all elements, regardless of their specific subtype.</p></feedback>
          </choice>
          <choice>
              <statement><p>It automatically converts all objects in the list to the <c>Vehicle</c> type, losing subclass information.</p></statement>
-             <feedback><p>Incorrect. The objects retain their specific types (`Car`, `Bicycle`) at runtime; only the reference variable used to access them in the loop has the more general type (`Vehicle`).</p></feedback>
+             <feedback><p>Incorrect. The objects retain their specific types (<c>Car</c>, <c>Bicycle</c>) at runtime; only the reference variable used to access them in the loop has the more general type (<c>Vehicle</c>).</p></feedback>
          </choice>
          <choice>
              <statement><p>It ensures that only objects of the exact type <c>Vehicle</c> can be added, preventing subclasses.</p></statement>
-             <feedback><p>Incorrect. A `List&lt;Vehicle&gt;` specifically *allows* instances of `Vehicle` and any of its subclasses to be added.</p></feedback>
+             <feedback><p>Incorrect. A <c>List&lt;Vehicle&gt;</c> specifically *allows* instances of <c>Vehicle</c> and any of its subclasses to be added.</p></feedback>
          </choice>
      </choices>
  </exercise>

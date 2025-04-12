@@ -244,7 +244,7 @@ public void readAndClose(S source) throws java.io.IOException {
          </choice>
          <choice>
              <statement><p>To allow the generic type to be instantiated using <c>new T()</c>.</p></statement>
-             <feedback><p>Incorrect. The inability to use `new T()` is a limitation due to type erasure, which bounds don't solve directly (though workarounds exist).</p></feedback>
+             <feedback><p>Incorrect. The inability to use <c>new T()</c> is a limitation due to type erasure, which bounds don't solve directly (though workarounds exist).</p></feedback>
          </choice>
          <choice correct="yes">
              <statement><p>To guarantee that the type parameter <c>T</c> has access to specific methods beyond those defined in <c>Object</c> (e.g., <c>doubleValue()</c> or <c>compareTo()</c>).</p></statement>
@@ -260,19 +260,19 @@ public void readAndClose(S source) throws java.io.IOException {
      <choices randomize="yes">
          <choice>
              <statement><p><c>T</c> must be a direct subclass of a class named <c>Comparable</c>.</p></statement>
-             <feedback><p>Incorrect. `Comparable` is an interface, not a class, and `extends` is used for interface bounds here. Also, `Comparable` itself is generic.</p></feedback>
+             <feedback><p>Incorrect. <c>Comparable</c> is an interface, not a class, and <c>extends</c> is used for interface bounds here. Also, <c>Comparable</c> itself is generic.</p></feedback>
          </choice>
          <choice>
              <statement><p><c>T</c> can be any type, but it will be compared using methods from the <c>Object</c> class.</p></statement>
-             <feedback><p>Incorrect. The bound specifically requires `T` to implement the `Comparable` interface, guaranteeing the `compareTo` method.</p></feedback>
+             <feedback><p>Incorrect. The bound specifically requires <c>T</c> to implement the <c>Comparable</c> interface, guaranteeing the <c>compareTo</c> method.</p></feedback>
          </choice>
          <choice correct="yes">
              <statement><p><c>T</c> must be a type that implements the <c>Comparable</c> interface for comparing objects of its own type.</p></statement>
-             <feedback><p>Correct. This bound ensures that any type used for T provides a `compareTo(T other)` method, allowing instances of T to be compared with each other.</p></feedback>
+             <feedback><p>Correct. This bound ensures that any type used for <c>T</c> provides a <c>compareTo(T other)</c> method, allowing instances of <c>T</c> to be compared with each other.</p></feedback>
          </choice>
          <choice>
              <statement><p><c>T</c> must be either the <c>Comparable</c> interface itself or a subclass of it.</p></statement>
-             <feedback><p>Incorrect. T must be a class that *implements* the `Comparable` interface.</p></feedback>
+             <feedback><p>Incorrect. <c>T</c> must be a class that *implements* the <c>Comparable</c> interface.</p></feedback>
          </choice>
      </choices>
  </exercise>
@@ -284,19 +284,19 @@ public void readAndClose(S source) throws java.io.IOException {
      <choices randomize="yes">
          <choice>
              <statement><p><c>&lt;T extends Runnable &amp; Thread&gt;</c></p></statement>
-             <feedback><p>Incorrect. If a class bound (`Thread`) is present, it must be listed first.</p></feedback>
+             <feedback><p>Incorrect. If a class bound (<c>Thread</c>) is present, it must be listed first.</p></feedback>
          </choice>
          <choice>
              <statement><p><c>&lt;T extends Number &amp; Integer&gt;</c></p></statement>
-             <feedback><p>Incorrect. A type parameter can extend at most one class (`Number` or `Integer`, not both).</p></feedback>
+             <feedback><p>Incorrect. A type parameter can extend at most one class (<c>Number</c> or <c>Integer</c>, not both).</p></feedback>
          </choice>
          <choice correct="yes">
              <statement><p><c>&lt;T extends Number &amp; Comparable&lt;T&gt; &amp; Serializable&gt;</c></p></statement>
-             <feedback><p>Correct. This follows the rule: at most one class bound (`Number`) listed first, followed by interface bounds (`Comparable`, `Serializable`) separated by ampersands.</p></feedback>
+             <feedback><p>Correct. This follows the rule: at most one class bound (<c>Number</c>) listed first, followed by interface bounds (<c>Comparable</c>, <c>Serializable</c>) separated by ampersands.</p></feedback>
          </choice>
          <choice>
              <statement><p><c>&lt;T extends Comparable&lt;T&gt; , Serializable&gt;</c></p></statement>
-             <feedback><p>Incorrect. Multiple bounds must be separated by an ampersand (`&amp;`), not a comma.</p></feedback>
+             <feedback><p>Incorrect. Multiple bounds must be separated by an ampersand (<c>&amp;</c>), not a comma.</p></feedback>
          </choice>
      </choices>
  </exercise>

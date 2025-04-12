@@ -131,7 +131,7 @@ public class ArrayList&lt;T&gt; implements ListADT&lt;T&gt; { // Much cleaner!
   </note>
 
   <p>
-    In our project, the <c>ArrayList.java</c> file (in package <c>DataStructures</c>) will definitely need <c>import ADTs.ListADT;</c>. You will also likely need imports for standard Java exceptions like <c>java.lang.IndexOutOfBoundsException</c> (although types in `java.lang` are implicitly imported, explicit imports for exceptions can sometimes aid clarity) and others not in `java.lang`, such as <c>java.util.NoSuchElementException</c>. Understanding imports is therefore essential before we start implementing our class.
+    In our project, the <c>ArrayList.java</c> file (in package <c>DataStructures</c>) will definitely need <c>import ADTs.ListADT;</c>. You will also likely need imports for standard Java exceptions like <c>java.lang.IndexOutOfBoundsException</c> (although types in <c>java.lang</c> are implicitly imported, explicit imports for exceptions can sometimes aid clarity) and others not in <c>java.lang</c>, such as <c>java.util.NoSuchElementException</c>. Understanding imports is therefore essential before we start implementing our class.
   </p>
 
 </section>

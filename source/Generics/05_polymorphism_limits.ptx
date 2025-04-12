@@ -116,7 +116,7 @@ String s = (String) item; // Requires a cast - potentially unsafe!
      <choices randomize="yes">
          <choice>
              <statement><p>A <c>List&lt;String&gt;</c> can be safely used wherever a <c>List&lt;Object&gt;</c> is expected.</p></statement>
-             <feedback><p>Incorrect. Invariance means precisely the opposite; even though String is an Object, `List&lt;String&gt;` is NOT a subtype of `List&lt;Object&gt;`.</p></feedback>
+             <feedback><p>Incorrect. Invariance means precisely the opposite; even though String is an Object, <c>List&lt;String&gt;</c> is NOT a subtype of <c>List&lt;Object&gt;</c>.</p></feedback>
          </choice>
          <choice>
              <statement><p>Generic types cannot change after they are created.</p></statement>
@@ -124,11 +124,11 @@ String s = (String) item; // Requires a cast - potentially unsafe!
          </choice>
          <choice correct="yes">
              <statement><p>Even if type <c>A</c> is a subtype of <c>B</c>, <c>GenericType&lt;A&gt;</c> is generally not a subtype of <c>GenericType&lt;B&gt;</c>.</p></statement>
-             <feedback><p>Correct. Invariance means the subtype relationship between the type arguments (like String and Object) does not carry over to the generic types themselves (like `List&lt;String&gt;` and `List&lt;Object&gt;`).</p></feedback>
+             <feedback><p>Correct. Invariance means the subtype relationship between the type arguments (like <c>String</c> and <c>Object</c>) does not carry over to the generic types themselves (like <c>List&lt;String&gt;</c> and <c>List&lt;Object&gt;</c>).</p></feedback>
          </choice>
          <choice>
              <statement><p>The type argument (like <c>String</c> in <c>List&lt;String&gt;</c>) cannot vary and must always be <c>Object</c>.</p></statement>
-             <feedback><p>Incorrect. The type argument can be varied (that's the point of generics), but the relationship between different parameterizations like `List&lt;String&gt;` and `List&lt;Object&gt;` is invariant.</p></feedback>
+             <feedback><p>Incorrect. The type argument can be varied (that's the point of generics), but the relationship between different parameterizations like <c>List&lt;String&gt;</c> and <c>List&lt;Object&gt;</c> is invariant.</p></feedback>
          </choice>
      </choices>
  </exercise>
@@ -140,7 +140,7 @@ String s = (String) item; // Requires a cast - potentially unsafe!
      <choices randomize="yes">
          <choice>
              <statement><p>It prevents adding objects of different types to the same collection.</p></statement>
-             <feedback><p>Incorrect. Using `Object` specifically *allows* adding any type of object, which is part of the problem regarding type safety.</p></feedback>
+             <feedback><p>Incorrect. Using <c>Object</c> specifically <em>allows</em> adding any type of object, which is part of the problem regarding type safety.</p></feedback>
          </choice>
          <choice correct="yes">
              <statement><p>It sacrifices compile-time type safety, requiring explicit casting on retrieval and risking runtime <c>ClassCastException</c>s.</p></statement>
@@ -152,7 +152,7 @@ String s = (String) item; // Requires a cast - potentially unsafe!
          </choice>
          <choice>
              <statement><p>It prevents the use of polymorphism within the collection.</p></statement>
-             <feedback><p>Incorrect. You can still leverage polymorphism with `Object`, but you lose the specific type information needed for safer operations beyond those defined in `Object`.</p></feedback>
+             <feedback><p>Incorrect. You can still leverage polymorphism with <c>Object</c>, but you lose the specific type information needed for safer operations beyond those defined in <c>Object</c>.</p></feedback>
          </choice>
      </choices>
  </exercise>
@@ -164,11 +164,11 @@ String s = (String) item; // Requires a cast - potentially unsafe!
      <choices randomize="yes">
          <choice>
              <statement><p>Because it prevents the compiler from checking any method calls on the variable.</p></statement>
-             <feedback><p>Incorrect. The compiler *does* check method calls, but only against the contract of the declared type (e.g., `Vehicle`), not the specific subtype (`Car`).</p></feedback>
+             <feedback><p>Incorrect. The compiler <em>does</em> check method calls, but only against the contract of the declared type (e.g., <c>Vehicle</c>), not the specific subtype (<c>Car</c>).</p></feedback>
          </choice>
          <choice>
              <statement><p>Because the object actually changes its type to the superclass type.</p></statement>
-             <feedback><p>Incorrect. The object retains its specific runtime type (`Car`); only the reference variable (`v`) has the more general compile-time type (`Vehicle`).</p></feedback>
+             <feedback><p>Incorrect. The object retains its specific runtime type (<c>Car</c>); only the reference variable (<c>v</c>) has the more general compile-time type (<c>Vehicle</c>).</p></feedback>
          </choice>
          <choice correct="yes">
              <statement><p>Because accessing subclass-specific methods requires casting, which is verbose and carries a runtime risk (<c>ClassCastException</c>).</p></statement>

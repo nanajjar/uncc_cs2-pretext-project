@@ -1,4 +1,248 @@
 <section xml:id="sec-arraylist-dr5-refining-impl">
-  <title>DR5: Refining Implementation</title>
-  <p>Content placeholder.</p>
+  <title>Step 5.5: Refining the Implementation</title>
+
+  <introduction>
+    <p>
+      Congratulations! If you've reached this point and all the provided unit tests for your <c>ArrayList&lt;T&gt;</c> are passing (✅), you have successfully completed the core implementation task. This is a significant achievement.
+    </p>
+    <p>
+      However, the Design Recipe includes one final, important part in Step 5: <term>Refinement</term>. Now that our code is <term>correct</term> (according to the tests), we can review it with a critical eye and look for ways to improve its <term>quality</term>. Refinement isn't about changing what the code *does*, but *how* it does it, focusing on aspects like efficiency, readability, maintainability (DRY), robustness, and leveraging existing tools effectively.
+    </p>
+     <note>
+        <title>Test After Refining!</title>
+        <p>
+            Always re-run your full test suite after applying any refinement. The goal is to improve the code *without breaking its correctness*. Tests are your safety net!
+        </p>
+    </note>
+     <p>
+         Let's explore several potential refinements for our <c>ArrayList</c> implementation.
+     </p>
+  </introduction>
+
+  <subsection xml:id="subsec-arraylist-refine-arraycopy-revised">
+    <title>Refinement 1: Improving Efficiency with <c>System.arraycopy()</c></title>
+    <p>
+      <em>The Opportunity (Efficiency/Knowledge):</em> Our helper methods <c>growIfNeeded</c>, <c>shiftRight</c>, and <c>shiftLeft</c> currently use <c>for</c> loops to copy array elements. While logically correct, copying potentially large blocks of memory element-by-element in a Java loop can be much slower than using optimized, low-level system routines.
+    </p>
+    <p>
+      <em>Teaching the Tool: <c>System.arraycopy()</c></em><br />
+      Java provides a static method specifically for fast bulk copying of array elements: <c>System.arraycopy(Object src, int srcPos, Object dest, int destPos, int length)</c>. It's designed to be highly efficient. Let's break down its parameters:
+    </p>
+    <ul>
+      <li><p><c>Object src</c>: The source array you are copying <term>from</term>.</p></li>
+      <li><p><c>int srcPos</c>: The starting index <term>in the source array</term> from where copying begins.</p></li>
+      <li><p><c>Object dest</c>: The destination array you are copying <term>to</term>.</p></li>
+      <li><p><c>int destPos</c>: The starting index <term>in the destination array</term> where copied elements will be placed.</p></li>
+      <li><p><c>int length</c>: The <term>number of elements</term> to copy.</p></li>
+    </ul>
+    <p>
+      Crucially, <c>System.arraycopy</c> correctly handles copying elements within the *same* array (as needed for shifting), even if the source and destination ranges overlap.
+    </p>
+
+    <subsubsection xml:id="subsubsec-arraylist-refine-grow-arraycopy">
+      <title>Applying to <c>growIfNeeded</c></title>
+      <p><em>Before (Loop):</em></p>
+      <program language="java">
+    // Inside growIfNeeded, if resizing needed...
+    Object[] newbuffer = new Object[newCapacity];
+    for (int i = 0; i &lt; this.size; i++) { // Copying 'size' elements
+        newbuffer[i] = this.buffer[i];
+    }
+    this.buffer = (T[]) newbuffer;
+      </program>
+      <p><em>After (<c>System.arraycopy</c>):</em></p>
+      <program language="java">
+    // Inside growIfNeeded, if resizing needed...
+    Object[] newbuffer = new Object[newCapacity];
+    // Copy 'size' elements from 'this.buffer' starting at index 0
+    // to 'newbuffer' starting at index 0.
+    System.arraycopy(this.buffer, 0, newbuffer, 0, this.size); // Replaces the loop
+    this.buffer = (T[]) newbuffer;
+      </program>
+      <p><em>Benefit:</em> More concise and significantly faster for large lists.</p>
+    </subsubsection>
+
+     <subsubsection xml:id="subsubsec-arraylist-refine-shiftR-arraycopy">
+      <title>Applying to <c>shiftRight</c></title>
+      <p><em>Before (Loop):</em></p>
+      <program language="java">
+    private void shiftRight(int index) {
+        for (int i = this.size - 1; i >= index; i--) {
+            this.buffer[i + 1] = this.buffer[i];
+        }
+    }
+      </program>
+      <p><em>After (<c>System.arraycopy</c>):</em></p>
+      <program language="java">
+    private void shiftRight(int index) {
+        // Need to move elements from index..size-1 to index+1..size
+        int numToMove = this.size - index; // Number of elements from index onwards
+        if (numToMove > 0) {
+            // Copy 'numToMove' elements:
+            // from: 'buffer' starting at 'index'
+            // to:   'buffer' starting at 'index + 1'
+            System.arraycopy(this.buffer, index, this.buffer, index + 1, numToMove);
+        }
+    }
+      </program>
+      <p><em>Benefit:</em> Replaces the backward loop with a single, efficient copy operation.</p>
+    </subsubsection>
+
+     <subsubsection xml:id="subsubsec-arraylist-refine-shiftL-arraycopy">
+      <title>Applying to <c>shiftLeft</c></title>
+      <p><em>Before (Loop):</em></p>
+      <program language="java">
+    private void shiftLeft(int index) {
+        for (int i = index; i &lt; this.size - 1; i++) {
+            this.buffer[i] = this.buffer[i + 1];
+        }
+    }
+      </program>
+      <p><em>After (<c>System.arraycopy</c>):</em></p>
+      <program language="java">
+    private void shiftLeft(int index) {
+        // Need to move elements from index+1..size-1 to index..size-2
+        int numToMove = this.size - 1 - index; // Num elements after the removed one
+        if (numToMove > 0) {
+             // Copy 'numToMove' elements:
+             // from: 'buffer' starting at 'index + 1' (element after removed one)
+             // to:   'buffer' starting at 'index' (the gap)
+            System.arraycopy(this.buffer, index + 1, this.buffer, index, numToMove);
+        }
+    }
+      </program>
+       <p><em>Benefit:</em> Replaces the forward loop with a single, efficient copy operation.</p>
+    </subsubsection>
+  </subsection>
+
+  <subsection xml:id="subsec-arraylist-refine-fill-revised">
+      <title>Refinement 2: Simplifying <c>clear</c> with <c>Arrays.fill()</c></title>
+      <p>
+          <em>The Opportunity (Knowledge/Conciseness):</em> Our `clear` method uses a loop to null out references to help the garbage collector. This is good, but slightly verbose.
+      </p>
+      <p>
+        <em>Teaching the Tool: <c>Arrays.fill()</c></em><br />
+        The <c>java.util.Arrays</c> class provides many static utility methods for working with arrays. One is <c>Arrays.fill(Object[] a, int fromIndexInclusive, int toIndexExclusive, Object val)</c>. It efficiently assigns the specified value (<c>val</c>) to each element of the array within the specified range. Note that the <c>toIndex</c> is <term>exclusive</term> (the element at `toIndex` itself is *not* included).
+      </p>
+      <p><em>Before (Loop):</em></p>
+      <program language="java">
+    @Override
+    public void clear() {
+        for (int i = 0; i &lt; this.size; i++) { // Null out indices 0 to size-1
+            this.buffer[i] = null;
+        }
+        this.size = 0;
+    }
+      </program>
+       <p><em>After (<c>Arrays.fill</c>):</em></p>
+       <program language="java">
+    @Override
+    public void clear() {
+        // Fill the range currently holding elements (0 up to size) with null.
+        // The 'toIndex' parameter is exclusive, so 'this.size' is correct here.
+        java.util.Arrays.fill(this.buffer, 0, this.size, null);
+
+        // Reset size *after* nulling out the old range
+        this.size = 0;
+    }
+       </program>
+        <p>
+            <em>Benefit:</em> This version is slightly more concise and clearly expresses the intent of nulling out a range. Both versions are functionally acceptable.
+        </p>
+   </subsection>
+
+   <subsection xml:id="subsec-arraylist-refine-delegation-revised">
+       <title>Refinement 3: Enhancing Consistency with Delegation</title>
+        <p>
+            <em>The Opportunity (DRY/Consistency):</em> In Step 5, we implemented methods like <c>addFirst</c>, <c>removeFirst</c>, and <c>removeLast</c> using their direct logic sequences (calling private helpers). This provided good practice but resulted in some repetition of checking logic and helper call patterns already present in <c>add(index)</c> and <c>remove(index)</c>.
+        </p>
+        <p>
+            <em>Refinement (Delegation):</em> Now that our core indexed methods are implemented and assumed tested, we can refactor the convenience methods to <term>delegate</term> to them. This centralizes the core logic, improving maintainability and adherence to DRY.
+        </p>
+
+        <p><em>Example: <c>removeFirst</c> Before (Direct Logic with Helpers):</em></p>
+        <program language="java">
+    @Override
+    public T removeFirst() {
+        if (isEmpty()) { throw new NoSuchElementException("List is empty."); }
+        T removedItem = this.buffer[0];
+        if (0 &lt; this.size - 1) { shiftLeft(0); } // Check if shifting needed
+        this.size--;
+        this.buffer[this.size] = null;
+        return removedItem;
+    }
+        </program>
+        <p><em>Example: <c>removeFirst</c> After (Delegation):</em></p>
+        <program language="java">
+    @Override
+    public T removeFirst() {
+        if (isEmpty()) { // Still need specific empty check for NoSuchElementException
+            throw new NoSuchElementException("List is empty.");
+        }
+        // Delegate core logic (index check, get item, shift, size--, null out)
+        return remove(0); // remove(0) handles the rest
+    }
+        </program>
+        <p>
+            Similarly, <c>removeLast</c> can be refined to check for empty and then call <c>remove(size - 1)</c>, and <c>addFirst</c> can be refined to just call <c>add(0, item)</c>.
+        </p>
+        <note>
+            <title>Trade-offs of Delegation</title>
+            <p>
+                Delegation generally leads to cleaner, more maintainable code (fix a bug in `remove(index)`, and `removeFirst`/`Last` automatically benefit). The main prerequisites are that the core method (`add(index)` or `remove(index)`) must be correct and thoroughly tested, and you must ensure the specific preconditions of the convenience method (like the empty check for `removeFirst` throwing `NoSuchElementException` instead of `IndexOutOfBoundsException`) are handled before delegating if they differ from the core method's contract.
+            </p>
+        </note>
+   </subsection>
+
+   <subsection xml:id="subsec-arraylist-refine-objects-equals-revised">
+       <title>Refinement 4: Improving Null Checks with <c>Objects.equals()</c></title>
+        <p>
+            <em>The Opportunity (Knowledge/Robustness/Clarity):</em> Our `indexOf` method correctly handles nulls, but the logic is slightly verbose.
+        </p>
+        <p><em>Before (Manual Null Check in `indexOf` loop):</em></p>
+        <program language="java">
+            // Inside the loop...
+            T currentElement = this.buffer[i];
+            if (item == null) {
+                if (currentElement == null) { return i; }
+            } else {
+                if (item.equals(currentElement)) { return i; }
+            }
+        </program>
+         <p>
+             <em>Teaching the Tool: <c>Objects.equals()</c></em><br/>
+             The utility class <c>java.util.Objects</c> (available since Java 7) provides a static method <c>Objects.equals(Object a, Object b)</c> designed specifically for null-safe equality checks. It returns <c>true</c> if both arguments are null, <c>false</c> if exactly one is null, and calls <c>a.equals(b)</c> if both are non-null.
+         </p>
+        <p><em>After (<c>Objects.equals</c>):</em></p>
+        <program language="java">
+            // Inside the loop...
+            if (java.util.Objects.equals(item, this.buffer[i])) {
+                return i;
+            }
+        </program>
+        <p>
+            <em>Benefit:</em> Using <c>Objects.equals</c> is the standard, idiomatic way to check for equality when either operand might be null in modern Java. It's more concise and less prone to logic errors than manual null checks. This is a knowledge-based refinement that improves code clarity and robustness.
+        </p>
+    </subsection>
+
+  <subsection xml:id="subsec-arraylist-refine-conclusion-revised">
+      <title>Refinement Summary</title>
+        <p>
+            This refinement step demonstrated several ways to improve our initial, correct implementation by leveraging standard library features and design principles:
+        </p>
+        <ul>
+            <li>Using <c>System.arraycopy</c> significantly improves the efficiency of internal data copying.</li>
+            <li>Using <c>Arrays.fill</c> offers a concise alternative for nulling out elements in <c>clear</c>.</li>
+            <li>Using delegation for convenience methods enhances DRY and maintainability after core methods are stable.</li>
+            <li>Using <c>Objects.equals</c> makes null-safe comparisons cleaner and more robust.</li>
+        </ul>
+        <p>
+            Applying such refinements <term>after</term> establishing correctness through testing leads to higher-quality, professional code. Remember to re-run your tests after any refinement!
+        </p>
+   </subsection>
+
+   <p>
+      With implementation and refinement complete, we have successfully built and improved our own generic <c>ArrayList&lt;T&gt;</c>, gaining valuable insight into data structures, generics, and the Design Recipe. The final section will conclude the chapter.
+   </p>
+
 </section>

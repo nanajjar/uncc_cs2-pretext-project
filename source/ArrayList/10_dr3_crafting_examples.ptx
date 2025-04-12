@@ -1,4 +1,221 @@
 <section xml:id="sec-arraylist-dr3-crafting-examples">
-  <title>DR3: Crafting Examples</title>
-  <p>Content placeholder.</p>
+  <title>Step 3: Crafting Examples</title>
+
+  <p>
+    Having understood the specification (Step 0), defined our internal data representation (Step 1), and established the class structure (Step 2), we now arrive at <term>Design Recipe Step 3: Examples &amp; Tests</term>. The core idea of this step is to solidify our understanding of exactly how each method should behave by creating concrete examples <term>before</term> we write the implementation code. These examples serve multiple purposes:
+  </p>
+  <ul>
+    <li>They force us to think through specific scenarios, including typical usage, edge cases, and error conditions.</li>
+    <li>They clarify any remaining ambiguities in the specification.</li>
+    <li>They provide precise targets for our implementation logic (Step 5).</li>
+    <li>They form the basis for the automated unit tests (discussed in the next section) that verify our code.</li>
+  </ul>
+  <p>
+    As recommended in the Design Recipe guide (See <xref ref="ch-design-recipe-template" />), using a structured format helps ensure thoroughness. For each key operation, we should consider: Case Type, State Before, Action, and Expected Result (State After / Return Value / Exception), based on the <c>ListADT</c> Javadoc. We'll structure each example clearly below using lists and paragraphs for readability.
+  </p>
+  <note>
+    <title>State Representation</title>
+    <p>
+      We'll represent the conceptual list state like this: <c>[A, B, C] (size=3)</c>. When thinking about the internal array, we might visualize it as <c>array=[A|B|C|null] (size=3, cap=4)</c>.
+    </p>
+  </note>
+
+  <subsection xml:id="subsec-arraylist-dr3-add-examples-revised2">
+    <title>1. Examples for Adding Elements</title>
+
+    <subsubsection xml:id="subsubsec-arraylist-dr3-add-index-revised2">
+        <title><c>add(int index, T item)</c></title>
+        <ul>
+            <li> <p><term>Case:</term> Add to Empty List</p>
+                <p><term>State Before:</term> <c>[] (size=0)</c></p>
+                <p><term>Action:</term> <c>add(0, "A")</c></p>
+                <p><term>Expected Result:</term> State After: <c>["A"] (size=1)</c></p>
+            </li>
+            <li> <p><term>Case:</term> Add at Beginning (size &gt; 0)</p>
+                <p><term>State Before:</term> <c>["A", "B"] (size=2)</c></p>
+                <p><term>Action:</term> <c>add(0, "X")</c></p>
+                <p><term>Expected Result:</term> State After: <c>["X", "A", "B"] (size=3)</c></p>
+            </li>
+             <li> <p><term>Case:</term> Add in Middle</p>
+                <p><term>State Before:</term> <c>["A", "B", "C"] (size=3)</c></p>
+                <p><term>Action:</term> <c>add(1, "X")</c></p>
+                <p><term>Expected Result:</term> State After: <c>["A", "X", "B", "C"] (size=4)</c></p>
+            </li>
+             <li> <p><term>Case:</term> Add at End (index == size)</p>
+                <p><term>State Before:</term> <c>["A", "B"] (size=2)</c></p>
+                <p><term>Action:</term> <c>add(2, "C")</c></p>
+                <p><term>Expected Result:</term> State After: <c>["A", "B", "C"] (size=3)</c></p>
+            </li>
+            <li> <p><term>Case:</term> Error - Invalid Index (Negative)</p>
+                <p><term>State Before:</term> <c>["A"] (size=1)</c></p>
+                <p><term>Action:</term> <c>add(-1, "X")</c></p>
+                <p><term>Expected Result:</term> Throws <c>IndexOutOfBoundsException</c></p>
+            </li>
+            <li> <p><term>Case:</term> Error - Invalid Index (Too Large)</p>
+                <p><term>State Before:</term> <c>["A"] (size=1)</c></p>
+                <p><term>Action:</term> <c>add(2, "X")</c></p>
+                <p><term>Expected Result:</term> Throws <c>IndexOutOfBoundsException</c></p>
+            </li>
+             <li> <p><term>Case:</term> Error - Null Item</p>
+                <p><term>State Before:</term> <c>["A"] (size=1)</c></p>
+                <p><term>Action:</term> <c>add(0, null)</c></p>
+                <p><term>Expected Result:</term> Throws <c>IllegalArgumentException</c></p>
+            </li>
+            <li> <p><term>Case:</term> Add causing Resize (Conceptual)</p>
+                <p><term>State Before:</term> List <c>[A, B, C]</c> (size=3), internal array capacity is 3.</p>
+                <p><term>Action:</term> <c>add(3, "D")</c> (or <c>addLast("D")</c>)</p>
+                <p><term>Expected Result:</term> State After: <c>[A, B, C, D] (size=4)</c>, internal capacity has increased.</p>
+            </li>
+        </ul>
+        <p>Examples for <c>addFirst</c> and <c>addLast</c> follow directly from the index 0 and index <c>size</c> cases above.</p>
+    </subsubsection>
+    </subsection>
+
+  <subsection xml:id="subsec-arraylist-dr3-remove-examples-revised2">
+    <title>2. Examples for Removing Elements</title>
+     <subsubsection xml:id="subsubsec-arraylist-dr3-remove-index-revised2">
+        <title><c>remove(int index)</c></title>
+         <ul>
+            <li> <p><term>Case:</term> Remove Only Element</p>
+                <p><term>State Before:</term> <c>["A"] (size=1)</c></p>
+                <p><term>Action:</term> <c>remove(0)</c></p>
+                <p><term>Expected Result:</term> Returns "A", State After: <c>[] (size=0)</c></p>
+            </li>
+             <li> <p><term>Case:</term> Remove First Element (size &gt; 1)</p>
+                <p><term>State Before:</term> <c>["A", "B", "C"] (size=3)</c></p>
+                <p><term>Action:</term> <c>remove(0)</c></p>
+                <p><term>Expected Result:</term> Returns "A", State After: <c>["B", "C"] (size=2)</c></p>
+            </li>
+              <li> <p><term>Case:</term> Remove Middle Element</p>
+                <p><term>State Before:</term> <c>["A", "B", "C"] (size=3)</c></p>
+                <p><term>Action:</term> <c>remove(1)</c></p>
+                <p><term>Expected Result:</term> Returns "B", State After: <c>["A", "C"] (size=2)</c></p>
+            </li>
+             <li> <p><term>Case:</term> Remove Last Element</p>
+                <p><term>State Before:</term> <c>["A", "B", "C"] (size=3)</c></p>
+                <p><term>Action:</term> <c>remove(2)</c></p>
+                <p><term>Expected Result:</term> Returns "C", State After: <c>["A", "B"] (size=2)</c></p>
+            </li>
+             <li> <p><term>Case:</term> Error - Invalid Index (Negative)</p>
+                <p><term>State Before:</term> <c>["A"] (size=1)</c></p>
+                <p><term>Action:</term> <c>remove(-1)</c></p>
+                <p><term>Expected Result:</term> Throws <c>IndexOutOfBoundsException</c></p>
+            </li>
+              <li> <p><term>Case:</term> Error - Invalid Index (>= size)</p>
+                <p><term>State Before:</term> <c>["A"] (size=1)</c></p>
+                <p><term>Action:</term> <c>remove(1)</c></p>
+                <p><term>Expected Result:</term> Throws <c>IndexOutOfBoundsException</c></p>
+            </li>
+             <li> <p><term>Case:</term> Error - Remove from Empty List</p>
+                <p><term>State Before:</term> <c>[] (size=0)</c></p>
+                <p><term>Action:</term> <c>remove(0)</c></p>
+                <p><term>Expected Result:</term> Throws <c>IndexOutOfBoundsException</c></p>
+            </li>
+         </ul>
+     </subsubsection>
+
+      <subsubsection xml:id="subsubsec-arraylist-dr3-remove-convenience-revised2">
+        <title><c>removeFirst()</c> / <c>removeLast()</c></title>
+         <ul>
+             <li> <p><term>Case:</term> Remove First (size=1)</p>
+                 <p><term>State Before:</term> <c>["A"] (size=1)</c></p>
+                 <p><term>Action:</term> <c>removeFirst()</c></p>
+                 <p><term>Expected Result:</term> Returns "A", State After: <c>[] (size=0)</c></p>
+              </li>
+              <li> <p><term>Case:</term> Remove Last (size &gt; 1)</p>
+                 <p><term>State Before:</term> <c>["A", "B", "C"] (size=3)</c></p>
+                 <p><term>Action:</term> <c>removeLast()</c></p>
+                 <p><term>Expected Result:</term> Returns "C", State After: <c>["A", "B"] (size=2)</c></p>
+              </li>
+             <li> <p><term>Case:</term> Error - removeFirst from Empty List</p>
+                 <p><term>State Before:</term> <c>[] (size=0)</c></p>
+                 <p><term>Action:</term> <c>removeFirst()</c></p>
+                 <p><term>Expected Result:</term> Throws <c>NoSuchElementException</c></p>
+              </li>
+             <li> <p><term>Case:</term> Error - removeLast from Empty List</p>
+                 <p><term>State Before:</term> <c>[] (size=0)</c></p>
+                 <p><term>Action:</term> <c>removeLast()</c></p>
+                 <p><term>Expected Result:</term> Throws <c>NoSuchElementException</c></p>
+              </li>
+         </ul>
+     </subsubsection>
+
+      <subsubsection xml:id="subsubsec-arraylist-dr3-remove-item-revised2">
+        <title><c>remove(T item)</c></title>
+         <ul>
+             <li> <p><term>Case:</term> Item Present (First)</p>
+                 <p><term>State Before:</term> <c>["A", "B", "C"] (size=3)</c></p>
+                 <p><term>Action:</term> <c>remove("A")</c></p>
+                 <p><term>Expected Result:</term> Returns <c>true</c>, State After: <c>["B", "C"] (size=2)</c></p>
+              </li>
+              <li> <p><term>Case:</term> Item Present (Middle/Duplicate)</p>
+                 <p><term>State Before:</term> <c>["A", "B", "A", "C"] (size=4)</c></p>
+                 <p><term>Action:</term> <c>remove("A")</c></p>
+                 <p><term>Expected Result:</term> Returns <c>true</c>, State After: <c>["B", "A", "C"] (size=3)</c></p>
+              </li>
+             <li> <p><term>Case:</term> Item Not Present</p>
+                 <p><term>State Before:</term> <c>["A", "B", "C"] (size=3)</c></p>
+                 <p><term>Action:</term> <c>remove("X")</c></p>
+                 <p><term>Expected Result:</term> Returns <c>false</c>, State After: <c>["A", "B", "C"] (size=3)</c></p>
+              </li>
+             <li> <p><term>Case:</term> Remove from Empty List</p>
+                 <p><term>State Before:</term> <c>[] (size=0)</c></p>
+                 <p><term>Action:</term> <c>remove("A")</c></p>
+                 <p><term>Expected Result:</term> Returns <c>false</c>, State After: <c>[] (size=0)</c></p>
+              </li>
+         </ul>
+     </subsubsection>
+     <subsubsection xml:id="subsubsec-arraylist-dr3-clear-revised2">
+        <title><c>clear()</c></title>
+         <ul>
+             <li> <p><term>Case:</term> Clear non-empty list</p>
+                 <p><term>State Before:</term> <c>["A", "B"] (size=2)</c></p>
+                 <p><term>Action:</term> <c>clear()</c></p>
+                 <p><term>Expected Result:</term> State After: <c>[] (size=0)</c></p>
+              </li>
+             <li> <p><term>Case:</term> Clear empty list</p>
+                 <p><term>State Before:</term> <c>[] (size=0)</c></p>
+                 <p><term>Action:</term> <c>clear()</c></p>
+                 <p><term>Expected Result:</term> State After: <c>[] (size=0)</c></p>
+              </li>
+         </ul>
+     </subsubsection>
+  </subsection>
+
+  <subsection xml:id="subsec-arraylist-dr3-other-examples-revised2">
+     <title>3. Examples for Other Operations</title>
+     <p>We must create similar detailed examples for the remaining methods (<c>get</c>, <c>set</c>, <c>first</c>, <c>last</c>, <c>indexOf</c>, <c>contains</c>, <c>isEmpty</c>, <c>size</c>), always considering:</p>
+     <ul>
+         <li>Empty list cases</li>
+         <li>Single-element list cases</li>
+         <li>Multi-element list cases (typical usage)</li>
+         <li>Boundary indices (0 and <c>size()-1</c>)</li>
+         <li>Error conditions specified in the Javadoc (invalid indices, empty lists, null arguments).</li>
+         <li>Specific scenarios for search methods (item present, absent, null).</li>
+     </ul>
+     <p>Thinking through these examples systematically is crucial for ensuring our implementation will be correct and robust.</p>
+     <p><em>Example for <c>first()</c> Error Case:</em></p>
+        <ul>
+            <li>
+                <p><term>Case:</term> Error - first() on Empty List</p>
+                <p><term>State Before:</term> <c>[] (size=0)</c></p>
+                <p><term>Action:</term> <c>first()</c></p>
+                <p><term>Expected Result:</term> Throws <c>NoSuchElementException</c></p>
+            </li>
+        </ul>
+      <p><em>Example for <c>get()</c> Error Case:</em></p>
+        <ul>
+            <li>
+                <p><term>Case:</term> Error - get() Invalid Index</p>
+                <p><term>State Before:</term> <c>["A"] (size=1)</c></p>
+                <p><term>Action:</term> <c>get(1)</c></p>
+                <p><term>Expected Result:</term> Throws <c>IndexOutOfBoundsException</c></p>
+            </li>
+        </ul>
+  </subsection>
+
+  <p>
+    These concrete examples define the target behavior for our <c>ArrayList&lt;T&gt;</c>. They specify precisely what should happen for various inputs and states. In the next section, we'll discuss how the provided unit tests automate the process of checking whether our eventual implementation meets these behavioral examples.
+  </p>
+
 </section>

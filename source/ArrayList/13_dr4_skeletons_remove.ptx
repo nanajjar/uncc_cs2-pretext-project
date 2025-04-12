@@ -1,4 +1,227 @@
 <section xml:id="sec-arraylist-dr4-skeletons-remove">
-  <title>DR4: Building Skeletons (Remove Methods)</title>
-  <p>Content placeholder.</p>
+  <title>Step 4.2: Building Skeletons (Remove Methods)</title>
+
+  <p>
+    Continuing with <term>Design Recipe Step 4</term>, having planned the logic for adding elements, we now focus on outlining the skeletons for the methods responsible for removing elements from our <c>ArrayList&lt;T&gt;</c>. We'll again start with the core indexed removal method and analyze the requirements derived from the <c>ListADT</c> specification and our Step 0 understanding.
+  </p>
+
+  <subsection xml:id="subsec-arraylist-dr4-remove-methods">
+      <title>Planning the Remove Operations</title>
+
+      <subsubsection xml:id="subsubsec-arraylist-dr4-remove-index-analysis">
+          <title>Analyzing and Planning <c>remove(int index)</c></title>
+          <p>
+              This method must remove the element at a specific index and return it. Let's consult the <c>ListADT.java</c> Javadoc:
+          </p>
+          <program language="java">
+/**
+ * Removes and returns the element at the specified position.
+ * ... shifts subsequent elements to the left ...
+ * @param index position of element to remove (0 to size-1 inclusive)
+ * @return the removed element
+ * @throws IndexOutOfBoundsException if index is invalid
+ */
+public T remove(int index); // From ListADT
+          </program>
+          <p>
+              Dissecting this contract tells us:
+          </p>
+          <ul>
+              <li><p><term>Input:</term> An <c>int index</c>.</p></li>
+              <li><p><term>Output:</term> The element (<c>T</c>) that was removed.</p></li>
+              <li><p><term>Index Constraint:</term> The index must be valid for accessing an *existing* element, meaning <c>0 &lt;= index &lt; size</c>. If not, it throws <c>IndexOutOfBoundsException</c>.</p></li>
+              <li><p><term>Behavior:</term> The element at <c>index</c> is removed, and subsequent elements are shifted left.</p></li>
+          </ul>
+          <p>
+              Let's plan the logical steps, considering our internal state (<c>buffer</c>, <c>size</c>):
+          </p>
+          <ol>
+              <li><p><term>Input Check (Index Bounds):</term> Based on the <c>@throws</c>, our first step must be: <c>// 1. If index &lt; 0 or index &gt;= size, throw IndexOutOfBoundsException.</c></p></li>
+              <li><p><term>Prepare Return Value:</term> The method must return the element being removed. Since we're about to potentially shift elements over its position, we need to save it *before* shifting: <c>// 2. Store the element currently at buffer[index] (to be returned later).</c></p></li>
+              <li>
+                  <p><term>Problem: Gap Creation.</term> Removing the element conceptually leaves a "gap" at <c>index</c>. According to our "no gaps" rule (from Step 0) required for array list correctness, we cannot leave this slot empty or null *within* the active part of the list.</p>
+                  <p><term>Addressing the Problem:</term> We must shift all elements that came *after* the removed element one position to the left to close the gap. This identifies the need for a core piece of logic: <c>// 3. Shift elements buffer[index+1...size-1] left to positions buffer[index...size-2].</c></p>
+                  <p><em>Visualizing the Left Shift for <c>remove(1)</c>:</em></p>
+                  <pre>
+Initial State (size=4, capacity=5): buffer = [ A | B | C | D | ? ]
+Indices:                                          0   1   2   3   4
+
+Need to remove element at index 1 ("B").
+
+1. Store element "B" (return value).
+
+2. Shift elements from index 2..3 left:
+   - Move C (index 2) to index 1
+   - Move D (index 3) to index 2
+   Intermediate State: buffer = [ A | C | D | D | ? ]
+                                      0   1   2   3   4
+
+3. Null out the old last element slot (index 3):
+   Final Array State: buffer = [ A | C | D |null| ? ]
+                                     0   1   2   3   4
+
+4. Decrement size to 3.
+                  </pre>
+              </li>
+              <li>
+                  <p><term>Problem: Dangling Reference.</term> After shifting, the last logical slot (<c>buffer[size-1]</c>) now holds a duplicate reference to the element that was originally there (since we shifted left over it). While the list is logically correct because we'll decrement <c>size</c>, this lingering reference might prevent the garbage collector from reclaiming the object if it's no longer referenced elsewhere. </p>
+                  <p><term>Considering Good Practice (Memory Management):</term> Java automatically manages memory. When an object is no longer reachable by any active part of the program, the Java Virtual Machine's <term>garbage collector</term> can reclaim the memory it uses. However, even though our list's <c>size</c> field tells us not to use the element at the old <c>size-1</c> index anymore, the array slot <c>buffer[size-1]</c> *still holds a reference* to that object. If this is the *only* reference left, the object cannot be garbage collected. Setting this slot to <c>null</c> removes this last reference, allowing the garbage collector to potentially free up memory sooner. This is especially helpful if the list contains large objects. So, a good practice step is: <c>// 4. Set buffer[size - 1] to null (to help garbage collection).</c></p>
+              </li>
+              <li><p><term>Update State:</term> The list now has one fewer element: <c>// 5. Decrement size.</c></p></li>
+              <li><p><term>Return Value:</term> Fulfill the contract by returning the element saved in step 2: <c>// 6. Return the stored element.</c></p></li>
+          </ol>
+      </subsubsection>
+
+      <subsubsection xml:id="subsubsec-arraylist-dr4-identify-shiftleft-helper">
+          <title>Identifying the Need for Shift-Left Logic</title>
+           <p>
+              Similar to the "Ensure Capacity" and "Shift Right" logic identified during the <c>add</c> planning, Step 3 ("Shift elements buffer[index+1...size-1] left...") represents a distinct, potentially reusable sub-task. This "Shift Left" operation is the counterpart to "Shift Right".
+          </p>
+           <p>
+              Again, we anticipate this might become a <term>private helper method</term> during implementation (Step 5) for clarity and potential reuse. Let's plan its conceptual logic:
+          </p>
+          <p><strong>Helper Logic Plan: Shift Left</strong></p>
+           <program language="java">
+    // --- Private Helper Logic Plan: shiftLeft(int index) ---
+    // (This logic is needed to close the gap after removing at 'index')
+
+    // We need to copy elements from index+1, index+2, ..., size-1
+    // over to positions index, index+1, ..., size-2 respectively.
+
+    // Loop Analysis:
+    // - Initialization: Start loop counter `i` at `index`. This is the first destination slot.
+    // - Condition: Continue as long as `i` is less than `size - 1`. Why? The last element we
+    //   need to *copy from* is at `size - 1`. This element needs to be copied into
+    //   position `size - 2`. So, the last destination index `i` we need to write to is `size - 2`.
+    //   Therefore, the loop should run while `i &lt;= size - 2`, or equivalently `i &lt; size - 1`.
+    // - Update: Increment `i` (`i++`) to move to the next destination slot.
+
+    // 1. Iterate from `i = index` up to `size - 2` (inclusive).
+    // 2. In each iteration, copy the element from the position to the right (`i + 1`)
+    //    into the current position (`i`).
+    //    `buffer[i] = buffer[i + 1];`
+           </program>
+           <p>
+              We can now use this conceptual block in our main skeleton.
+           </p>
+      </subsubsection>
+
+       <subsubsection xml:id="subsubsec-arraylist-dr4-remove-index-skeleton">
+           <title>Final Skeleton for <c>remove(int index)</c></title>
+          <p>Combining the analysis and planned helper logic:</p>
+           <program language="java">
+    @Override
+    public T remove(int index) {
+        // --- Skeleton Plan ---
+        // 1. Check index bounds (0 &lt;= index &lt; size); throw IndexOutOfBoundsException if invalid.
+        // 2. Store buffer[index] in a temporary variable (e.g., 'removedItem').
+        // 3. If removing element before the last one (index &lt; size - 1), perform "Shift Left" helper logic, starting at 'index'.
+        // 4. Decrement 'size'.
+        // 5. Set buffer[size] (the now-unused last slot) to null.
+        // 6. Return 'removedItem'.
+    }
+           </program>
+            <note>
+                <title>Refined Logic Order</title>
+                <p>Notice a slight reordering in the final skeleton compared to the initial analysis. We decrement <c>size</c> *before* nulling out the slot at the *new* <c>size</c>. This is often simpler to implement correctly.</p>
+           </note>
+       </subsubsection>
+
+      <subsubsection xml:id="subsubsec-arraylist-dr4-remove-first-last-revised">
+          <title>Skeletons for <c>removeFirst()</c> and <c>removeLast()</c></title>
+          <p>
+              These methods remove from the ends and have a specific requirement to handle empty lists by throwing <c>NoSuchElementException</c> (as per the Javadoc). Let's outline their direct logic first.
+          </p>
+          <program language="java">
+    @Override
+    public T removeFirst() {
+        // 1. Check if list is empty (size == 0).
+        // 2. If empty, throw NoSuchElementException.
+        // 3. If not empty, perform the logic for remove(0):
+        //    - Store buffer[0].
+        //    - Shift elements 1..size-1 left to 0..size-2 (using shiftLeft(0) logic).
+        //    - Decrement size.
+        //    - Null out buffer[size] (the new last slot).
+        //    - Return the stored element.
+    }
+
+    @Override
+    public T removeLast() {
+        // 1. Check if list is empty (size == 0).
+        // 2. If empty, throw NoSuchElementException.
+        // 3. If not empty:
+        //    - Store buffer[size - 1].
+        //    - Decrement size.
+        //    - Set buffer[size] (the now-unused slot) to null.
+        //      (No shifting required!)
+        //    - Return the stored element.
+    }
+          </program>
+          <p>
+              <em>Direct Logic as the Plan:</em> The direct logic skeletons above, including the specific empty-list check (throwing <c>NoSuchElementException</c>) and the appropriate helper calls or direct actions (like skipping the shift for <c>removeLast</c>), form our primary plan for implementation in Step 5.
+          </p>
+          <p>
+              <em>Comparison with <c>remove(index)</c>:</em> Let's compare the direct logic (after the empty check) to calling <c>remove(index)</c>.
+          </p>
+           <ul>
+              <li><p>For <c>removeFirst()</c>: After handling the distinct empty-list exception (<c>NoSuchElementException</c> required here vs. <c>IndexOutOfBoundsException</c> from <c>remove(0)</c> if size is 0), the remaining direct steps (store element 0, shift left from 0, decrement, null out, return) *exactly match* the core logic of <c>remove(0)</c>.</p></li>
+              <li><p>For <c>removeLast()</c>: After the empty check, the remaining direct steps (store element <c>size-1</c>, decrement <c>size</c>, null out new slot <c>size</c>, return stored element) are effectively the same as the logic within <c>remove(index)</c> when <c>index == size - 1</c> (where the shifting step is skipped). </p></li>
+           </ul>
+           <p>
+              <em>Potential Refinement:</em> The comparison reveals that, *after* implementing and testing the direct logic, delegation to <c>remove(index)</c> is a feasible future refinement (likely desirable for DRY), provided the distinct empty-list exception (<c>NoSuchElementException</c>) is handled correctly in <c>removeFirst</c>/<c>removeLast</c> *before* delegating. For Step 5, we will implement the direct logic first.
+           </p>
+       </subsubsection>
+
+      <subsubsection xml:id="subsubsec-arraylist-dr4-remove-item-revised">
+          <title>Skeleton for <c>remove(T item)</c></title>
+           <program language="java">
+    @Override
+    public boolean remove(T item) {
+        // --- Skeleton Steps ---
+
+        // 1. Find the index of the first occurrence of 'item'.
+        //    - Plan: Perform logic equivalent to `indexOf(item)`:
+        //        - Iterate from 0 to size-1.
+        //        - Compare buffer[i] with 'item' using .equals() (null-safe).
+        //        - Store the first matching index, or -1 if none.
+        //    - Let 'foundIndex' be the result.
+
+        // 2. Check if the item was found.
+        //    - If foundIndex >= 0:
+        //        - Plan: Perform the direct logic for removing the element at 'foundIndex':
+        //            - Check bounds for 'foundIndex' (0 &lt;= foundIndex &lt; size) - Implicitly true if found.
+        //            - Store buffer[foundIndex] (optional if method returns void/boolean).
+        //            - If (foundIndex &lt; size - 1), shift left (call logical block `shiftLeft(foundIndex)`).
+        //            - Decrement 'size'.
+        //            - Set buffer[size] to null (Help GC).
+        //        - Return true.
+        //    - Else (foundIndex == -1):
+        //        - Return false.
+    }
+           </program>
+       </subsubsection>
+
+       <subsubsection xml:id="subsubsec-arraylist-dr4-clear-revised">
+          <title>Skeleton for <c>clear()</c></title>
+           <program language="java">
+    @Override
+    public void clear() {
+        // --- Skeleton Steps ---
+
+        // 1. Optional (for GC): Iterate from 0 to size-1 and set buffer[i] to null.
+        //    (Helps garbage collector reclaim objects sooner, especially if list held large objects).
+        // 2. Reset the size.
+        //    - Set size = 0;
+        // (Note: We might also consider resizing the internal array back to default capacity,
+        //  but the basic contract only requires making the list logically empty).
+    }
+           </program>
+       </subsubsection>
+
+  </subsection>
+
+  <p>
+    We have now outlined the logical steps for the "Remove" methods, again identifying necessary checks, the core logic (like shifting left), and considering potential reuse or delegation. The next step is to create skeletons for the remaining "Other" operations (accessing, querying).
+  </p>
+
 </section>

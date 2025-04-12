@@ -145,7 +145,7 @@ public class RunestoneTests extends CodeTestHelper
             <title>Methods</title>
             
             
-            <p xml:id="_index-1-9"><term>Methods</term> define what an object can do or the behavior of the object.   Most methods are <c>public</c> which means they can be accessed from outside the class. Some methods can be marked as``private`` if they are helper methods that are just used internally by other methods inside the same class. They will not be accessible outside of the class. The private and public keywords determine the external access and visibility of classes, data, constructors, and methods.</p>
+            <p xml:id="_index-1-9"><term>Methods</term> define what an object can do or the behavior of the object.   Most methods are <c>public</c> which means they can be accessed from outside the class. Some methods can be marked as <c>private</c> if they are helper methods that are just used internally by other methods inside the same class. They will not be accessible outside of the class. The private and public keywords determine the external access and visibility of classes, data, constructors, and methods.</p>
             <note>
                 <p>Methods define what the object can do.  They typically start with <c>public</c> then a type, then the name of the method followed by parentheses for optional parameters. Methods defined for an object can access and use its instance variables!</p>
             </note>

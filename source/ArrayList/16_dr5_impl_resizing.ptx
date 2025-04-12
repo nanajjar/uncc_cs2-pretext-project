@@ -1,4 +1,148 @@
 <section xml:id="sec-arraylist-dr5-impl-resizing">
-  <title>DR5: Implementing Resizing Methods</title>
-  <p>Content placeholder.</p>
+  <title>Step 5.2: Implementing Resizing and addLast</title>
+
+  <introduction>
+    <p>
+      We continue with <term>Design Recipe Step 5: Implementation</term>. Having implemented the constructor and core accessors (<c>size</c>, <c>isEmpty</c>, <c>get</c>, <c>set</c>) and verified them with tests, we now tackle a fundamental aspect of our <c>ArrayList&lt;T&gt;</c>: making it dynamic. This requires handling the case where the internal <c>buffer</c> array is full when we try to add a new element. We'll implement the resizing logic using basic array manipulation and loops, and then implement the relatively simple <c>addLast</c> method.
+    </p>
+  </introduction>
+
+  <subsection xml:id="subsec-arraylist-dr5-ensure-capacity-logic-loop">
+    <title>Implementing the Resizing Logic (Helper Method with Loop)</title>
+    <p>
+      In Step 4 (Skeletons), our analysis of <c>add</c> operations revealed the need for logic to <term>Ensure Capacity</term>. Before adding an element, we must check if the internal array is full (<c>size == buffer.length</c>). If it is, we need to replace the internal array with a larger one and copy the existing elements over.
+    </p>
+    <p>
+      <term>Identifying the Need for a Helper:</term> As planned, we'll encapsulate this resizing logic in a <term>private helper method</term> called <c>growIfNeeded</c> to keep our main <c>add</c> methods cleaner.
+    </p>
+    <p>
+      <term>Planning the Helper Logic (<c>growIfNeeded</c>) with a Loop:</term>
+    </p>
+    <ul>
+      <li>Check if resizing is necessary (<c>size == buffer.length</c>). If not, do nothing.</li>
+      <li>If needed, calculate a <c>newCapacity</c> (e.g., double the old, handle initial capacity 0).</li>
+      <li>Create a <c>newbuffer</c> array (as <c>Object[]</c>) with the <c>newCapacity</c>.</li>
+      <li><term>Copy Elements:</term> We now need to copy all the <em>current</em> elements (from index <c>0</c> to <c>size - 1</c>) from the old <c>buffer</c> array into the <c>newbuffer</c> array, preserving their order.</li>
+      <li>Update the <c>buffer</c> instance variable to reference the <c>newbuffer</c> array (with the necessary cast).</li>
+    </ul>
+
+    <p>
+      <term>Designing the Copy Loop:</term> How do we copy <c>size</c> elements from <c>buffer</c> to <c>newbuffer</c>? This is a classic task for a <c>for</c> loop (See <xref ref="ch-iteration-arrays" />). Let's think about the loop structure:
+    </p>
+      <ul>
+          <li><p><term>Goal:</term> We want to perform the action <c>newbuffer[i] = buffer[i]</c> for each valid index <c>i</c>.</p></li>
+          <li><p><term>Range:</term> The valid indices containing elements in the *old* array are from <c>0</c> up to, but not including, <c>size</c>.</p></li>
+          <li><p><term>Initialization:</term> We need an index variable, let's call it <c>i</c>, starting at the first element: <c>int i = 0</c>.</p></li>
+          <li><p><term>Condition:</term> We continue as long as <c>i</c> is a valid index in the old array's populated part: <c>i &lt; size</c>.</p></li>
+          <li><p><term>Update:</term> After processing index <c>i</c>, we move to the next index: <c>i++</c>.</p></li>
+          <li><p><term>Body:</term> Inside the loop, we perform the copy for the current index: <c>newbuffer[i] = buffer[i];</c>.</p></li>
+      </ul>
+     <p>This leads directly to the standard <c>for</c> loop structure for copying the array contents.</p>
+
+    <p>Here is the implementation for the <c>growIfNeeded</c> helper method using this loop:</p>
+    <program language="java">
+    // Inside the ArrayList&lt;T&gt; class...
+
+    /**
+     * Ensures that the internal array has space to add at least one more element.
+     * If the array is full, it creates a new, larger array (typically double
+     * the size) and copies the existing elements into it using a loop.
+     */
+    @SuppressWarnings("unchecked") // For the cast when assigning back to buffer
+    private void growIfNeeded() {
+        // Check if the array is full
+        if (this.size == this.buffer.length) {
+            // Determine the new capacity
+            int oldCapacity = this.buffer.length;
+            int newCapacity = (oldCapacity == 0) ? DEFAULT_CAPACITY : oldCapacity * 2;
+
+            // Create the new, larger array (as Object[] due to erasure)
+            Object[] newbuffer = new Object[newCapacity];
+
+            // --- Copy elements using a standard for loop ---
+            // We need to copy 'size' elements, from index 0 to size-1
+            for (int i = 0; i &lt; this.size; i++) {
+                newbuffer[i] = this.buffer[i]; // Copy element at index i
+            }
+            // --- End of copy loop ---
+
+            // Update the buffer reference to point to the new array
+            // This requires the cast, hence the @SuppressWarnings on the method
+            this.buffer = (T[]) newbuffer;
+
+            // Optional: Log or print a message when resizing happens (for debugging)
+            // System.out.println("DEBUG: Resized array from " + oldCapacity + " to " + newCapacity);
+        }
+        // If not full, do nothing.
+    }
+    </program>
+     <note>
+        <title>Loop vs. Library Methods</title>
+        <p>
+            Implementing the copy with a <c>for</c> loop helps solidify your understanding of array iteration. In professional code, developers often use built-in methods like <c>System.arraycopy</c> or <c>Arrays.copyOf</c> for this task, as they are typically highly optimized and concise. We may revisit this in a later refinement step as a "knowledge-based" improvement – knowing the right tool exists in the library. For now, our loop is perfectly functional.
+        </p>
+    </note>
+     <note>
+        <title>Why <c>private</c>?</title>
+        <p>
+            Just a reminder: <c>growIfNeeded</c> is <c>private</c> because managing capacity is an internal implementation detail, not part of the public <c>ListADT</c> contract.
+        </p>
+    </note>
+  </subsection>
+
+   <subsection xml:id="subsec-arraylist-dr5-impl-addlast-revised">
+        <title>Implementing <c>addLast(T item)</c></title>
+        <p>
+            With our resizing logic in place via <c>growIfNeeded()</c>, implementing <c>addLast</c> according to its Step 4 skeleton is now quite direct. It must check for null, ensure capacity, place the item at index <c>size</c>, and increment the size.
+        </p>
+        <program language="java">
+    // Inside the ArrayList&lt;T&gt; class...
+
+    @Override
+    public void addLast(T item) {
+        // --- Implementation based on Step 4 Direct Logic Skeleton ---
+
+        // 1. Check for null item (as per Javadoc contract)
+        if (item == null) {
+            throw new IllegalArgumentException("Item cannot be null.");
+        }
+
+        // 2. Ensure internal array has capacity for one more element
+        growIfNeeded(); // Call our private helper method
+
+        // 3. Place item at buffer[size] (the first unused slot)
+        this.buffer[this.size] = item;
+
+        // 4. Increment size
+        this.size++;
+    }
+        </program>
+        <p>
+            This directly follows our plan: check input, ensure capacity, place element, update size.
+        </p>
+   </subsection>
+
+   <subsection xml:id="subsec-arraylist-dr5-testing-resizing-revised">
+      <title>Run Tests Again!</title>
+      <p>
+          Now that <c>addLast</c> and the loop-based <c>growIfNeeded</c> are implemented, run the tests again using the VSCode Test Explorer.
+      </p>
+      <p>
+          You should now expect these tests to pass:
+      </p>
+      <ul>
+          <li><p>✅ <c>BasicOperationsTests</c> &gt; <c>testNewListIsEmpty</c> (Should still pass)</p></li>
+          <li><p>✅ <c>AddTests</c> &gt; <c>testAddLast</c></p></li>
+          <li><p>✅ <c>GrowthTests</c> &gt; <c>testAdd_BeyondInitialCapacity_ForcesResize</c></p></li>
+          <li><p>✅ Parts of <c>ExceptionTests</c> &gt; <c>testAccessModify_InvalidIndex_ThrowsIndexOutOfBounds</c> (The empty list checks for <c>get</c>/<c>set</c> should still pass).</p></li>
+       </ul>
+       <p>
+          Many other tests will still fail because they rely on methods like <c>add(index)</c>, <c>remove(index)</c>, <c>get</c> (on non-empty lists), etc., which use logic (like shifting) that we haven't implemented yet. Focus on ensuring the tests related to <c>addLast</c> and basic growth are now passing before moving on. Debug any failures in <c>addLast</c> or <c>growIfNeeded</c> based on the test output.
+      </p>
+   </subsection>
+
+   <p>
+      We've successfully implemented dynamic resizing (using a loop for now) and the ability to add to the end of the list. The next critical step is implementing insertion and deletion at arbitrary indices, which requires coding the element shifting logic we planned in Step 4.
+   </p>
+
 </section>

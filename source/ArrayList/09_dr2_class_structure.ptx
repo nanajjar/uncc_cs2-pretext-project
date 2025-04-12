@@ -1,4 +1,96 @@
 <section xml:id="sec-arraylist-dr2-class-structure">
-  <title>DR2: Designing the Class Structure</title>
-  <p>Content placeholder.</p>
+  <title>Step 2: Defining the Class Structure and Signatures</title>
+
+  <p>
+    Following our data definition in Step 1, we proceed to <term>Design Recipe Step 2: Method Signatures &amp; Purpose Statements</term>. Typically, this is where you would carefully design the <c>public</c> "face" of your class – deciding on method names, parameter types, return types, and writing clear purpose statements (often as Javadoc) that define the contract for each method. This step translates the understanding from Step 0 and the data from Step 1 into a formal API blueprint.
+  </p>
+
+  <p>
+    However, in this capstone project, much of this work has already been done for us! Remember from Step 0 that our core task is to implement the provided <c>ADTs.ListADT&lt;T&gt;</c> interface. This interface <term>already defines</term> the required method signatures and their purposes (via its Javadoc comments).
+  </p>
+
+  <p>
+    Therefore, our Step 2 primarily involves formally declaring our class structure to reflect this requirement:
+  </p>
+  <program language="java">
+package DataStructures;
+
+import ADTs.ListADT;
+// Potentially other imports later (like NoSuchElementException, etc.)
+
+/**
+ * A dynamic array implementation of the ListADT interface.
+ * Allows storing elements of type T, resizing as needed.
+ * @param &lt;T&gt; the type of elements held in this list
+ */
+public class ArrayList&lt;T&gt; implements ListADT&lt;T&gt; {
+
+    // --- Instance Variables (from Step 1) ---
+    private T[] buffer;
+    private int size;
+    private static final int DEFAULT_CAPACITY = 10; // Example constant
+
+    // --- Constructor (to be implemented in Step 5) ---
+    // public ArrayList() { ... }
+
+    // --- Methods (to be implemented in Step 5, matching ListADT) ---
+    // Example:
+    // @Override
+    // public void add(int index, T item) {
+    //     // Implementation goes here...
+    // }
+
+    // ... signatures for ALL other methods from ListADT and CollectionADT
+    //     must be implemented here ...
+
+}
+  </program>
+  <p>
+    The key elements here are:
+  </p>
+  <ul>
+    <li><p>The class declaration <c>public class ArrayList&lt;T&gt;</c> introduces our generic class with type parameter <c>T</c>.</p></li>
+    <li><p>The <c>implements ListADT&lt;T&gt;</c> clause formally states our promise to the compiler: this class will provide concrete implementations for all methods defined in the <c>ListADT</c> interface (and by extension, the <c>CollectionADT</c> interface it extends).</p></li>
+    <li><p>We include the instance variables derived in Step 1.</p></li>
+    <li><p>We anticipate needing a constructor and implementations for all the required methods.</p></li>
+  </ul>
+
+  <subsection xml:id="subsec-arraylist-dr2-override">
+    <title>The Importance of <c>@Override</c></title>
+    <p>
+      When you provide the implementation for a method defined in an interface (like <c>ListADT</c>) or a superclass, it is <term>strongly recommended</term> best practice to use the <c>@Override</c> annotation just before the method signature:
+    </p>
+  <program language="java">
+    @Override // Tells the compiler: I INTEND this to match a supertype method
+    public T get(int index) {
+        // ... implementation ...
+        return null; // Placeholder
+    }
+
+    @Override // Good practice for all implemented/overridden methods
+    public int size() {
+        // ... implementation ...
+        return 0; // Placeholder
+    }
+  </program>
+    <p>
+      What does <c>@Override</c> do? It asks the compiler to double-check that the method signature below it exactly matches a method signature from a superclass or an implemented interface. This is incredibly useful for catching common mistakes:
+    </p>
+    <ul>
+      <li><p><term>Typos:</term> If you accidentally typed <c>public int getsize()</c> instead of <c>size()</c>, the compiler (seeing <c>@Override</c>) would immediately give you an error because no <c>getsize()</c> method exists in <c>ListADT</c> to override. Without <c>@Override</c>, it might silently compile as a *new*, unrelated method, leading to confusing behavior.</p></li>
+      <li><p><term>Parameter Mismatches:</term> If the interface defined <c>add(int index, T item)</c> but you wrote <c>add(T item, int index)</c> (swapping parameters), <c>@Override</c> would flag this as an error because the signatures don't match.</p></li>
+      <li><p><term>Return Type Mismatches:</term> Similarly, if the interface expects a method to return <c>boolean</c> but your implementation returns <c>void</c>, <c>@Override</c> catches it.</p></li>
+    </ul>
+    <p>
+      Always using <c>@Override</c> provides a valuable safety net, turning potential runtime mysteries into clear compile-time errors. Get in the habit of using it for every method you implement from an interface or override from a superclass!
+    </p>
+  </subsection>
+
+  <p>
+    Since the specific method signatures and their detailed purposes are already defined by the <c>ListADT</c> interface and its Javadoc, we don't need to redefine them here in Step 2. Our main task in this step was establishing the class structure that implements the interface.
+  </p>
+  <p>
+    Now that we have the overall class structure and know which methods (defined by <c>ListADT</c>) we need to implement, we move to <term>Design Recipe Step 3</term>: creating concrete examples and test cases to illustrate exactly how these methods should behave in various scenarios.
+  </p>
+
 </section>

@@ -139,15 +139,15 @@ shape.draw();
          </choice>
          <choice correct="yes">
              <statement><p>A <c>Dog</c> object is guaranteed to fulfill the public contract defined by the <c>Animal</c> class.</p></statement>
-             <feedback><p>Correct. The `extends` keyword establishes an "is-a" relationship, meaning the subclass contract includes the public (and protected) parts of the superclass contract.</p></feedback>
+             <feedback><p>Correct. The <c>extends</c> keyword establishes an "is-a" relationship, meaning the subclass contract includes the public (and protected) parts of the superclass contract.</p></feedback>
          </choice>
          <choice>
              <statement><p>An <c>Animal</c> object can always be treated as a <c>Dog</c>.</p></statement>
-             <feedback><p>Incorrect. While a `Dog` can be treated as an `Animal`, the reverse is not true without an explicit (and potentially unsafe) cast.</p></feedback>
+             <feedback><p>Incorrect. While a <c>Dog</c> can be treated as an <c>Animal</c>, the reverse is not true without an explicit (and potentially unsafe) cast.</p></feedback>
          </choice>
          <choice>
              <statement><p>The <c>Dog</c> class can only access <c>private</c> members of the <c>Animal</c> class.</p></statement>
-             <feedback><p>Incorrect. Subclasses cannot access `private` members of the superclass directly. They inherit `public` and `protected` members.</p></feedback>
+             <feedback><p>Incorrect. Subclasses cannot access <c>private</c> members of the superclass directly. They inherit <c>public</c> and <c>protected</c> members.</p></feedback>
          </choice>
      </choices>
  </exercise>
@@ -159,7 +159,7 @@ shape.draw();
      <choices randomize="yes">
          <choice>
              <statement><p>Because <c>myVehicle</c> might actually hold a <c>Bicycle</c> object at runtime.</p></statement>
-             <feedback><p>Incorrect. While true that `myVehicle` could hold other subtypes, the compile error occurs because the *declared type* `Vehicle` dictates the contract, not the runtime object type.</p></feedback>
+             <feedback><p>Incorrect. While true that <c>myVehicle</c> could hold other subtypes, the compile error occurs because the *declared type* <c>Vehicle</c> dictates the contract, not the runtime object type.</p></feedback>
          </choice>
          <choice>
              <statement><p>Because calling subclass-specific methods is never allowed in Java.</p></statement>
@@ -167,7 +167,7 @@ shape.draw();
          </choice>
          <choice correct="yes">
              <statement><p>Because the compiler only checks method calls against the contract of the variable's declared type (<c>Vehicle</c>), which doesn't include <c>openTrunk()</c>.</p></statement>
-             <feedback><p>Correct. The compiler enforces the contract based on the variable's type (`Vehicle`), ignoring the fact it currently holds a `Car` unless explicitly cast.</p></feedback>
+             <feedback><p>Correct. The compiler enforces the contract based on the variable's type (<c>Vehicle</c>), ignoring the fact it currently holds a <c>Car</c> unless explicitly cast.</p></feedback>
          </choice>
          <choice>
              <statement><p>Because <c>Car</c> must override all methods from <c>Vehicle</c>.</p></statement>
@@ -195,7 +195,7 @@ shape.draw();
          </choice>
          <choice correct="yes">
              <statement><p>It moves type checking from compile time to runtime, potentially causing a <c>ClassCastException</c> if the object isn't of the expected type.</p></statement>
-             <feedback><p>Correct. Casting bypasses the compiler's guarantee for that specific operation, deferring the check to runtime where it can fail with a `ClassCastException` if the object's actual type is incompatible with the cast type.</p></feedback>
+             <feedback><p>Correct. Casting bypasses the compiler's guarantee for that specific operation, deferring the check to runtime where it can fail with a <c>ClassCastException</c> if the object's actual type is incompatible with the cast type.</p></feedback>
          </choice>
      </choices>
  </exercise>
@@ -211,11 +211,11 @@ shape.draw();
          </choice>
          <choice correct="yes">
              <statement><p>That <c>Button</c> guarantees to provide implementations for all methods defined in the <c>Clickable</c> interface.</p></statement>
-             <feedback><p>Correct. The `implements` keyword signifies a promise to fulfill the contract specified by the interface by implementing its methods.</p></feedback>
+             <feedback><p>Correct. The <c>implements</c> keyword signifies a promise to fulfill the contract specified by the interface by implementing its methods.</p></feedback>
          </choice>
          <choice>
              <statement><p>That <c>Clickable</c> can access all <c>public</c> methods of <c>Button</c>.</p></statement>
-             <feedback><p>Incorrect. References of the interface type (`Clickable`) can only access methods defined within the `Clickable` interface itself.</p></feedback>
+             <feedback><p>Incorrect. References of the interface type (<c>Clickable</c>) can only access methods defined within the <c>Clickable</c> interface itself.</p></feedback>
          </choice>
          <choice>
              <statement><p>That <c>Button</c> inherits fields from <c>Clickable</c>.</p></statement>
