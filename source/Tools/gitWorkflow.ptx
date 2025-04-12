@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+
+<section xml:id="sec_git-workflow">
+  <title>Basic Git Workflow </title>
+
+  <p>
+  </p>
+
+  <p>
+    Here's a simplified version of how Git fits into the development cycle:
+
+    </p>
+
+<p>
+<ul>
+<li>
+  <p>
+Clone the repository to your local machine.
+
+  </p>
+</li>
+<li>
+  <p>
+    Make changes in your working directory.
+  </p>
+</li>
+<li>
+  <p>
+    Stage the changes you want to include in your next commit.
+  </p>
+</li>
+<li>
+  <p>
+Commit the staged changes with a descriptive message.
+  </p>
+</li>
+<li>
+  <p>
+    Push your commit to the remote repository.
+  </p>
+</li>
+<li>
+  <p>
+    Pull updates from the remote repository to stay in sync with your team.
+  </p>
+</li>
+
+</ul>
+</p>
+<p>
+  Version Control Best Practices
+
+</p>
+<ul>
+  <li>
+    <p>
+      Commit Early, Commit Often: Frequent commits with meaningful messages make it easier to track progress and debug issues.
+
+    </p>
+  </li>
+  <li>
+    <p>
+      Use Branches: Keep your main branch stable and use feature branches for new work.
+
+    </p>
+  </li>
+  <li>
+    <p>
+      Pull Before You Push: Always get the latest version of the code before uploading your own changes to avoid conflicts.
+
+    </p>
+  </li>
+  <li>
+    <p>
+      Write Clear Commit Messages: Summarize what was changed and why in a concise way.
+
+    </p>
+  </li>
+  <li>
+    <p>
+      
+    </p>
+  </li>
+</ul>
+</p>
+<p>
+  Mastering version control with Git is a vital skill for modern software developers. It not only makes individual work more manageable but also enables seamless collaboration in team-based projects—whether in class or in the professional world.
+</p>
+</section>
+
+
+
+
+
