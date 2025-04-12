@@ -250,19 +250,19 @@ String firstName = names.get(0); // OK! No cast needed, compiler knows it's a St
      <choices randomize="yes">
          <choice>
              <statement><p>To specify that the class can only hold objects of type <c>T</c>, which must be defined elsewhere.</p></statement>
-             <feedback><p>Incorrect. `T` is a placeholder; the actual type (like String or Integer) is specified when an instance is created, not when `T` itself is defined.</p></feedback>
+             <feedback><p>Incorrect. <c>T</c> is a placeholder; the actual type (like <c>String</c> or <c>Integer</c>) is specified when an instance is created, not when <c>T</c> itself is defined.</p></feedback>
          </choice>
          <choice>
              <statement><p>To provide a default type of <c>Object</c> if no type argument is given.</p></statement>
-             <feedback><p>Incorrect. Using the raw type `Box` defaults to Object-like behavior due to erasure, but `T` itself is a placeholder, not a default type.</p></feedback>
+             <feedback><p>Incorrect. Using the raw type <c>Box</c> defaults to Object-like behavior due to erasure, but <c>T</c> itself is a placeholder, not a default type.</p></feedback>
          </choice>
          <choice>
              <statement><p>To restrict the class to only work with primitive types.</p></statement>
-             <feedback><p>Incorrect. Generic type parameters work with reference types (objects), not directly with primitive types (like `int`). Wrapper classes (`Integer`) must be used.</p></feedback>
+             <feedback><p>Incorrect. Generic type parameters work with reference types (objects), not directly with primitive types (like <c>int</c>). Wrapper classes (<c>Integer</c>) must be used.</p></feedback>
          </choice>
          <choice correct="yes">
              <statement><p>To act as a placeholder for an actual type that will be provided when an instance of the class is created (e.g., <c>Box&lt;String&gt;</c>).</p></statement>
-             <feedback><p>Correct. `T` serves as a parameter for a type, allowing the class blueprint to be defined once and used safely with various specific types provided later.</p></feedback>
+             <feedback><p>Correct. <c>T</c> serves as a parameter for a type, allowing the class blueprint to be defined once and used safely with various specific types provided later.</p></feedback>
          </choice>
      </choices>
  </exercise>
@@ -274,11 +274,11 @@ String firstName = names.get(0); // OK! No cast needed, compiler knows it's a St
      <choices randomize="yes">
          <choice correct="yes">
              <statement><p>It allows the compiler to infer the type argument (<c>String</c>) from the variable declaration, making the constructor call more concise.</p></statement>
-             <feedback><p>Correct. The diamond operator `&lt;&gt;` is shorthand, telling the compiler to infer the type argument(s) from the context, avoiding redundancy.</p></feedback>
+             <feedback><p>Correct. The diamond operator <c>&lt;&gt;</c> is shorthand, telling the compiler to infer the type argument(s) from the context, avoiding redundancy.</p></feedback>
          </choice>
          <choice>
              <statement><p>It signifies that this <c>Box</c> can hold any type, similar to <c>ObjectBox</c>.</p></statement>
-             <feedback><p>Incorrect. The type is explicitly declared as `Box&lt;String&gt;`; the diamond operator is just constructor syntax sugar. The box can only hold Strings.</p></feedback>
+             <feedback><p>Incorrect. The type is explicitly declared as <c>Box&lt;String&gt;</c>; the diamond operator is just constructor syntax sugar. The box can only hold Strings.</p></feedback>
          </choice>
          <choice>
              <statement><p>It indicates that the type parameter <c>T</c> has no bounds.</p></statement>
@@ -302,15 +302,15 @@ String firstName = names.get(0); // OK! No cast needed, compiler knows it's a St
          </choice>
          <choice>
              <statement><p><c>Box&lt;Integer&gt;</c> allows storing both <c>Integer</c> and <c>int</c> types directly.</p></statement>
-             <feedback><p>Incorrect. Generics work with reference types; primitives like `int` are handled via autoboxing to `Integer`, not stored directly as primitives within the generic structure.</p></feedback>
+             <feedback><p>Incorrect. Generics work with reference types; primitives like <c>int</c> are handled via autoboxing to <c>Integer</c>, not stored directly as primitives within the generic structure.</p></feedback>
          </choice>
          <choice correct="yes">
              <statement><p><c>Box&lt;Integer&gt;</c> provides compile-time type safety, preventing non-Integer types from being added and eliminating the need for casting on retrieval.</p></statement>
-             <feedback><p>Correct. The compiler enforces that only Integers (or compatible types via autoboxing) are used, and `get()` returns `Integer` directly, preventing `ClassCastException`s and removing cast boilerplate.</p></feedback>
+             <feedback><p>Correct. The compiler enforces that only Integers (or compatible types via autoboxing) are used, and <c>get()</c> returns <c>Integer</c> directly, preventing <c>ClassCastException</c>s and removing cast boilerplate.</p></feedback>
          </choice>
          <choice>
              <statement><p><c>Box&lt;Integer&gt;</c> can be used polymorphically where a <c>Box&lt;Number&gt;</c> is expected.</p></statement>
-             <feedback><p>Incorrect. Due to invariance, `Box&lt;Integer&gt;` is not a subtype of `Box&lt;Number&gt;`. Wildcards are needed for that kind of flexibility (covered later).</p></feedback>
+             <feedback><p>Incorrect. Due to invariance, <c>Box&lt;Integer&gt;</c> is not a subtype of <c>Box&lt;Number&gt;</c>. Wildcards are needed for that kind of flexibility (covered later).</p></feedback>
          </choice>
      </choices>
  </exercise>
@@ -322,11 +322,11 @@ String firstName = names.get(0); // OK! No cast needed, compiler knows it's a St
      <choices randomize="yes">
          <choice>
              <statement><p>Because <c>int</c> is an interface, not a class.</p></statement>
-             <feedback><p>Incorrect. `int` is a primitive type, not an interface or a class.</p></feedback>
+             <feedback><p>Incorrect. <c>int</c> is a primitive type, not an interface or a class.</p></feedback>
          </choice>
          <choice>
              <statement><p>Because <c>Integer</c> provides more methods than <c>int</c>.</p></statement>
-             <feedback><p>While `Integer` does provide methods, the primary reason for using it with generics is the limitation of generics themselves.</p></feedback>
+             <feedback><p>While <c>Integer</c> does provide methods, the primary reason for using it with generics is the limitation of generics themselves.</p></feedback>
          </choice>
          <choice>
              <statement><p>To ensure backward compatibility with older Java versions.</p></statement>
@@ -334,7 +334,7 @@ String firstName = names.get(0); // OK! No cast needed, compiler knows it's a St
          </choice>
          <choice correct="yes">
              <statement><p>Because Java generics work only with reference types (objects), and <c>Integer</c> is the wrapper class for the primitive type <c>int</c>.</p></statement>
-             <feedback><p>Correct. Generic type parameters must be bound to reference types. Primitives like `int` cannot be used directly as type arguments; their corresponding wrapper classes must be used instead.</p></feedback>
+             <feedback><p>Correct. Generic type parameters must be bound to reference types. Primitives like <c>int</c> cannot be used directly as type arguments; their corresponding wrapper classes must be used instead.</p></feedback>
          </choice>
      </choices>
  </exercise>

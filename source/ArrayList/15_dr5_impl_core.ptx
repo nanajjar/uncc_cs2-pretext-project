@@ -1,0 +1,187 @@
+<section xml:id="sec-arraylist-dr5-impl-core">
+  <title>Step 5.1: Implementing Core Methods</title>
+
+  <introduction>
+    <p>
+      We have reached the pivotal <term>Design Recipe Step 5: Implementation, Testing &amp; Refinement</term>. This is where our careful planning from Steps 0-4 pays off. Our task now is to translate the logical skeletons we developed into working Java code within the <c>ArrayList&lt;T&gt;</c> class (<c>src/DataStructures/ArrayList.java</c>).
+    </p>
+    <p>
+      A key part of Step 5 is the iterative cycle of <term>implementing</term> a small piece of functionality (based on a skeleton), <term>running</term> the provided unit tests (using the techniques from Section 11) to verify it, and <term>debugging</term> any failures until the tests pass. We will implement the methods incrementally, starting with the foundational ones.
+    </p>
+  </introduction>
+
+  <subsection xml:id="subsec-arraylist-dr5-initial-class">
+    <title>Initial Class Structure and Constructor</title>
+    <p>
+      Let's start with the basic class structure, including the fields from Step 1 and the constructor needed to initialize them.
+    </p>
+    <program language="java">
+package DataStructures;
+
+import ADTs.ListADT;
+import java.util.NoSuchElementException; // Needed for first()/last() etc.
+// We might need IndexOutOfBoundsException, IllegalArgumentException too,
+// but they are in java.lang (implicitly imported).
+
+public class ArrayList&lt;T&gt; implements ListADT&lt;T&gt; {
+
+    private static final int DEFAULT_CAPACITY = 10;
+
+    private T[] buffer;
+    private int size;
+
+    /**
+     * Constructs an empty list with an initial capacity of DEFAULT_CAPACITY.
+     */
+    @SuppressWarnings("unchecked") // Suppress warning for the generic array cast
+    public ArrayList() {
+        // --- Implementation based on Step 1 Data Definition ---
+
+        // As discussed in Step 1, we cannot directly do "new T[DEFAULT_CAPACITY]"
+        // due to type erasure. We use the standard workaround:
+        this.buffer = (T[]) new Object[DEFAULT_CAPACITY];
+
+        // Initially, the list contains no elements.
+        this.size = 0;
+    }
+
+    // --- Methods will be added below ---
+
+}
+    </program>
+    <p>
+      <em>Explanation:</em>
+    </p>
+    <ul>
+      <li><p>We declare the <c>DEFAULT_CAPACITY</c> (e.g., 10) as a constant.</p></li>
+      <li><p>The constructor initializes the <c>buffer</c> array. It uses the <c>new Object[...]</c> approach and casts the result to <c>T[]</c>, as planned in Step 1 to work around Java's type erasure limitations (See <xref ref="ch-generics" />). The <c>@SuppressWarnings("unchecked")</c> annotation tells the compiler we are aware of and accept the necessary cast here.</p></li>
+      <li><p>It initializes <c>size</c> to 0, fulfilling the invariant for an empty list.</p></li>
+    </ul>
+  </subsection>
+
+  <subsection xml:id="subsec-arraylist-dr5-impl-simple-query">
+    <title>Implementing <c>size()</c> and <c>isEmpty()</c></title>
+    <p>
+      These are the simplest methods, directly reflecting the state planned in Step 1 and skeletonized in Step 4.
+    </p>
+    <program language="java">
+    // Inside the ArrayList&lt;T&gt; class...
+
+    @Override
+    public int size() {
+        // --- Implementation based on Step 4 Skeleton ---
+        // 1. Return the current value of the 'size' instance variable.
+        return this.size;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        // --- Implementation based on Step 4 Skeleton ---
+        // 1. Return true if size == 0, false otherwise.
+        return this.size == 0;
+    }
+    </program>
+    <p>
+      <em>Explanation:</em> These methods simply return the value of the <c>size</c> field or check if it's zero, directly implementing the logic outlined in their skeletons.
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec-arraylist-dr5-impl-get-set">
+    <title>Implementing <c>get()</c> and <c>set()</c></title>
+    <p>
+      These methods involve accessing or modifying an element at a specific index, requiring bounds checks first, as planned in Step 4.
+    </p>
+    <program language="java">
+    // Inside the ArrayList&lt;T&gt; class...
+
+    @Override
+    public T get(int index) {
+        // --- Implementation based on Step 4 Skeleton ---
+
+        // 1. Check index bounds (0 &lt;= index &lt; size)
+        if (index &lt; 0 || index &gt;= this.size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + this.size);
+        }
+
+        // 2. Return buffer[index]
+        return this.buffer[index];
+    }
+
+    @Override
+    public T set(int index, T item) {
+        // --- Implementation based on Step 4 Skeleton ---
+
+        // 1. Check for null item (as per Javadoc contract)
+        if (item == null) {
+            throw new IllegalArgumentException("Item cannot be null.");
+        }
+
+        // 2. Check index bounds (0 &lt;= index &lt; size)
+        if (index &lt; 0 || index &gt;= this.size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + this.size);
+        }
+
+        // 3. Store current buffer[index]
+        T oldItem = this.buffer[index];
+
+        // 4. Update the array
+        this.buffer[index] = item;
+
+        // 5. Return 'oldItem'
+        return oldItem;
+    }
+    </program>
+    <p>
+      <em>Explanation:</em>
+    </p>
+    <ul>
+        <li><p>Both methods first perform the necessary checks identified in the skeletons (index bounds for both, null item check for <c>set</c>). Note the slightly different bound for <c>get</c>/<c>set</c> (<c>index &lt; size</c>) versus <c>add</c> (<c>index &lt;= size</c>).</p></li>
+        <li><p>If the checks pass, <c>get</c> simply returns the element at the requested index from the internal array.</p></li>
+        <li><p><c>set</c> saves the original element, updates the array at the index with the new item, and returns the saved original element, fulfilling its contract.</p></li>
+        <li><p>We include informative messages when throwing exceptions, which helps in debugging.</p></li>
+    </ul>
+  </subsection>
+
+<subsection xml:id="subsec-arraylist-dr5-testing-core-revised">
+      <title>Run Tests Now! (Verifying Core Methods)</title>
+      <p>
+          You have just implemented the constructor and the fundamental methods <c>size()</c>, <c>isEmpty()</c>, <c>get(index)</c>, and <c>set(index, item)</c>. This is the perfect time to practice the implement-test-debug cycle.
+      </p>
+      <p>
+          Go to the VSCode Test Explorer (Section 11). Run the tests. What should you expect? Since most list operations depend on being able to <c>add</c> elements first, and we haven't implemented any <c>add</c> methods yet, <term>most tests will fail</term>. This is entirely normal!
+      </p>
+      <p>
+          However, based on the code written so far, these specific tests (or parts of tests) should now pass:
+      </p>
+      <ul>
+          <li>
+              <p>✅ <c>BasicOperationsTests</c> &gt; <c>testNewListIsEmpty</c>: This test directly checks the state created by the constructor using <c>isEmpty()</c> and <c>size()</c>. If your constructor correctly initializes <c>size</c> to 0, and your <c>isEmpty()</c> and <c>size()</c> methods are correct, this test should pass.</p>
+          </li>
+          <li>
+              <p>✅ Parts of <c>ExceptionTests</c> &gt; <c>testAccessModify_InvalidIndex_ThrowsIndexOutOfBounds</c>: Specifically, the parts that test <c>get(0)</c>, <c>set(0, "A")</c>, and potentially <c>remove(0)</c> *on an empty list*. Your implemented <c>get</c> and <c>set</c> methods should correctly check if the index (<c>0</c>) is out of bounds when <c>size</c> is 0 and throw an <c>IndexOutOfBoundsException</c>. (The <c>remove(0)</c> check will likely still fail as <c>remove</c> isn't implemented).</p>
+          </li>
+      </ul>
+       <p>
+          <term>What to Watch Out For (Why Other Tests Fail):</term>
+      </p>
+       <ul>
+            <li>
+                <p>❌ <term>Dependency on Add:</term> Many tests (like <c>testGet_ValidIndex</c>, <c>testSet_ValidIndex</c>, or the second half of <c>testAccessModify_InvalidIndex_ThrowsIndexOutOfBounds</c>) first try to <c>add</c> elements to set up a specific list state before checking <c>get</c> or <c>set</c>. Since <c>add</c> isn't working yet, these tests will fail, even if your <c>get</c> or <c>set</c> logic is perfect. Don't be confused by this – focus on the tests that isolate the methods you've just written.</p>
+            </li>
+             <li>
+                <p>❌ <term>NullPointerExceptions or Incorrect Failures:</term> If you have stub methods (methods with empty bodies or just <c>return null;</c>) for unimplemented operations like <c>add</c>, tests might fail in unexpected ways or with generic errors instead of specific assertion failures.</p>
+            </li>
+            <li>
+                 <p>❌ <term>Incorrect Exception Type/Message:</term> If an exception test fails, check if you threw the *exact* exception type required by the contract (e.g., <c>IndexOutOfBoundsException</c>) and if your exception message (if any) is helpful.</p>
+             </li>
+       </ul>
+      <p>
+          <term>Your Goal Right Now:</term> Focus on getting <c>testNewListIsEmpty</c> to pass (✅) and ensuring the empty list checks within <c>testAccessModify_InvalidIndex_ThrowsIndexOutOfBounds</c> for <c>get</c> and <c>set</c> also pass (likely by correctly throwing <c>IndexOutOfBoundsException</c>). Use the failure details for these specific tests to debug your constructor, <c>size</c>, <c>isEmpty</c>, <c>get</c>, and <c>set</c> implementations. Once these are solid, we can confidently move on.
+      </p>
+  </subsection>
+
+  <p>
+    Having implemented and tested the constructor and basic accessors/modifiers, we have built a solid foundation. In the next section, we'll tackle the crucial logic for dynamic resizing and implementing the basic <c>addLast</c> method.
+  </p>
+
+</section>

@@ -1,0 +1,170 @@
+<section xml:id="sec-arraylist-dr4-skeletons-other">
+  <title>Step 4.3: Building Skeletons (Other Methods)</title>
+
+  <p>
+    We continue with <term>Design Recipe Step 4</term>, outlining the logical skeletons for the remaining methods required by the <c>ListADT&lt;T&gt;</c> interface: those for accessing elements, querying the list's state, and searching. We consult the contract, identify checks, and plan the core logic steps using comments.
+  </p>
+
+  <subsection xml:id="subsec-arraylist-dr4-access-methods-revised">
+      <title>Skeletons for Accessing and Modifying Elements</title>
+
+      <subsubsection xml:id="subsubsec-arraylist-dr4-get-skeleton-revised">
+          <title>Skeleton for <c>get(int index)</c></title>
+          <p>
+              Contract: Return element at <c>index</c>. Check: <c>index</c> must be valid (<c>0 &lt;= index &lt; size</c>).
+          </p>
+          <program language="java">
+/**
+ * Returns the element at the specified position. ...
+ * @param index position (0 to size-1 inclusive)
+ * @return the element
+ * @throws IndexOutOfBoundsException if index is invalid
+ */
+@Override
+public T get(int index) {
+    // --- Skeleton Plan ---
+    // 1. Check index bounds (0 &lt;= index &lt; size); throw IndexOutOfBoundsException if invalid.
+    // 2. Return buffer[index];
+}
+          </program>
+      </subsubsection>
+
+      <subsubsection xml:id="subsubsec-arraylist-dr4-set-skeleton-revised">
+          <title>Skeleton for <c>set(int index, T item)</c></title>
+          <p>
+              Contract: Replace element at <c>index</c> with <c>item</c>, return old element. Checks: <c>index</c> valid (<c>0 &lt;= index &lt; size</c>), <c>item</c> not null.
+          </p>
+           <program language="java">
+/**
+ * Replaces the element at the specified position. ...
+ * @param index position (0 to size-1 inclusive)
+ * @param item  element to store (cannot be null)
+ * @return the element previously at the position
+ * @throws IndexOutOfBoundsException if index is invalid
+ * @throws IllegalArgumentException if item is null
+ */
+@Override
+public T set(int index, T item) {
+    // --- Skeleton Plan ---
+    // 1. Check for null item; throw IllegalArgumentException if invalid.
+    // 2. Check index bounds (0 &lt;= index &lt; size); throw IndexOutOfBoundsException if invalid.
+    // 3. Store current buffer[index] in a temporary variable ('oldItem').
+    // 4. Update the array: buffer[index] = item;
+    // 5. Return 'oldItem'.
+}
+           </program>
+      </subsubsection>
+
+       <subsubsection xml:id="subsubsec-arraylist-dr4-first-last-skeleton-revised">
+          <title>Skeletons for <c>first()</c> and <c>last()</c></title>
+          <p>
+              Contract: Return first/last element. Check: List must not be empty.
+          </p>
+           <program language="java">
+/**
+ * Returns the first element ...
+ * @return the first element
+ * @throws java.util.NoSuchElementException if list is empty
+ */
+@Override
+public T first() {
+    // --- Skeleton Plan ---
+    // 1. Check if empty (size == 0); throw NoSuchElementException if true.
+    // 2. Return buffer[0].
+}
+
+/**
+ * Returns the last element ...
+ * @return the last element
+ * @throws java.util.NoSuchElementException if list is empty
+ */
+@Override
+public T last() {
+    // --- Skeleton Plan ---
+    // 1. Check if empty (size == 0); throw NoSuchElementException if true.
+    // 2. Return buffer[size - 1].
+}
+           </program>
+       </subsubsection>
+  </subsection>
+
+   <subsection xml:id="subsec-arraylist-dr4-query-methods-revised">
+      <title>Skeletons for Querying and Searching</title>
+
+      <subsubsection xml:id="subsubsec-arraylist-dr4-isempty-size-skeleton-revised">
+          <title>Skeletons for <c>isEmpty()</c> and <c>size()</c></title>
+          <p>
+              These directly reflect the internal <c>size</c> field.
+          </p>
+          <program language="java">
+    @Override
+    public boolean isEmpty() {
+        // --- Skeleton Plan ---
+        // 1. Return (size == 0);
+    }
+
+    @Override
+    public int size() {
+        // --- Skeleton Plan ---
+        // 1. Return size;
+    }
+          </program>
+      </subsubsection>
+
+       <subsubsection xml:id="subsubsec-arraylist-dr4-indexof-skeleton-revised">
+          <title>Skeleton for <c>indexOf(T item)</c></title>
+          <p>
+              Contract: Find the index of the *first* occurrence of <c>item</c>, or -1 if not found. Requires iterating and comparing.
+          </p>
+           <program language="java">
+/**
+ * Returns the position of the first occurrence ... or -1 if not found.
+ * @param item element to search for
+ * @return the index, or -1
+ */
+@Override
+public int indexOf(T item) {
+    // --- Skeleton Plan ---
+    // 1. Plan: Iterate with index 'i' from 0 to size - 1.
+    // 2. Inside loop, compare 'item' with buffer[i] using null-safe equals.
+    //    (e.g., check if both are null, or if item is not null and item.equals(buffer[i])).
+    // 3. If a match is found, return index 'i' immediately.
+    // 4. If loop finishes without a match, return -1.
+}
+           </program>
+       </subsubsection>
+
+      <subsubsection xml:id="subsubsec-arraylist-dr4-contains-skeleton-revised">
+          <title>Skeleton for <c>contains(T item)</c></title>
+          <p>
+              Contract: Check if <c>item</c> exists in the list.
+          </p>
+          <p>
+              <em>Identifying Reuse:</em> We could iterate through the list similar to <c>indexOf</c>. However, notice that an item "is contained" in the list if and only if its index is *not* -1. We can leverage the logic we just planned for <c>indexOf</c>.
+          </p>
+           <program language="java">
+    // Javadoc implies standard contains behavior
+
+    @Override
+    public boolean contains(T item) {
+        // --- Skeleton Plan (Leveraging indexOf logic) ---
+        // 1. Perform the logic planned for indexOf(item). Let the result be 'foundIndex'.
+        // 2. Return true if 'foundIndex' is not -1, otherwise return false.
+        //    - Return (foundIndex >= 0);
+    }
+           </program>
+           <p>
+               This plan reuses the search logic, making the plan for <c>contains</c> simpler and inherently consistent with <c>indexOf</c>. During implementation (Step 5), this translates to calling the actual <c>indexOf</c> method.
+           </p>
+       </subsubsection>
+
+   </subsection>
+
+  <p>
+    With these skeletons, we now have a logical plan outlined for <term>all</term> methods required by the <c>ListADT&lt;T&gt;</c> interface. We've considered the necessary checks based on the contract, planned the core logic steps, identified potential internal helper logic (resizing, shifting), and even planned for reuse between methods like <c>contains</c> and <c>indexOf</c>.
+  </p>
+  <p>
+    This completes Design Recipe Step 4. The next crucial phase is <term>Design Recipe Step 5: Implementation, Testing &amp; Refinement</term>, where we will translate these skeletons into working Java code, using the unit tests (discussed in Section 11) to verify our progress along the way.
+  </p>
+
+</section>

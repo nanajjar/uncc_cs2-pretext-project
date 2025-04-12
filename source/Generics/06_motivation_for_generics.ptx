@@ -185,19 +185,19 @@ String safeString = myStringBox.get(); // No cast needed! Compiler knows it's a 
      <choices randomize="yes">
          <choice>
              <statement><p>It prevents storing objects of different types in the box.</p></statement>
-             <feedback><p>Incorrect. The `ObjectBox` *allows* storing any type, which is the source of the safety problem.</p></feedback>
+             <feedback><p>Incorrect. The <c>ObjectBox</c> <em>allows</em> storing any type, which is the source of the safety problem.</p></feedback>
          </choice>
          <choice>
              <statement><p>It causes compile-time errors when retrieving items using <c>get()</c>.</p></statement>
-             <feedback><p>Incorrect. Retrieving items as `Object` compiles fine; the error (<c>ClassCastException</c>) occurs at runtime if an incorrect manual cast is performed.</p></feedback>
+             <feedback><p>Incorrect. Retrieving items as <c>Object</c> compiles fine; the error (<c>ClassCastException</c>) occurs at runtime if an incorrect manual cast is performed.</p></feedback>
          </choice>
          <choice correct="yes">
              <statement><p>Retrieving an item requires an unsafe cast, risking a runtime <c>ClassCastException</c> if the stored item's type doesn't match the cast.</p></statement>
-             <feedback><p>Correct. Since `get()` returns `Object`, the compiler cannot verify the actual type, forcing a potentially incorrect and unsafe cast on the caller, which may fail at runtime.</p></feedback>
+             <feedback><p>Correct. Since <c>get()</c> returns <c>Object</c>, the compiler cannot verify the actual type, forcing a potentially incorrect and unsafe cast on the caller, which may fail at runtime.</p></feedback>
          </choice>
          <choice>
              <statement><p>It violates the DRY principle due to excessive code.</p></statement>
-             <feedback><p>Incorrect. The `ObjectBox` itself is reusable (doesn't violate DRY directly), but it sacrifices type safety. The duplication problem arises when trying to achieve type safety *without* generics.</p></feedback>
+             <feedback><p>Incorrect. The <c>ObjectBox</c> itself is reusable (doesn't violate DRY directly), but it sacrifices type safety. The duplication problem arises when trying to achieve type safety <em>without</em> generics.</p></feedback>
          </choice>
      </choices>
  </exercise>
@@ -209,19 +209,19 @@ String safeString = myStringBox.get(); // No cast needed! Compiler knows it's a 
      <choices randomize="yes">
          <choice correct="yes">
              <statement><p>Massive code duplication, violating the DRY principle and making maintenance difficult.</p></statement>
-             <feedback><p>Correct. The core logic (like `set` and `get`) is repeated in each class, differing only by type, which is hard to maintain and violates DRY.</p></feedback>
+             <feedback><p>Correct. The core logic (like <c>set</c> and <c>get</c>) is repeated in each class, differing only by type, which is hard to maintain and violates DRY.</p></feedback>
          </choice>
          <choice>
              <statement><p>Loss of compile-time type safety compared to using <c>ObjectBox</c>.</p></statement>
-             <feedback><p>Incorrect. This approach *provides* compile-time type safety; its main drawback is the code duplication required to achieve it.</p></feedback>
+             <feedback><p>Incorrect. This approach <em>provides</em> compile-time type safety; its main drawback is the code duplication required to achieve it.</p></feedback>
          </choice>
          <choice>
              <statement><p>Inability to store specific types like <c>String</c> or <c>Integer</c>.</p></statement>
-             <feedback><p>Incorrect. Each class is specifically designed to store only one type (e.g., `StringBox` stores only `String`s).</p></feedback>
+             <feedback><p>Incorrect. Each class is specifically designed to store only one type (e.g., <c>StringBox</c> stores only <c>String</c>s).</p></feedback>
          </choice>
          <choice>
              <statement><p>Increased risk of runtime <c>ClassCastException</c>s.</p></statement>
-             <feedback><p>Incorrect. This approach eliminates the need for casting when retrieving items, thus preventing `ClassCastException`s related to the container itself.</p></feedback>
+             <feedback><p>Incorrect. This approach eliminates the need for casting when retrieving items, thus preventing <c>ClassCastException</c>s related to the container itself.</p></feedback>
          </choice>
      </choices>
  </exercise>
@@ -241,7 +241,7 @@ String safeString = myStringBox.get(); // No cast needed! Compiler knows it's a 
          </choice>
          <choice correct="yes">
              <statement><p>To achieve both code reusability (like using <c>Object</c>) and compile-time type safety (like using specific types) simultaneously.</p></statement>
-             <feedback><p>Correct. Generics allow writing a single piece of code (e.g., `Box&lt;T&gt;`) that works for many types while ensuring the compiler checks type correctness for each specific use.</p></feedback>
+             <feedback><p>Correct. Generics allow writing a single piece of code (e.g., <c>Box&lt;T&gt;</c>) that works for many types while ensuring the compiler checks type correctness for each specific use.</p></feedback>
          </choice>
          <choice>
              <statement><p>To eliminate the need for interfaces by using abstract classes more effectively.</p></statement>

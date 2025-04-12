@@ -1,0 +1,64 @@
+<section xml:id="sec-arraylist-need-for-collections">
+  <title>The Need for Flexible Collections</title>
+
+  <p>
+    Think about common tasks in programming. Often, we aren't just dealing with single pieces of information, but with <term>groups</term> or <term>collections</term> of related items. Consider these scenarios:
+  </p>
+  <ul>
+    <li>Keeping track of all the usernames currently logged into a system.</li>
+    <li>Storing the sequence of steps required to complete a task.</li>
+    <li>Managing the items a customer has placed in their online shopping cart.</li>
+    <li>Maintaining a list of high scores achieved in a game.</li>
+  </ul>
+  <p>
+    In each case, we need a way to store and manage a potentially changing number of elements.
+  </p>
+
+  <p>
+    How have we handled multiple items previously? You might initially think of using many separate variables (like <c>item1</c>, <c>item2</c>, <c>item3</c>), but this clearly doesn't scale well if you don't know how many items you'll have. A more structured approach we encountered is using <term>arrays</term> (See <xref ref="ch-iteration-arrays" />). Arrays provide a way to store a sequence of items of the same type under a single variable name, using an index to access specific elements.
+  </p>
+  <program language="java">
+// An array can hold a fixed number of items
+String[] shoppingList = new String[5]; // Create space for exactly 5 items
+
+shoppingList[0] = "Apples";
+shoppingList[1] = "Milk";
+// ... potentially fill up to shoppingList[4] ...
+
+String firstItem = shoppingList[0]; // Access using index
+  </program>
+
+  <p>
+    Arrays are powerful and efficient for accessing elements if you know their index. However, they come with a significant limitation that causes problems for scenarios like our shopping cart or high score list: <term>arrays have a fixed size</term>. When you create an array using <c>new String[5]</c>, you are allocating memory for exactly 5 <c>String</c> references, no more, no less. This fixed nature presents two major challenges:
+  </p>
+  <ol>
+    <li>
+      <p><term>Running out of space:</term> What happens if our shopping list needs a 6th item? The array created with size 5 simply cannot hold it.</p>
+      <program language="java">
+String[] shoppingList = new String[5];
+// ... fill items 0 through 4 ...
+// shoppingList[5] = "Bread"; // ERROR! This causes an ArrayIndexOutOfBoundsException at runtime.
+      </program>
+      <p>Trying to access an index outside the array's bounds (0 to length-1) results in a program crash.</p>
+    </li>
+    <li>
+      <p><term>Wasting space (or guessing):</term> If we don't know the exact number of items needed beforehand, we might try to guess a "large enough" size:</p>
+      <program language="java">
+String[] maybeEnoughScores = new String[1000]; // Hope we never get more than 1000 high scores?
+maybeEnoughScores[0] = "PlayerA: 5000";
+maybeEnoughScores[1] = "PlayerB: 4500";
+// ... but maybe only 10 scores are ever added.
+      </program>
+      <p>In this case, we've allocated space for 1000 scores, but most of that memory might sit unused, which is inefficient. Furthermore, what if our guess was wrong, and the game becomes wildly popular with 1001 high scores? We're back to running out of space!</p>
+    </li>
+  </ol>
+
+  <p>
+    Because fixed-size arrays are often impractical when the number of items isn't known in advance or can change frequently, we need a more flexible solution. We need a <term>dynamic collection</term> – a structure that can automatically grow (and perhaps shrink) its capacity as elements are added or removed, without the programmer having to manually manage fixed-size arrays.
+  </p>
+
+  <p>
+    This chapter focuses on building one common type of dynamic collection: a <term>List</term>. Our specific goal is to create an <c>ArrayList&lt;T&gt;</c> class that provides the functionality of a list but uses an array internally, cleverly handling the resizing process "under the hood" so that the user of the list doesn't have to worry about the fixed-size limitation of the underlying array. This project will give you valuable insight into how such fundamental data structures are designed and implemented.
+  </p>
+
+</section>

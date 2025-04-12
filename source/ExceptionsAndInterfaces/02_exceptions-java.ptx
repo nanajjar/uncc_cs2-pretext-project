@@ -218,7 +218,7 @@ public static void setAge(int age) {
       <li>When reading files or using networks, always handle checked exceptions</li>
     </ul>
 
-    <p><term>In Your Own Code, Remember:</term></p>`
+    <p><term>In Your Own Code, Remember:</term></p>
     <ul>
       <li>Handle external failures (files, networks) using <c>try/catch</c> or <c>throws</c></li>
       <li>Avoid generic <c>Exception</c>—use a specific type like <c>IllegalArgumentException</c></li>

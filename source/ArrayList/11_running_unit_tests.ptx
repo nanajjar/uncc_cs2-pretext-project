@@ -1,0 +1,106 @@
+<section xml:id="sec-arraylist-running-unit-tests">
+  <title>Running and Interpreting Unit Tests</title>
+
+  <introduction>
+    <p>
+      In the previous section (Design Recipe Step 3), we carefully crafted examples to define the precise behavior expected from our <c>ArrayList&lt;T&gt;</c> methods under various conditions. Manually checking every single one of these examples each time we make a change to our code would be incredibly time-consuming and prone to error. How can we efficiently and reliably verify that our implementation meets these behavioral requirements?
+    </p>
+    <p>
+      This is where the provided <term>unit tests</term> come in. As discussed briefly in Section 5, the file <c>test/DataStructures/ArrayListTest.java</c> contains automated checks, written using the <term>JUnit</term> framework, that correspond directly to the examples and edge cases we identified (and likely many more). Running these tests gives us immediate feedback on whether our <c>ArrayList.java</c> code is working correctly according to the specification (<c>ListADT</c>).
+    </p>
+    <p>
+      Your task now is not to write these tests, but to learn how to <term>run</term> them and <term>interpret</term> their results within your development environment (VSCode). This feedback loop – implementing a piece of functionality and then running tests to verify it – is fundamental to modern software development and will be crucial as you build your <c>ArrayList</c>.
+    </p>
+  </introduction>
+
+  <subsection xml:id="subsec-arraylist-running-tests-vscode">
+    <title>Running Tests in VSCode</title>
+    <p>
+      Visual Studio Code, with the appropriate Java extensions installed (which should be configured in the lab environment), provides a convenient way to manage and run JUnit tests through its "Testing" view.
+    </p>
+    <p>
+      Follow these steps:
+    </p>
+    <ol>
+      <li>
+        <p><term>Open the Testing View:</term> Look for the icon that resembles a beaker or flask in the Activity Bar on the far left side of the VSCode window. Click it to open the <term>Test Explorer</term> pane.</p>
+        <image source="ch-arraylist/conical_flask.png" width="6%" description="Testing icon in VS Code Activity Bar"/>
+      </li>
+      <li>
+        <p><term>Locate the Tests:</term> The Test Explorer pane will scan your project (using Gradle behind the scenes) and display the tests it finds. You should see a hierarchy, likely starting with the project name, then packages (<c>DataStructures</c>), the test class (<c>ArrayListTest</c>), and potentially nested groups corresponding to the methods being tested, as shown in the example figure below.</p>
+        <figure xml:id="fig-vscode-test-explorer">
+            <caption>Example VSCode Test Explorer View showing passed tests for ArrayListTest.java</caption>
+            <image source="ch-arraylist/test_results.png" width="90%">
+                <description>
+                    Screenshot of VS Code Testing pane. Left shows hierarchy: arraylist-lab-example-java --&gt; DataStructures --&gt; BasicOperationsTests --&gt; testAddTests (selected, highlighted) --&gt; testAddFirst, testAddLast. All have green checkmarks. Right pane shows ArrayListTest.java code with JUnit annotations. Bottom status bar shows Git branch, errors/warnings, etc.
+                </description>
+            </image>
+        </figure>
+      </li>
+      <li>
+        <p><term>Run Tests:</term> You have several options for running tests, usually indicated by "play" icons (<m>\▶</m>):</p>
+        <ul>
+          <li><p>Run All Tests: There's typically a master "Run Tests" button at the top of the Test Explorer pane.</p></li>
+          <li><p>Run a Class/Group: You can hover over a class name (like <c>ArrayListTest</c>) or a nested group and click the play icon that appears next to it to run only the tests within that class or group.</p></li>
+          <li><p>Run a Single Test: You can hover over an individual test method name and click its play icon.</p></li>
+        </ul>
+        <p>Initially, since you haven't implemented anything in <c>ArrayList.java</c>, most or all tests will likely fail. That's expected!</p>
+      </li>
+    </ol>
+     <note>
+      <title>Do Not Modify Test Files</title>
+      <p>
+        Remember, your task is to implement <c>src/DataStructures/ArrayList.java</c> so that it *passes* the provided tests in <c>test/DataStructures/ArrayListTest.java</c>. You should <term>not</term> modify the test file itself. The tests represent the requirements your implementation must meet.
+      </p>
+    </note>
+  </subsection>
+
+  <subsection xml:id="subsec-arraylist-interpreting-results">
+    <title>Interpreting Test Results</title>
+    <p>
+      After running the tests, VSCode's Test Explorer will update with visual indicators:
+    </p>
+    <ul>
+      <li>
+        <p><term>Green Checkmark (✅):</term> Success! The test ran without error and all its internal checks (<term>assertions</term>) passed. This indicates the specific piece of functionality tested by that method is likely working correctly according to the examples from Step 3.</p>
+      </li>
+      <li>
+        <p><term>Red X (❌):</term> Failure! The test did not pass. This is the crucial feedback indicating a problem in <term>your</term> <c>ArrayList.java</c> implementation related to the scenario that test covers.</p>
+      </li>
+      <li>
+        <p><term>Hierarchy:</term> If a group or class contains any failing tests, it will also be marked with a red X, helping you quickly identify areas with problems.</p>
+      </li>
+       <li>
+        <p><term>Timing:</term> The view often shows how long each test or group took to run (e.g., "1.0ms"). This isn't usually critical for correctness but can be useful later for performance analysis.</p>
+      </li>
+    </ul>
+
+    <subsubsection xml:id="subsubsec-arraylist-handling-failures">
+        <title>Handling Failures</title>
+        <p>
+            Seeing red X's is a normal part of development! Don't panic. When a test fails, you need to investigate:
+        </p>
+        <ol>
+            <li><p><term>Identify the Failed Test:</term> Note the name of the test method that failed (e.g., <c>testAdd_InvalidIndex_ThrowsIndexOutOfBounds</c>). The names are often descriptive of the scenario being tested.</p></li>
+            <li><p><term>Examine the Failure Details:</term> Click on the failed test in the Test Explorer. VSCode will usually show detailed output, often including:</p>
+                <ul>
+                    <li><p>An <term>AssertionError:</term> This is common. It means your code ran, but produced the wrong result. The message typically tells you what was <c>expected</c> versus what was <c>actually</c> returned by your code (e.g., <c>expected:  but was: </c>).</p></li>
+                    <li><p>An <term>Unexpected Exception:</term> Your code might have crashed by throwing an exception when none was expected (e.g., you got a <c>NullPointerException</c> inside your <c>add</c> method). The output will show the exception type and a <term>stack trace</term> (a list of method calls leading to the error), helping you find where in *your* code the crash occurred.</p></li>
+                    <li><p>A <term>Missing Exception:</term> The test might have expected a specific exception (like <c>IndexOutOfBoundsException</c>) based on the contract, but your code didn't throw it when it should have.</p></li>
+                </ul>
+            </li>
+            <li><p><term>Connect to Your Code &amp; Examples:</term> Use the test name and failure message to figure out which method in your <c>ArrayList.java</c> is likely causing the problem and under what circumstances (which example from Step 3 does this test correspond to?).</p></li>
+            <li><p><term>Debug and Fix:</term> Go to your <c>ArrayList.java</c> code, find the logical error, fix it.</p></li>
+            <li><p><term>Re-run:</term> Re-run the failed test (or all tests) to confirm your fix worked and didn't break anything else.</p></li>
+        </ol>
+        <p>
+            This iterative cycle (implement --&gt; run tests --&gt; analyze failures --&gt; debug --&gt; re-run tests) is how you will build your <c>ArrayList</c> incrementally, using the tests as a constant guide and safety net.
+        </p>
+    </subsubsection>
+  </subsection>
+
+  <p>
+    Now that you understand how to use the provided tests to check your work, you have the final piece needed before planning the implementation details. In the next sections, we will move to <term>Design Recipe Step 4</term>, creating skeletons and pseudocode for the <c>ArrayList</c> methods based on the understanding gained in Step 0 and the examples defined in Step 3.
+  </p>
+
+</section>

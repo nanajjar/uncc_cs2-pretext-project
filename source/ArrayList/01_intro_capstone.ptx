@@ -1,0 +1,40 @@
+<section xml:id="sec-arraylist-intro">
+  <title>Introduction: Your Capstone Project - Building ArrayList&lt;T&gt;</title>
+
+  <p>
+    Welcome to a significant milestone in your Java programming journey! Up to this point, you've explored the foundational building blocks of the language: defining classes and objects, writing methods, handling errors with exceptions, understanding inheritance and interfaces, controlling program flow with iteration, working with arrays and Strings, and harnessing the power of generics for type safety and reusability. You've also practiced a systematic approach to development using our Design Recipe. Now, it's time to bring many of these critical concepts together in a practical, culminating project: implementing your very own generic <c>ArrayList&lt;T&gt;</c> class.
+  </p>
+
+  <p>
+    You might ask, "Why build an <c>ArrayList</c>? Java already provides a perfectly good one in <c>java.util.ArrayList</c>!" That's true, and in most professional settings, you'll absolutely use the standard library's implementation. However, the goal here isn't just to *have* an ArrayList, but to *understand* how such a fundamental data structure works under the hood. By building it yourself, step-by-step, you will:
+  </p>
+  <ul>
+    <li>Gain a much deeper appreciation for the design choices and trade-offs involved in creating reusable data structures.</li>
+    <li>Solidify your understanding of how core Java concepts interact in a non-trivial component.</li>
+    <li>Practice applying the Design Recipe to a larger problem, reinforcing systematic development habits.</li>
+    <li>See firsthand the challenges of managing dynamic data, like an array that needs to grow.</li>
+  </ul>
+
+  <p>
+    This project serves as a <term>capstone</term> for the our course, providing a chance to actively apply and review much of what you've learned. You will be drawing upon your knowledge of:
+  </p>
+  <ul>
+    <li><term>Object-Oriented Programming:</term> Defining classes (<c>ArrayList&lt;T&gt;</c>), implementing interfaces (<c>ListADT&lt;T&gt;</c>), encapsulation (using <c>private</c> fields). (See <xref ref="ch-classes-objects" />, <xref ref="ch-inheritance" />, <xref ref="ch-abstract-classes" />)</li>
+    <li><term>Interfaces and Abstract Data Types (ADTs):</term> Working with predefined contracts (<c>CollectionADT&lt;T&gt;</c>, <c>ListADT&lt;T&gt;</c>) that specify *what* needs to be done. (See <xref ref="exceptions-and-interfaces" />, <xref ref="ch-abstract-classes" />)</li>
+    <li><term>Arrays:</term> Using arrays as the underlying storage mechanism, including indexing and manipulation. (See <xref ref="ch-iteration-arrays" />)</li>
+    <li><term>Generics:</term> Implementing a type-safe container (<c>ArrayList&lt;T&gt;</c>) that can hold elements of any specified reference type <c>T</c>. (See <xref ref="ch-generics" />)</li>
+    <li><term>Exception Handling:</term> Throwing appropriate standard exceptions (like <c>IndexOutOfBoundsException</c>) when contract preconditions are violated. (See <xref ref="exceptions-and-interfaces" />)</li>
+    <li><term>The Design Recipe:</term> Methodically following the steps from understanding the problem (Step 0) through implementation and testing (Step 5). (See <xref ref="ch-design-recipe" />)</li>
+    <li><term>Code Organization:</term> Working with Java packages and imports (which we will also discuss further in this chapter).</li>
+    <li><term>Testing:</term> Using provided unit tests (JUnit) to verify the correctness of your implementation (we'll guide you on running them).</li>
+  </ul>
+
+  <p>
+    In this chapter, we will guide you through the entire process using our familiar Design Recipe. We'll start by understanding the requirements defined by the <c>ListADT</c> interface, plan our data representation using an array, design the implementation step-by-step, and use provided tests to check our work along the way. We will also take this opportunity to formally introduce Java packages and the import mechanism, essential tools for organizing larger projects.
+  </p>
+
+  <p>
+    Get ready to consolidate your skills and build something substantial. Let's begin!
+  </p>
+
+</section>

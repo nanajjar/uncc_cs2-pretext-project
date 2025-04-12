@@ -32,7 +32,7 @@ public interface InterfaceName {
       <li><em>public</em> ensures the method is accessible to any class that wants to implement the interface (hence you can't have a private or package-private method signature fulfilling a public interface requirement—this leads to a compiler error).</li>
       <li><em>abstract</em> means there's no method body—just a promise that classes will provide the details.</li>
     </ul>
-    <p><em>Important</em>: If a class tries to implement an interface method but <em>omits</em> `public` (for instance, using package-private or private), Java will complain that it doesn't match the interface's public method signature.</p>
+    <p><em>Important</em>: If a class tries to implement an interface method but <em>omits</em> <c>public</c> (for instance, using package-private or private), Java will complain that it doesn't match the interface's public method signature.</p>
     <p>For our media example, let's create a simple <c>Playable</c> interface with one method, <c>play()</c>:</p>
     <program language="java">
       <code>

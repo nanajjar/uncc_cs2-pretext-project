@@ -33,7 +33,7 @@ and does not override abstract method play() in Playable
       </li>
       <li>
         <strong>Insufficient JavaDoc</strong>:  
-        Document your interface with `<c>/** ... */</c>` so users and future implementors know exactly how to fulfill or call its methods. Mention `@param`, `@return`, `@throws` when relevant. 
+        Document your interface with `<c>/** ... */</c>` so users and future implementors know exactly how to fulfill or call its methods. Mention <c>@param</c>, <c>@return</c>, <c>@throws</c> when relevant. 
         <br/><strong>(Remember:</strong> these tags can show up as tooltips in IDEs and can auto-generate HTML docs!)
       </li>
       <li>
