@@ -1,4 +1,4 @@
-<chapter xml:id="ch-capstone-arraylist" xmlns:xi="http://www.w3.org/2001/XInclude">
+<chapter xml:id="ch-capstone-arraylist" xmlns:xi="http://www.w3.org/2001/XInclude" xml:id="_capstone">
   <title>Capstone: Building a Generic ArrayList</title>
 
   <xi:include href="./01_intro_capstone.ptx" />
