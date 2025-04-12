@@ -12,7 +12,7 @@
   <subsection xml:id="overview-implementation-tests">
     <title>Overview &amp; Motivation</title>
     <p>
-      So far, you've followed a structured journey through the Design Recipe:
+      So far, you've followed a structured experience through the Design Recipe:
     </p>
     <ol>
       <li><alert>Data Definitions</alert> (Section 1)</li>
