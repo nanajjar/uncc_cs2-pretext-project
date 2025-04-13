@@ -29,5 +29,4 @@
 
   <xi:include href="./19_dr5_refining_impl.ptx" />
   <xi:include href="./20_conclusion.ptx" />
-  <xi:include href="./21_submission_further.ptx" />
 </chapter> 
