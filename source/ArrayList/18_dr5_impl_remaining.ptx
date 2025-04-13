@@ -293,6 +293,7 @@
       </p>
    </subsection>
 
+            <note><title>Code Snapshot</title><p>You should now have a fully working implementation passing all tests! The state of the code after completing this section can be found on the <c>dr-step-5.4-remaining-impl</c> branch.</p></note>
    <p>
       Once all tests pass, you have a working, robust implementation of a generic <c>ArrayList</c> based on the provided specification. The final part of Step 5 involves reflecting on the implementation and considering potential refinements or improvements, which we will do in the next section.
    </p>

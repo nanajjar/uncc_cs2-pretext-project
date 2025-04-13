@@ -241,6 +241,7 @@
         </p>
    </subsection>
 
+            <note><title>Code Snapshot</title><p>The final, refined version of the code incorporating the improvements discussed in this section can be found on the <c>dr-step-5.5-final-refined</c> branch.</p></note>
    <p>
       With implementation and refinement complete, we have successfully built and improved our own generic <c>ArrayList&lt;T&gt;</c>, gaining valuable insight into data structures, generics, and the Design Recipe. The final section will conclude the chapter.
    </p>

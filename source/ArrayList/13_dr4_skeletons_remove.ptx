@@ -220,6 +220,7 @@ Need to remove element at index 1 ("B").
 
   </subsection>
 
+            <note><title>Code Snapshot</title><p>The state of the code after adding the skeletons for the Remove methods (as planned in this section) can be found on the <c>dr-step-4.2-remove-skeletons</c> branch in the repository.</p></note>
   <p>
     We have now outlined the logical steps for the "Remove" methods, again identifying necessary checks, the core logic (like shifting left), and considering potential reuse or delegation. The next step is to create skeletons for the remaining "Other" operations (accessing, querying).
   </p>

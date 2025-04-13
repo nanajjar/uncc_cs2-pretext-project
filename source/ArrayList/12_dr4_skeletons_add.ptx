@@ -217,6 +217,7 @@ Need to insert "X" at index 1.
 
   </subsection>
 
+            <note><title>Code Snapshot</title><p>If you\'d like to see the complete code with only the skeletons for the Add methods added (as planned in this section), you can view the <c>dr-step-4.1-add-skeletons</c> branch in the project repository using Git checkout.</p></note>
   <p>
     By breaking down the requirements, analyzing different cases, and identifying common logical steps (potential helpers), we have created robust skeletons for the Add methods. This detailed plan in Step 4 provides a solid foundation for the actual coding in Step 5. Next, we will apply this same thinking process to create skeletons for the "Remove" operations.
   </p>
