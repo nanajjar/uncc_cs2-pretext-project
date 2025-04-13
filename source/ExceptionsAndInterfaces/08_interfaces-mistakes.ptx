@@ -15,7 +15,7 @@
     <p>When you first learn interfaces, watch out for these pitfalls:</p>
     <ul>
       <li>
-        <strong>Method signature mismatch</strong>:  
+        <term>Method signature mismatch</term>:  
         If the interface says <c>void play()</c>, writing <c>void play(String trackName)</c> or <c>int play()</c> in the class breaks the contract. You'll see an error like:
         <pre>
 BrokenImplementation.java:3: error: BrokenImplementation is not abstract
@@ -24,24 +24,24 @@ and does not override abstract method play() in Playable
         Because your method signature doesn't match <c>play()</c> exactly.
       </li>
       <li>
-        <strong>Forgetting to implement all interface methods</strong>:  
+        <term>Forgetting to implement all interface methods</term>:  
         If an interface has multiple methods, every single one must be provided in your class. Missing just one triggers a compile error.
       </li>
       <li>
-        <strong>Skipping @Override</strong>:  
+        <term>Skipping @Override</term>:  
         Not using <c>@Override</c> can hide signature mismatches. It's strongly recommended for clarity.
       </li>
       <li>
-        <strong>Insufficient JavaDoc</strong>:  
+        <term>Insufficient JavaDoc</term>:  
         Document your interface with `<c>/** ... */</c>` so users and future implementors know exactly how to fulfill or call its methods. Mention <c>@param</c>, <c>@return</c>, <c>@throws</c> when relevant. 
-        <br/><strong>(Remember:</strong> these tags can show up as tooltips in IDEs and can auto-generate HTML docs!)
+        <br/><term>(Remember:</term> these tags can show up as tooltips in IDEs and can auto-generate HTML docs!)
       </li>
       <li>
-        <strong>Big interface "bloat" (advanced caution)</strong>:  
+        <term>Big interface "bloat" (advanced caution)</term>:  
         Dumping many unrelated methods into one interface can overcomplicate your design. Beginners might not face this immediately, but eventually you'll see the value in creating multiple, smaller interfaces that group cohesive methods together.
       </li>
       <li>
-        <strong>Abstract classes vs. interfaces</strong>:  
+        <term>Abstract classes vs. interfaces</term>:  
         <em>This is an advanced topic you don't need to understand right now.</em> If you can't implement all methods, Java allows you to declare your class <c>abstract</c>, but this is a more advanced feature. We'll cover abstract classes in detail in a later chapter. For now, simply implement all the required interface methods in your class. If the compiler complains about missing methods, just add them - don't worry about making your class abstract yet.
       </li>
     </ul>
@@ -54,8 +54,8 @@ and does not override abstract method play() in Playable
   <subsection xml:id="interfaces-reflection">
     <title>Reflection: Where Else Could Interfaces Help?</title>
     <p>Think back to any past projects or practice exercises. Did you have multiple classes that were supposed to share a similar capability (like <c>draw</c>, <c>calculateArea</c>, or <c>attack</c>) but used different method names or required messy conditionals?  
-    <strong>Write down</strong> a short note describing a scenario from your own code. Then explain in a sentence or two how an interface (e.g., <c>Drawable</c>, <c>Shape</c>, or <c>Enemy</c>) could enforce a consistent method signature and simplify your design.  
-    In the upcoming sections, you'll see how Java's <strong>built-in interfaces</strong> (<c>Comparable</c>, <c>Iterable</c>, etc.) do exactly the same thing, helping unify behaviors like sorting or enhanced for-loops across many classes.</p>
+    <term>Write down</term> a short note describing a scenario from your own code. Then explain in a sentence or two how an interface (e.g., <c>Drawable</c>, <c>Shape</c>, or <c>Enemy</c>) could enforce a consistent method signature and simplify your design.  
+    In the upcoming sections, you'll see how Java's <term>built-in interfaces</term> (<c>Comparable</c>, <c>Iterable</c>, etc.) do exactly the same thing, helping unify behaviors like sorting or enhanced for-loops across many classes.</p>
   </subsection>
 
   <!-- =========================================
@@ -73,7 +73,7 @@ and does not override abstract method play() in Playable
       <title>Examining a Compiler Error</title>
       <statement>
         <p>Write an example of an interface-related compiler error (like forgetting a required method or using the wrong return type). Show the exact error message and explain how it helps you fix the issue quickly. Why is this better than discovering the problem only after running the code?  
-        <strong>Hint:</strong> Try something like "public interface MultiMethod { void doX(); void doY(); }" and then implement only doX(). Compile, observe the error, and fix it.</p>
+        <term>Hint:</term> Try something like "public interface MultiMethod { void doX(); void doY(); }" and then implement only doX(). Compile, observe the error, and fix it.</p>
       </statement>
     </exercise>
 
@@ -84,7 +84,7 @@ and does not override abstract method play() in Playable
         <p>2) Write two classes: <c>Circle</c> and <c>Rectangle</c>, each implementing <c>Drawable</c>.</p>
         <p>3) Create a method <c>drawShape(Drawable shape)</c> that calls <c>shape.draw()</c> on any <c>Drawable</c>.</p>
         <p>4) In a <c>main</c> method, test <c>drawShape</c> with both a <c>Circle</c> and a <c>Rectangle</c>.</p>
-        <p><strong>Make a small mistake on purpose:</strong> for instance, omit <c>draw()</c> or rename it to <c>dra()</c>. Compile your code, look closely at the compiler's error. Then fix it and compile again, noting how quickly you can correct the issue thanks to the interface contract.</p>
+        <p><term>Make a small mistake on purpose:</term> for instance, omit <c>draw()</c> or rename it to <c>dra()</c>. Compile your code, look closely at the compiler's error. Then fix it and compile again, noting how quickly you can correct the issue thanks to the interface contract.</p>
       </statement>
     </exercise>
 

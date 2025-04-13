@@ -41,23 +41,23 @@ public static void playMedia(Object media) {
 }
       </code>
     </program>
-    <p>Here, two <strong>new</strong> concepts appear:</p>
+    <p>Here, two <term>new</term> concepts appear:</p>
     <ul>
       <li><term><c>instanceof</c></term>: Checks if an object belongs to a specific class.</li>
       <li><term>Casting</term>: Explicitly tells Java the type of the object. It's like labeling a generic "box" (<c>Object</c>) with a specific sticker (this is actually a <c>MusicTrack</c>!).</li>
     </ul>
-    <p><strong>Why use <c>Object</c> at all?</strong> Because <c>Object</c> is Java's most general type. Every class in Java automatically extends <c>Object</c>.
+    <p><term>Why use <c>Object</c> at all?</term> Because <c>Object</c> is Java's most general type. Every class in Java automatically extends <c>Object</c>.
       This means that all Java objects share a common foundation and can be referenced as type Object when needed. We'll explore more about what this means later when we introduce inheritance, but for now, just focus on the idea that <c>Object</c> is the most general type in Java.
       </p>
-      <p>This approach "works," but is <strong>awkward</strong> and <strong>error-prone</strong>:</p>
+      <p>This approach "works," but is <term>awkward</term> and <term>error-prone</term>:</p>
 
     <ul>
       <li>You must cast separately for each type—imagine adding more classes like <c>Audiobook</c>, <c>Livestream</c>, etc.</li>
       <li>Different method names (<c>playMusic()</c> vs. <c>startPlaying()</c>) force multiple conditional checks.</li>
     </ul>
-    <p><strong>Wouldn't it be simpler</strong> if each class used the <em>same method name</em>, such as <c>play()</c>? Then you could eliminate <c>instanceof</c> and casting entirely. That's exactly what Java <term>interfaces</term> help us achieve—defining a "contract" (e.g., <c>void play()</c>) that every implementor must fulfill. Java's compiler <em>enforces</em> this contract by refusing to compile code that breaks it.</p>
+    <p><term>Wouldn't it be simpler</term> if each class used the <em>same method name</em>, such as <c>play()</c>? Then you could eliminate <c>instanceof</c> and casting entirely. That's exactly what Java <term>interfaces</term> help us achieve—defining a "contract" (e.g., <c>void play()</c>) that every implementor must fulfill. Java's compiler <em>enforces</em> this contract by refusing to compile code that breaks it.</p>
 
-    <p><strong>Mini Example: Compiler Enforcement in Action</strong></p>
+    <p><term>Mini Example: Compiler Enforcement in Action</term></p>
     <program language="java">
       <code>
 // A tiny interface as a contract
@@ -79,6 +79,6 @@ public class BadImplementation implements MiniInterface {
 1 error
       </output>
     </program>
-    <p><strong><em>Encouragement About Errors</em>:</strong> Don't worry if you see errors like these! <em>Compiler errors are your friend</em>—they point you straight to what's missing or incorrect. Encountering them is normal and expected. <em>Every</em> programmer repeatedly relies on compiler feedback to correct mistakes quickly, rather than hunting for them at runtime.</p>
+    <p><term><em>Encouragement About Errors</em>:</term> Don't worry if you see errors like these! <em>Compiler errors are your friend</em>—they point you straight to what's missing or incorrect. Encountering them is normal and expected. <em>Every</em> programmer repeatedly relies on compiler feedback to correct mistakes quickly, rather than hunting for them at runtime.</p>
   </subsection>
 </section>

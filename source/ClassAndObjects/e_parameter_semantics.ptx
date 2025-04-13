@@ -18,14 +18,14 @@
     </p>
     <ol>
       <li>
-        <p><strong>Primitive Types</strong> (<c>int</c>, <c>double</c>, <c>boolean</c>, etc.)
+        <p><term>Primitive Types</term> (<c>int</c>, <c>double</c>, <c>boolean</c>, etc.)
           <ul><li>
           Stored directly in memory as their actual value</li> <li> When copied, you get a
           completely independent copy</li><li> Examples: numbers, true/false values</li>  <li>The name
           of type starts with lowercase letter </li></ul></p>
       </li>
       <li>
-        <p><strong>Reference Types</strong> (Objects) <ul><li> Stored as a reference (like an
+        <p><term>Reference Types</term> (Objects) <ul><li> Stored as a reference (like an
           address) that points to data elsewhere in memory</li> <li> When copied, you copy the
           reference but both still point to the same data</li><li> Examples: <c>String</c>, <c>ArrayList</c>, your own classes</li> <li> The name of type starts with uppercase letter </li></ul></p>
       </li>
@@ -36,11 +36,11 @@
     </p>
 
     <p>
-      <strong>Real World Analogy: School Lockers</strong>
+      <term>Real World Analogy: School Lockers</term>
     </p>
     <ul>
       <li>
-        <p><strong>Primitives</strong> are like writing on a sticky note:</p>
+        <p><term>Primitives</term> are like writing on a sticky note:</p>
         <ul>
           <li>The actual number is right there on the note</li>
           <li>If you copy the note, each person has their own independent copy</li>
@@ -48,7 +48,7 @@
         </ul>
       </li>
       <li>
-        <p><strong>Objects</strong> are like using a school locker:</p>
+        <p><term>Objects</term> are like using a school locker:</p>
         <ul>
           <li>Instead of carrying everything, you just carry the locker number</li>
           <li>If you share that locker number, you're both using the same locker</li>
@@ -149,7 +149,7 @@ boolean lastState = gameOver;     // New independent sticky note
 lastState = true;                 // Only changes lastState
 </program>
 
-    <p><strong>🚫 Common Mistake:</strong> Thinking variables are connected</p>
+    <p><term>🚫 Common Mistake:</term> Thinking variables are connected</p>
 
       <program language="java" xml:id="common-mistake-primitive">
 int lives = 3;
@@ -273,7 +273,7 @@ ally ────┐               p2 ────┐
 </program>
 
     <p>
-      <strong>🚫 Common Mistakes:</strong>
+      <term>🚫 Common Mistakes:</term>
     </p>
       <program language="java" xml:id="common-mistakes-refs">
  // Mistake 1: Passing number instead of Player
@@ -412,7 +412,7 @@ boss &amp; p2 ────┐
 </program>
 
     <p>
-      <strong>Key Point:</strong> A method can receive multiple locker numbers (references) and
+      <term>Key Point:</term> A method can receive multiple locker numbers (references) and
       modify all those objects. Each parameter is a copy of the reference, but they all point to the
       real objects. </p>
   </subsection>
@@ -431,7 +431,7 @@ boss &amp; p2 ────┐
       <ol>
         <li>
           <p>
-            <strong>Primitives are Like Sticky Notes</strong>
+            <term>Primitives are Like Sticky Notes</term>
           </p>
             <program language="java">
 int x = 42;
@@ -441,7 +441,7 @@ y = 10;        // Only changes y's note
         </li>
         <li>
           <p>
-            <strong>Objects are Like Lockers</strong>
+            <term>Objects are Like Lockers</term>
           </p>
             <program language="java">
 Player p1 = new Player(100);  // New locker
@@ -596,7 +596,7 @@ System.out.println(hero.getHealth());  // Should be 150
 ]]></program>
       </listing>
 
-      <p> 🎯 <strong>Success Checklist</strong>: </p>
+      <p> 🎯 <term>Success Checklist</term>: </p>
       <ul>
         <li>Gold stealing changes both players' gold</li>
         <li>Spell casting reduces both charges and mana</li>
@@ -731,7 +731,7 @@ System.out.println(p1.getHealth());
       <response />
       <solution>
         <p>
-          <strong>Sample Solution:</strong> When you assign <c>p2 = p1</c>, you give <c>p2</c> the
+          <term>Sample Solution:</term> When you assign <c>p2 = p1</c>, you give <c>p2</c> the
           same "locker number" that <c>p1</c> already had. So, <c>p1</c> and <c>p2</c> are both
           opening the same locker (the same Player object). If <c>p2.damage(10)</c> changes what's
           in that locker, <c>p1</c> sees the change as well. </p>
@@ -805,7 +805,7 @@ System.out.println(p1.getHealth());
       <response />
       <solution>
         <p>
-          <strong>Sample Solution:</strong> Java always copies the variable's value. For primitives,
+          <term>Sample Solution:</term> Java always copies the variable's value. For primitives,
           that value is the actual number. For objects, the value is the reference (like a locker
           number). Copying the same “locker number” means both copies point to the same object, so
           changes in the method remain visible to the caller. </p>

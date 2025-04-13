@@ -80,7 +80,7 @@ Need to remove element at index 1 ("B").
            <p>
               Again, we anticipate this might become a <term>private helper method</term> during implementation (Step 5) for clarity and potential reuse. Let's plan its conceptual logic:
           </p>
-          <p><strong>Helper Logic Plan: Shift Left</strong></p>
+          <p><term>Helper Logic Plan: Shift Left</term></p>
            <program language="java">
     // --- Private Helper Logic Plan: shiftLeft(int index) ---
     // (This logic is needed to close the gap after removing at 'index')

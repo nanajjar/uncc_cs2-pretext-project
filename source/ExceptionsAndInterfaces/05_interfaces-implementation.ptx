@@ -38,7 +38,7 @@ public class PodcastEpisode implements Playable {
 }
       </code>
     </program>
-    <p><term>@Override</term> isn't strictly required, but it's <strong>highly recommended</strong>. It <em>explicitly</em> signals your intent to Java, and if you mismatch the signature (like <c>pLay()</c> or <c>play(String s)</c>), the compiler immediately warns you.</p>
+    <p><term>@Override</term> isn't strictly required, but it's <term>highly recommended</term>. It <em>explicitly</em> signals your intent to Java, and if you mismatch the signature (like <c>pLay()</c> or <c>play(String s)</c>), the compiler immediately warns you.</p>
     <p>With <c>implements</c>, the compiler ensures you match <c>void play()</c> exactly. If you omit <c>play()</c>, or if you rename it to something else, you'll get a compile-time error. For example:</p>
     <program language="java">
       <code>
@@ -68,13 +68,13 @@ public class Audiobook implements Playable {
 }
       </code>
     </program>
-    <p><strong>What if I want partial implementation?</strong> Then you can declare your class <c>abstract</c>, 
+    <p><term>What if I want partial implementation?</term> Then you can declare your class <c>abstract</c>, 
     meaning it's not fully complete and can't be instantiated. 
-    <em><strong>Important Note for Beginners:</strong></em> Abstract classes are a more advanced feature you'll learn later. 
+    <em><term>Important Note for Beginners:</term></em> Abstract classes are a more advanced feature you'll learn later. 
     For now, if the compiler complains you haven't implemented all methods, simply add the missing ones to your class. 
     <em>In later chapters will explore abstract classes in more depth, so don't worry if this concept doesn't fully make sense yet.</em> 
     Just focus on implementing all the interface methods in your regular classes for now.</p>
-    <p><strong>Another mismatch example: Extra parameters or wrong return type</strong></p>
+    <p><term>Another mismatch example: Extra parameters or wrong return type</term></p>
     <program language="java">
       <code>
 public interface Playable {
@@ -140,7 +140,7 @@ playMedia(book); // prints "Playing audiobook..."
       </code>
     </program>
     <p>We don't need to modify the <c>playMedia</c> method at all. It automatically works with any new class that implements <c>Playable</c>. That's the power of interfaces for easily extending your code—<em>no need</em> to rewrite or expand older methods. If you created a new class <c>Livestream</c> implementing <c>Playable</c>, you could call <c>playMedia(new Livestream())</c> with zero changes elsewhere!</p>
-    <p><strong>Real-World Analogy (Polymorphism):</strong> Think of a universal "Play" button that works on different devices: a DVD player, a streaming service, or a music player. Each device does something unique when you press "Play," but from your perspective, it's a single button. That's exactly what an interface method does in code: one method name (<c>play()</c>) triggers different implementations depending on the actual class or device.</p>
+    <p><term>Real-World Analogy (Polymorphism):</term> Think of a universal "Play" button that works on different devices: a DVD player, a streaming service, or a music player. Each device does something unique when you press "Play," but from your perspective, it's a single button. That's exactly what an interface method does in code: one method name (<c>play()</c>) triggers different implementations depending on the actual class or device.</p>
   </subsection>
 
 

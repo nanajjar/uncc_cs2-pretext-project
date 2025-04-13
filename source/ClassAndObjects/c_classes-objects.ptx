@@ -156,7 +156,7 @@ Player p = new Player(10, 50);
       </li>
     </ol>
 
-    <p> This special method is called a <strong>constructor</strong>. You might wonder: "Doesn't it
+    <p> This special method is called a <term>constructor</term>. You might wonder: "Doesn't it
       return a Player?" It does, but Java's grammar treats constructors specially—they implicitly
       return the new object without needing a return type. That's why: </p>
     <ul>
@@ -389,15 +389,15 @@ public class Player {
     </p>
     <ul>
       <li>
-        <p>A Player we create (like <c>p1</c> or <c>p2</c>) is called an <strong>object</strong> or <strong>
-          instance</strong>.</p>
+        <p>A Player we create (like <c>p1</c> or <c>p2</c>) is called an <term>object</term> or <term>
+          instance</term>.</p>
       </li>
       <li>
-        <p>The methods inside Player (like <c>heal</c>) are called <strong>instance methods</strong>
+        <p>The methods inside Player (like <c>heal</c>) are called <term>instance methods</term>
           because they work on a specific instance.</p>
       </li>
       <li>
-        <p>The setup code (like <c>Player(10, 50)</c>) is called a <strong>constructor</strong>.</p>
+        <p>The setup code (like <c>Player(10, 50)</c>) is called a <term>constructor</term>.</p>
       </li>
     </ul>
 
@@ -768,7 +768,7 @@ public class Monster {
       <response />
       <solution>
         <p>
-          <strong>Sample Solution:</strong> When we call <c>p1.heal(5)</c>, <c>this</c> inside the <c>heal</c> method refers to <c>p1</c>. In other words, <c>this</c> is the specific <c>Player</c>
+          <term>Sample Solution:</term> When we call <c>p1.heal(5)</c>, <c>this</c> inside the <c>heal</c> method refers to <c>p1</c>. In other words, <c>this</c> is the specific <c>Player</c>
           object on which the method was invoked. </p>
       </solution>
     </exercise>
@@ -785,7 +785,7 @@ public class Monster {
       <response />
       <solution>
         <p>
-          <strong>Sample Solution:</strong> A constructor's job is to initialize a new object. The 
+          <term>Sample Solution:</term> A constructor's job is to initialize a new object. The 
           <c>new</c> keyword allocates memory and then calls the constructor to set fields. By
           definition, constructors implicitly return the new object reference—so Java syntax doesn't
           require (or allow) a named return type. </p>

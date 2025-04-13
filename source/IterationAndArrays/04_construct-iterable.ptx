@@ -473,7 +473,7 @@ public class RunestoneTests extends CodeTestHelper {
         </tests>
       </program>
       <p>
-        <strong>Try pressing “Run”.</strong> You'll see the output from
+        <term>Try pressing “Run”.</term> You'll see the output from
         <c>main</c> in the console. Then click “Show Tests” to see if
         everything passes. If anything fails, revisit the logic or the
         design steps. 
@@ -496,7 +496,7 @@ public class RunestoneTests extends CodeTestHelper {
       </p>
       <ul>
         <li>
-          <strong>What if we truly want an error if next() goes too far?</strong><br/>
+          <term>What if we truly want an error if next() goes too far?</term><br/>
           We've returned <c>-999</c> as a sentinel, but in real Java code, 
           a thrown error can be more explicit. 
           Once we learn about exceptions, we might adjust Step 0's problem statement 
@@ -504,13 +504,13 @@ public class RunestoneTests extends CodeTestHelper {
           (“Expect an error, not a sentinel”), and re-implement Step 5's <c>next()</c>.
         </li>
         <li>
-          <strong>What if we want a generic type (not just int)?</strong><br/>
+          <term>What if we want a generic type (not just int)?</term><br/>
           We'd need to revise Step 0 (“We want any type, not just ints!”), 
           Step 1's data definition, and Step 2's method signatures to use 
           generics. We're not ready for that yet, but that's how you'd do it.
         </li>
         <li>
-          <strong>What if arr can be null?</strong><br/>
+          <term>What if arr can be null?</term><br/>
           Then Step 0 and Step 3 must define how to handle it—maybe <c>MyIterator</c> 
           prints an error or reassigns <c>arr</c> to an empty array. 
           That's an example of how real designs 
@@ -521,11 +521,11 @@ public class RunestoneTests extends CodeTestHelper {
         In short, each design step is open to “walkbacks” if new info arises. 
         Because we explicitly wrote out our data definitions, method specs, 
         and test scenarios, it's easy to see what to revise. 
-        This clarity is why the <strong>Design Recipe</strong> is so powerful.
+        This clarity is why the <term>Design Recipe</term> is so powerful.
       </p>
       <p>
         With <c>MyIterator</c> in hand, we've proven that iteration logic can live 
-        in an <strong>object</strong> that manages state (<c>currentIndex</c>) 
+        in an <term>object</term> that manages state (<c>currentIndex</c>) 
         and behavior (<c>hasNext</c>, <c>next</c>). We no longer have to manually 
         maintain a loop variable everywhere. 
         In the upcoming chapters, we'll see how Java's <c>Iterator</c> and <c>Iterable</c> 
