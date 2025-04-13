@@ -1,0 +1,69 @@
+<section xml:id="sec-arraylist-setup-tooling_scope">
+  <title>Project Setup and Tooling Context</title>
+
+  <introduction>
+    <p>
+      Following the introduction to Git and GitHub, you should now have the <c>1213-arraylist-example</c> repository cloned locally and open in VSCode. Crucially, ensure you have the <c>main</c> branch checked out, as this contains the starter code for implementing your <c>ArrayList&lt;T&gt;</c> (refer back to Sections <xref ref="sec-git-cloning" /> and <xref ref="sec-git-branches-checkout"/> if you need to complete the cloning or branch checkout steps).
+    </p>
+    <p>
+      Before we dive into the Design Recipe for our implementation, let's quickly confirm the project structure you see and revisit the context of the non-Java files (<c>build.gradle.kts</c>, test files) present in the repository.
+    </p>
+  </introduction>
+
+  <subsection xml:id="subsec-arraylist-confirm-structure">
+    <title>Confirming the Project Structure</title>
+    <p>
+      In your VSCode file explorer, you should see the standard Java project layout we discussed when learning about packages:
+    </p>
+    <pre>
+1213-arraylist-example/  &lt;-- Your main project folder (cloned)
+├── src/                   &lt;-- Source code root
+│   ├── ADTs/              &lt;-- Package for Abstract Data Types
+│   │   ├── CollectionADT.java
+│   │   └── ListADT.java     &lt;-- The interface contract we will implement
+│   └── DataStructures/    &lt;-- Package for our implementation
+│       └── ArrayList.java &lt;-- **Your primary implementation file** (initially a skeleton)
+├── test/                  &lt;-- Test code root
+│   └── DataStructures/    &lt;-- Test package mirrors source package
+│       └── ArrayListTest.java &lt;-- **Provided JUnit tests**
+├── build.gradle.kts         &lt;-- Gradle Build Script (tooling)
+├── settings.gradle.kts      &lt;-- Gradle Settings (tooling)
+└── ... (Other Gradle files like gradlew, gradlew.bat, gradle/)
+    </pre>
+     <p>
+       This structure correctly separates the ADT contracts, your implementation code, and the verification tests into distinct packages and source roots (<c>src</c> and <c>test</c>).
+     </p>
+  </subsection>
+
+  <subsection xml:id="subsec-arraylist-tooling-scope-recap">
+    <title>Tooling Context and Scope Recap</title> <p>
+      You have the Java source files organized. Now, let's briefly revisit the purpose of those other files (<c>build.gradle.kts</c>, <c>ArrayListTest.java</c>) and clarify our scope concerning them for this capstone project.
+    </p>
+
+    <subsubsection xml:id="subsubsec-arraylist-build-tools-recap">
+      <title>Build Tool: Gradle (Background Automation)</title>
+      <p>
+        <term>Reminder:</term> Compiling multiple files across packages and managing external libraries like JUnit is complex. The files <c>build.gradle.kts</c>, <c>settings.gradle.kts</c>, and the <c>gradlew</c> scripts configure the <term>Gradle</term> build tool to automate this process for our project.
+      </p>
+      <p>
+        <term>Scope:</term> As established previously, you do <term>not</term> need to edit or understand the details of these Gradle files. They are essential infrastructure that allows VSCode (via Java extensions) to seamlessly compile your code and run the JUnit tests when you use the appropriate UI elements (like the Test Explorer). Focus on your Java code in <c>ArrayList.java</c>.
+      </p>
+    </subsubsection>
+
+    <subsubsection xml:id="subsubsec-arraylist-test-framework-recap">
+      <title>Testing Framework: JUnit (Verification Tool)</title>
+      <p>
+        <term>Reminder:</term> Verifying our <c>ArrayList</c> implementation requires rigorous testing. The file <c>test/DataStructures/ArrayListTest.java</c> contains automated <term>unit tests</term> written using the <term>JUnit</term> framework. These tests check if your implementation meets the behavioral requirements defined by the <c>ListADT</c> contract and our Step 3 examples.
+      </p>
+      <p>
+        <term>Scope:</term> Your task is <term>in scope</term>: to <term>run</term> these tests frequently using VSCode's Test Explorer and <term>interpret</term> the pass/fail results to guide your implementation and debugging. Writing or modifying the JUnit tests in <c>ArrayListTest.java</c> is <term>out of scope</term>.
+      </p>
+    </subsubsection>
+
+  </subsection>
+
+   <p>
+      With the project cloned, the correct branch (<c>main</c>) checked out, the file structure confirmed, and the roles of the background build/test tools understood, we are now fully prepared to begin the core task: applying the Design Recipe to implement <c>ArrayList&lt;T&gt;</c>. Let's start with Step 0.
+   </p>
+
+</section>

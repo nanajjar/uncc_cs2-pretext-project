@@ -1,0 +1,60 @@
+<section xml:id="sec-git-intro-motivation">
+  <title>Introduction: Why Worry About Code Versions?</title>
+
+  <p>
+    As you write more complex programs, even for personal projects or course assignments, you'll quickly run into some common, frustrating problems related to managing your code files over time. Thinking about these problems helps us understand why developers rely on specialized tools.
+  </p>
+
+  <subsection xml:id="subsec-git-problem-manual-versions">
+    <title>Problem 1: The "_final_really_final" File Mess</title>
+    <p>
+      Have you ever saved multiple versions of a project file like this?
+    </p>
+    <pre>
+MyProject_v1.java
+MyProject_v2_working.java
+MyProject_v3_before_adding_featureX.java
+MyProject_v3_final.java
+MyProject_v3_final_REALLY_final.java
+MyProject_v3_final_submitted.java
+    </pre>
+    <p>
+      It starts simply, but soon becomes a confusing mess! Which version has the latest bug fix? What exactly changed between <c>_v2</c> and <c>_v3</c>? If you want to retrieve the version just before adding "feature X," are you *sure* you saved it correctly? This manual approach is disorganized, makes it hard to track changes, and relies entirely on your memory and naming conventions.
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec-git-problem-fear-of-change">
+    <title>Problem 2: The Fear of Breaking Working Code</title>
+    <p>
+      Imagine you've finally gotten a tricky part of your assignment working. Now you want to try a different approach or add a complex new feature. You might hesitate, thinking, "What if I mess this up and can't get back to the version that worked?" You might save a backup copy (adding to the file mess!), but what if you make several changes, realize they were a bad idea, and want to undo *all* of them precisely back to the last known good state? Simple file saving doesn't offer a reliable "undo history" across multiple saves or sessions. Accidental deletions or overwrites can mean lost work and significant frustration.
+    </p>
+  </subsection>
+
+   <subsection xml:id="subsec-git-problem-collaboration">
+    <title>Problem 3: Simple Collaboration Headaches</title>
+    <p>
+      Even basic collaboration creates issues. If you and a partner are working on different parts of a project and email ZIP files back and forth, how do you reliably merge your changes? Who has the "master" version? If you both edited the same file, combining the changes without losing work or introducing errors can be a painstaking manual process.
+    </p>
+  </subsection>
+
+  <subsection xml:id="subsec-git-solution-vcs">
+    <title>The Solution: Version Control Systems (VCS)</title>
+    <p>
+      These problems – managing versions, tracking history, undoing changes safely, and collaborating effectively – are so common and critical in software development that a category of tools called <term>Version Control Systems (VCS)</term> was created specifically to solve them.
+    </p>
+    <p>
+      Think of a VCS as an intelligent "save" system for your entire project folder. Instead of just saving the current state, it allows you to:
+    </p>
+    <ul>
+      <li><p><term>Track History:</term> Save meaningful "snapshots" (called <term>commits</term> or versions) of your entire project whenever you reach a stable point.</p></li>
+      <li><p><term>View Changes:</term> See exactly what changed between different snapshots.</p></li>
+      <li><p><term>Roll Back:</term> Easily revert your entire project (or just specific files) back to any previous snapshot if you make a mistake or go down a wrong path.</p></li>
+      <li><p><term>Experiment Safely:</term> Create temporary "branches" to try out new ideas without affecting your main working version.</p></li>
+      <li><p><term>Collaborate:</term> Provide structured ways for multiple people to work on the same project and merge their changes together (though advanced collaboration is beyond our scope here).</p></li>
+    </ul>
+    <p>
+      Using a VCS provides a crucial safety net, makes you less afraid to experiment and refactor, and is the standard professional practice for managing any non-trivial codebase. Understanding *why* such systems are needed motivates us to learn the basics of using one for our capstone project. In the next section, we'll introduce <term>Git</term>, the most popular VCS today, and <term>GitHub</term>, a platform for hosting Git projects.
+    </p>
+  </subsection>
+
+</section>
