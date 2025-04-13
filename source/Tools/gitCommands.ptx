@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+
+<section xml:id="sec_git-commands">
+  <title>Git Commands </title>
+
+  <p>
+  </p>
+
+  <p>
+While some tools like GitHub Desktop offer a graphical interface, many developers use Git through the command line, a text-based way to interact with your computer. 
+It might feel unfamiliar at first, but it gives you a lot of control and speed once you get the hang of it.
+
+To use Git this way, you'll open a terminal (on macOS/Linux) or Git Bash (on Windows), 
+then type commands to tell Git what to do, like checking the status of your files or pushing your changes to GitHub.
+</p>
+<p>
+Below is a list of some of the most common Git commands you'll use as you start working with version control:
+    </p>
+
+<p>
+  <ul>
+    <li>
+      <p>
+        Set up Git (only once per machine)
+        <pre>
+         <inline>git config --global user.name "Your Name"</inline>
+         <inline>git config --global user.email "you@example.com"</inline>
+          </pre>
+      </p>
+    </li>
+     <li>
+      <p>
+        Clone a remote repository
+        <pre>
+         <inline>  
+         git clone https://github.com/user/repo.git
+         </inline>
+          </pre>
+      </p>
+    </li>
+    <li>
+      <p>
+  Check the status of your working directory
+        <pre>
+         <inline>  
+git status
+         </inline>
+          </pre>
+      </p>
+    </li>
+    <li>
+      <p>
+    Check the status of your working directory
+        <pre>
+git status
+          </pre>
+      </p>
+    </li>
+    <li>
+      <p>
+      Stage a file to be committed
+
+     
+       <pre>
+        git add filename
+          </pre>
+          </p>
+    </li>
+    <li>
+      <p>
+        Commit your staged changes with a message
+      <pre>git commit -m "Describe your changes"
+</pre>
+</p>
+    </li>
+    <li>
+      <p>
+        Push your changes to the remote repository
+      <pre> git push</pre>
+      </p>
+    </li>
+    <li>
+      <p>
+        Pull the latest changes from the remote
+      <pre>git pull</pre>
+  
+    </p>
+      </li>
+    <li>
+      <p>
+        Create and switch to a new branch
+      <pre>git checkout -b feature-branch-name</pre>
+        </p>
+    </li>
+    <li>
+      <p>
+        Switch back to an existing branch (e.g., main)
+      <pre>
+        git checkout main
+        </pre>
+        </p>
+    </li>
+    <li>
+      <p>
+        Merge another branch into your current one   
+      <pre>
+        git merge feature-branch-name
+      </pre>
+      </p>
+    </li>
+  </ul>
+ 
+</p>
+ <note>
+   <p> 💡 Tip: You don't have to memorize everything! Start with a few commands and build up as you go.</p>
+
+  </note>
+
+ <figure xml:id="fig-gitworkflow">
+      <caption>Step-by-step workflow for writing, committing, and sharing code using GitHub and VS Code.
+      </caption>
+      <image width="73%" source="ch-tools/gitworkflow.png"/>
+    </figure>
+
+  <subsection xml:id="sec-gitresources">  
+    <title>Learning to Use Git Like a Pro</title>
+    
+    
+  <p>
+    Git is a powerful tool for managing your work. While it's most commonly used for tracking code, it's not limited to that. 
+    Git can be used to version and manage all kinds of files, including Word documents, spreadsheets, and other types of content. 
+    It's essentially a smart file management and backup system that helps you track changes over time, recover earlier versions, and collaborate with others more effectively.
+</p>
+<p>
+  Like any tool, Git works best when you understand how to use it properly. 
+  Just as you'd turn to a user manual to operate a piece of equipment or troubleshoot an issue, 
+  developers frequently consult Git documentation to understand commands, resolve errors, or learn new techniques.
+
+
+</p>
+<p>
+You're not expected to memorize everything. Instead, part of being an effective problem solver is knowing how to find and use the right resources when you need them. 
+This habit isn't just about using Git, its a core part of problem solving in general: identifying the challenge, exploring resources, and applying what you learn to find a solution.
+</p>
+
+  <p>
+    To practice the basics follow this step by step <url href="https://githowto.com/">how to git tutorial</url>. 
+    For the complete documentation refer to the <url href="https://git-scm.com/">git official website</url> and the 
+    <url href="https://git-scm.com/book/en/v2"> Pro Git book </url>.
+  </p>
+  </subsection>
+
+</section>
+
+
+
+
+

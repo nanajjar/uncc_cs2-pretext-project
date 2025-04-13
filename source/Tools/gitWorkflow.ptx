@@ -3,14 +3,15 @@
 <section xml:id="sec_git-workflow">
   <title>Basic Git Workflow </title>
 
-  <p>
-  </p>
-
+<p>Review this video for an overview of how git works: </p>
+<video xml:id="vid-e9lnsKot_SQ" youtube="e9lnsKot_SQ" width="71%"/>
+  
   <p>
     Here's a simplified version of how Git fits into the development cycle:
 
     </p>
-
+ <sidebyside widths="48% 48%">
+ <stack> 
 <p>
 <ul>
 <li>
@@ -47,10 +48,24 @@ Commit the staged changes with a descriptive message.
 
 </ul>
 </p>
+
+</stack>
+<stack>
+<p>
+<figure xml:id="fig-gitworkflow1">
+      <caption>A visual overview of how Git enables collaboration, from cloning a repository, creating a feature branch, to pushing changes and merging back into the main project using a remote repository.
+      </caption>
+      <image width="53%" source="ch-tools/gitworkflow1.png"/>
+    </figure>
+    </p>
+    </stack>
+
+    </sidebyside>
 <p>
   Version Control Best Practices
 
 </p>
+<p>
 <ul>
   <li>
     <p>
@@ -73,19 +88,18 @@ Commit the staged changes with a descriptive message.
   <li>
     <p>
       Write Clear Commit Messages: Summarize what was changed and why in a concise way.
-
-    </p>
-  </li>
-  <li>
-    <p>
-      
     </p>
   </li>
 </ul>
 </p>
 <p>
-  Mastering version control with Git is a vital skill for modern software developers. It not only makes individual work more manageable but also enables seamless collaboration in team-based projects—whether in class or in the professional world.
+Getting comfortable with Git is a game changer for any developer. 
+It helps you keep your own work organized and makes it way easier to collaborate with others, 
+whether you're working on a group project for class or building something big with a team at work.
+
 </p>
+
+
 </section>
 
 

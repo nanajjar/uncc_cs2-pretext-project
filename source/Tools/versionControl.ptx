@@ -22,7 +22,7 @@ Why Use Version Control?
 <ul>
 <li> 
 History Tracking: You can review the history of a project, see what changed, and revert to earlier versions if necessary.
-
+</li>
 <li>
 Collaboration: Multiple developers can work on the same codebase simultaneously without overwriting each other’s work.
 </li>
@@ -34,5 +34,5 @@ Branching and Merging: Developers can create branches to work on features indepe
 Backup: A central repository (often in the cloud) serves as a backup of the project, protecting against data loss.
 </li>
 </ul>
-
+</p>
 </section>
