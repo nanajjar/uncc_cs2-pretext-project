@@ -13,9 +13,9 @@
       Let's reflect on the journey through this chapter and the skills you practiced:
     </p>
     <ul>
-      <li><p><strong>Understanding Specifications (ADTs & Interfaces):</strong> We started by analyzing the <c>ListADT&lt;T&gt;</c> interface, treating it as a formal contract defining required behaviors, including edge cases and potential redundancies.</p></li>
+      <li><p><strong>Understanding Specifications (ADTs &amp; Interfaces):</strong> We started by analyzing the <c>ListADT&lt;T&gt;</c> interface, treating it as a formal contract defining required behaviors, including edge cases and potential redundancies.</p></li>
       <li><p><strong>Applying the Design Recipe:</strong> We systematically followed all steps (0-5), from understanding the ADT (Step 0), defining internal data (<c>buffer</c>, <c>size</c>) and invariants (Step 1), setting up the class structure (Step 2), crafting detailed examples (Step 3), planning logic with skeletons (Step 4), to implementing, testing, and refining the code (Step 5).</p></li>
-      <li><p><strong>Core Java & OOP:</strong> You defined a generic class (<c>ArrayList&lt;T&gt;</c>), implemented interfaces, used encapsulation (<c>private</c> fields and helpers), handled standard exceptions, and worked with arrays directly.</p></li>
+      <li><p><strong>Core Java &amp; OOP:</strong> You defined a generic class (<c>ArrayList&lt;T&gt;</c>), implemented interfaces, used encapsulation (<c>private</c> fields and helpers), handled standard exceptions, and worked with arrays directly.</p></li>
       <li><p><strong>Array Manipulation:</strong> You tackled the core challenges of array-based lists: calculating indices, implementing dynamic resizing (<c>growIfNeeded</c>), and performing element shifting (<c>shiftRight</c>, <c>shiftLeft</c>) using loops (and later, optionally, <c>System.arraycopy</c>).</p></li>
       <li><p><strong>Generics in Practice:</strong> You implemented a type-safe generic container, dealing with the <c>T[]</c> array creation workaround (<c>(T[]) new Object[]</c>) necessitated by type erasure.</p></li>
       <li><p><strong>Code Organization:</strong> We explored the use of packages (<c>ADTs</c>, <c>DataStructures</c>) and imports to structure a multi-file project.</p></li>
