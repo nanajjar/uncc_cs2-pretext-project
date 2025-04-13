@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+
+<section xml:id="sec_git-workflow">
+  <title>Basic Git Workflow </title>
+
+<p>Review this video for an overview of how git works: </p>
+<video xml:id="vid-e9lnsKot_SQ" youtube="e9lnsKot_SQ" width="71%"/>
+  
+  <p>
+    Here's a simplified version of how Git fits into the development cycle:
+
+    </p>
+ <sidebyside widths="48% 48%">
+ <stack> 
+<p>
+<ul>
+<li>
+  <p>
+Clone the repository to your local machine.
+
+  </p>
+</li>
+<li>
+  <p>
+    Make changes in your working directory.
+  </p>
+</li>
+<li>
+  <p>
+    Stage the changes you want to include in your next commit.
+  </p>
+</li>
+<li>
+  <p>
+Commit the staged changes with a descriptive message.
+  </p>
+</li>
+<li>
+  <p>
+    Push your commit to the remote repository.
+  </p>
+</li>
+<li>
+  <p>
+    Pull updates from the remote repository to stay in sync with your team.
+  </p>
+</li>
+
+</ul>
+</p>
+
+</stack>
+<stack>
+<p>
+<figure xml:id="fig-gitworkflow1">
+      <caption>A visual overview of how Git enables collaboration, from cloning a repository, creating a feature branch, to pushing changes and merging back into the main project using a remote repository.
+      </caption>
+      <image width="53%" source="ch-tools/gitworkflow1.png"/>
+    </figure>
+    </p>
+    </stack>
+
+    </sidebyside>
+<p>
+  Version Control Best Practices
+
+</p>
+<p>
+<ul>
+  <li>
+    <p>
+      Commit Early, Commit Often: Frequent commits with meaningful messages make it easier to track progress and debug issues.
+
+    </p>
+  </li>
+  <li>
+    <p>
+      Use Branches: Keep your main branch stable and use feature branches for new work.
+
+    </p>
+  </li>
+  <li>
+    <p>
+      Pull Before You Push: Always get the latest version of the code before uploading your own changes to avoid conflicts.
+
+    </p>
+  </li>
+  <li>
+    <p>
+      Write Clear Commit Messages: Summarize what was changed and why in a concise way.
+    </p>
+  </li>
+</ul>
+</p>
+<p>
+Getting comfortable with Git is a game changer for any developer. 
+It helps you keep your own work organized and makes it way easier to collaborate with others, 
+whether you're working on a group project for class or building something big with a team at work.
+
+</p>
+
+
+</section>
+
+
+
+
+

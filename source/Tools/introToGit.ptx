@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+<section xml:id="sec_git-intro">
+  <title>Introduction to Git </title>
+
+  <p>
+   One of the most widely used VCS tools today is Git. 
+   Git is a distributed version control system, meaning each developer has a full copy of the project history locally. 
+   Git is commonly used in conjunction with GitHub, a platform that hosts repositories online and facilitates collaboration.
+  </p>
+
+  <p>
+    </p>
+
+<p>
+Here are a few core Git concepts:
+<ul>
+<li> 
+Repository (repo): A project managed with Git. 
+</li>
+<li>
+
+  Branch: A parallel version of the repository used for developing features or experiments without affecting the main codebase.
+
+</li>
+<li>
+  Merge: Combining changes from one branch into another.
+
+</li>
+
+<li>
+  Clone: Making a local copy of a remote repository.
+
+</li>
+<li>
+  <p>
+    Pull / Push: Commands to fetch changes from a remote repo or upload your local commits to it.
+
+  </p>
+</li>
+</ul>
+</p>
+</section>

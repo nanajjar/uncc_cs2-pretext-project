@@ -3,6 +3,11 @@
 <title>Design Tools</title>
 <xi:include href="./designintro.ptx"/>
 <xi:include href="./uml.ptx"/>
+<xi:include href="./versionControl.ptx"/>
+<xi:include href="./introToGit.ptx"/>
+<xi:include href="./gitWorkflow.ptx"/>
+<xi:include href="./gitCommands.ptx"/>
+
 
 
 
