@@ -16,16 +16,16 @@
     </p>
     <ol>
       <li>
-        <p><strong>Initialization</strong>: Sets up a loop variable before the loop begins. For example, <c>int i = 0</c>.</p>
+        <p><term>Initialization</term>: Sets up a loop variable before the loop begins. For example, <c>int i = 0</c>.</p>
       </li>
       <li>
-        <p><strong>Condition</strong>: A Boolean expression checked before each iteration. If <c>true</c>, run the body; if <c>false</c>, exit the loop. For example, <c>i &lt; 10</c>.</p>
+        <p><term>Condition</term>: A Boolean expression checked before each iteration. If <c>true</c>, run the body; if <c>false</c>, exit the loop. For example, <c>i &lt; 10</c>.</p>
       </li>
       <li>
-        <p><strong>Body</strong>: The statements that execute on each iteration. Even if there's only one statement, it's a good idea to use curly braces <c>{ }</c> so you can easily expand the loop later.</p>
+        <p><term>Body</term>: The statements that execute on each iteration. Even if there's only one statement, it's a good idea to use curly braces <c>{ }</c> so you can easily expand the loop later.</p>
       </li>
       <li>
-        <p><strong>Update</strong>: Updates the loop variable at the end of each iteration (for instance, <c>i++</c>).</p>
+        <p><term>Update</term>: Updates the loop variable at the end of each iteration (for instance, <c>i++</c>).</p>
       </li>
     </ol>
     <p>
@@ -100,7 +100,7 @@ public class RunestoneTests extends CodeTestHelper {
 
     <ul>
       <li>
-        <p><strong>Off-by-One Errors</strong>: Make sure the loop condition exactly matches the count of iterations you want. For instance:</p>
+        <p><term>Off-by-One Errors</term>: Make sure the loop condition exactly matches the count of iterations you want. For instance:</p>
         <program language="java">
           <input>
 // Off-by-One Example:
@@ -121,7 +121,7 @@ i: 0 1 2 3 4 5 6 7 8 9 10  // 11 iterations total!
       </li>
 
       <li>
-        <p><strong>Infinite Loops</strong>: If the update step is missing or incorrect, the condition might never become <c>false</c>:</p>
+        <p><term>Infinite Loops</term>: If the update step is missing or incorrect, the condition might never become <c>false</c>:</p>
         <program language="java">
           <input>
 // Infinite Loop Example:
@@ -137,7 +137,7 @@ for (int i = 0; i &lt; 10; ) {
       </li>
 
       <li>
-        <p><strong>Syntax Mistakes</strong>: A for loop's header requires semicolons to separate the three parts, and braces <c>{ }</c> around the body if there's more than one statement. For example:</p>
+        <p><term>Syntax Mistakes</term>: A for loop's header requires semicolons to separate the three parts, and braces <c>{ }</c> around the body if there's more than one statement. For example:</p>
         <program language="java">
           <input>
 // Syntax Mistake Example:
@@ -203,11 +203,11 @@ public class BreakDemo {
     <ul>
       <li><p>We loop over the array indices from <c>0</c> to <c>numbers.length - 1</c>.</p></li>
       <li><p>Whenever <c>numbers[i]</c> matches <c>key</c>, we print a message and call <c>break</c>.</p></li>
-      <li><p>The <c>for</c> loop terminates <strong>immediately</strong>, skipping the rest of the iteration steps.</p></li>
+      <li><p>The <c>for</c> loop terminates <term>immediately</term>, skipping the rest of the iteration steps.</p></li>
     </ul>
 
     <p>
-      <strong>Why Use break?</strong>
+      <term>Why Use break?</term>
       <ul>
         <li>
           <p><em>Efficiency</em>: If you've accomplished your goal—like finding a matching item—there's no reason to keep iterating.</p>
@@ -219,7 +219,7 @@ public class BreakDemo {
     </p>
 
     <p>
-      <strong>Note</strong>: Although <c>break</c> can simplify certain tasks, overusing it may complicate code flow—especially if multiple <c>break</c> statements appear scattered around. Typically, you want your loop condition to govern when you exit, but <c>break</c> is a handy tool for those exceptions when you must bail out early.
+      <term>Note</term>: Although <c>break</c> can simplify certain tasks, overusing it may complicate code flow—especially if multiple <c>break</c> statements appear scattered around. Typically, you want your loop condition to govern when you exit, but <c>break</c> is a handy tool for those exceptions when you must bail out early.
     </p>
   </subsection>
 
@@ -237,7 +237,7 @@ public class BreakDemo {
     <exercise xml:id="exercise-off-by-one" interactive="activecode">
       <statement>
         <p>
-          <strong>Off-by-One Exercise.</strong> The code below intends to print exactly the first 10
+          <term>Off-by-One Exercise.</term> The code below intends to print exactly the first 10
           integers, 0 through 9. However, it actually prints 11 values (0 through 10). 
           <em>Study the loop boundaries</em>, and modify the loop so that it produces 10 lines of
           output, from 0 to 9 inclusive. 
@@ -287,11 +287,11 @@ public class RunestoneTests extends CodeTestHelper {
     <exercise xml:id="exercise-infinite-loop" interactive="activecode">
       <statement>
         <p>
-          <strong>Infinite Loop Exercise.</strong> The code below <em>never stops</em>. 
+          <term>Infinite Loop Exercise.</term> The code below <em>never stops</em>. 
           Currently, the loop condition <c>i &lt; 5</c> remains true forever, because <c>i</c> 
           is not updated inside the loop. 
           <br/>
-          <strong>Your goal</strong>: Insert an update step that ensures <c>i</c> eventually 
+          <term>Your goal</term>: Insert an update step that ensures <c>i</c> eventually 
           reaches 5, causing the loop to end. 
         </p>
         <p>
@@ -341,9 +341,9 @@ public class RunestoneTests extends CodeTestHelper {
     <exercise xml:id="sum-first-n" interactive="activecode">
       <statement>
         <p>
-          <strong>Summation Exercise.</strong> Write a loop that calculates the sum of integers 
+          <term>Summation Exercise.</term> Write a loop that calculates the sum of integers 
           from 1 up to a certain <c>n</c>. Right now, the code is missing the loop logic. 
-          <strong>Your tasks</strong>:
+          <term>Your tasks</term>:
         </p>
         <ol>
           <li>Prompt for <c>n</c> or set <c>n</c> to some integer in the code (e.g., 5 or 10).</li>
@@ -415,7 +415,7 @@ public class RunestoneTests extends CodeTestHelper {
     <!-- <exercise xml:id="exercise-count-nonnegative" interactive="activecode">
       <statement>
         <p>
-          <strong>Counting Nonnegative Numbers:</strong> 
+          <term>Counting Nonnegative Numbers:</term> 
           Let's practice using a <c>for</c> loop with a <c>break</c> statement to count positive and zero inputs.
         </p>
         <p>

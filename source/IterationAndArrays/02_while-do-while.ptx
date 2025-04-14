@@ -115,7 +115,7 @@ public class RunestoneTests extends CodeTestHelper {
       </tests>
     </program>
     <p>
-      <strong>Watch out</strong> for the <em>semicolon</em> that follows <c>while(...)</c> in a do-while loop—it's mandatory, and forgetting it leads to a compile error.
+      <term>Watch out</term> for the <em>semicolon</em> that follows <c>while(...)</c> in a do-while loop—it's mandatory, and forgetting it leads to a compile error.
     </p>
   </subsection>
 
@@ -125,14 +125,14 @@ public class RunestoneTests extends CodeTestHelper {
       While both loops handle indefinite iteration, choosing the right one improves code clarity. Consider these guidelines:
     </p>
     <ul>
-      <li><strong>Use <c>while</c> when</strong> the loop might not need to run at all. For example, processing user input until a valid entry is provided.</li>
-      <li><strong>Use <c>do-while</c> when</strong> the loop body must execute at least once. For example, displaying a menu and waiting for user selection.</li>
+      <li><term>Use <c>while</c> when</term> the loop might not need to run at all. For example, processing user input until a valid entry is provided.</li>
+      <li><term>Use <c>do-while</c> when</term> the loop body must execute at least once. For example, displaying a menu and waiting for user selection.</li>
     </ul>
     <p>
       Readability is enhanced when the loop structure matches the logical flow. A <c>do-while</c> clearly signals that the code inside runs once before checking, reducing cognitive load.
     </p>
     <p>
-      <strong>Example:</strong> Consider input validation. A <c>while</c> loop checks before prompting:
+      <term>Example:</term> Consider input validation. A <c>while</c> loop checks before prompting:
     </p>
     <program language="java">
       <input>
@@ -175,7 +175,7 @@ do {
     <exercise xml:id="fix-infinite-while" adaptive="yes" interactive="activecode">
       <statement>
         <p>
-          <strong>Exercise 1:</strong> The <c>while</c> loop below is missing an update to <c>count</c> and thus loops forever. 
+          <term>Exercise 1:</term> The <c>while</c> loop below is missing an update to <c>count</c> and thus loops forever. 
           Modify it to print exactly these numbers: <c>0</c>, <c>1</c>, <c>2</c>, and <c>3</c>.
         </p>
       </statement>
@@ -213,7 +213,7 @@ public class RunestoneTests extends CodeTestHelper {
     <exercise xml:id="while-sum-user" adaptive="yes" interactive="activecode">
       <statement>
         <p>
-          <strong>Exercise 2:</strong> Imagine we want to keep summing user inputs until the user enters a negative number.
+          <term>Exercise 2:</term> Imagine we want to keep summing user inputs until the user enters a negative number.
           Write a <c>while</c> loop that reads an integer from the scanner on each iteration:
         </p>
         <ul>
@@ -281,7 +281,7 @@ public class RunestoneTests extends CodeTestHelper {
     <exercise xml:id="exercise-do-while-simple" adaptive="yes" interactive="activecode">
       <statement>
         <p>
-          <strong>Exercise 3:</strong> The code below aims to print <c>"Hello!"</c> exactly once using a <c>do-while</c> loop.
+          <term>Exercise 3:</term> The code below aims to print <c>"Hello!"</c> exactly once using a <c>do-while</c> loop.
           But it's missing the correct update or condition. Fix it so it prints <c>"Hello!"</c> once and stops.
         </p>
       </statement>
@@ -331,8 +331,8 @@ public class RunestoneTests extends CodeTestHelper {
       </li>
     </ul>
     <p>
-      Both rely on an effective <strong>update</strong> step to avoid infinite loops.
-      Next up, we'll learn how to combine these loops with <strong>arrays</strong> to handle sets of data more elegantly.
+      Both rely on an effective <term>update</term> step to avoid infinite loops.
+      Next up, we'll learn how to combine these loops with <term>arrays</term> to handle sets of data more elegantly.
     </p>
   </subsection>
 </section>

@@ -92,20 +92,20 @@ For-each loop =>  first pass: num=5
     </p>
     <ul>
       <li>
-        <strong>No Direct Index Access</strong>:
+        <term>No Direct Index Access</term>:
         You can't easily figure out <em>which</em> index you're on inside the loop. If you need
         to know “am I on the 5th element?” or “access <c>i+1</c>,” you must revert to a standard
         <c>for</c> loop or maintain a separate counter. 
         <p><em>Example:</em> <c>for(int x : arr)</c> doesn't let you do <c>arr[i+1]</c>.</p>
       </li>
       <li>
-        <strong>No Easy Way to Remove/Insert</strong>:
+        <term>No Easy Way to Remove/Insert</term>:
         Because arrays are fixed-size and for-each doesn't provide the index, you can't remove
         or insert elements mid-loop (like you might in a dynamic list). You can modify the
         element values themselves, but you can't skip or reorder them easily using for-each.
       </li>
       <li>
-        <strong>Accidental Shadowing or Reassignment</strong>:
+        <term>Accidental Shadowing or Reassignment</term>:
         Remember that <c>num</c> in <c>for (int num : numbers)</c> is a separate variable. If you
         reassign <c>num</c> inside the loop, it won't affect <c>numbers</c>. 
         <p><em>Example:</em> 
@@ -114,7 +114,7 @@ For-each loop =>  first pass: num=5
         </p>
       </li>
       <li>
-        <strong>Breaking Early or Skipping Elements</strong>:
+        <term>Breaking Early or Skipping Elements</term>:
         If you need to exit after you find a certain element, you can do so with a
         <c>break</c> inside the for-each body—but skipping certain indices or iterating in reverse
         is better handled by a classic <c>for</c> loop or a <c>while</c>.
@@ -258,7 +258,7 @@ System.out.println("Sum of even numbers in the FIRST 3 elements: " + sumEvens);
       a classic <c>for</c> loop is often simpler. 
     </p>
     <p>
-      <strong>Key takeaway:</strong> For-each loops are clean and short for “iterate all elements,” 
+      <term>Key takeaway:</term> For-each loops are clean and short for “iterate all elements,” 
       but less flexible when partial iteration or index-based operations are required.
     </p>
   </subsection>
@@ -368,7 +368,7 @@ public class RunestoneTests extends CodeTestHelper {
           <term>Exercise 3:</term> <em>Can We Modify Each Element?</em>  
           Suppose we have <c>int[] scores = {2, 4, 6};</c> and want to double each value. 
           Try using a for-each loop, then print the array. 
-          <strong>Observe</strong> whether the final array actually changed or not. 
+          <term>Observe</term> whether the final array actually changed or not. 
           Then fix the code (hint: we must use a standard for loop or some trick).
         </p>
       </statement>

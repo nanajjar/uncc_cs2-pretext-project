@@ -180,8 +180,9 @@ public class ArrayList&lt;T&gt; implements ListADT&lt;T&gt; {
       </p>
   </subsection>
 
+            <note><title>Code Snapshot</title><p>If you\'d like to see the complete code as it should look at the end of this section (with core methods implemented), you can view the <c>dr-step-5.1-core-impl</c> branch in the project repository using Git checkout.</p></note>
   <p>
-    Having implemented and tested the constructor and basic accessors/modifiers, we have built a solid foundation. In the next section, we'll tackle the crucial logic for dynamic resizing and implementing the basic <c>addLast</c> method.
+    Having implemented and tested the constructor and basic accessors/modifiers, we have built a solid foundation. In the next section, we\'ll tackle the crucial logic for dynamic resizing and implementing the basic <c>addLast</c> method.
   </p>
 
 </section>

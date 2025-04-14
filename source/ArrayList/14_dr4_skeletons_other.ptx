@@ -160,6 +160,7 @@ public int indexOf(T item) {
 
    </subsection>
 
+            <note><title>Code Snapshot</title><p>With the planning for all method skeletons now complete, the corresponding code state (containing all method skeletons) can be found on the <c>dr-step-4.3-other-skeletons</c> branch in the repository.</p></note>
   <p>
     With these skeletons, we now have a logical plan outlined for <term>all</term> methods required by the <c>ListADT&lt;T&gt;</c> interface. We've considered the necessary checks based on the contract, planned the core logic steps, identified potential internal helper logic (resizing, shifting), and even planned for reuse between methods like <c>contains</c> and <c>indexOf</c>.
   </p>

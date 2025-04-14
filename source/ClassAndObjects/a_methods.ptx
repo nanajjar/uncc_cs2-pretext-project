@@ -737,15 +737,15 @@ public static returnType methodName(type1 param1, type2 param2) {
       <statement>
         <p> In the example, we tried <c>public static void awardVictory(int health, int gold)</c>
           hoping it would directly update <c>playerHealth</c> and <c>playerGold</c>, but it didn't
-          work as intended. In <em>2-3 sentences</em>, explain <strong>why</strong>
+          work as intended. In <em>2-3 sentences</em>, explain <term>why</term>
         <c>void</c>
-          methods didn't update the original variables, and <strong>how</strong> returning a new
+          methods didn't update the original variables, and <term>how</term> returning a new
           value instead solves the problem. </p>
       </statement>
       <response />
       <solution>
         <p>
-          <strong>Sample Solution:</strong> Java passes <c>health</c> and <c>gold</c> as copies, so
+          <term>Sample Solution:</term> Java passes <c>health</c> and <c>gold</c> as copies, so
           changing them in the <c>void</c> method does not affect the original <c>playerHealth</c>
           or <c>playerGold</c>. By returning the updated values (e.g., <c>return currentHealth + 5;</c>),
           we can reassign <c>playerHealth</c> to that new value in the <c>main</c> method, ensuring

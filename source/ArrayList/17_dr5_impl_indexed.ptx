@@ -218,6 +218,7 @@
        </p>
    </subsection>
 
+            <note><title>Code Snapshot</title><p>The state of the code after completing this section (implementing indexed add/remove and shift helpers) can be found on the <c>dr-step-5.3-indexed-impl</c> branch in the repository.</p></note>
    <p>
       Implementing the indexed add and remove methods, along with their associated shifting logic, forms the most complex part of the array list. With these in place and tested, implementing the remaining methods will often be simpler, frequently leveraging the logic we've already built.
    </p>

@@ -27,14 +27,14 @@
     <title>What Is an Array?</title>
     <p>
       An array in Java is a <em>fixed-size</em> sequence of elements of the <em>same type</em>,
-      all stored contiguously in memory. Each element is accessed by an <strong>index</strong>,
+      all stored contiguously in memory. Each element is accessed by an <term>index</term>,
       starting at 0 and going up to <c>length - 1</c>.
     </p>
     <p>
       If you come from Python, you might think of “lists,” but Java arrays differ:
       <ul>
-        <li><strong>Rigid size:</strong> The length is set at creation time and cannot change.</li>
-        <li><strong>Strict typing:</strong> All elements must match the declared type
+        <li><term>Rigid size:</term> The length is set at creation time and cannot change.</li>
+        <li><term>Strict typing:</term> All elements must match the declared type
             (<c>int</c>, <c>double</c>, <c>boolean</c>, etc.).</li>
       </ul>
     </p>
@@ -60,8 +60,8 @@ Values:  [?] [?] [?] [?] [?]
     <p>
       In Java, creating an array often happens in two steps:
       <ol>
-        <li><strong>Declare</strong> a variable that will refer to an array.</li>
-        <li><strong>Allocate</strong> the actual array using <c>new</c>, specifying the length.</li>
+        <li><term>Declare</term> a variable that will refer to an array.</li>
+        <li><term>Allocate</term> the actual array using <c>new</c>, specifying the length.</li>
       </ol>
     </p>
 
@@ -185,7 +185,7 @@ public class ArrayUpdateExample {
       for <c>boolean</c>, it's <c>false</c>. 
     </p>
     <p>
-      For <strong>object references</strong> (e.g., <c>String[]</c>), each element starts as <c>null</c>.
+      For <term>object references</term> (e.g., <c>String[]</c>), each element starts as <c>null</c>.
       That means you can't call methods on <c>arr[i]</c> until you assign an actual object to <c>arr[i]</c>.
       For example:
     </p>
@@ -225,12 +225,12 @@ System.out.println(arr2[0]); // Will print 99, not 0!
     <p>
       Because arrays are objects, <c>arr1</c> and <c>arr2</c> both reference the <em>same</em> underlying array. 
       Changing an element via <c>arr1</c> also changes what <c>arr2</c> sees. 
-      There is <strong>no automatic "deep copy"</strong>—if you want a separate copy, you'd need to create another array and copy over elements manually or use library methods like <c>Arrays.copyOf</c> (which we'll discuss later).
+      There is <term>no automatic "deep copy"</term>—if you want a separate copy, you'd need to create another array and copy over elements manually or use library methods like <c>Arrays.copyOf</c> (which we'll discuss later).
     </p>
     <p>
       Keep in mind:
       <ul>
-        <li><strong>arr.length</strong> is a field that stores the array's size (no parentheses).
+        <li><term>arr.length</term> is a field that stores the array's size (no parentheses).
         </li>
         <li>Assigning one array variable to another never copies the contents; it only copies the <em>reference</em>.</li>
       </ul>
@@ -248,7 +248,7 @@ System.out.println(arr2[0]); // Will print 99, not 0!
     <ul>
       <li>
         <p>
-          <strong>Index Out of Bounds</strong>: 
+          <term>Index Out of Bounds</term>: 
           If your array is length 5, valid indices are <c>0..4</c>. 
           Trying <c>arr[5]</c> or <c>arr[-1]</c> yields <c>ArrayIndexOutOfBoundsException</c>. 
           Double-check your loop boundaries and conditions carefully.
@@ -256,21 +256,21 @@ System.out.println(arr2[0]); // Will print 99, not 0!
       </li>
       <li>
         <p>
-          <strong>Fixed Size</strong>: 
+          <term>Fixed Size</term>: 
           Once you do <c>new int[5]</c>, you can't change it to 10 elements. 
           If you need a dynamically sized collection, you'll learn about <c>ArrayList</c> or other collections soon.
         </p>
       </li>
       <li>
         <p>
-          <strong>Null Elements</strong> (for reference types): 
+          <term>Null Elements</term> (for reference types): 
           <c>String[] words = new String[3]</c> starts with all elements <c>null</c>, meaning you must assign actual strings before using them. 
           Otherwise, you'll get a <c>NullPointerException</c>.
         </p>
       </li>
       <li>
         <p>
-          <strong>Arrays Are Objects</strong>: 
+          <term>Arrays Are Objects</term>: 
           If you do <c>arr2 = arr1</c>, both variables share the same array in memory—changes to one show up in the other.
         </p>
       </li>
@@ -292,7 +292,7 @@ System.out.println(arr2[0]); // Will print 99, not 0!
     <exercise xml:id="exercise-print-array" interactive="activecode">
       <statement>
         <p>
-          <strong>Exercise 1:</strong> <em>Basic Array Print</em><br/>
+          <term>Exercise 1:</term> <em>Basic Array Print</em><br/>
           Declare an <c>int[]</c> named <c>numbers</c> of length 4, then assign the values <c>2, 4, 6, 8</c>. 
           Finally, print each element (in a <c>for</c> loop) to verify.
         </p>
@@ -338,7 +338,7 @@ public class RunestoneTests extends CodeTestHelper {
     <exercise xml:id="exercise-sum-array" interactive="activecode">
       <statement>
         <p>
-          <strong>Exercise 2:</strong> <em>Summation of an Array</em><br/>
+          <term>Exercise 2:</term> <em>Summation of an Array</em><br/>
           Create an array of 5 integers: <c>10, 20, 30, 40, 50</c>. 
           Use a loop to sum them up, then print the result.
           (<em>Hint:</em> Start <c>sum</c> at 0 and accumulate.)
@@ -389,7 +389,7 @@ public class RunestoneTests extends CodeTestHelper {
     <exercise xml:id="exercise-squares-array" interactive="activecode">
       <statement>
         <p>
-          <strong>Exercise 3:</strong> <em>Dynamic Squares</em><br/>
+          <term>Exercise 3:</term> <em>Dynamic Squares</em><br/>
           Prompt the user for <c>n</c>. Create an int array of length <c>n</c>.
           Set each <c>arr[i]</c> = <c>i*i</c>. Print the resulting array elements.
           <br/>
@@ -459,28 +459,28 @@ public class RunestoneTests extends CodeTestHelper {
     </p>
     <ul>
       <li>
-        <strong>Declaration &amp; Allocation:</strong> 
+        <term>Declaration &amp; Allocation:</term> 
         <c>int[] arr = new int[5]</c> sets up memory for five integers,
         all initially <c>0</c>. 
         Arrays are objects, so <c>arr</c> is a reference to the actual data.
       </li>
       <li>
-        <strong>Initializer Lists:</strong> 
+        <term>Initializer Lists:</term> 
         <c>int[] primes = {2,3,5,7,11};</c> sets the length automatically to <c>5</c>.
         You can't use <c>{...}</c> syntax outside of the declaration line.
       </li>
       <li>
-        <strong>Indices &amp; <c>length</c>:</strong> 
+        <term>Indices &amp; <c>length</c>:</term> 
         Indices go from <c>0</c> to <c>arr.length - 1</c>. 
         The <c>length</c> field is used to ensure we stay within bounds in loops.
       </li>
       <li>
-        <strong>Arrays of References:</strong> 
+        <term>Arrays of References:</term> 
         <c>String[] words</c> starts out with all <c>null</c> if you do <c>new String[...]</c>.
         You must assign objects to each element or you'll get <c>NullPointerException</c> if you call methods on <c>words[i]</c>.
       </li>
       <li>
-        <strong>Shared References:</strong> 
+        <term>Shared References:</term> 
         <c>arr2 = arr1</c> shares the same underlying array. Changing <c>arr1[0]</c> also affects <c>arr2[0]</c>.
       </li>
     </ul>

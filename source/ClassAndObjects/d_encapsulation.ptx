@@ -10,7 +10,7 @@
   <subsection xml:id="two-ways">
     <title>Two Ways: Keep or Package Pieces</title>
     <p>
-      <strong>Way 1: Keep pieces and rules separate (Traditional Approach)</strong>
+      <term>Way 1: Keep pieces and rules separate (Traditional Approach)</term>
     </p>
       <program language="java">
   // Everything is scattered and global
@@ -40,7 +40,7 @@
   </program>
 
     <p>
-      <strong>Way 2: Package pieces with their rules</strong>
+      <term>Way 2: Package pieces with their rules</term>
     </p>
       <program language="java">
       // Organize things into classes
@@ -76,13 +76,13 @@ public class Player {
 
     <ol>
       <li>
-        <p><strong>Encapsulation</strong>: Protect data from invalid changes</p>
+        <p><term>Encapsulation</term>: Protect data from invalid changes</p>
           <program>
 private int health;  // Only accessible through methods
 </program>
       </li>
       <li>
-        <p><strong>Abstraction</strong>: Hide complex details behind simple commands</p>
+        <p><term>Abstraction</term>: Hide complex details behind simple commands</p>
           <program>
 player.heal(5);     // Don't care HOW it heals
 </program>
@@ -110,13 +110,13 @@ monster.health = 0;     // Kill without fighting
     </p>
     <ol>
       <li>
-        <p><strong>Protection</strong>: Stop direct access to data</p>
+        <p><term>Protection</term>: Stop direct access to data</p>
           <program>
 private int health;  // Now hero.health = -999 won't compile!
 </program>
       </li>
       <li>
-        <p><strong>Controls</strong>: Provide safe ways to modify data</p>
+        <p><term>Controls</term>: Provide safe ways to modify data</p>
           <program>
 public void heal(int amount) {
     if (amount &gt; 0) {         // Only positive healing allowed
@@ -126,7 +126,7 @@ public void heal(int amount) {
 </program>
       </li>
       <li>
-        <p><strong>Rules</strong>: Enforce game mechanics</p>
+        <p><term>Rules</term>: Enforce game mechanics</p>
           <program>
 public void takeDamage(int amount) {
     health = Math.max(0, health - amount);  // Never go below 0
@@ -143,7 +143,7 @@ public void takeDamage(int amount) {
   <subsection xml:id="understanding-encapsulation">
     <title>Understanding Encapsulation</title>
     <p>
-      <strong>Encapsulation</strong> has two key parts: </p>
+      <term>Encapsulation</term> has two key parts: </p>
     <ol>
       <li>
         <p>Bundling related data and methods together in a class</p>
@@ -280,7 +280,7 @@ public class Player {
     </p>
     <ol>
       <li>
-        <p><strong>Constructor Checks</strong>: Stop invalid objects from being created</p>
+        <p><term>Constructor Checks</term>: Stop invalid objects from being created</p>
           <program language="java">
 public Player(int startHealth) {
     if (startHealth &lt; 0) {
@@ -291,7 +291,7 @@ public Player(int startHealth) {
 </program>
       </li>
       <li>
-        <p><strong>Method Guards</strong>: Fix invalid inputs</p>
+        <p><term>Method Guards</term>: Fix invalid inputs</p>
           <program language="java">
 public void heal(int amount) {
     if (amount &lt; 0) {
@@ -302,7 +302,7 @@ public void heal(int amount) {
 </program>
       </li>
       <li>
-        <p><strong>Range Enforcement</strong>: Keep values in bounds</p>
+        <p><term>Range Enforcement</term>: Keep values in bounds</p>
           <program language="java">
 public void setHealth(int newHealth) {
     health = Math.max(0, Math.min(newHealth, MAX_HEALTH));
@@ -310,7 +310,7 @@ public void setHealth(int newHealth) {
 </program>
       </li>
       <li>
-        <p><strong>Complete Rejection</strong>: Return success/failure</p>
+        <p><term>Complete Rejection</term>: Return success/failure</p>
           <program language="java">
 public boolean withdraw(int amount) {
     if (amount &gt; balance) {
@@ -336,7 +336,7 @@ public boolean withdraw(int amount) {
       <li>You don't need to know <em>HOW</em> they make it</li>
     </ul>
 
-    <p> That's <strong>abstraction</strong> in code: </p>
+    <p> That's <term>abstraction</term> in code: </p>
       <program language="java">
 public class Restaurant {
     // Store kitchen details inside the class (encapsulation)
@@ -390,8 +390,8 @@ boolean gotBurger = store.orderCheeseburger();  // Don't care about the details!
       Why is this different from encapsulation?
     </p>
     <ul>
-      <li><strong>Encapsulation</strong>: Protects data from invalid changes</li>
-      <li><strong>Abstraction</strong>: Hides complexity behind simple interfaces</li>
+      <li><term>Encapsulation</term>: Protects data from invalid changes</li>
+      <li><term>Abstraction</term>: Hides complexity behind simple interfaces</li>
     </ul>
 
     <p>
@@ -441,8 +441,8 @@ class Building {
       more powerful features:
     </p>
     <ol>
-      <li><strong>Inheritance</strong>: Write the health/damage code once, share it</li>
-      <li><strong>Polymorphism</strong>: Treat Players, Monsters, and Buildings the same when
+      <li><term>Inheritance</term>: Write the health/damage code once, share it</li>
+      <li><term>Polymorphism</term>: Treat Players, Monsters, and Buildings the same when
         dealing damage</li>
     </ol>
 
@@ -450,8 +450,8 @@ class Building {
       We'll explore these later. For now, focus on:
     </p>
     <ul>
-      <li><strong>Encapsulation</strong>: Protect your data (like <c>private health</c>)</li>
-      <li><strong>Abstraction</strong>: Hide complex details (like how damage is calculated)</li>
+      <li><term>Encapsulation</term>: Protect your data (like <c>private health</c>)</li>
+      <li><term>Abstraction</term>: Hide complex details (like how damage is calculated)</li>
     </ul>
     <p>These fundamentals will prepare you for advanced features ahead!</p>
   </subsection>
@@ -512,7 +512,7 @@ public class BankAccount {
 </program>
 
     <p>
-      <strong>Try using it:</strong>
+      <term>Try using it:</term>
     </p>
       <program language="java">
 BankAccount acct = new BankAccount(100);
@@ -520,7 +520,7 @@ acct.deposit(50);   // Simple to use!
 </program>
 
     <p>
-      <strong>What's happening behind the scenes?</strong>
+      <term>What's happening behind the scenes?</term>
     </p>
     <ol>
       <li>Input validation</li>
@@ -610,7 +610,7 @@ backup.health -= 50;  // Does this affect hero?
     <ol>
       <li>
         <p>
-          <strong>Unbreakable Player</strong>
+          <term>Unbreakable Player</term>
         </p>
         <listing>
           <program language="java"><![CDATA[
@@ -636,7 +636,7 @@ public class Player {
       </li>
       <li>
         <p>
-          <strong>Safe Bank Account</strong>
+          <term>Safe Bank Account</term>
         </p>
         <listing>
           <program language="java"><![CDATA[
@@ -673,14 +673,14 @@ public class BankAccount {
     <exercise xml:id="mc-encapsulation-abstraction">
       <title>Multiple Choice: Encapsulation vs. Abstraction</title>
       <statement>
-        <p>Which statement best distinguishes <strong>encapsulation</strong> from <strong>
-          abstraction</strong>?</p>
+        <p>Which statement best distinguishes <term>encapsulation</term> from <term>
+          abstraction</term>?</p>
       </statement>
       <choices randomize="yes">
         <choice correct="yes">
           <statement>
-            <strong>Encapsulation</strong> protects data by bundling it with methods and restricting
-            direct access, while <strong>abstraction</strong> hides complex implementation details
+            <term>Encapsulation</term> protects data by bundling it with methods and restricting
+            direct access, while <term>abstraction</term> hides complex implementation details
             behind a simpler interface. </statement>
           <feedback>Exactly. Encapsulation is about bundling and protection, whereas abstraction is
             about hiding complexity.</feedback>
@@ -734,7 +734,7 @@ public class BankAccount {
       <response />
       <solution>
         <p>
-          <strong>Sample Solution:</strong> I'd make <c>health</c> private and provide methods like <c>setHealth</c> or <c>takeDamage</c> that check if the new health would be negative, then
+          <term>Sample Solution:</term> I'd make <c>health</c> private and provide methods like <c>setHealth</c> or <c>takeDamage</c> that check if the new health would be negative, then
           set it to 0 instead. This ensures outsiders can't directly write <c>p1.health</c> = -999,
           preserving the invariant “health ≥ 0.” </p>
       </solution>
@@ -745,7 +745,7 @@ public class BankAccount {
       <title>Parsons: Encapsulate the Player's Data</title>
       <statement>
         <p> Below is a short snippet of “scattered” code for a game. Rearrange the following lines
-          to create a <strong>single, valid</strong> <c>Player</c> class with <c>private</c> fields
+          to create a <term>single, valid</term> <c>Player</c> class with <c>private</c> fields
           and methods <c>heal</c> and <c>takeDamage</c> enforcing “health ≥ 0.” </p>
         <p><em>Hint:</em> This code should compile as one class. There is only one correct
           arrangement of braces and method definitions.</p>
@@ -912,7 +912,7 @@ public class BankAccount {
       <response />
       <solution>
         <p>
-          <strong>Sample Solution:</strong> A <c>Player</c> class keeps all relevant data and logic
+          <term>Sample Solution:</term> A <c>Player</c> class keeps all relevant data and logic
           together, so we can't just accidentally do <c>playerHealth = -999</c> or pass the wrong
           variable order. <c>private</c> fields force changes through safe methods that enforce
           “health ≥ 0.” This cuts down on guesswork and makes the code clearer by grouping data and

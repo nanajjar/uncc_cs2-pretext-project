@@ -1,0 +1,123 @@
+<section xml:id="sec-git-branches-checkout">
+  <title>Working with Versions: Branches and Checkout</title>
+
+  <introduction>
+    <p>
+      You've successfully cloned the <c>1213-arraylist-example</c> repository. When you clone a repository, Git typically checks out the default branch, which is usually named <c>main</c>. You should see <c>main</c> indicated as your current branch in the VSCode status bar (bottom-left).
+    </p>
+    <p>
+      <term>Good news:</term> For this specific project, the <c>main</c> branch has been set up to contain the **starter code** (the ADT interfaces, the test file, and a basic skeleton for <c>ArrayList.java</c>). This means after cloning, you are already on the correct branch to begin your implementation work!
+    </p>
+    <p>
+      However, you might wonder, "What if I want to experiment with a risky change later without messing up my main work?" or "How can I view the instructor's solution for a specific step or the final version after I'm done?". Git handles these scenarios using a powerful feature called <term>branches</term>. Understanding branches, even at a basic level, is helpful for navigating the provided repository and is a fundamental concept in version control.
+    </p>
+  </introduction>
+
+  <subsection xml:id="subsec-git-what-are-branches-revised">
+    <title>What Are Branches?</title>
+    <p>
+      Think of a <term>branch</term> in Git as an independent line of development or a separate timeline within your project repository. Every repository starts with at least one branch (again, usually <c>main</c>). From any point in the project's history, you can create a new branch to:
+    </p>
+    <ul>
+      <li><p>Work on a new feature without affecting the stable code on <c>main</c>.</p></li>
+      <li><p>Try out an experimental approach.</p></li>
+      <li><p>Fix a bug on an older version.</p></li>
+      <li><p>Simply save a snapshot of the project at a particular named stage (like we do for solutions).</p></li>
+    </ul>
+    <p>
+      <em>Analogy:</em> Imagine you're writing an important document (your <c>main</c> branch). If you want to try rewriting a whole section differently, you might "Save As..." to create a separate copy (`mydoc_rewrite_idea.docx`). You can work on the rewrite without changing the original. Later, you might copy ideas back, keep both versions, or discard the rewrite. Branches in Git are like this "Save As..." idea but much more integrated and powerful. Git manages the different timelines and makes it easy (though beyond our current scope) to compare them or merge changes between them.
+    </p>
+    <p>
+      For the <c>1213-arraylist-example</c> repository that you cloned, branches are used to provide snapshots corresponding to different stages of the project, which you might want to look at later for reference or comparison:
+    </p>
+    <ul>
+      <li><p><c>main</c>: Contains the initial starter code (this is where you should do your work).</p></li>
+      <li><p><c>solution-step-5.2</c>: (Example name) Might contain the code as it should look after completing Section 16 (Resizing and addLast).</p></li>
+      <li><p><c>solution-step-5.3</c>: (Example name) Might contain the code after completing Section 17 (Indexed Add/Remove).</p></li>
+      <li><p>... other intermediate solution branches ...</p></li>
+      <li><p><c>solution-final-refined</c>: (Example name) Might contain the final, refined version of the code from Section 19.</p></li>
+      </ul>
+      <p>(Your instructor will provide the exact names for any relevant solution branches).</p>
+      <p>
+       Knowing how to switch between these branches allows you to view these different versions of the project code without affecting your own work on the <c>main</c> branch (as long as you're careful about saving local changes, which we discuss next).
+      </p>
+  </subsection>
+
+  <subsection xml:id="subsec-git-checkout-vscode-revised">
+    <title>Switching Branches (Checkout) in VSCode</title>
+    <p>
+      The Git operation for switching your local project files to match the state of a different branch is called <term>checkout</term>. When you check out a branch, Git effectively rewrites the files in your working directory to match the snapshot stored on that branch.
+    </p>
+    <important>
+        <title>Working on the `main` Branch</title>
+        <p>
+            For completing the exercises in this chapter, you should <b>always do your implementation work on the <c>main</c> branch</b>. It contains the starter code.
+        </p>
+        <p>
+             Checking out other branches (like the solution branches) should only be done temporarily for <term>viewing</term> or <term>comparison</term>.
+        </p>
+        <p>
+             <term>Warning:</term> Checking out a different branch will <term>overwrite</term> any <term>unsaved or uncommitted</term> changes in your current working files that differ between the branches. Since we are not covering Git commits in this introduction, the safest approach is:
+        </p>
+         <ul>
+             <li><p>Only check out other branches when you have saved your work on `main` and are okay with potentially needing to manually re-apply changes if you switch back.</p></li>
+             <li><p>Or, even safer, check out other branches *before* you start making significant changes to `ArrayList.java` on the `main` branch, just to see what they contain.</p></li>
+             <li><p>Always make sure you switch back to <c>main</c> before resuming your implementation work!</p></li>
+         </ul>
+    </important>
+    <p>
+      Here's how to view and check out other branches in VSCode:
+    </p>
+     <ol>
+        <li>
+          <p><term>View Current Branch:</term> Confirm you are on the <c>main</c> branch by looking at the bottom-left corner of the VSCode status bar.</p>
+          <figure xml:id="fig-vscode-branch-indicator">
+              <caption>VSCode Status Bar showing current branch ('main')</caption>
+              <image source="ch-arraylist/branch-indicator.png">
+                  <description>Cropped screenshot of the VS Code status bar highlighting the current Git branch name, often next to a branch icon.</description>
+              </image>
+          </figure>
+        </li>
+        <li>
+          <p><term>List Available Branches:</term> Click directly on the branch name (<c>main</c>) in the status bar.</p>
+        </li>
+        <li>
+          <p><term>Switch (Checkout) Branch:</term> A list of available branches will appear in the Command Palette area at the top. This list typically includes your local branches (like <c>main</c>) and remote branches prefixed with <c>origin/</c> (like <c>origin/main</c>, <c>origin/solution-final-refined</c>, etc.). To view the state of a different branch, click on its name in the list (e.g., clicking <c>origin/solution-final-refined</c> will check out that specific version). VSCode will update the files in your editor and file explorer to match the selected branch.</p>
+           <figure xml:id="fig-vscode-branch-list">
+               <caption>VSCode prompt showing branch list after clicking status bar</caption>
+               <image source="ch-arraylist/scm-create-branch.png">
+                   <description>Screenshot of the VS Code command palette area showing a list of Git branches available for checkout, including local and remote ones.</description>
+               </image>
+            </figure>
+           </li>
+        <li>
+          <p><term>Return to Main Branch:</term> When you are finished viewing another branch, remember to switch <term>back to the <c>main</c> branch</term> to continue your implementation work. Use the same procedure: click the current branch name in the status bar and select <c>main</c> from the list.</p>
+        </li>
+     </ol>
+     <note>
+            <title>Alternative: Command Line Checkout and Listing</title>
+            <p>
+                In the terminal, you can list only your local branches with <c>git branch</c>, or list all branches (including remote tracking ones, which show the state on GitHub) with <c>git branch -a</c>. To switch to (checkout) a branch, you use <c>git checkout &lt;branch-name&gt;</c>, for example:
+            </p>
+            <program language="bash">
+# List all branches (local and remote-tracking)
+git branch -a
+
+# Switch to view the final solution branch (example name)
+# Git might create a local tracking branch automatically
+git checkout solution-final-refined
+
+# Switch back to the main branch to continue your work
+git checkout main
+            </program>
+            <p>
+                The VSCode interface handles the details more automatically and visually.
+            </p>
+     </note>
+  </subsection>
+
+   <p>
+       You now know that the <c>main</c> branch contains your starter code and is where you should work. You also know that other branches exist for reference and how to temporarily <term>checkout</term> them using VSCode to view their contents, remembering to switch back to <c>main</c> afterwards. Next, we'll briefly touch on other ways VSCode helps when working with Git before concluding this introduction.
+   </p>
+
+</section>

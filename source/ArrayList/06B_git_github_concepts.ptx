@@ -1,0 +1,63 @@
+<section xml:id="sec-git-github-concepts">
+  <title>What are Git and GitHub?</title>
+
+  <introduction>
+    <p>
+      In the previous section, we saw the problems that arise from managing code versions manually (<c>_v1</c>, <c>_final</c>, etc.) and the need for a systematic solution. <term>Version Control Systems (VCS)</term> provide that solution by tracking changes over time. Now, let's introduce the specific tools you'll most commonly encounter and use for this purpose, including for our <c>ArrayList</c> project.
+    </p>
+  </introduction>
+
+  <subsection xml:id="subsec-what-is-git">
+    <title>Git: Your Local Version Tracker</title>
+    <p>
+      The most popular and widely used VCS today is called <term>Git</term>. Originally developed by Linus Torvalds (creator of Linux), Git is a powerful tool installed and run directly on your computer. Its primary job is to track changes to files within a specific project folder.
+    </p>
+    <p>
+      Here are the core ideas behind Git:
+    </p>
+    <ul>
+      <li><p><term>Snapshots, Not Differences:</term> Instead of just recording what changed between versions, Git primarily stores "snapshots" of what all your project files looked like at a particular point in time.</p></li>
+      <li><p><term>Repository (Repo):</term> When you use Git on a project, it creates a special hidden sub-folder named <c>.git</c> inside your main project folder. This <c>.git</c> folder *is* the Git <term>repository</term> – it contains the entire history of all your snapshots (commits) and other necessary tracking information. Your main project folder combined with this <c>.git</c> subfolder constitutes your local repository.</p></li>
+      <li><p><term>Local Operation:</term> Most Git operations (like saving a snapshot, viewing history, comparing versions) happen entirely on your own computer using your local repository. You don't necessarily need an internet connection for basic version tracking.</p></li>
+      <li><p><term>Distributed:</term> Git is a *distributed* VCS. This means that when multiple people collaborate, each person typically has their own complete copy of the repository, including its full history. This differs from older centralized systems where the history only lived on a central server. This distributed nature means that even if the central hosting service (like GitHub) is temporarily unavailable, every developer still has the full project history on their own computer, providing resilience.</p></li>
+    </ul>
+    <p>
+      Think of Git as an incredibly sophisticated tracking system living inside your project folder, remembering every version you explicitly tell it to save.
+    </p>
+  </subsection>
+
+   <subsection xml:id="subsec-what-is-github">
+    <title>GitHub: Hosting Your Repositories Online</title>
+    <p>
+      <term>Problem:</term> Git runs locally, tracking history in the <c>.git</c> folder within your project. But what happens if your hard drive fails? Your project history is lost! Also, how do you easily share your Git-tracked project with others or collaborate on it? Emailing the whole folder with its <c>.git</c> directory isn't practical.
+    </p>
+    <p>
+      <term>Solution:</term> This is where services like <term>GitHub</term> come in. GitHub (and similar platforms like GitLab, Bitbucket, etc.) is a web-based <term>hosting service</term> specifically designed for Git repositories. It provides a place on the internet to store copies of your Git repos.
+    </p>
+     <p>
+      Key functions of GitHub include:
+    </p>
+    <ul>
+        <li><p><term>Remote Storage/Backup:</term> You can "push" your local Git repository's history up to GitHub, creating a secure online backup.</p></li>
+        <li><p><term>Collaboration:</term> GitHub provides tools built around Git to help teams work together (e.g., managing different proposed changes via Pull Requests, tracking tasks via Issues). (These collaboration features are beyond our scope here).</p></li>
+        <li><p><term>Code Sharing and Discovery:</term> Many open-source projects host their code publicly on GitHub, allowing others to easily find, download (clone), and potentially contribute to them. Educational institutions also use it to distribute starter code for assignments – like our ArrayList project!</p></li>
+    </ul>
+     <note>
+         <title>Git ≠ GitHub</title>
+         <p>
+             It's crucial to understand the distinction:
+         </p>
+         <ul>
+             <li><p><c>Git</c> is the underlying version control <term>software</term> that runs on your computer, managing the <c>.git</c> repository locally.</p></li>
+             <li><p><c>GitHub</c> is a <term>website/service</term> that hosts Git repositories online, adding features for backup, sharing, and collaboration on top of Git.</p></li>
+         </ul>
+         <p>
+             Analogy: Think of Git like a powerful word processor (like Microsoft Word or LibreOffice Writer) installed on your computer for creating and editing documents locally. Think of GitHub like a cloud storage and collaboration service (like Google Drive, OneDrive, or Dropbox) where you can upload, store, share, and potentially co-edit those documents online. You use the local software (Git) to manage versions, and the online service (GitHub) to store and share those versions.
+         </p>
+     </note>
+      <p>
+          For our capstone project, the starter code, ADT interfaces, and tests for the <c>ArrayList</c> are stored in a Git repository hosted on GitHub at <c>https://github.com/Charlotte-CCI-ICC/1213-arraylist-example.git</c>. To get started, you'll need to use Git to create your own local copy of this online repository. This process is called <term>cloning</term>, which we'll cover next.
+      </p>
+  </subsection>
+
+</section>

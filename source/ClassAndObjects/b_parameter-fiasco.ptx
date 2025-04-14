@@ -175,12 +175,12 @@ p1.increaseHealth(5); // So much simpler!
     <title>Practice Thinking About It</title>
 
     <p>
-      <strong>1. Group Related Things</strong></p> <p>If you were making a <c>BankAccount</c>, what
+      <term>1. Group Related Things</term></p> <p>If you were making a <c>BankAccount</c>, what
       information would belong together? Think: <em>balance, account number, interest rate...</em>
     </p>
 
     <p>
-      <strong>2. Spot the Problem</strong></p><p> How many things could go wrong with: </p>
+      <term>2. Spot the Problem</term></p><p> How many things could go wrong with: </p>
       <program language="java" xml:id="transfer-money">
 public static void transferMoney(int fromBalance, int toBalance, int amount)
 </program>
@@ -264,7 +264,7 @@ public static void transferMoney(int fromBalance, int toBalance, int amount)
       <response />
       <solution>
         <p>
-          <strong>Sample Solution:</strong> Each player has several stats to track, so using a
+          <term>Sample Solution:</term> Each player has several stats to track, so using a
           separate variable for each stat (like <c>player1Health</c>, <c>player2Health</c>, etc.)
           quickly leads to long parameter lists and confusion. Bundling them into a single structure
           (a “backpack” or a <c>Player</c> class) simplifies both method calls and data
@@ -315,13 +315,13 @@ public static void transferMoney(int fromBalance, int toBalance, int amount)
       <statement>
         <p> We saw a hint of a <c>Player</c> class that might hold <c>health</c>, <c>gold</c>, <c>xp</c>,
           etc. In <em>2-3 sentences</em>, describe why bundling these stats into a single object
-          could make code easier to maintain, <strong>before</strong> we even learn the full syntax
+          could make code easier to maintain, <term>before</term> we even learn the full syntax
           of classes. </p>
       </statement>
       <response />
       <solution>
         <p>
-          <strong>Sample Solution:</strong> One object can store all the player's related data, so
+          <term>Sample Solution:</term> One object can store all the player's related data, so
           we don't have to pass a dozen parameters whenever we modify or read stats. It also reduces
           the risk of mixing up parameter order. Once we have an object, we can define methods like <c>p1.increaseHealth(5)</c> that automatically update the right fields, making the code more
           organized and less error-prone. </p>

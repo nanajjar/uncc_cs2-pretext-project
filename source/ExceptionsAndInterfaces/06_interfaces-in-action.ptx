@@ -14,18 +14,18 @@
         <title>Interfaces and Polymorphism in Action</title>
         
 
-    <p><strong><em>Incremental Building</em></strong> (Recommended Approach):  
+    <p><term><em>Incremental Building</em></term> (Recommended Approach):  
     Beginners often get overwhelmed if they see multiple files at once. A better strategy is building up step by step:</p>
     <ol>
-      <li><strong>Create the interface first:</strong> (e.g., <c>Playable.java</c>). Compile it alone (<c>javac Playable.java</c>) to check there are no typos.</li>
-      <li><strong>Add one class at a time:</strong> For instance, write <c>MusicTrack.java</c> implementing <c>Playable</c>, then compile it. If you see a compiler error, fix it before moving on.</li>
-      <li><strong>Write a small <c>main</c>:</strong> that just creates a <c>MusicTrack</c> object and calls some method. Compile and run to verify it works.</li>
-      <li><strong>Add more classes incrementally:</strong> (e.g., <c>PodcastEpisode</c>, <c>Audiobook</c>) repeating the compile/test cycle each time. This prevents a flood of errors all at once.</li>
-      <li><strong>Finally, unify them in a more comprehensive <c>MediaPlayer</c> class:</strong> with a full <c>main</c> method demonstrating all classes. If something breaks, you know which recent addition is likely responsible.</li>
+      <li><term>Create the interface first:</term> (e.g., <c>Playable.java</c>). Compile it alone (<c>javac Playable.java</c>) to check there are no typos.</li>
+      <li><term>Add one class at a time:</term> For instance, write <c>MusicTrack.java</c> implementing <c>Playable</c>, then compile it. If you see a compiler error, fix it before moving on.</li>
+      <li><term>Write a small <c>main</c>:</term> that just creates a <c>MusicTrack</c> object and calls some method. Compile and run to verify it works.</li>
+      <li><term>Add more classes incrementally:</term> (e.g., <c>PodcastEpisode</c>, <c>Audiobook</c>) repeating the compile/test cycle each time. This prevents a flood of errors all at once.</li>
+      <li><term>Finally, unify them in a more comprehensive <c>MediaPlayer</c> class:</term> with a full <c>main</c> method demonstrating all classes. If something breaks, you know which recent addition is likely responsible.</li>
     </ol>
 
     <p>Below is how the <em>final</em> set of files might look once you're done:</p>
-    <p><strong>Project Folder:</strong></p>
+    <p><term>Project Folder:</term></p>
     <pre>
 MyInterfaceProject/
 ├── Playable.java
@@ -85,10 +85,10 @@ public class MediaPlayer {
 }
       </code>
     </program>
-    <p><strong>How to compile &amp; run:</strong></p>
+    <p><term>How to compile &amp; run:</term></p>
     <ul>
-      <li><strong>Compile (step by step or all at once):</strong> In your project folder, run <c>javac *.java</c> to compile all <c>.java</c> files. If you prefer incremental compilation, do <c>javac Playable.java</c> first, then each new class as you create it.</li>
-      <li><strong>Run:</strong> Then run <c>java MediaPlayer</c> to execute the <c>main</c> method in <c>MediaPlayer</c>.</li>
+      <li><term>Compile (step by step or all at once):</term> In your project folder, run <c>javac *.java</c> to compile all <c>.java</c> files. If you prefer incremental compilation, do <c>javac Playable.java</c> first, then each new class as you create it.</li>
+      <li><term>Run:</term> Then run <c>java MediaPlayer</c> to execute the <c>main</c> method in <c>MediaPlayer</c>.</li>
     </ul>
     <p>Notice you <em>don't</em> need to change <c>MediaPlayer</c> if you add a new class (like <c>Livestream</c>) implementing <c>Playable</c>. You can just do:</p>
     <program language="java">

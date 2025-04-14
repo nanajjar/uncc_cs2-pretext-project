@@ -1,0 +1,113 @@
+<section xml:id="sec-git-cloning">
+  <title>Getting the Project Code: Cloning</title>
+
+  <introduction>
+    <p>
+      Now that we understand that <term>Git</term> is our local version tracking tool and <term>GitHub</term> is where the <c>ArrayList</c> capstone project repository is hosted online, we face the next practical problem: <term>How do we get a copy of that online project onto our own computer so we can work on it?</term>
+    </p>
+  </introduction>
+
+  <subsection xml:id="subsec-git-what-is-cloning-revised">
+    <title>Solution: Cloning the Repository</title>
+    <p>
+      The process of downloading a complete copy of a Git repository from a remote host (like GitHub) to your local machine is called <term>cloning</term>. When you clone a repository:
+    </p>
+    <ul>
+      <li><p>You download not just the latest versions of the project files, but the <term>entire history</term> of changes (all the snapshots/commits) stored in the repository's <c>.git</c> folder.</p></li>
+      <li><p>Git automatically creates a new folder on your computer containing all the project files and the hidden <c>.git</c> history database.</p></li>
+      <li><p>Git also sets up a connection back to the original online repository (often referred to as the <term>origin</term>), which is important for more advanced workflows like fetching updates or contributing changes (though we won't focus on those here).</p></li>
+    </ul>
+    <p>
+      Essentially, cloning gives you your own independent, fully functional Git repository on your local machine, based on the state of the remote repository at the time you cloned it.
+    </p>
+  </subsection>
+
+   <subsection xml:id="subsec-git-cloning-vscode-revised2">
+    <title>Cloning the ArrayList Project using VSCode</title>
+
+    <subsubsection xml:id="subsubsec-git-install-prereq-revised">
+        <title>Prerequisite: Installing Git</title>
+        <p>
+            Before you can clone, you need the actual <term>Git</term> software installed on your computer. Visual Studio Code uses your computer's Git installation to perform Git operations.
+        </p>
+        <ol>
+            <li>
+                <p><term>Check if Git is Installed:</term> VSCode might tell you if Git is missing when you try to use a Git feature (often in the Source Control view). You can also check by opening your system's terminal or command prompt and typing <c>git --version</c>. If it shows a version number, you're likely set. If you get an error ("command not found" or similar), you need to install it.</p>
+            </li>
+            <li>
+                <p><term>Download Git:</term> Go to the official Git website: <url href="https://git-scm.com/downloads">https://git-scm.com/downloads</url></p>
+            </li>
+            <li>
+                <p><term>Install Git:</term> Download the installer appropriate for your operating system (Windows, macOS, Linux) and run it. Follow the prompts in the installer – for most basic uses in this course, accepting the default settings is usually fine.</p>
+            </li>
+             <li>
+                <p><term>Restart VSCode:</term> After installing Git, it's essential to <term>close and reopen</term> Visual Studio Code so that it recognizes the new installation.</p>
+            </li>
+        </ol>
+         <p>
+            Ensuring Git is installed is a necessary first step before proceeding with cloning within VSCode.
+        </p>
+    </subsubsection>
+
+    <subsubsection xml:id="subsubsec-git-clone-steps-vscode-revised">
+       <title>Cloning Steps in VSCode</title>
+       <p>
+           With Git installed, here are the steps to clone the `ArrayList` example repository using VSCode's built-in features:
+       </p>
+        <ol>
+            <li>
+                <p><term>Open VSCode:</term> Start VSCode. It's often easiest if you don't have another project folder open when initiating a clone.</p>
+            </li>
+            <li>
+                <p><term>Initiate Clone:</term> You have two common ways:</p>
+                <ul>
+                    <li><p><em>Via Command Palette:</em> Open the Command Palette (<c>Ctrl+Shift+P</c> on Windows/Linux, <c>Cmd+Shift+P</c> on macOS), type <c>Git: Clone</c>, and select the command.</p></li>
+                    <li><p><em>Via Source Control View:</em> Open the Source Control view from the Activity Bar (the icon with branching lines). If no repository is open, you should see a button labeled <c>Clone Repository</c>. Click it. (If a different project is open, you might need to use the Command Palette method).</p></li>
+                </ul>
+                </li>
+             <li>
+                <p><term>Provide Repository URL:</term> A prompt will appear at the top asking for the repository URL. Paste the following exact URL for our project repository and press Enter:</p>
+                <p><c>https://github.com/Charlotte-CCI-ICC/1213-arraylist-example.git</c></p>
+                 <figure xml:id="fig-vscode-clone-url-prompt">
+                     <caption>VSCode Prompt for Repository URL</caption>
+                     <image source="ch-arraylist/git-clone-repository-url.png" width="70%">
+                         <description>Screenshot of the VS Code quick input prompt asking for a Git repository URL to clone.</description>
+                     </image>¡
+                 </figure>
+            </li>
+             <li>
+                <p><term>Choose Local Directory:</term> Your computer's file explorer will open, asking you where you want to save the cloned project folder. Navigate to the parent directory where you keep your course projects (e.g., your Documents, Desktop, or a dedicated course folder) and select that location (the button might say "Select Repository Location" or similar).</p>
+                 </li>
+             <li>
+                <p><term>Cloning and Opening:</term> VSCode will download the repository from GitHub (you might see progress indicators). Once finished, it will likely show a notification in the bottom-right corner asking if you want to open the cloned repository. Click <c>Open</c>.</p>
+                  </li>
+        </ol>
+        <p>
+            You should now have the <c>1213-arraylist-example</c> project folder open in VSCode. Congratulations, you've cloned your first repository! This folder is your local copy, complete with its Git history.
+        </p>
+        <note>
+            <title>For More VSCode Git Info</title>
+            <p>
+                VSCode's integration with Git is quite powerful. For more details beyond what we cover here, you can refer to the official documentation you reviewed: <url href="https://code.visualstudio.com/docs/sourcecontrol/intro-to-git">Introduction to Git in VS Code</url>
+            </p>
+        </note>
+         <note>
+            <title>Alternative: Command Line Cloning</title>
+            <p>
+                As mentioned, Git is fundamentally a command-line tool. If you open your system's terminal or Git Bash, navigate (<c>cd</c>) to where you want the project, you can run:
+            </p>
+            <program language="bash">
+git clone https://github.com/Charlotte-CCI-ICC/1213-arraylist-example.git
+            </program>
+            <p>
+                This achieves the same result. You would then open the resulting folder in VSCode manually. We recommend using the VSCode interface for this course.
+            </p>
+        </note>
+    </subsubsection>
+  </subsection>
+
+   <p>
+      You have successfully obtained a local copy (a clone) of the project repository. However, by default, cloning usually checks out the repository's main line of development, often called the <c>main</c> branch. For our project, the <c>main</c> branch contains the *completed* solution. To start the exercises, you need to switch to a specific <term>branch</term> containing the starter code. The next section explains what branches are and how to switch to the correct one.
+   </p>
+
+</section>

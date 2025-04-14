@@ -7,7 +7,11 @@
   <xi:include href="./03_interfaces_adts.ptx" />
   <xi:include href="./04_packages_organization.ptx" />
   <xi:include href="./05_imports_using_packages.ptx" />
-  <xi:include href="./06_setup_tooling_scope.ptx" />
+  <xi:include href="./06A_git_intro.ptx" />
+  <xi:include href="./06B_git_github_concepts.ptx" />
+  <xi:include href="./06C_git_cloning.ptx" />
+  <xi:include href="./06D_git_branches_checkout.ptx" />
+  <xi:include href="./06E_setup_tooling_scope.ptx" />
 
   <xi:include href="./07_dr0_understand_task.ptx" />
   <xi:include href="./08_dr1_designing_data.ptx" />
@@ -25,5 +29,4 @@
 
   <xi:include href="./19_dr5_refining_impl.ptx" />
   <xi:include href="./20_conclusion.ptx" />
-  <xi:include href="./21_submission_further.ptx" />
 </chapter> 

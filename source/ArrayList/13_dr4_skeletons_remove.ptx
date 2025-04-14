@@ -80,7 +80,7 @@ Need to remove element at index 1 ("B").
            <p>
               Again, we anticipate this might become a <term>private helper method</term> during implementation (Step 5) for clarity and potential reuse. Let's plan its conceptual logic:
           </p>
-          <p><strong>Helper Logic Plan: Shift Left</strong></p>
+          <p><term>Helper Logic Plan: Shift Left</term></p>
            <program language="java">
     // --- Private Helper Logic Plan: shiftLeft(int index) ---
     // (This logic is needed to close the gap after removing at 'index')
@@ -220,6 +220,7 @@ Need to remove element at index 1 ("B").
 
   </subsection>
 
+            <note><title>Code Snapshot</title><p>The state of the code after adding the skeletons for the Remove methods (as planned in this section) can be found on the <c>dr-step-4.2-remove-skeletons</c> branch in the repository.</p></note>
   <p>
     We have now outlined the logical steps for the "Remove" methods, again identifying necessary checks, the core logic (like shifting left), and considering potential reuse or delegation. The next step is to create skeletons for the remaining "Other" operations (accessing, querying).
   </p>

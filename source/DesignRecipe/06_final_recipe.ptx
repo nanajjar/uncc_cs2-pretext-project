@@ -163,8 +163,8 @@
       </li>
       <li>
         <p><alert>Examples &amp; Tests (Step 3)</alert> target the correct scenarios and edge
-          cases, rather than random guesses. <em>We now recommend using a <strong>table-based
-          approach</strong> in Step 3 to systematically list out typical, edge, and error
+          cases, rather than random guesses. <em>We now recommend using a <term>table-based
+          approach</term> in Step 3 to systematically list out typical, edge, and error
           scenarios.</em></p>
       </li>
       <li>
