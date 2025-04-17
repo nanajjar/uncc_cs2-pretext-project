@@ -3,14 +3,14 @@
 <section xml:id="_oo-practice">
   <title>Code Practice with Object Oriented Concepts</title>
   <exercises>
-    <exercise >
+    <exercise label="ooEx1q">
       <statement>
                 <p>Write a method that overloads the talk method by taking in a name and printing <c>Hello</c> with that name.</p>
 
     </statement>
       <program interactive="activecode" language="java" xml:id="ooEx1q_editor">
 
-        <input>
+        <code>
 public class Test1
 {
     public static void talk()
@@ -25,7 +25,7 @@ public class Test1
           talk("Matthew");
     }
 }
-        </input>
+        </code>
 <tests>
 import static org.junit.Assert.*;
  import org.junit.*;
@@ -63,7 +63,7 @@ import static org.junit.Assert.*;
 
     <program xml:id="ooEx1a" language="java">
 
-        <input>
+        <code>
 public class Test1
 {
     public static void talk()
@@ -81,7 +81,7 @@ public class Test1
           talk("Matthew");
     }
 }
-        </input>
+        </code>
 <tests>
 
 
@@ -95,14 +95,14 @@ public class Test1
     
             </solution>
     </exercise>
-    <exercise >
+    <exercise label="ooEx3q">
       <statement>
                 <p>Edit this code so the class Beagle is a subclass of the Dog class.  When you run the code it should print “woof!” and then “arf arf”.</p>
 
     </statement>
       <program interactive="activecode" language="java" xml:id="ooEx3q_editor">
 
-        <input>
+        <code>
 public class Dog
 {
     public void speak()
@@ -126,7 +126,7 @@ class Beagle
         System.out.println("arf arf");
     }
 }
-        </input>
+        </code>
 <tests>
 import static org.junit.Assert.*;
  import org.junit.*;
@@ -164,7 +164,7 @@ import static org.junit.Assert.*;
 
     <program xml:id="ooEx3a" language="java">
 
-        <input>
+        <code>
 public class Dog
 {
     public void speak()
@@ -188,7 +188,7 @@ class Beagle extends Dog
         System.out.println("arf arf");
     }
 }
-        </input>
+        </code>
 <tests>
 
 
@@ -201,14 +201,14 @@ class Beagle extends Dog
     
             </solution>
     </exercise>
-    <exercise >
+    <exercise label="ooEx4q">
       <statement>
                 <p>Add an equals method to this class that returns true if the current Dog and passed Dog have the same name.  The code should print false twice then true twice.</p>
 
     </statement>
       <program interactive="activecode" language="java" xml:id="ooEx4q_editor">
 
-        <input>
+        <code>
 public class Dog
 {
     private String name;
@@ -235,7 +235,7 @@ public class Dog
         System.out.println(d3.equals(d4));
     }
 }
-        </input>
+        </code>
 <tests>
 import static org.junit.Assert.*;
  import org.junit.*;
@@ -295,12 +295,11 @@ import static org.junit.Assert.*;
 
     </program>
       <solution>
-                In order to override the equals method,
-                    the method header has to have the same return type and parameters as the equals method for the Object class.  The code should print false twice then true twice.
-
+             <p>   In order to override the equals method, the method header has to have the same return type and parameters as the equals method for the Object class.  
+                The code should print false twice then true twice. </p>
     <program xml:id="ooEx4a" language="java">
 
-        <input>
+        <code>
 public class Dog
 {
     private String name;
@@ -328,7 +327,7 @@ public class Dog
         System.out.println(d3.equals(d4));
     }
 }
-        </input>
+        </code>
 <tests>
 
 
@@ -342,14 +341,14 @@ public class Dog
     
             </solution>
     </exercise>
-    <exercise >
+    <exercise label="ooEx5q">
       <statement>
                 <p>Override the taste method from the Candy class in the Chocolate class to return <c>tastes chocolately</c>.  It should print <c>tastes sweet!</c> and then <c>tastes chocolately</c>.</p>
 
     </statement>
       <program interactive="activecode" language="java" xml:id="ooEx5q_editor">
 
-        <input>
+        <code>
 public class Candy
 {
     public String taste()
@@ -370,7 +369,7 @@ class Chocolate extends Candy
 {
     // ADD CODE HERE
 }
-        </input>
+        </code>
 <tests>
 import static org.junit.Assert.*;
  import org.junit.*;
@@ -409,11 +408,11 @@ import static org.junit.Assert.*;
 
     </program>
       <solution>
-                To override a method in a child class, you must have the same return types and parameters as the parent class’s method
+           <p>     To override a method in a child class, you must have the same return types and parameters as the parent class’s method</p>
 
     <program xml:id="ooEx5a" language="java">
 
-        <input>
+        <code>
 public class Candy
 {
     public String taste()
@@ -437,11 +436,7 @@ class Chocolate extends Candy
         return ("tastes chocolately");
     }
 }
-        </input>
-<tests>
-
-
-</tests>
+        </code>
 
     </program>
             
@@ -450,14 +445,14 @@ class Chocolate extends Candy
     
             </solution>
     </exercise>
-    <exercise >
+    <exercise label="ooEx6q">
       <statement>
                 <p>Overload the greet method to just print <c>Hello</c> if not given any parameters.  It should print <c>Hello</c> and then <c>Hello Sansa</c>.</p>
 
     </statement>
       <program interactive="activecode" language="java" xml:id="ooEx6q_editor">
 
-        <input>
+        <code>
 public class Student
 {
     public static void greet(String name)
@@ -471,7 +466,7 @@ public class Student
        greet("Sansa");
     }
 }
-        </input>
+        </code>
 <tests>
 import static org.junit.Assert.*;
  import org.junit.*;
@@ -508,7 +503,7 @@ import static org.junit.Assert.*;
 
     <program xml:id="ooEx6a" language="java">
 
-        <input>
+        <code>
 public class Student
 {
 
@@ -528,7 +523,7 @@ public class Student
        greet("Sansa");
     }
 }
-        </input>
+        </code>
 <tests>
 
 
@@ -541,14 +536,14 @@ public class Student
     
             </solution>
     </exercise>
-    <exercise >
+    <exercise label="ooEx7q">
       <statement>
                 <p>Add a call to Pet’s brag method before printing anything in Dog’s brag method (hint: use super to call an overridden method).  It should print <c>I have the best pet!</c> and then <c>I have the best dog</c>.</p>
 
     </statement>
       <program interactive="activecode" language="java" xml:id="ooEx7q_editor">
 
-        <input>
+        <code>
 public class Pet
 {
 
@@ -573,7 +568,7 @@ class Dog extends Pet
         System.out.println("I have the best dog!");
     }
 }
-        </input>
+        </code>
 <tests>
 import static org.junit.Assert.*;
  import org.junit.*;
@@ -611,7 +606,7 @@ import static org.junit.Assert.*;
 
     <program xml:id="ooEx7a" language="java">
 
-        <input>
+        <code>
 public class Pet
 {
 
@@ -635,7 +630,7 @@ class Dog extends Pet
         System.out.println("I have the best dog!");
     }
 }
-        </input>
+        </code>
 <tests>
 
 
@@ -648,14 +643,14 @@ class Dog extends Pet
     
             </solution>
     </exercise>
-    <exercise >
+    <exercise label="ooEx8q">
       <statement>
                 <p>Finish the Teacher constructor.  Use super to use the Person construtor to set the fields inherited from Person.  It should print <c>Destini 20</c> followed by <c>Erica 55 Masters in Teaching</c>.</p>
 
     </statement>
       <program interactive="activecode" language="java" xml:id="ooEx8q_editor">
 
-        <input>
+        <code>
 public class Person
 {
     private String name;
@@ -701,7 +696,7 @@ class Teacher extends Person
         // ADD CODE HERE
     }
 }
-        </input>
+        </code>
 <tests>
 import static org.junit.Assert.*;
  import org.junit.*;
@@ -743,7 +738,7 @@ import static org.junit.Assert.*;
 
     <program xml:id="ooEx8a" language="java">
 
-        <input>
+        <code>
 public class Person
 {
     private String name;
@@ -790,7 +785,7 @@ class Teacher extends Person
         this.degree = theDegree;
     }
 }
-        </input>
+        </code>
 <tests>
 
 
@@ -803,14 +798,14 @@ class Teacher extends Person
     
             </solution>
     </exercise>
-    <exercise >
+    <exercise label="ooEx9q">
       <statement>
                 <p>Add public getter and setter methods to the Store class so its variables can be accessed by other classes.  It should print the store’s name and address and then change both and print the new values.</p>
 
     </statement>
       <program interactive="activecode" language="java" xml:id="ooEx9q_editor">
 
-        <input>
+        <code>
 public class Store
 {
     private String name;
@@ -836,7 +831,7 @@ public class Store
 
     }
 }
-        </input>
+        </code>
 <tests>
 import static org.junit.Assert.*;
  import org.junit.*;
@@ -883,7 +878,7 @@ import static org.junit.Assert.*;
 
     <program xml:id="ooEx9a" language="java">
 
-        <input>
+        <code>
 public class Store
 {
     private String name;
@@ -912,7 +907,7 @@ public class Store
 
     }
 }
-        </input>
+        </code>
 <tests>
 
 
@@ -925,14 +920,14 @@ public class Store
     
             </solution>
     </exercise>
-    <exercise >
+    <exercise label="ooEx10q">
       <statement>
                 <p>Correctly finish the Dog subclass for the following Animal class.  Override the methods speak() to print <c>woof</c> and eat() to print <c>num num</c>.</p>
 
     </statement>
       <program interactive="activecode" language="java" xml:id="ooEx10q_editor">
 
-        <input>
+        <code>
 class Animal
 {
     public String name;
@@ -952,7 +947,7 @@ public class Dog extends Animal
         myDog.eat();
     }
 }
-        </input>
+        </code>
 <tests>
 import static org.junit.Assert.*;
  import org.junit.*;
@@ -998,7 +993,7 @@ import static org.junit.Assert.*;
 
     <program xml:id="ooEx10a" language="java">
 
-        <input>
+        <code>
 class Animal
 {
     public String name;
@@ -1026,7 +1021,7 @@ public class Dog extends Animal
        myDog.eat();
     }
 }
-        </input>
+        </code>
 <tests>
 
 
@@ -1038,14 +1033,14 @@ public class Dog extends Animal
     
             </solution>
     </exercise>
-    <exercise >
+    <exercise label="ooEx11q">
       <statement>
                 <p>Override the compareTo method so that it returns a postive number if the current Person is older than the passed other and a negative number if they are younger. If their age is the same then return the compareTo result on the names.</p>
 
     </statement>
       <program interactive="activecode" language="java" xml:id="ooEx11q_editor">
 
-        <input>
+        <code>
 public class Person implements Comparable&lt;Person&gt;
 {
     private String name;
@@ -1076,7 +1071,7 @@ public class Person implements Comparable&lt;Person&gt;
         System.out.println(p4.compareTo(p5));
      }
 }
-        </input>
+        </code>
 <tests>
 import static org.junit.Assert.*;
  import org.junit.*;
@@ -1145,7 +1140,7 @@ import static org.junit.Assert.*;
 
     <program xml:id="ooEx11a" language="java">
 
-        <input>
+        <code>
 public class Person implements Comparable&lt;Person&gt;
 {
     private String name;
@@ -1186,7 +1181,7 @@ public class Person implements Comparable&lt;Person&gt;
         System.out.println(p4.compareTo(p5));
      }
 }
-        </input>
+        </code>
 <tests>
 
 
@@ -1199,14 +1194,14 @@ public class Person implements Comparable&lt;Person&gt;
     
             </solution>
     </exercise>
-    <exercise >
+    <exercise label="ooEx12q">
       <statement>
                 <p>Override the Person class’s speak function inside the Student class. Make the function print <c>I'm a student</c>.</p>
 
     </statement>
       <program interactive="activecode" language="java" xml:id="ooEx12q_editor">
 
-        <input>
+        <code>
 public class Person
 {
     public void speak()
@@ -1225,7 +1220,7 @@ class Student extends Person
 {
     // ADD CODE HERE
 }
-        </input>
+        </code>
 <tests>
 import static org.junit.Assert.*;
  import org.junit.*;
@@ -1268,7 +1263,7 @@ import static org.junit.Assert.*;
 
     <program xml:id="ooEx12a" language="java">
 
-        <input>
+        <code>
 public class Person
 {
     public void speak()
@@ -1290,7 +1285,7 @@ class Student extends Person
         System.out.println("I'm a student");
     }
 }
-        </input>
+        </code>
 <tests>
 
 
