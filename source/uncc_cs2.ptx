@@ -12,10 +12,10 @@
             <document-id>uncc_cs2</document-id>
             <pub-date>2025-01-11</pub-date>
             <blurb shelf="Intro to Computer Science">
-How to Design Programs with Object Oriented Programming - From Python to Java            </blurb>
+How to Design Programs with Object Oriented Programming</blurb>
         </docinfo>
     <title>ITSC 1213 - Introduction to CS 2</title>
-    <subtitle>How to Design Programs with Object Oriented Programming - From Python to Java  </subtitle>
+    <subtitle>How to Design Programs with Object Oriented Programming </subtitle>
 
     <!-- Include frontmatter -->
     <xi:include href="./frontmatter.ptx" />
