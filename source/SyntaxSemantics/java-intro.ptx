@@ -56,7 +56,7 @@
                 <tests>
                     // should pass if/when they run code
                     import static org.junit.Assert.*;
-                    import org.junit.*;;
+                    import org.junit.*;
                     import java.io.*;
 
                     public class RunestoneTests extends CodeTestHelper
@@ -124,7 +124,7 @@
                 <tests>
                     // should pass if/when they run code
                     import static org.junit.Assert.*;
-                    import org.junit.*;;
+                    import org.junit.*;
                     import java.io.*;
 
                     public class RunestoneTests extends CodeTestHelper
@@ -320,7 +320,7 @@
                 </code>
                 <tests>
                     import static org.junit.Assert.*;
-                    import org.junit.*;;
+                    import org.junit.*;
                     import java.io.*;
 
                     public class RunestoneTests extends CodeTestHelper
@@ -367,7 +367,7 @@
                 <tests>
                     // should pass if/when they run code
                     import static org.junit.Assert.*;
-                    import org.junit.*;;
+                    import org.junit.*;
                     import java.io.*;
 
                     public class RunestoneTests extends CodeTestHelper
@@ -415,7 +415,7 @@
                     // should pass if/when they run code
                     // This doesn't really work because it filters out the \n
                     import static org.junit.Assert.*;
-                    import org.junit.*;;
+                    import org.junit.*;
                     import java.io.*;
 
                     public class RunestoneTests extends CodeTestHelper

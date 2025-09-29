@@ -83,7 +83,7 @@ public class MinMax
 <tests>
 // Test for Lesson MinMax
  import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper
@@ -166,7 +166,7 @@ public class Rotate
 <tests>
 // Test for Lesson 6.4.2 - Rotate
  import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper

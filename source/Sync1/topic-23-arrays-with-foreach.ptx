@@ -65,7 +65,7 @@ public class IncrementLoop
 // Test for Lesson 6.3.3 - IncrementLoop
 
  import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper
@@ -239,7 +239,7 @@ public class ArrayWorker
 // Test for Lesson 6.3.3 - IncrementLoop
 
  import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper
@@ -395,7 +395,7 @@ public class ForEachDemo
  }
  ====
  import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper
@@ -465,7 +465,7 @@ public class EvenLoop
 // Test for Lesson 6.3.2 - EvenLoop
 
  import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper

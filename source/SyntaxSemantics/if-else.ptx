@@ -76,7 +76,7 @@ public class DanglingElseTest
         </input>
 <tests>
 import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper
@@ -167,7 +167,7 @@ public class Test2
         </input>
 <tests>
 import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper
@@ -217,7 +217,7 @@ public class DriversLicenseTest
         </input>
 <tests>
 import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper
@@ -293,7 +293,7 @@ public class ScoreTest
         </input>
 <tests>
 import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper

@@ -76,7 +76,7 @@ public class LoopTest1
         </input>
 <tests>
 import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper
@@ -306,7 +306,7 @@ public class LoopTest2
         </input>
 <tests>
 import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper

@@ -40,7 +40,7 @@ public class BoolTest1
 <tests>
 // should pass if/when they run code
  import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper
@@ -110,7 +110,7 @@ public class BoolTest2
         </input>
 <tests>
 import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper
@@ -174,7 +174,7 @@ public class BoolMod
         </input>
 <tests>
 import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper
