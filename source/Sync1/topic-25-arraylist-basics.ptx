@@ -108,7 +108,7 @@ public class ArrayListDeclare
  }
  ====
  import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper
@@ -161,7 +161,7 @@ public class ArrayListCreateStr
         </input>
 <tests>
 import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper
@@ -206,7 +206,7 @@ public class ArrayListCreateInt
         </input>
 <tests>
 import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper
@@ -299,7 +299,7 @@ public class ArrayListFromArray
         </input>
 <tests>
 import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper
@@ -355,7 +355,7 @@ public class Shopping
         </input>
 <tests>
 import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper

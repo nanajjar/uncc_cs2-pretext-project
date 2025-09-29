@@ -113,7 +113,7 @@ public class FindAndReplace
 <tests>
 // Test for Lesson 4.3.1 - While Loop FindAndReplace lclw1
  import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper
@@ -215,7 +215,7 @@ public class ReverseString
  ====
  // Test for Lesson 4.3 - ReverseString
  import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper

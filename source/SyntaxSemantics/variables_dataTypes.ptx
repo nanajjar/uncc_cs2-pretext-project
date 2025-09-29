@@ -363,7 +363,7 @@ public class Test2
 <tests>
 // should pass if/when they run code
 import static org.junit.Assert.*;
-import org.junit.*;;
+import org.junit.*;
 import java.io.*;
 
 public class RunestoneTests extends CodeTestHelper
@@ -451,7 +451,7 @@ public class Test3
 <tests>
 // should pass if/when they run code
 import static org.junit.Assert.*;
-import org.junit.*;;
+import org.junit.*;
 import java.io.*;
 
 public class RunestoneTests extends CodeTestHelper
@@ -519,7 +519,7 @@ public class TestFinal
 <tests>
 // should pass if/when they run code
 import static org.junit.Assert.*;
-import org.junit.*;;
+import org.junit.*;
 import java.io.*;
 
 public class RunestoneTests extends CodeTestHelper
@@ -587,7 +587,7 @@ public class CaseSensitiveClass
         </input>
 <tests>
 import static org.junit.Assert.*;
-import org.junit.*;;
+import org.junit.*;
 import java.io.*;
 
 public class RunestoneTests extends CodeTestHelper

@@ -74,7 +74,7 @@ public class listAdd1
         </input>
 <tests>
 import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper
@@ -162,7 +162,7 @@ class Student
         </input>
 <tests>
 import static org.junit.Assert.*;
-  import org.junit.*;;
+  import org.junit.*;
   import java.io.*;
 
   public class RunestoneTests extends CodeTestHelper
@@ -221,7 +221,7 @@ public class listAddInt2
         </input>
 <tests>
 import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper
@@ -398,7 +398,7 @@ public class listRem
         </input>
 <tests>
 import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper
@@ -517,7 +517,7 @@ public class listGetSet
         </input>
 <tests>
 import static org.junit.Assert.*;
- import org.junit.*;;
+ import org.junit.*;
  import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper
@@ -788,7 +788,7 @@ public class ToDoList
         </input>
 <tests>
 import static org.junit.Assert.*;
-import org.junit.*;;
+import org.junit.*;
 import java.io.*;
 
  public class RunestoneTests extends CodeTestHelper
