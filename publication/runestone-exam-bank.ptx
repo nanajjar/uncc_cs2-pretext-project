@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<publication>
+  <!-- directories are relative to the main source PreTeXt file -->
+
+  <source>
+    <directories external="Figures" generated="GenFigs" />
+    <version include="exam-bank"/>
+  </source>
+
+  <metadata>
+    <title>Intro to CS2 (Java)</title>
+    <author>UNCC CS</author>
+    <publisher>PreTeXt Publishing</publisher>
+    <pub-date>2025-01-11</pub-date>
+  </metadata>
+
+  
+  <html favicon="simple"> 
+    <platform host="runestone" />
+    <!-- knowled checkpoints interfere with ActiveCode problems -->
+    <knowl exercise-inline="no" example="no" listing="no" />
+    <css colors="green_plum" />
+    <!-- <css shell="crc" toc="crc"  banner="crc" navbar = 'crc'/> -->
+    <css style="wide" toc="wide" banner="wide" navbar="wide" shell="wide" />
+    <calculator activecode="java"/>
+
+</html>
+
+<stringparam key="debug.rs.services.file" value="/Users/bmiller/Runestone/RunestoneComponents/runestone/dist/webpack_static_imports.xml" />
+</publication>

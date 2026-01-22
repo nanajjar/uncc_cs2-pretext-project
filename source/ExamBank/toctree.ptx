@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en-US" xml:id="ch-exam-bank" component="exam-bank">
+  <title>Exam Bank</title>
+
+  <section xml:id="exam-bank-smoke-test">
+    <title>Smoke Test</title>
+
+    <exercise xml:id="exam-bank-smoke-q1" type="multiplechoice">
+      <title>Multiple-Choice: Java Class Keyword</title>
+      <statement>
+        <p>Which keyword declares a class in Java?</p>
+      </statement>
+      <choices>
+        <choice correct="yes">
+          <statement><c>class</c></statement>
+          <feedback>Correct.</feedback>
+        </choice>
+        <choice>
+          <statement><c>def</c></statement>
+          <feedback>No. <c>def</c> is used in Python.</feedback>
+        </choice>
+        <choice>
+          <statement><c>struct</c></statement>
+          <feedback>No. <c>struct</c> is not a Java class keyword.</feedback>
+        </choice>
+        <choice>
+          <statement><c>module</c></statement>
+          <feedback>No. Java uses <c>class</c> to declare classes.</feedback>
+        </choice>
+      </choices>
+    </exercise>
+  </section>
+</chapter>

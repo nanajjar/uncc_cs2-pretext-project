@@ -4,7 +4,7 @@
 
   <source>
     <directories external="Figures" generated="GenFigs" />
-    <version include="html"/>
+    <version include=""/>
   </source>
 
   <metadata>
